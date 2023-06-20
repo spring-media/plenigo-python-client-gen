@@ -11,7 +11,7 @@ Keep in mind that not all the endpoints have been tested, make sure that you che
 ```python
 from plenigo import AuthenticatedClient, PlenigoApi
 from plenigo.api.transactions.search_transactions import sync_all
-from plenigo.encoders import jsonable_encoder
+from plenigo.api import jsonable_encoder
 
 client = AuthenticatedClient(api=PlenigoApi.STAGE, token="YourAPIkey")
 
