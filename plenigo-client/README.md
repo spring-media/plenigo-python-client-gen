@@ -1,13 +1,13 @@
-# {{ project_name }}
-{{ package_description }}
+# plenigo-client
+A client library for accessing plenigo API v3
 
-> This is a read-only folder, please contribute by adding changes to the templates files.
+> This is a read-only repository and no PRs and bug fixes will be merged, please use the plenigo-python-autogenerate project for changes
 
 ## Usage
 First, create a client:
 
 ```python
-from {{ package_name }} import Client
+from plenigo import Client
 
 client = Client(base_url="https://api.example.com")
 ```
@@ -15,7 +15,7 @@ client = Client(base_url="https://api.example.com")
 If the endpoints you're going to hit require authentication, use `AuthenticatedClient` instead:
 
 ```python
-from {{ package_name }} import AuthenticatedClient
+from plenigo import AuthenticatedClient
 
 client = AuthenticatedClient(base_url="https://api.example.com", token="SuperSecretToken")
 ```
@@ -23,9 +23,9 @@ client = AuthenticatedClient(base_url="https://api.example.com", token="SuperSec
 Now call your endpoint and use your models:
 
 ```python
-from {{ package_name }}.models import MyDataModel
-from {{ package_name }}.api.my_tag import get_my_data_model
-from {{ package_name }}.types import Response
+from plenigo.models import MyDataModel
+from plenigo.api.my_tag import get_my_data_model
+from plenigo.types import Response
 
 my_data: MyDataModel = get_my_data_model.sync(client=client)
 # or if you need more info (e.g. status_code)
@@ -35,9 +35,9 @@ response: Response[MyDataModel] = get_my_data_model.sync_detailed(client=client)
 Or do the same thing with an async version:
 
 ```python
-from {{ package_name }}.models import MyDataModel
-from {{ package_name }}.api.my_tag import get_my_data_model
-from {{ package_name }}.types import Response
+from plenigo.models import MyDataModel
+from plenigo.api.my_tag import get_my_data_model
+from plenigo.types import Response
 
 my_data: MyDataModel = await get_my_data_model.asyncio(client=client)
 response: Response[MyDataModel] = await get_my_data_model.asyncio_detailed(client=client)
@@ -74,7 +74,7 @@ Things to know:
 
 1. All path/query params, and bodies become method arguments.
 1. If your endpoint had any tags on it, the first tag will be used as a module name for the function (my_tag above)
-1. Any endpoint which did not have a tag will be in `{{ package_name }}.api.default`
+1. Any endpoint which did not have a tag will be in `plenigo.api.default`
 
 ## Building / publishing this Client
 This project uses [Poetry](https://python-poetry.org/) to manage dependencies  and packaging.  Here are the basics:

@@ -1,0 +1,24 @@
+from enum import Enum
+
+
+class OfferProductBaseTaxType(str, Enum):
+    ADVERTISEMENT = "ADVERTISEMENT"
+    BOOK = "BOOK"
+    DIGITALNEWSPAPER = "DIGITALNEWSPAPER"
+    DIGITALOFFER = "DIGITALOFFER"
+    DIGITALPRODUCT = "DIGITALPRODUCT"
+    DONATION = "DONATION"
+    DOWNLOAD = "DOWNLOAD"
+    EBOOK = "EBOOK"
+    EVENT = "EVENT"
+    FEE = "FEE"
+    MAGAZINE = "MAGAZINE"
+    MEMBERSHIP = "MEMBERSHIP"
+    MUSIC = "MUSIC"
+    NEWSPAPER = "NEWSPAPER"
+    PHYSICALPRODUCT = "PHYSICALPRODUCT"
+    VIDEO = "VIDEO"
+    VOUCHER = "VOUCHER"
+
+    def __str__(self) -> str:
+        return str(self.value)
