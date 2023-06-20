@@ -1,7 +1,7 @@
 # plenigo-client
 A client library for accessing plenigo API v3
 
-> This is a read-only repository and no PRs and bug fixes will be merged, please use the plenigo-python-autogenerate project for changes
+> This is a read-only folder, please contribute by adding changes to the templates files.
 
 ## Usage
 First, create a client:
