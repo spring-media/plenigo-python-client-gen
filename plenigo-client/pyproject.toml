@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "plenigo-client"
-version = "API.3.2324.0"
+version = "0.0.1"
 description = "A client library for accessing plenigo API v3"
 
 authors = []
