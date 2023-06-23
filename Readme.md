@@ -1,6 +1,6 @@
 # Plenigo API client 
 
-This is an unofficial client for [Plenigo API](https://api.plenigo.com/) and is generated with the help of [openapi-python-client](https://github.com). 
+This is an unofficial client for [Plenigo API](https://api.plenigo.com/) and is generated with the help of [openapi-python-client]([https://github.com](https://github.com/openapi-generators/openapi-python-client)). 
 
 Keep in mind that not all the endpoints have been tested, make sure that you check the client code and try it out on staging envirionment before using it in production.
 
