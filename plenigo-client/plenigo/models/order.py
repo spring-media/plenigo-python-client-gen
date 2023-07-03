@@ -48,7 +48,7 @@ class Order:
         managed_external (Union[Unset, bool]): flag indicates if a subscription is not managed by plenigo
         suppress_invoice_sending (Union[Unset, bool]): flag indicating if the subscription invoice sending is suppressed
         gift_info (Union[Unset, GiftInfo]):
-        invoice_address (Union[Unset, OrderAddress]):
+        invoice_address (Union[Unset, None, OrderAddress]):
     """
 
     order_id: int
@@ -69,7 +69,7 @@ class Order:
     managed_external: Union[Unset, bool] = UNSET
     suppress_invoice_sending: Union[Unset, bool] = UNSET
     gift_info: Union[Unset, "GiftInfo"] = UNSET
-    invoice_address: Union[Unset, "OrderAddress"] = UNSET
+    invoice_address: Union[Unset, None, "OrderAddress"] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -113,9 +113,9 @@ class Order:
         if not isinstance(self.gift_info, Unset):
             gift_info = self.gift_info.to_dict()
 
-        invoice_address: Union[Unset, Dict[str, Any]] = UNSET
+        invoice_address: Union[Unset, None, Dict[str, Any]] = UNSET
         if not isinstance(self.invoice_address, Unset):
-            invoice_address = self.invoice_address.to_dict()
+            invoice_address = self.invoice_address.to_dict() if self.invoice_address else None
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -232,8 +232,10 @@ class Order:
             gift_info = GiftInfo.from_dict(_gift_info)
 
         _invoice_address = d.pop("invoiceAddress", UNSET)
-        invoice_address: Union[Unset, OrderAddress]
-        if isinstance(_invoice_address, Unset):
+        invoice_address: Union[Unset, None, OrderAddress]
+        if _invoice_address is None:
+            invoice_address = None
+        elif isinstance(_invoice_address, Unset):
             invoice_address = UNSET
         else:
             invoice_address = OrderAddress.from_dict(_invoice_address)

@@ -38150,7 +38150,8 @@
           "validityEndDate": {
             "description": "validity end date with date-time notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21T17:32:28Z",
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           },
           "voucherPurchase": {
             "$ref": "#/components/schemas/VoucherPurchaseData"
@@ -38276,7 +38277,10 @@
             "$ref": "#/components/schemas/GiftInfo"
           },
           "invoiceAddress": {
-            "$ref": "#/components/schemas/OrderAddress"
+            "nullable": true,
+            "allOf": [
+              {"$ref": "#/components/schemas/OrderAddress"}
+            ]
           },
           "items": {
             "type": "array",
@@ -42894,7 +42898,10 @@
             ]
           },
           "partnerSettings": {
-            "$ref": "#/components/schemas/OfferPartnerSettings"
+            "nullable": true,
+            "allOf": [
+              {"$ref": "#/components/schemas/OfferPartnerSettings"}
+            ]
           }
         },
         "required": [

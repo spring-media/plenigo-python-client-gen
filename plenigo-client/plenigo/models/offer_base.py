@@ -51,7 +51,7 @@ class OfferBase:
         bonus_id (Union[Unset, int]): id of the bonus associated with this offer
         managed_external (Union[Unset, bool]): flag indicating if offer is managed externally
         pdf_template_usage (Union[Unset, OfferBasePdfTemplateUsage]): contains the pdf template to use with this offer
-        partner_settings (Union[Unset, OfferPartnerSettings]):
+        partner_settings (Union[Unset, None, OfferPartnerSettings]):
     """
 
     internal_title: str
@@ -76,7 +76,7 @@ class OfferBase:
     bonus_id: Union[Unset, int] = UNSET
     managed_external: Union[Unset, bool] = UNSET
     pdf_template_usage: Union[Unset, OfferBasePdfTemplateUsage] = UNSET
-    partner_settings: Union[Unset, "OfferPartnerSettings"] = UNSET
+    partner_settings: Union[Unset, None, "OfferPartnerSettings"] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -123,9 +123,9 @@ class OfferBase:
         if not isinstance(self.pdf_template_usage, Unset):
             pdf_template_usage = self.pdf_template_usage.value
 
-        partner_settings: Union[Unset, Dict[str, Any]] = UNSET
+        partner_settings: Union[Unset, None, Dict[str, Any]] = UNSET
         if not isinstance(self.partner_settings, Unset):
-            partner_settings = self.partner_settings.to_dict()
+            partner_settings = self.partner_settings.to_dict() if self.partner_settings else None
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -259,8 +259,10 @@ class OfferBase:
             pdf_template_usage = OfferBasePdfTemplateUsage(_pdf_template_usage)
 
         _partner_settings = d.pop("partnerSettings", UNSET)
-        partner_settings: Union[Unset, OfferPartnerSettings]
-        if isinstance(_partner_settings, Unset):
+        partner_settings: Union[Unset, None, OfferPartnerSettings]
+        if _partner_settings is None:
+            partner_settings = None
+        elif isinstance(_partner_settings, Unset):
             partner_settings = UNSET
         else:
             partner_settings = OfferPartnerSettings.from_dict(_partner_settings)

@@ -50,9 +50,9 @@ class OrderItem:
         external_billing (Union[Unset, bool]): indicates if payments are handled by plenigo or an external system
         tax_state (Union[Unset, str]): country state used for taxes - only needed in USA and Brasil
         purchased_addon_id (Union[Unset, int]): unique id of the purchased addon
-        validity_end_date (Union[Unset, datetime.datetime]): validity end date with date-time notation as defined by <a
-            href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
-            2017-07-21T17:32:28Z
+        validity_end_date (Union[Unset, None, datetime.datetime]): validity end date with date-time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 2017-07-21T17:32:28Z
         voucher_purchase (Union[Unset, VoucherPurchaseData]):
         voucher_usage (Union[Unset, VoucherUsageData]):
     """
@@ -79,7 +79,7 @@ class OrderItem:
     external_billing: Union[Unset, bool] = UNSET
     tax_state: Union[Unset, str] = UNSET
     purchased_addon_id: Union[Unset, int] = UNSET
-    validity_end_date: Union[Unset, datetime.datetime] = UNSET
+    validity_end_date: Union[Unset, None, datetime.datetime] = UNSET
     voucher_purchase: Union[Unset, "VoucherPurchaseData"] = UNSET
     voucher_usage: Union[Unset, "VoucherUsageData"] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
@@ -111,9 +111,9 @@ class OrderItem:
         external_billing = self.external_billing
         tax_state = self.tax_state
         purchased_addon_id = self.purchased_addon_id
-        validity_end_date: Union[Unset, str] = UNSET
+        validity_end_date: Union[Unset, None, str] = UNSET
         if not isinstance(self.validity_end_date, Unset):
-            validity_end_date = self.validity_end_date.isoformat()
+            validity_end_date = self.validity_end_date.isoformat() if self.validity_end_date else None
 
         voucher_purchase: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.voucher_purchase, Unset):
@@ -229,8 +229,10 @@ class OrderItem:
         purchased_addon_id = d.pop("purchasedAddonId", UNSET)
 
         _validity_end_date = d.pop("validityEndDate", UNSET)
-        validity_end_date: Union[Unset, datetime.datetime]
-        if isinstance(_validity_end_date, Unset):
+        validity_end_date: Union[Unset, None, datetime.datetime]
+        if _validity_end_date is None:
+            validity_end_date = None
+        elif isinstance(_validity_end_date, Unset):
             validity_end_date = UNSET
         else:
             validity_end_date = isoparse(_validity_end_date)

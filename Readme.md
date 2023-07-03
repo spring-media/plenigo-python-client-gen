@@ -11,14 +11,10 @@ Keep in mind that not all the endpoints have been tested, make sure that you che
 ```python
 from plenigo import AuthenticatedClient, PlenigoApi
 from plenigo.api.transactions.search_transactions import sync_all
-from plenigo.api import jsonable_encoder
 
 client = AuthenticatedClient(api=PlenigoApi.STAGE, token="YourAPIkey")
 
 all_transactions = sync_all(client=client, size=30)
-
-# if needed you can encode the data to json
-jsonable_encoder(all_transactions)
 ```
 
 Additional logic was added to the client via the templates and config file:
