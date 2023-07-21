@@ -6,8 +6,8 @@ import attr
 
 
 class PlenigoApi(Enum):
-    STAGE = "https://api.plenigo-stage.com/api/v3.0/"
-    LIVE = "https://api.plenigo.com/api/v3.0/"
+    STAGE = "https://api.plenigo-stage.com/api/v3.0"
+    LIVE = "https://api.plenigo.com/api/v3.0"
 
 
 @attr.s(auto_attribs=True)
