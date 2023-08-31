@@ -6,7 +6,7 @@ Keep in mind that not all the endpoints have been tested, make sure that you che
 
 > openapi.json is available in the repo and went thru some manual changes so that the client can be properly generated.
 
-## Usage
+## :dart: Usage
 
 ```python
 from plenigo import AuthenticatedClient, PlenigoApi
@@ -17,11 +17,13 @@ client = AuthenticatedClient(api=PlenigoApi.STAGE, token="YourAPIkey")
 all_transactions = sync_all(client=client, size=30)
 ```
 
-Additional logic was added to the client via the templates and config file:
+## :gear: Install
 
-* sync_all, asyncio_all - pull all the data from a given endpoint (going thru pagination)
-* retry logic for all endpoints with exponential backoff
-* debug logging 
+As the client is available in one of the subdirectories we need to install it with:
+
+```
+pip install -e "git+ssh://git@github.com/spring-media/plenigo-python-client-gen.git@main#egg=plenigo-client&subdirectory=plenigo-client"
+```
 
 ## Development
 
@@ -39,4 +41,10 @@ If you need to make any changes then update only the templates in the `templates
 ```sh
 openapi-python-client update --path openapi.json --custom-template-path templates --config config.yml
 ```
+
+Additional logic was added to the client via the templates and config file:
+
+* sync_all, asyncio_all - pull all the data from a given endpoint (going thru pagination)
+* retry logic for all endpoints with exponential backoff
+* debug logging 
 
