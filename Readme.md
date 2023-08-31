@@ -19,7 +19,7 @@ all_transactions = sync_all(client=client, size=30)
 
 Additional logic was added to the client via the templates and config file:
 
-* pagination support (sync_all, asyncio_all)
+* sync_all, asyncio_all - pull all the data from a given endpoint (going thru pagination)
 * retry logic for all endpoints with exponential backoff
 * debug logging 
 
