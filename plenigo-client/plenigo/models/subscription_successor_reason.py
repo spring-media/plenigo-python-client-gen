@@ -6,6 +6,7 @@ class SubscriptionSuccessorReason(str, Enum):
     CROSS_SELLING = "CROSS_SELLING"
     RULE = "RULE"
     RELATION_RULE = "RELATION_RULE"
+    NEXT_BOOKING = "NEXT_BOOKING"
     VALUE_3 = ""
 
     def __str__(self) -> str:
