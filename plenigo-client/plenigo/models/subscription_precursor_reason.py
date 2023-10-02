@@ -7,6 +7,7 @@ class SubscriptionPrecursorReason(str, Enum):
     RULE = "RULE"
     RELATION_RULE = "RELATION_RULE"
     NEXT_BOOKING = "NEXT_BOOKING"
+    NOW = "NOW"
     VALUE_3 = ""
 
     def __str__(self) -> str:

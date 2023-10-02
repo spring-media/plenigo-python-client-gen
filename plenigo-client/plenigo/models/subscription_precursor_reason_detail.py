@@ -7,6 +7,7 @@ class SubscriptionPrecursorReasonDetail(str, Enum):
     CROSS_SELLING = "CROSS_SELLING"
     PRICE_PERIOD = "PRICE_PERIOD"
     NEXT_BOOKING = "NEXT_BOOKING"
+    NOW = "NOW"
     VALUE_4 = ""
 
     def __str__(self) -> str:
