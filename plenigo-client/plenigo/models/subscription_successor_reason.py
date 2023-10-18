@@ -7,6 +7,7 @@ class SubscriptionSuccessorReason(str, Enum):
     RULE = "RULE"
     RELATION_RULE = "RELATION_RULE"
     NEXT_BOOKING = "NEXT_BOOKING"
+    NOW_WITH_INVOICING = "NOW_WITH_INVOICING"
     NOW = "NOW"
     VALUE_3 = ""
 
