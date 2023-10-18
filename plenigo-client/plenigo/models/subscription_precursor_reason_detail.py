@@ -8,6 +8,7 @@ class SubscriptionPrecursorReasonDetail(str, Enum):
     PRICE_PERIOD = "PRICE_PERIOD"
     NEXT_BOOKING = "NEXT_BOOKING"
     NOW = "NOW"
+    NOW_WITH_INVOICING = "NOW_WITH_INVOICING"
     VALUE_4 = ""
 
     def __str__(self) -> str:
