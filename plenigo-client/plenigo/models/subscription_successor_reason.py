@@ -10,6 +10,6 @@ class SubscriptionSuccessorReason(str, Enum):
     NOW_WITH_INVOICING = "NOW_WITH_INVOICING"
     NOW = "NOW"
     VALUE_3 = ""
-    AGE = ""
+    AGE = "AGE"
     def __str__(self) -> str:
         return str(self.value)
