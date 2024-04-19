@@ -27,6 +27,7 @@ class TransactionPaymentAction(str, Enum):
     SEPA_VOID = "SEPA_VOID"
     SOFORT_PAYMENT = "SOFORT_PAYMENT"
     SOFORT_REFUND = "SOFORT_REFUND"
+    SEPA_CREATION = "SEPA_CREATION"
 
     def __str__(self) -> str:
         return str(self.value)
