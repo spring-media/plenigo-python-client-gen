@@ -1,0 +1,19 @@
+# Used to generate the client in July 2023; compatible with OpenAPI 3.0.x specs
+# openapi-python-client==0.14.1
+
+# Compatible with OpenAPI 3.0.x specs; throws 270+ validation errors
+# see: https://github.com/openapi-generators/openapi-python-client/blob/main/CHANGELOG.md#0152-2023-09-16
+# openapi-python-client==0.15.2
+
+# Compatible with OpenAPI 3.1.x specs; prints warnings because of missing references
+# see: https://github.com/openapi-generators/openapi-python-client/blob/main/CHANGELOG.md#0173-2024-02-20
+openapi-python-client==0.17.3
+
+# see: https://github.com/openapi-generators/openapi-python-client/blob/main/CHANGELOG.md#0180-2024-02-22
+# openapi-python-client==0.18.0
+
+# see: https://github.com/openapi-generators/openapi-python-client/blob/main/CHANGELOG.md#0191-2024-03-27
+# openapi-python-client==0.19.1
+
+# see: https://github.com/openapi-generators/openapi-python-client/blob/main/CHANGELOG.md#0200-2024-05-18
+# openapi-python-client==0.20.0

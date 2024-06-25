@@ -5,7 +5,8 @@ from typing import List
 
 {% endif %}
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 {% if model.is_multipart_body %}
 import json
 {% endif %}
@@ -58,7 +59,7 @@ T = TypeVar("T", bound="{{ class_name }}")
     {% endfor %}{% endif %}
 {% endmacro %}
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class {{ class_name }}:
     {{ safe_docstring(class_docstring_content(model)) | indent(4) }}
 
@@ -73,7 +74,7 @@ class {{ class_name }}:
     {% endif %}
     {% endfor %}
     {% if model.additional_properties %}
-    additional_properties: Dict[str, {{ additional_property_type }}] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, {{ additional_property_type }}] = _attrs_field(init=False, factory=dict)
     {% endif %}
 
 {% macro _to_dict(multipart=False) %}
@@ -86,6 +87,7 @@ class {{ class_name }}:
 {% else %}
 {{ property.python_name }} = self.{{ property.python_name }}
 {% endif %}
+
 {% endfor %}
 
 field_dict: Dict[str, Any] = {}
@@ -107,6 +109,7 @@ field_dict.update({
 field_dict.update(self.additional_properties)
 {% endif %}
 {% endif %}
+{% if model.required_properties | length > 0 or model.optional_properties | length > 0 %}
 field_dict.update({
     {% for property in model.required_properties + model.optional_properties %}
     {% if property.required %}
@@ -114,6 +117,7 @@ field_dict.update({
     {% endif %}
     {% endfor %}
 })
+{% endif %}
 {% for property in model.optional_properties %}
 {% if not property.required %}
 if {{ property.python_name }} is not UNSET:
