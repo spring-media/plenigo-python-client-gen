@@ -9,7 +9,4 @@ class Environment(StrEnum):
     PRODUCTION = PROD = LIVE = "https://api.plenigo.com/api/v3.0"
 
 
-__all__ = (
-    "AuthenticatedClient",
-    "Client",
-)
+__all__ = ("AuthenticatedClient", "Client", "Environment")
