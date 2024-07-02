@@ -1,7 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
@@ -13,7 +14,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="AppleAppStoreReceipt")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AppleAppStoreReceipt:
     """
     Attributes:
@@ -28,12 +29,12 @@ class AppleAppStoreReceipt:
         download_id (Union[Unset, int]): unique identifier for the app download transaction
         version_external_identifier (Union[Unset, str]): arbitrary number that identifies a revision of your app
         original_application_version (Union[Unset, str]): version of the app that the user originally purchased
-        receipt_creation_date (Union[Unset, datetime.datetime]): time the App Store generated the receipt, in the
+        receipt_creation_date (Union[None, Unset, datetime.datetime]): time the App Store generated the receipt, in the
             Pacific Time zone
-        request_date (Union[Unset, datetime.datetime]): time the request to the verifyReceipt endpoint was processed and
-            the response was generated
-        original_purchase_date (Union[Unset, datetime.datetime]): time of the original app purchase, in the Pacific Time
-            zone
+        request_date (Union[None, Unset, datetime.datetime]): time the request to the verifyReceipt endpoint was
+            processed and the response was generated
+        original_purchase_date (Union[None, Unset, datetime.datetime]): time of the original app purchase, in the
+            Pacific Time zone
         items (Union[Unset, List['AppleAppStoreReceiptItem']]):
     """
 
@@ -45,39 +46,58 @@ class AppleAppStoreReceipt:
     download_id: Union[Unset, int] = UNSET
     version_external_identifier: Union[Unset, str] = UNSET
     original_application_version: Union[Unset, str] = UNSET
-    receipt_creation_date: Union[Unset, datetime.datetime] = UNSET
-    request_date: Union[Unset, datetime.datetime] = UNSET
-    original_purchase_date: Union[Unset, datetime.datetime] = UNSET
+    receipt_creation_date: Union[None, Unset, datetime.datetime] = UNSET
+    request_date: Union[None, Unset, datetime.datetime] = UNSET
+    original_purchase_date: Union[None, Unset, datetime.datetime] = UNSET
     items: Union[Unset, List["AppleAppStoreReceiptItem"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         receipt_type = self.receipt_type
+
         adam_id = self.adam_id
+
         app_item_id = self.app_item_id
+
         bundle_id = self.bundle_id
+
         application_version = self.application_version
+
         download_id = self.download_id
+
         version_external_identifier = self.version_external_identifier
+
         original_application_version = self.original_application_version
-        receipt_creation_date: Union[Unset, str] = UNSET
-        if not isinstance(self.receipt_creation_date, Unset):
+
+        receipt_creation_date: Union[None, Unset, str]
+        if isinstance(self.receipt_creation_date, Unset):
+            receipt_creation_date = UNSET
+        elif isinstance(self.receipt_creation_date, datetime.datetime):
             receipt_creation_date = self.receipt_creation_date.isoformat()
+        else:
+            receipt_creation_date = self.receipt_creation_date
 
-        request_date: Union[Unset, str] = UNSET
-        if not isinstance(self.request_date, Unset):
+        request_date: Union[None, Unset, str]
+        if isinstance(self.request_date, Unset):
+            request_date = UNSET
+        elif isinstance(self.request_date, datetime.datetime):
             request_date = self.request_date.isoformat()
+        else:
+            request_date = self.request_date
 
-        original_purchase_date: Union[Unset, str] = UNSET
-        if not isinstance(self.original_purchase_date, Unset):
+        original_purchase_date: Union[None, Unset, str]
+        if isinstance(self.original_purchase_date, Unset):
+            original_purchase_date = UNSET
+        elif isinstance(self.original_purchase_date, datetime.datetime):
             original_purchase_date = self.original_purchase_date.isoformat()
+        else:
+            original_purchase_date = self.original_purchase_date
 
         items: Union[Unset, List[Dict[str, Any]]] = UNSET
         if not isinstance(self.items, Unset):
             items = []
             for items_item_data in self.items:
                 items_item = items_item_data.to_dict()
-
                 items.append(items_item)
 
         field_dict: Dict[str, Any] = {}
@@ -131,26 +151,56 @@ class AppleAppStoreReceipt:
 
         original_application_version = d.pop("originalApplicationVersion", UNSET)
 
-        _receipt_creation_date = d.pop("receiptCreationDate", UNSET)
-        receipt_creation_date: Union[Unset, datetime.datetime]
-        if isinstance(_receipt_creation_date, Unset):
-            receipt_creation_date = UNSET
-        else:
-            receipt_creation_date = isoparse(_receipt_creation_date)
+        def _parse_receipt_creation_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                receipt_creation_date_type_1 = isoparse(data)
 
-        _request_date = d.pop("requestDate", UNSET)
-        request_date: Union[Unset, datetime.datetime]
-        if isinstance(_request_date, Unset):
-            request_date = UNSET
-        else:
-            request_date = isoparse(_request_date)
+                return receipt_creation_date_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
 
-        _original_purchase_date = d.pop("originalPurchaseDate", UNSET)
-        original_purchase_date: Union[Unset, datetime.datetime]
-        if isinstance(_original_purchase_date, Unset):
-            original_purchase_date = UNSET
-        else:
-            original_purchase_date = isoparse(_original_purchase_date)
+        receipt_creation_date = _parse_receipt_creation_date(d.pop("receiptCreationDate", UNSET))
+
+        def _parse_request_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                request_date_type_1 = isoparse(data)
+
+                return request_date_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        request_date = _parse_request_date(d.pop("requestDate", UNSET))
+
+        def _parse_original_purchase_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                original_purchase_date_type_1 = isoparse(data)
+
+                return original_purchase_date_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        original_purchase_date = _parse_original_purchase_date(d.pop("originalPurchaseDate", UNSET))
 
         items = []
         _items = d.pop("items", UNSET)

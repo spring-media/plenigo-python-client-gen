@@ -1,28 +1,29 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.api_base_date import ApiBaseDate
     from ..models.process_designs import ProcessDesigns
-    from ..models.process_settings import ProcessSettings
 
 
 T = TypeVar("T", bound="ProcessData")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ProcessData:
     """
     Attributes:
         designs (Union[Unset, ProcessDesigns]):
-        settings (Union[Unset, ProcessSettings]):
+        settings (Union[Unset, ApiBaseDate]):
     """
 
     designs: Union[Unset, "ProcessDesigns"] = UNSET
-    settings: Union[Unset, "ProcessSettings"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    settings: Union[Unset, "ApiBaseDate"] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         designs: Union[Unset, Dict[str, Any]] = UNSET
@@ -45,8 +46,8 @@ class ProcessData:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.api_base_date import ApiBaseDate
         from ..models.process_designs import ProcessDesigns
-        from ..models.process_settings import ProcessSettings
 
         d = src_dict.copy()
         _designs = d.pop("designs", UNSET)
@@ -57,11 +58,11 @@ class ProcessData:
             designs = ProcessDesigns.from_dict(_designs)
 
         _settings = d.pop("settings", UNSET)
-        settings: Union[Unset, ProcessSettings]
+        settings: Union[Unset, ApiBaseDate]
         if isinstance(_settings, Unset):
             settings = UNSET
         else:
-            settings = ProcessSettings.from_dict(_settings)
+            settings = ApiBaseDate.from_dict(_settings)
 
         process_data = cls(
             designs=designs,

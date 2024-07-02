@@ -1,27 +1,29 @@
 from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="AppleAppStorePurchaseAddition")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AppleAppStorePurchaseAddition:
     """
     Attributes:
-        app_identifier (Union[Unset, str]): identifier of the application as defined in the plenigo backend to retreive
+        app_identifier (Union[Unset, str]): identifier of the application as defined in the plenigo backend to retrieve
             the according secret
         receipt_data (Union[Unset, List[str]]):
     """
 
     app_identifier: Union[Unset, str] = UNSET
     receipt_data: Union[Unset, List[str]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         app_identifier = self.app_identifier
+
         receipt_data: Union[Unset, List[str]] = UNSET
         if not isinstance(self.receipt_data, Unset):
             receipt_data = self.receipt_data

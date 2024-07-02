@@ -1,17 +1,18 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.additional_order_data import AdditionalOrderData
+    from ..models.api_base_date import ApiBaseDate
 
 
 T = TypeVar("T", bound="VoucherPurchase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class VoucherPurchase:
     """
     Attributes:
@@ -22,7 +23,7 @@ class VoucherPurchase:
             overrules the session
         invoice_address_id (Union[Unset, int]): unique id of the invoice address to use
         delivery_address_id (Union[Unset, int]): unique id of the delivery address to use
-        additional_data (Union[Unset, AdditionalOrderData]):
+        additional_data (Union[Unset, ApiBaseDate]):
         overwritten_product_id (Union[Unset, str]): add a custom product id during the voucher checkout - this is only
             allowed for a single offer with one single purchase in it
     """
@@ -33,17 +34,23 @@ class VoucherPurchase:
     customer_session: Union[Unset, str] = UNSET
     invoice_address_id: Union[Unset, int] = UNSET
     delivery_address_id: Union[Unset, int] = UNSET
-    additional_data: Union[Unset, "AdditionalOrderData"] = UNSET
+    additional_data: Union[Unset, "ApiBaseDate"] = UNSET
     overwritten_product_id: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         customer_id = self.customer_id
+
         customer_ip_address = self.customer_ip_address
+
         voucher_code = self.voucher_code
+
         customer_session = self.customer_session
+
         invoice_address_id = self.invoice_address_id
+
         delivery_address_id = self.delivery_address_id
+
         additional_data: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.additional_data, Unset):
             additional_data = self.additional_data.to_dict()
@@ -74,7 +81,7 @@ class VoucherPurchase:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.additional_order_data import AdditionalOrderData
+        from ..models.api_base_date import ApiBaseDate
 
         d = src_dict.copy()
         customer_id = d.pop("customerId")
@@ -90,11 +97,11 @@ class VoucherPurchase:
         delivery_address_id = d.pop("deliveryAddressId", UNSET)
 
         _additional_data = d.pop("additionalData", UNSET)
-        additional_data: Union[Unset, AdditionalOrderData]
+        additional_data: Union[Unset, ApiBaseDate]
         if isinstance(_additional_data, Unset):
             additional_data = UNSET
         else:
-            additional_data = AdditionalOrderData.from_dict(_additional_data)
+            additional_data = ApiBaseDate.from_dict(_additional_data)
 
         overwritten_product_id = d.pop("overwrittenProductId", UNSET)
 

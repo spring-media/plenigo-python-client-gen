@@ -1,7 +1,8 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
@@ -9,22 +10,26 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="SubscriptionCancellationAtData")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class SubscriptionCancellationAtData:
     """
     Attributes:
-        cancellation_date (Union[Unset, datetime.date]): date subscription should end with full-date notation as defined
-            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
-            example, 2017-07-21
+        cancellation_date (Union[None, Unset, datetime.date]): date subscription should end with full-date notation as
+            defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
+            for example, 2017-07-21
     """
 
-    cancellation_date: Union[Unset, datetime.date] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    cancellation_date: Union[None, Unset, datetime.date] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        cancellation_date: Union[Unset, str] = UNSET
-        if not isinstance(self.cancellation_date, Unset):
+        cancellation_date: Union[None, Unset, str]
+        if isinstance(self.cancellation_date, Unset):
+            cancellation_date = UNSET
+        elif isinstance(self.cancellation_date, datetime.date):
             cancellation_date = self.cancellation_date.isoformat()
+        else:
+            cancellation_date = self.cancellation_date
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -37,12 +42,23 @@ class SubscriptionCancellationAtData:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        _cancellation_date = d.pop("cancellationDate", UNSET)
-        cancellation_date: Union[Unset, datetime.date]
-        if isinstance(_cancellation_date, Unset):
-            cancellation_date = UNSET
-        else:
-            cancellation_date = isoparse(_cancellation_date).date()
+
+        def _parse_cancellation_date(data: object) -> Union[None, Unset, datetime.date]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                cancellation_date_type_1 = isoparse(data).date()
+
+                return cancellation_date_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.date], data)
+
+        cancellation_date = _parse_cancellation_date(d.pop("cancellationDate", UNSET))
 
         subscription_cancellation_at_data = cls(
             cancellation_date=cancellation_date,

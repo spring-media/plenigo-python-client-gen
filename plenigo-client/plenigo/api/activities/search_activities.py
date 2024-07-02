@@ -1,3 +1,4 @@
+import datetime
 import logging
 from http import HTTPStatus
 from typing import Any, Dict, Optional, Union
@@ -7,66 +8,54 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import UNSET, Response
-
-log = logging.getLogger(__name__)
-
-import datetime
-from typing import Dict, Optional, Union
-
 from ...models.activities import Activities
 from ...models.error_result_base import ErrorResultBase
 from ...models.search_activities_json_object_type import SearchActivitiesJsonObjectType
 from ...models.search_activities_sort import SearchActivitiesSort
-from ...types import UNSET, Unset
+from ...types import UNSET, Response, Unset
+
+log = logging.getLogger(__name__)
 
 
 def _get_kwargs(
     customer_id: str,
     *,
-    client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchActivitiesSort] = UNSET,
-    json_object_type: Union[Unset, None, SearchActivitiesJsonObjectType] = UNSET,
-    json_object_identifier: Union[Unset, None, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchActivitiesSort] = UNSET,
+    json_object_type: Union[Unset, SearchActivitiesJsonObjectType] = UNSET,
+    json_object_identifier: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/activities/{customerId}".format(client.api.value, customerId=customer_id)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["size"] = size
 
-    json_start_time: Union[Unset, None, str] = UNSET
+    json_start_time: Union[Unset, str] = UNSET
     if not isinstance(start_time, Unset):
-        json_start_time = start_time.isoformat() if start_time else None
-
+        json_start_time = start_time.isoformat()
     params["startTime"] = json_start_time
 
-    json_end_time: Union[Unset, None, str] = UNSET
+    json_end_time: Union[Unset, str] = UNSET
     if not isinstance(end_time, Unset):
-        json_end_time = end_time.isoformat() if end_time else None
-
+        json_end_time = end_time.isoformat()
     params["endTime"] = json_end_time
 
     params["startingAfter"] = starting_after
 
     params["endingBefore"] = ending_before
 
-    json_sort: Union[Unset, None, str] = UNSET
+    json_sort: Union[Unset, str] = UNSET
     if not isinstance(sort, Unset):
-        json_sort = sort.value if sort else None
+        json_sort = sort.value
 
     params["sort"] = json_sort
 
-    json_json_object_type: Union[Unset, None, str] = UNSET
+    json_json_object_type: Union[Unset, str] = UNSET
     if not isinstance(json_object_type, Unset):
-        json_json_object_type = json_object_type.value if json_object_type else None
+        json_json_object_type = json_object_type.value
 
     params["jsonObjectType"] = json_json_object_type
 
@@ -74,22 +63,20 @@ def _get_kwargs(
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/activities/{customer_id}",
         "params": params,
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[Activities, ErrorResultBase]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[Activities, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = Activities.from_dict(response.json())
 
@@ -120,29 +107,32 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[Activities, ErrorResultBase]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[Activities, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 def sync_all(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchActivitiesSort] = UNSET,
-    json_object_type: Union[Unset, None, SearchActivitiesJsonObjectType] = UNSET,
-    json_object_identifier: Union[Unset, None, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchActivitiesSort] = UNSET,
+    json_object_type: Union[Unset, SearchActivitiesJsonObjectType] = UNSET,
+    json_object_identifier: Union[Unset, str] = UNSET,
 ) -> Optional[Union[Activities, ErrorResultBase]]:
-    all_results = Activities(items=[])  # type: ignore
+    # TODO: Fix commented out macro
+    all_results = []  # Activities(items=[])  # type: ignore
 
     while True:
         try:
@@ -160,14 +150,14 @@ def sync_all(
             ).parsed
 
             if results and not isinstance(results, ErrorResultBase) and not isinstance(results.items, Unset):
-                all_results.items.extend(results.items)  # type: ignore
+                all_results.extend(results.items)  # type: ignore
 
                 cursor = results.additional_properties.get("startingAfterId")
 
                 if not cursor:
                     break
 
-                starting_after = cursor
+                starting_after = cursor  # noqa
             else:
                 break
         except RetryError:
@@ -185,14 +175,14 @@ def sync_detailed(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchActivitiesSort] = UNSET,
-    json_object_type: Union[Unset, None, SearchActivitiesJsonObjectType] = UNSET,
-    json_object_identifier: Union[Unset, None, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchActivitiesSort] = UNSET,
+    json_object_type: Union[Unset, SearchActivitiesJsonObjectType] = UNSET,
+    json_object_identifier: Union[Unset, str] = UNSET,
 ) -> Response[Union[Activities, ErrorResultBase]]:
     """Search
 
@@ -200,14 +190,14 @@ def sync_detailed(
 
     Args:
         customer_id (str):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        sort (Union[Unset, None, SearchActivitiesSort]):
-        json_object_type (Union[Unset, None, SearchActivitiesJsonObjectType]):
-        json_object_identifier (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        sort (Union[Unset, SearchActivitiesSort]):
+        json_object_type (Union[Unset, SearchActivitiesJsonObjectType]):
+        json_object_identifier (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -219,7 +209,6 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
         size=size,
         start_time=start_time,
         end_time=end_time,
@@ -230,8 +219,7 @@ def sync_detailed(
         json_object_identifier=json_object_identifier,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -242,14 +230,14 @@ def sync(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchActivitiesSort] = UNSET,
-    json_object_type: Union[Unset, None, SearchActivitiesJsonObjectType] = UNSET,
-    json_object_identifier: Union[Unset, None, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchActivitiesSort] = UNSET,
+    json_object_type: Union[Unset, SearchActivitiesJsonObjectType] = UNSET,
+    json_object_identifier: Union[Unset, str] = UNSET,
 ) -> Optional[Union[Activities, ErrorResultBase]]:
     """Search
 
@@ -257,14 +245,14 @@ def sync(
 
     Args:
         customer_id (str):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        sort (Union[Unset, None, SearchActivitiesSort]):
-        json_object_type (Union[Unset, None, SearchActivitiesJsonObjectType]):
-        json_object_identifier (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        sort (Union[Unset, SearchActivitiesSort]):
+        json_object_type (Union[Unset, SearchActivitiesJsonObjectType]):
+        json_object_identifier (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -297,14 +285,14 @@ async def asyncio_detailed(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchActivitiesSort] = UNSET,
-    json_object_type: Union[Unset, None, SearchActivitiesJsonObjectType] = UNSET,
-    json_object_identifier: Union[Unset, None, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchActivitiesSort] = UNSET,
+    json_object_type: Union[Unset, SearchActivitiesJsonObjectType] = UNSET,
+    json_object_identifier: Union[Unset, str] = UNSET,
 ) -> Response[Union[Activities, ErrorResultBase]]:
     """Search
 
@@ -312,14 +300,14 @@ async def asyncio_detailed(
 
     Args:
         customer_id (str):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        sort (Union[Unset, None, SearchActivitiesSort]):
-        json_object_type (Union[Unset, None, SearchActivitiesJsonObjectType]):
-        json_object_identifier (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        sort (Union[Unset, SearchActivitiesSort]):
+        json_object_type (Union[Unset, SearchActivitiesJsonObjectType]):
+        json_object_identifier (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -331,7 +319,6 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
         size=size,
         start_time=start_time,
         end_time=end_time,
@@ -342,8 +329,7 @@ async def asyncio_detailed(
         json_object_identifier=json_object_identifier,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -352,14 +338,14 @@ async def asyncio_all(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchActivitiesSort] = UNSET,
-    json_object_type: Union[Unset, None, SearchActivitiesJsonObjectType] = UNSET,
-    json_object_identifier: Union[Unset, None, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchActivitiesSort] = UNSET,
+    json_object_type: Union[Unset, SearchActivitiesJsonObjectType] = UNSET,
+    json_object_identifier: Union[Unset, str] = UNSET,
 ) -> Response[Union[Activities, ErrorResultBase]]:
     all_results = []
 
@@ -388,7 +374,7 @@ async def asyncio_all(
                 if not cursor:
                     break
 
-                starting_after = cursor
+                starting_after = cursor  # noqa
             else:
                 break
         except RetryError:
@@ -401,14 +387,14 @@ async def asyncio(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchActivitiesSort] = UNSET,
-    json_object_type: Union[Unset, None, SearchActivitiesJsonObjectType] = UNSET,
-    json_object_identifier: Union[Unset, None, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchActivitiesSort] = UNSET,
+    json_object_type: Union[Unset, SearchActivitiesJsonObjectType] = UNSET,
+    json_object_identifier: Union[Unset, str] = UNSET,
 ) -> Optional[Union[Activities, ErrorResultBase]]:
     """Search
 
@@ -416,14 +402,14 @@ async def asyncio(
 
     Args:
         customer_id (str):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        sort (Union[Unset, None, SearchActivitiesSort]):
-        json_object_type (Union[Unset, None, SearchActivitiesJsonObjectType]):
-        json_object_identifier (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        sort (Union[Unset, SearchActivitiesSort]):
+        json_object_type (Union[Unset, SearchActivitiesJsonObjectType]):
+        json_object_identifier (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

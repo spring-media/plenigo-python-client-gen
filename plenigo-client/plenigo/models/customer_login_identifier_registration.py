@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="CustomerLoginIdentifierRegistration")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CustomerLoginIdentifierRegistration:
     """
     Attributes:
@@ -57,18 +58,27 @@ class CustomerLoginIdentifierRegistration:
     street: Union[Unset, str] = UNSET
     street_number: Union[Unset, str] = UNSET
     city: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         username = self.username
+
         email = self.email
+
         password = self.password
+
         language = self.language
+
         mobile_number = self.mobile_number
+
         ip_address = self.ip_address
+
         customer_notification = self.customer_notification
+
         first_name = self.first_name
+
         last_name = self.last_name
+
         invoice_address: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.invoice_address, Unset):
             invoice_address = self.invoice_address.to_dict()
@@ -78,10 +88,15 @@ class CustomerLoginIdentifierRegistration:
             delivery_address = self.delivery_address.to_dict()
 
         customer_id = self.customer_id
+
         subscription_id = self.subscription_id
+
         postcode = self.postcode
+
         street = self.street
+
         street_number = self.street_number
+
         city = self.city
 
         field_dict: Dict[str, Any] = {}

@@ -1,33 +1,40 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
+
+from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.shopping_cart_translation import ShoppingCartTranslation
+    from ..models.api_base_date import ApiBaseDate
 
 
 T = TypeVar("T", bound="ShoppingCartBase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ShoppingCartBase:
     """
     Attributes:
         internal_title (str): internal title of the shopping cart
-        translations (List['ShoppingCartTranslation']): translations associated with this shopping cart
+        translations (List['ApiBaseDate']): translations associated with this shopping cart
+        hint_tm_id (Union[Unset, int]): id of the text module used as hint
     """
 
     internal_title: str
-    translations: List["ShoppingCartTranslation"]
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    translations: List["ApiBaseDate"]
+    hint_tm_id: Union[Unset, int] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         internal_title = self.internal_title
+
         translations = []
         for translations_item_data in self.translations:
             translations_item = translations_item_data.to_dict()
-
             translations.append(translations_item)
+
+        hint_tm_id = self.hint_tm_id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -37,12 +44,14 @@ class ShoppingCartBase:
                 "translations": translations,
             }
         )
+        if hint_tm_id is not UNSET:
+            field_dict["hintTmId"] = hint_tm_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.shopping_cart_translation import ShoppingCartTranslation
+        from ..models.api_base_date import ApiBaseDate
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -50,13 +59,16 @@ class ShoppingCartBase:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = ShoppingCartTranslation.from_dict(translations_item_data)
+            translations_item = ApiBaseDate.from_dict(translations_item_data)
 
             translations.append(translations_item)
+
+        hint_tm_id = d.pop("hintTmId", UNSET)
 
         shopping_cart_base = cls(
             internal_title=internal_title,
             translations=translations,
+            hint_tm_id=hint_tm_id,
         )
 
         shopping_cart_base.additional_properties = d

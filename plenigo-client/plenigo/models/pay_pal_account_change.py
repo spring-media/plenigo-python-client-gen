@@ -1,13 +1,14 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="PayPalAccountChange")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class PayPalAccountChange:
     """
     Attributes:
@@ -20,11 +21,13 @@ class PayPalAccountChange:
     billing_agreement_id: str
     preferred: Union[Unset, bool] = UNSET
     invalid: Union[Unset, bool] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         billing_agreement_id = self.billing_agreement_id
+
         preferred = self.preferred
+
         invalid = self.invalid
 
         field_dict: Dict[str, Any] = {}

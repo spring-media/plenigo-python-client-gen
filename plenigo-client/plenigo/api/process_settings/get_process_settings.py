@@ -7,51 +7,40 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import UNSET, Response
-
-log = logging.getLogger(__name__)
-
-from typing import Dict, Optional, Union
-
 from ...models.error_result_base import ErrorResultBase
 from ...models.process_data import ProcessData
-from ...types import UNSET, Unset
+from ...types import UNSET, Response, Unset
+
+log = logging.getLogger(__name__)
 
 
 def _get_kwargs(
     *,
-    client: AuthenticatedClient,
-    language: str,
-    plenigo_checkout_design_id: Union[Unset, None, str] = UNSET,
+    language: Union[Unset, str] = UNSET,
+    plenigo_checkout_design_id: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/processes/settings".format(client.api.value)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["language"] = language
 
     params["plenigoCheckoutDesignId"] = plenigo_checkout_design_id
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": "/processes/settings",
         "params": params,
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[ErrorResultBase, ProcessData]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResultBase, ProcessData]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = ProcessData.from_dict(response.json())
 
@@ -82,13 +71,15 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[ErrorResultBase, ProcessData]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResultBase, ProcessData]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -99,16 +90,16 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[Uni
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    language: str,
-    plenigo_checkout_design_id: Union[Unset, None, str] = UNSET,
+    language: Union[Unset, str] = UNSET,
+    plenigo_checkout_design_id: Union[Unset, str] = UNSET,
 ) -> Response[Union[ErrorResultBase, ProcessData]]:
     """Get process settings
 
      Get settings for configuring the SSO and checkout part.
 
     Args:
-        language (str):
-        plenigo_checkout_design_id (Union[Unset, None, str]):
+        language (Union[Unset, str]):
+        plenigo_checkout_design_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -119,13 +110,11 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
-        client=client,
         language=language,
         plenigo_checkout_design_id=plenigo_checkout_design_id,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -135,16 +124,16 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    language: str,
-    plenigo_checkout_design_id: Union[Unset, None, str] = UNSET,
+    language: Union[Unset, str] = UNSET,
+    plenigo_checkout_design_id: Union[Unset, str] = UNSET,
 ) -> Optional[Union[ErrorResultBase, ProcessData]]:
     """Get process settings
 
      Get settings for configuring the SSO and checkout part.
 
     Args:
-        language (str):
-        plenigo_checkout_design_id (Union[Unset, None, str]):
+        language (Union[Unset, str]):
+        plenigo_checkout_design_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -169,16 +158,16 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    language: str,
-    plenigo_checkout_design_id: Union[Unset, None, str] = UNSET,
+    language: Union[Unset, str] = UNSET,
+    plenigo_checkout_design_id: Union[Unset, str] = UNSET,
 ) -> Response[Union[ErrorResultBase, ProcessData]]:
     """Get process settings
 
      Get settings for configuring the SSO and checkout part.
 
     Args:
-        language (str):
-        plenigo_checkout_design_id (Union[Unset, None, str]):
+        language (Union[Unset, str]):
+        plenigo_checkout_design_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -189,13 +178,11 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
-        client=client,
         language=language,
         plenigo_checkout_design_id=plenigo_checkout_design_id,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -203,16 +190,16 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    language: str,
-    plenigo_checkout_design_id: Union[Unset, None, str] = UNSET,
+    language: Union[Unset, str] = UNSET,
+    plenigo_checkout_design_id: Union[Unset, str] = UNSET,
 ) -> Optional[Union[ErrorResultBase, ProcessData]]:
     """Get process settings
 
      Get settings for configuring the SSO and checkout part.
 
     Args:
-        language (str):
-        plenigo_checkout_design_id (Union[Unset, None, str]):
+        language (Union[Unset, str]):
+        plenigo_checkout_design_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

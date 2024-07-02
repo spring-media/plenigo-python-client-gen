@@ -1,13 +1,14 @@
 from typing import Any, Dict, List, Type, TypeVar
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.corporate_account_user_status_status import CorporateAccountUserStatusStatus
 
 T = TypeVar("T", bound="CorporateAccountUserStatus")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CorporateAccountUserStatus:
     """
     Attributes:
@@ -19,9 +20,9 @@ class CorporateAccountUserStatus:
             |
             | --------- | --------------------------------------------------------------------------------------------------
             ----------------------------------|
-            | ACTIVE    | customer is active and has access to the corporate account prodcut
+            | ACTIVE    | customer is active and has access to the corporate account product
             |
-            | INACTIVE  | customer is inactive and has no access to the corporate account prodcut
+            | INACTIVE  | customer is inactive and has no access to the corporate account product
             |
             | INVITED   | customer is invited to activate the corporate account user
             |
@@ -30,11 +31,13 @@ class CorporateAccountUserStatus:
     corporate_account_id: int
     plenigo_offer_id: str
     status: CorporateAccountUserStatusStatus
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         corporate_account_id = self.corporate_account_id
+
         plenigo_offer_id = self.plenigo_offer_id
+
         status = self.status.value
 
         field_dict: Dict[str, Any] = {}

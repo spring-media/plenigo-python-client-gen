@@ -1,7 +1,8 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
@@ -9,25 +10,30 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="VoucherPurchaseData")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class VoucherPurchaseData:
     """
     Attributes:
         voucher_template_id (int): id fo the voucher template associated with this voucher item purchase
-        voucher_end_date (datetime.datetime): validity time of voucher with date-time notation as defined by <a
-            href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
-            2017-07-21T17:32:28Z
+        voucher_end_date (Union[None, datetime.datetime]): validity time of voucher with date-time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 2017-07-21T17:32:28Z
         voucher_code (Union[Unset, str]): voucher code created with this voucher item purchase
     """
 
     voucher_template_id: int
-    voucher_end_date: datetime.datetime
+    voucher_end_date: Union[None, datetime.datetime]
     voucher_code: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         voucher_template_id = self.voucher_template_id
-        voucher_end_date = self.voucher_end_date.isoformat()
+
+        voucher_end_date: Union[None, str]
+        if isinstance(self.voucher_end_date, datetime.datetime):
+            voucher_end_date = self.voucher_end_date.isoformat()
+        else:
+            voucher_end_date = self.voucher_end_date
 
         voucher_code = self.voucher_code
 
@@ -49,7 +55,20 @@ class VoucherPurchaseData:
         d = src_dict.copy()
         voucher_template_id = d.pop("voucherTemplateId")
 
-        voucher_end_date = isoparse(d.pop("voucherEndDate"))
+        def _parse_voucher_end_date(data: object) -> Union[None, datetime.datetime]:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                voucher_end_date_type_1 = isoparse(data)
+
+                return voucher_end_date_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, datetime.datetime], data)
+
+        voucher_end_date = _parse_voucher_end_date(d.pop("voucherEndDate"))
 
         voucher_code = d.pop("voucherCode", UNSET)
 

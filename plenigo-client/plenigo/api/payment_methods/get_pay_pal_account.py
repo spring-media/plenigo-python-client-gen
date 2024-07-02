@@ -7,49 +7,28 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
 log = logging.getLogger(__name__)
 
-from typing import Dict
-
-from ...models.error_result_base import ErrorResultBase
-from ...models.pay_pal_account_change import PayPalAccountChange
-
 
 def _get_kwargs(
     pay_pal_account_id: int,
-    *,
-    client: AuthenticatedClient,
 ) -> Dict[str, Any]:
-    url = "{}/paymentMethods/payPalAccounts/{payPalAccountId}".format(
-        client.api.value, payPalAccountId=pay_pal_account_id
-    )
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/paymentMethods/payPalAccounts/{pay_pal_account_id}",
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[ErrorResultBase, PayPalAccountChange]]:
-    if response.status_code == HTTPStatus.OK:
-        response_200 = PayPalAccountChange.from_dict(response.json())
-
-        return response_200
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[ErrorResultBase]:
     if response.status_code == HTTPStatus.UNAUTHORIZED:
         response_401 = ErrorResultBase.from_dict(response.json())
 
@@ -77,14 +56,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[ErrorResultBase, PayPalAccountChange]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[ErrorResultBase]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -96,7 +75,7 @@ def sync_detailed(
     pay_pal_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResultBase, PayPalAccountChange]]:
+) -> Response[ErrorResultBase]:
     """Get a PayPal account entity
 
      Get PayPal account that is identified by the passed PayPal account id.
@@ -109,16 +88,14 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, PayPalAccountChange]]
+        Response[ErrorResultBase]
     """
 
     kwargs = _get_kwargs(
         pay_pal_account_id=pay_pal_account_id,
-        client=client,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -129,7 +106,7 @@ def sync(
     pay_pal_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResultBase, PayPalAccountChange]]:
+) -> Optional[ErrorResultBase]:
     """Get a PayPal account entity
 
      Get PayPal account that is identified by the passed PayPal account id.
@@ -142,7 +119,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, PayPalAccountChange]
+        ErrorResultBase
     """
 
     return sync_detailed(
@@ -160,7 +137,7 @@ async def asyncio_detailed(
     pay_pal_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResultBase, PayPalAccountChange]]:
+) -> Response[ErrorResultBase]:
     """Get a PayPal account entity
 
      Get PayPal account that is identified by the passed PayPal account id.
@@ -173,16 +150,14 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, PayPalAccountChange]]
+        Response[ErrorResultBase]
     """
 
     kwargs = _get_kwargs(
         pay_pal_account_id=pay_pal_account_id,
-        client=client,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -191,7 +166,7 @@ async def asyncio(
     pay_pal_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResultBase, PayPalAccountChange]]:
+) -> Optional[ErrorResultBase]:
     """Get a PayPal account entity
 
      Get PayPal account that is identified by the passed PayPal account id.
@@ -204,7 +179,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, PayPalAccountChange]
+        ErrorResultBase
     """
 
     return (

@@ -6,54 +6,41 @@ import httpx
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from ... import errors
-from ...client import Client
+from ...client import AuthenticatedClient, Client
+from ...models.amazon_pay_account_change import AmazonPayAccountChange
+from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
 log = logging.getLogger(__name__)
-
-from typing import Dict
-
-from ...models.amazon_pay_account_change import AmazonPayAccountChange
-from ...models.error_result_base import ErrorResultBase
 
 
 def _get_kwargs(
     amazon_pay_account_id: int,
     *,
-    client: Client,
-    json_body: AmazonPayAccountChange,
+    body: AmazonPayAccountChange,
 ) -> Dict[str, Any]:
-    url = "{}/paymentMethods/amazonPayAccounts/{amazonPayAccountId}".format(
-        client.api.value, amazonPayAccountId=amazon_pay_account_id
-    )
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "put",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": f"/paymentMethods/amazonPayAccounts/{amazon_pay_account_id}",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+
+    log.debug(_kwargs)
+
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[AmazonPayAccountChange, ErrorResultBase]]:
-    if response.status_code == HTTPStatus.OK:
-        response_200 = AmazonPayAccountChange.from_dict(response.json())
-
-        return response_200
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[ErrorResultBase]:
     if response.status_code == HTTPStatus.BAD_REQUEST:
         response_400 = ErrorResultBase.from_dict(response.json())
 
@@ -85,14 +72,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[AmazonPayAccountChange, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[ErrorResultBase]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -103,9 +90,9 @@ def _build_response(
 def sync_detailed(
     amazon_pay_account_id: int,
     *,
-    client: Client,
-    json_body: AmazonPayAccountChange,
-) -> Response[Union[AmazonPayAccountChange, ErrorResultBase]]:
+    client: Union[AuthenticatedClient, Client],
+    body: AmazonPayAccountChange,
+) -> Response[ErrorResultBase]:
     """Update amazon pay account entity
 
      Update an amazon pay account that is identified by the passed amazon pay account id with the data
@@ -113,24 +100,22 @@ def sync_detailed(
 
     Args:
         amazon_pay_account_id (int):
-        json_body (AmazonPayAccountChange):
+        body (AmazonPayAccountChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AmazonPayAccountChange, ErrorResultBase]]
+        Response[ErrorResultBase]
     """
 
     kwargs = _get_kwargs(
         amazon_pay_account_id=amazon_pay_account_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -140,9 +125,9 @@ def sync_detailed(
 def sync(
     amazon_pay_account_id: int,
     *,
-    client: Client,
-    json_body: AmazonPayAccountChange,
-) -> Optional[Union[AmazonPayAccountChange, ErrorResultBase]]:
+    client: Union[AuthenticatedClient, Client],
+    body: AmazonPayAccountChange,
+) -> Optional[ErrorResultBase]:
     """Update amazon pay account entity
 
      Update an amazon pay account that is identified by the passed amazon pay account id with the data
@@ -150,20 +135,20 @@ def sync(
 
     Args:
         amazon_pay_account_id (int):
-        json_body (AmazonPayAccountChange):
+        body (AmazonPayAccountChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AmazonPayAccountChange, ErrorResultBase]
+        ErrorResultBase
     """
 
     return sync_detailed(
         amazon_pay_account_id=amazon_pay_account_id,
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -175,9 +160,9 @@ def sync(
 async def asyncio_detailed(
     amazon_pay_account_id: int,
     *,
-    client: Client,
-    json_body: AmazonPayAccountChange,
-) -> Response[Union[AmazonPayAccountChange, ErrorResultBase]]:
+    client: Union[AuthenticatedClient, Client],
+    body: AmazonPayAccountChange,
+) -> Response[ErrorResultBase]:
     """Update amazon pay account entity
 
      Update an amazon pay account that is identified by the passed amazon pay account id with the data
@@ -185,24 +170,22 @@ async def asyncio_detailed(
 
     Args:
         amazon_pay_account_id (int):
-        json_body (AmazonPayAccountChange):
+        body (AmazonPayAccountChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AmazonPayAccountChange, ErrorResultBase]]
+        Response[ErrorResultBase]
     """
 
     kwargs = _get_kwargs(
         amazon_pay_account_id=amazon_pay_account_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -210,9 +193,9 @@ async def asyncio_detailed(
 async def asyncio(
     amazon_pay_account_id: int,
     *,
-    client: Client,
-    json_body: AmazonPayAccountChange,
-) -> Optional[Union[AmazonPayAccountChange, ErrorResultBase]]:
+    client: Union[AuthenticatedClient, Client],
+    body: AmazonPayAccountChange,
+) -> Optional[ErrorResultBase]:
     """Update amazon pay account entity
 
      Update an amazon pay account that is identified by the passed amazon pay account id with the data
@@ -220,20 +203,20 @@ async def asyncio(
 
     Args:
         amazon_pay_account_id (int):
-        json_body (AmazonPayAccountChange):
+        body (AmazonPayAccountChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AmazonPayAccountChange, ErrorResultBase]
+        ErrorResultBase
     """
 
     return (
         await asyncio_detailed(
             amazon_pay_account_id=amazon_pay_account_id,
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.download_file_file_type import DownloadFileFileType
 from ..types import UNSET, Unset
@@ -8,7 +9,7 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="DownloadFile")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class DownloadFile:
     """
     Attributes:
@@ -20,7 +21,7 @@ class DownloadFile:
     file_type: Union[Unset, DownloadFileFileType] = UNSET
     file_name: Union[Unset, str] = UNSET
     file: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         file_type: Union[Unset, str] = UNSET
@@ -28,6 +29,7 @@ class DownloadFile:
             file_type = self.file_type.value
 
         file_name = self.file_name
+
         file = self.file
 
         field_dict: Dict[str, Any] = {}

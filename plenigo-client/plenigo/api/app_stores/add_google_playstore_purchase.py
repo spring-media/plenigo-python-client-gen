@@ -7,47 +7,40 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import Response
-
-log = logging.getLogger(__name__)
-
-from typing import Dict, Union
-
 from ...models.app_store_purchase import AppStorePurchase
 from ...models.app_store_purchase_list import AppStorePurchaseList
 from ...models.error_result_base import ErrorResultBase
 from ...models.google_play_store_purchase_addition import GooglePlayStorePurchaseAddition
+from ...types import Response
+
+log = logging.getLogger(__name__)
 
 
 def _get_kwargs(
     *,
-    client: AuthenticatedClient,
-    json_body: GooglePlayStorePurchaseAddition,
+    body: GooglePlayStorePurchaseAddition,
 ) -> Dict[str, Any]:
-    url = "{}/appStores/googlePlayStore".format(client.api.value)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": "/appStores/googlePlayStore",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+
+    log.debug(_kwargs)
+
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Optional[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     if response.status_code == HTTPStatus.CREATED:
 
@@ -96,14 +89,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Response[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -114,14 +107,14 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    json_body: GooglePlayStorePurchaseAddition,
+    body: GooglePlayStorePurchaseAddition,
 ) -> Response[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     """Add Google purchase
 
      Add a Google Playstore purchase to the plenigo system and retrieve a token for further processing.
 
     Args:
-        json_body (GooglePlayStorePurchaseAddition):
+        body (GooglePlayStorePurchaseAddition):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -132,12 +125,10 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -147,14 +138,14 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    json_body: GooglePlayStorePurchaseAddition,
+    body: GooglePlayStorePurchaseAddition,
 ) -> Optional[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     """Add Google purchase
 
      Add a Google Playstore purchase to the plenigo system and retrieve a token for further processing.
 
     Args:
-        json_body (GooglePlayStorePurchaseAddition):
+        body (GooglePlayStorePurchaseAddition):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -166,7 +157,7 @@ def sync(
 
     return sync_detailed(
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -178,14 +169,14 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    json_body: GooglePlayStorePurchaseAddition,
+    body: GooglePlayStorePurchaseAddition,
 ) -> Response[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     """Add Google purchase
 
      Add a Google Playstore purchase to the plenigo system and retrieve a token for further processing.
 
     Args:
-        json_body (GooglePlayStorePurchaseAddition):
+        body (GooglePlayStorePurchaseAddition):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -196,12 +187,10 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -209,14 +198,14 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    json_body: GooglePlayStorePurchaseAddition,
+    body: GooglePlayStorePurchaseAddition,
 ) -> Optional[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     """Add Google purchase
 
      Add a Google Playstore purchase to the plenigo system and retrieve a token for further processing.
 
     Args:
-        json_body (GooglePlayStorePurchaseAddition):
+        body (GooglePlayStorePurchaseAddition):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -229,6 +218,6 @@ async def asyncio(
     return (
         await asyncio_detailed(
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

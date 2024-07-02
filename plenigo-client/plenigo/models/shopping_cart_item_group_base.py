@@ -1,32 +1,33 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 if TYPE_CHECKING:
-    from ..models.shopping_cart_translation import ShoppingCartTranslation
+    from ..models.api_base_date import ApiBaseDate
 
 
 T = TypeVar("T", bound="ShoppingCartItemGroupBase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ShoppingCartItemGroupBase:
     """
     Attributes:
         internal_title (str): internal title of the shopping cart item group
-        translations (List['ShoppingCartTranslation']): translations associated with this shopping cart item group
+        translations (List['ApiBaseDate']): translations associated with this shopping cart item group
     """
 
     internal_title: str
-    translations: List["ShoppingCartTranslation"]
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    translations: List["ApiBaseDate"]
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         internal_title = self.internal_title
+
         translations = []
         for translations_item_data in self.translations:
             translations_item = translations_item_data.to_dict()
-
             translations.append(translations_item)
 
         field_dict: Dict[str, Any] = {}
@@ -42,7 +43,7 @@ class ShoppingCartItemGroupBase:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.shopping_cart_translation import ShoppingCartTranslation
+        from ..models.api_base_date import ApiBaseDate
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -50,7 +51,7 @@ class ShoppingCartItemGroupBase:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = ShoppingCartTranslation.from_dict(translations_item_data)
+            translations_item = ApiBaseDate.from_dict(translations_item_data)
 
             translations.append(translations_item)
 

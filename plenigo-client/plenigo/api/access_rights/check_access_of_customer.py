@@ -7,49 +7,37 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.access_right_data_granted import AccessRightDataGranted
+from ...models.error_result_base import ErrorResultBase
 from ...types import UNSET, Response
 
 log = logging.getLogger(__name__)
-
-from typing import Dict
-
-from ...models.access_right_data_granted import AccessRightDataGranted
-from ...models.error_result_base import ErrorResultBase
 
 
 def _get_kwargs(
     customer_id: str,
     *,
-    client: AuthenticatedClient,
     access_right_unique_ids: str,
 ) -> Dict[str, Any]:
-    url = "{}/accessRights/{customerId}/hasAccess".format(client.api.value, customerId=customer_id)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["accessRightUniqueIds"] = access_right_unique_ids
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/accessRights/{customer_id}/hasAccess",
         "params": params,
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Optional[Union[AccessRightDataGranted, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = AccessRightDataGranted.from_dict(response.json())
@@ -86,14 +74,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Response[Union[AccessRightDataGranted, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -126,12 +114,10 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
         access_right_unique_ids=access_right_unique_ids,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -198,12 +184,10 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
         access_right_unique_ids=access_right_unique_ids,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 

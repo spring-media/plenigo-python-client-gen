@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.opt_in_update_status import OptInUpdateStatus
 from ..types import UNSET, Unset
@@ -8,7 +9,7 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="OptInUpdate")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class OptInUpdate:
     """
     Attributes:
@@ -16,7 +17,7 @@ class OptInUpdate:
     """
 
     status: Union[Unset, OptInUpdateStatus] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         status: Union[Unset, str] = UNSET

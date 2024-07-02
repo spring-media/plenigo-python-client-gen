@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="CustomerRegistrationCreation")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CustomerRegistrationCreation:
     """
     Attributes:
@@ -44,19 +45,29 @@ class CustomerRegistrationCreation:
     verification_url: Union[Unset, str] = UNSET
     invoice_address: Union[Unset, "AddressBase"] = UNSET
     delivery_address: Union[Unset, "AddressBase"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         email = self.email
+
         password = self.password
+
         language = self.language
+
         username = self.username
+
         mobile_number = self.mobile_number
+
         ip_address = self.ip_address
+
         customer_notification = self.customer_notification
+
         first_name = self.first_name
+
         last_name = self.last_name
+
         verification_url = self.verification_url
+
         invoice_address: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.invoice_address, Unset):
             invoice_address = self.invoice_address.to_dict()

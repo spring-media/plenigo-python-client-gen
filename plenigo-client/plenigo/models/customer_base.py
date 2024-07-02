@@ -1,16 +1,21 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..models.customer_base_salutation import CustomerBaseSalutation
 from ..types import UNSET, Unset
 
+if TYPE_CHECKING:
+    from ..models.customer_miscellaneous_data import CustomerMiscellaneousData
+
+
 T = TypeVar("T", bound="CustomerBase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CustomerBase:
     """
     Attributes:
@@ -26,9 +31,10 @@ class CustomerBase:
             href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank">ISO 639-1</a>
         mobile_number (Union[Unset, str]): mobile number of the customer formatted as <a
             href="https://en.wikipedia.org/wiki/E.164" target="_blank">E.164</a>
-        birthday (Union[Unset, None, datetime.date]): birthday of the customer with full-date notation as defined by <a
+        birthday (Union[None, Unset, datetime.date]): birthday of the customer with full-date notation as defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
-            2017-07-01 - must be in the future
+            2017-07-01
+        miscellaneous_data (Union[Unset, CustomerMiscellaneousData]):
     """
 
     username: Union[Unset, str] = UNSET
@@ -40,25 +46,42 @@ class CustomerBase:
     invoice_email: Union[Unset, str] = UNSET
     language: Union[Unset, str] = UNSET
     mobile_number: Union[Unset, str] = UNSET
-    birthday: Union[Unset, None, datetime.date] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    birthday: Union[None, Unset, datetime.date] = UNSET
+    miscellaneous_data: Union[Unset, "CustomerMiscellaneousData"] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         username = self.username
+
         email = self.email
+
         external_system_id = self.external_system_id
+
         salutation: Union[Unset, str] = UNSET
         if not isinstance(self.salutation, Unset):
             salutation = self.salutation.value
 
         first_name = self.first_name
+
         last_name = self.last_name
+
         invoice_email = self.invoice_email
+
         language = self.language
+
         mobile_number = self.mobile_number
-        birthday: Union[Unset, None, str] = UNSET
-        if not isinstance(self.birthday, Unset):
-            birthday = self.birthday.isoformat() if self.birthday else None
+
+        birthday: Union[None, Unset, str]
+        if isinstance(self.birthday, Unset):
+            birthday = UNSET
+        elif isinstance(self.birthday, datetime.date):
+            birthday = self.birthday.isoformat()
+        else:
+            birthday = self.birthday
+
+        miscellaneous_data: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.miscellaneous_data, Unset):
+            miscellaneous_data = self.miscellaneous_data.to_dict()
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -83,11 +106,15 @@ class CustomerBase:
             field_dict["mobileNumber"] = mobile_number
         if birthday is not UNSET:
             field_dict["birthday"] = birthday
+        if miscellaneous_data is not UNSET:
+            field_dict["miscellaneousData"] = miscellaneous_data
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.customer_miscellaneous_data import CustomerMiscellaneousData
+
         d = src_dict.copy()
         username = d.pop("username", UNSET)
 
@@ -112,14 +139,29 @@ class CustomerBase:
 
         mobile_number = d.pop("mobileNumber", UNSET)
 
-        _birthday = d.pop("birthday", UNSET)
-        birthday: Union[Unset, None, datetime.date]
-        if _birthday is None:
-            birthday = None
-        elif isinstance(_birthday, Unset):
-            birthday = UNSET
+        def _parse_birthday(data: object) -> Union[None, Unset, datetime.date]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                birthday_type_1 = isoparse(data).date()
+
+                return birthday_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.date], data)
+
+        birthday = _parse_birthday(d.pop("birthday", UNSET))
+
+        _miscellaneous_data = d.pop("miscellaneousData", UNSET)
+        miscellaneous_data: Union[Unset, CustomerMiscellaneousData]
+        if isinstance(_miscellaneous_data, Unset):
+            miscellaneous_data = UNSET
         else:
-            birthday = isoparse(_birthday).date()
+            miscellaneous_data = CustomerMiscellaneousData.from_dict(_miscellaneous_data)
 
         customer_base = cls(
             username=username,
@@ -132,6 +174,7 @@ class CustomerBase:
             language=language,
             mobile_number=mobile_number,
             birthday=birthday,
+            miscellaneous_data=miscellaneous_data,
         )
 
         customer_base.additional_properties = d

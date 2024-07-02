@@ -7,52 +7,47 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.api_base_date import ApiBaseDate
+from ...models.error_result_base import ErrorResultBase
+from ...models.opt_ins_update import OptInsUpdate
 from ...types import Response
 
 log = logging.getLogger(__name__)
-
-from typing import Dict
-
-from ...models.error_result_base import ErrorResultBase
-from ...models.opt_ins import OptIns
-from ...models.opt_ins_update import OptInsUpdate
 
 
 def _get_kwargs(
     customer_id: str,
     *,
-    client: AuthenticatedClient,
-    json_body: OptInsUpdate,
+    body: OptInsUpdate,
 ) -> Dict[str, Any]:
-    url = "{}/customers/{customerId}/optIns".format(client.api.value, customerId=customer_id)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "put",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": f"/customers/{customer_id}/optIns",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+
+    log.debug(_kwargs)
+
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[ErrorResultBase, OptIns]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = OptIns.from_dict(response.json())
+        response_200 = ApiBaseDate.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.PARTIAL_CONTENT:
-        response_206 = OptIns.from_dict(response.json())
+        response_206 = ApiBaseDate.from_dict(response.json())
 
         return response_206
     if response.status_code == HTTPStatus.BAD_REQUEST:
@@ -89,13 +84,15 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[ErrorResultBase, OptIns]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -107,32 +104,30 @@ def sync_detailed(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: OptInsUpdate,
-) -> Response[Union[ErrorResultBase, OptIns]]:
+    body: OptInsUpdate,
+) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
     """Update opt-in
 
      Update opt-ins of a customer.
 
     Args:
         customer_id (str):
-        json_body (OptInsUpdate):
+        body (OptInsUpdate):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, OptIns]]
+        Response[Union[ApiBaseDate, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -143,28 +138,28 @@ def sync(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: OptInsUpdate,
-) -> Optional[Union[ErrorResultBase, OptIns]]:
+    body: OptInsUpdate,
+) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
     """Update opt-in
 
      Update opt-ins of a customer.
 
     Args:
         customer_id (str):
-        json_body (OptInsUpdate):
+        body (OptInsUpdate):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, OptIns]
+        Union[ApiBaseDate, ErrorResultBase]
     """
 
     return sync_detailed(
         customer_id=customer_id,
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -177,32 +172,30 @@ async def asyncio_detailed(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: OptInsUpdate,
-) -> Response[Union[ErrorResultBase, OptIns]]:
+    body: OptInsUpdate,
+) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
     """Update opt-in
 
      Update opt-ins of a customer.
 
     Args:
         customer_id (str):
-        json_body (OptInsUpdate):
+        body (OptInsUpdate):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, OptIns]]
+        Response[Union[ApiBaseDate, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -211,28 +204,28 @@ async def asyncio(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: OptInsUpdate,
-) -> Optional[Union[ErrorResultBase, OptIns]]:
+    body: OptInsUpdate,
+) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
     """Update opt-in
 
      Update opt-ins of a customer.
 
     Args:
         customer_id (str):
-        json_body (OptInsUpdate):
+        body (OptInsUpdate):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, OptIns]
+        Union[ApiBaseDate, ErrorResultBase]
     """
 
     return (
         await asyncio_detailed(
             customer_id=customer_id,
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

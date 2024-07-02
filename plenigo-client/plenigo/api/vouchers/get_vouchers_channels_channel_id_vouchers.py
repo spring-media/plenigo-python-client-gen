@@ -7,65 +7,54 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import UNSET, Response
-
-log = logging.getLogger(__name__)
-
-from typing import Dict, Optional, Union
-
 from ...models.api_voucher_page import ApiVoucherPage
 from ...models.error_result_base import ErrorResultBase
 from ...models.get_vouchers_channels_channel_id_vouchers_voucher_status import (
     GetVouchersChannelsChannelIdVouchersVoucherStatus,
 )
-from ...types import UNSET, Unset
+from ...types import UNSET, Response, Unset
+
+log = logging.getLogger(__name__)
 
 
 def _get_kwargs(
     channel_id: str,
     *,
-    client: AuthenticatedClient,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    size: Union[Unset, None, int] = UNSET,
-    voucher_status: Union[Unset, None, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/vouchers/channels/{channelId}/vouchers".format(client.api.value, channelId=channel_id)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["startingAfter"] = starting_after
 
     params["endingBefore"] = ending_before
 
     params["size"] = size
 
-    json_voucher_status: Union[Unset, None, str] = UNSET
+    json_voucher_status: Union[Unset, str] = UNSET
     if not isinstance(voucher_status, Unset):
-        json_voucher_status = voucher_status.value if voucher_status else None
+        json_voucher_status = voucher_status.value
 
     params["voucherStatus"] = json_voucher_status
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/vouchers/channels/{channel_id}/vouchers",
         "params": params,
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[ApiVoucherPage, ErrorResultBase]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ApiVoucherPage, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = ApiVoucherPage.from_dict(response.json())
 
@@ -92,13 +81,15 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[ApiVoucherPage, ErrorResultBase]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ApiVoucherPage, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -110,10 +101,10 @@ def sync_detailed(
     channel_id: str,
     *,
     client: AuthenticatedClient,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    size: Union[Unset, None, int] = UNSET,
-    voucher_status: Union[Unset, None, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
 ) -> Response[Union[ApiVoucherPage, ErrorResultBase]]:
     """Returns vouchers
 
@@ -121,10 +112,10 @@ def sync_detailed(
 
     Args:
         channel_id (str):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        size (Union[Unset, None, int]):
-        voucher_status (Union[Unset, None, GetVouchersChannelsChannelIdVouchersVoucherStatus]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        size (Union[Unset, int]):
+        voucher_status (Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -136,15 +127,13 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         channel_id=channel_id,
-        client=client,
         starting_after=starting_after,
         ending_before=ending_before,
         size=size,
         voucher_status=voucher_status,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -155,10 +144,10 @@ def sync(
     channel_id: str,
     *,
     client: AuthenticatedClient,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    size: Union[Unset, None, int] = UNSET,
-    voucher_status: Union[Unset, None, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
 ) -> Optional[Union[ApiVoucherPage, ErrorResultBase]]:
     """Returns vouchers
 
@@ -166,10 +155,10 @@ def sync(
 
     Args:
         channel_id (str):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        size (Union[Unset, None, int]):
-        voucher_status (Union[Unset, None, GetVouchersChannelsChannelIdVouchersVoucherStatus]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        size (Union[Unset, int]):
+        voucher_status (Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -198,10 +187,10 @@ async def asyncio_detailed(
     channel_id: str,
     *,
     client: AuthenticatedClient,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    size: Union[Unset, None, int] = UNSET,
-    voucher_status: Union[Unset, None, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
 ) -> Response[Union[ApiVoucherPage, ErrorResultBase]]:
     """Returns vouchers
 
@@ -209,10 +198,10 @@ async def asyncio_detailed(
 
     Args:
         channel_id (str):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        size (Union[Unset, None, int]):
-        voucher_status (Union[Unset, None, GetVouchersChannelsChannelIdVouchersVoucherStatus]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        size (Union[Unset, int]):
+        voucher_status (Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -224,15 +213,13 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         channel_id=channel_id,
-        client=client,
         starting_after=starting_after,
         ending_before=ending_before,
         size=size,
         voucher_status=voucher_status,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -241,10 +228,10 @@ async def asyncio(
     channel_id: str,
     *,
     client: AuthenticatedClient,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    size: Union[Unset, None, int] = UNSET,
-    voucher_status: Union[Unset, None, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
 ) -> Optional[Union[ApiVoucherPage, ErrorResultBase]]:
     """Returns vouchers
 
@@ -252,10 +239,10 @@ async def asyncio(
 
     Args:
         channel_id (str):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        size (Union[Unset, None, int]):
-        voucher_status (Union[Unset, None, GetVouchersChannelsChannelIdVouchersVoucherStatus]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        size (Union[Unset, int]):
+        voucher_status (Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

@@ -7,46 +7,39 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.checkout_order_id_result import CheckoutOrderIdResult
+from ...models.error_result_base import ErrorResultBase
+from ...models.free_order import FreeOrder
 from ...types import Response
 
 log = logging.getLogger(__name__)
 
-from typing import Dict
-
-from ...models.checkout_order_id_result import CheckoutOrderIdResult
-from ...models.error_result_base import ErrorResultBase
-from ...models.free_order import FreeOrder
-
 
 def _get_kwargs(
     *,
-    client: AuthenticatedClient,
-    json_body: FreeOrder,
+    body: FreeOrder,
 ) -> Dict[str, Any]:
-    url = "{}/checkout/orderFreeProduct".format(client.api.value)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": "/checkout/orderFreeProduct",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+
+    log.debug(_kwargs)
+
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Optional[Union[CheckoutOrderIdResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.CREATED:
         response_201 = CheckoutOrderIdResult.from_dict(response.json())
@@ -83,14 +76,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Response[Union[CheckoutOrderIdResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -101,7 +94,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    json_body: FreeOrder,
+    body: FreeOrder,
 ) -> Response[Union[CheckoutOrderIdResult, ErrorResultBase]]:
     """Order free product
 
@@ -109,7 +102,7 @@ def sync_detailed(
     subscription all the steps must be free of charge.
 
     Args:
-        json_body (FreeOrder):
+        body (FreeOrder):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -120,12 +113,10 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -135,7 +126,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    json_body: FreeOrder,
+    body: FreeOrder,
 ) -> Optional[Union[CheckoutOrderIdResult, ErrorResultBase]]:
     """Order free product
 
@@ -143,7 +134,7 @@ def sync(
     subscription all the steps must be free of charge.
 
     Args:
-        json_body (FreeOrder):
+        body (FreeOrder):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -155,7 +146,7 @@ def sync(
 
     return sync_detailed(
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -167,7 +158,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    json_body: FreeOrder,
+    body: FreeOrder,
 ) -> Response[Union[CheckoutOrderIdResult, ErrorResultBase]]:
     """Order free product
 
@@ -175,7 +166,7 @@ async def asyncio_detailed(
     subscription all the steps must be free of charge.
 
     Args:
-        json_body (FreeOrder):
+        body (FreeOrder):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -186,12 +177,10 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -199,7 +188,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    json_body: FreeOrder,
+    body: FreeOrder,
 ) -> Optional[Union[CheckoutOrderIdResult, ErrorResultBase]]:
     """Order free product
 
@@ -207,7 +196,7 @@ async def asyncio(
     subscription all the steps must be free of charge.
 
     Args:
-        json_body (FreeOrder):
+        body (FreeOrder):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -220,6 +209,6 @@ async def asyncio(
     return (
         await asyncio_detailed(
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

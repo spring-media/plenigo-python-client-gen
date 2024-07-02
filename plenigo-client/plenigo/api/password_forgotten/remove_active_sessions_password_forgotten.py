@@ -6,53 +6,38 @@ import httpx
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from ... import errors
-from ...client import Client
-from ...types import UNSET, Response
-
-log = logging.getLogger(__name__)
-
-from typing import Dict, Optional, Union
-
+from ...client import AuthenticatedClient, Client
 from ...models.customer_session_token import CustomerSessionToken
 from ...models.error_result_base import ErrorResultBase
-from ...types import UNSET, Unset
+from ...types import UNSET, Response, Unset
+
+log = logging.getLogger(__name__)
 
 
 def _get_kwargs(
     removal_token: str,
     *,
-    client: Client,
-    session_id: Union[Unset, None, str] = UNSET,
+    session_id: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/processes/passwordForgotten/changeSessions/{removalToken}".format(
-        client.api.value, removalToken=removal_token
-    )
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["sessionId"] = session_id
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "put",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/processes/passwordForgotten/changeSessions/{removal_token}",
         "params": params,
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Optional[Union[CustomerSessionToken, ErrorResultBase]]:
     if response.status_code == HTTPStatus.ACCEPTED:
         response_202 = CustomerSessionToken.from_dict(response.json())
@@ -85,14 +70,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Response[Union[CustomerSessionToken, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -103,8 +88,8 @@ def _build_response(
 def sync_detailed(
     removal_token: str,
     *,
-    client: Client,
-    session_id: Union[Unset, None, str] = UNSET,
+    client: Union[AuthenticatedClient, Client],
+    session_id: Union[Unset, str] = UNSET,
 ) -> Response[Union[CustomerSessionToken, ErrorResultBase]]:
     """Remove active sessions
 
@@ -114,7 +99,7 @@ def sync_detailed(
 
     Args:
         removal_token (str):
-        session_id (Union[Unset, None, str]):
+        session_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -126,12 +111,10 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         removal_token=removal_token,
-        client=client,
         session_id=session_id,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -141,8 +124,8 @@ def sync_detailed(
 def sync(
     removal_token: str,
     *,
-    client: Client,
-    session_id: Union[Unset, None, str] = UNSET,
+    client: Union[AuthenticatedClient, Client],
+    session_id: Union[Unset, str] = UNSET,
 ) -> Optional[Union[CustomerSessionToken, ErrorResultBase]]:
     """Remove active sessions
 
@@ -152,7 +135,7 @@ def sync(
 
     Args:
         removal_token (str):
-        session_id (Union[Unset, None, str]):
+        session_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -177,8 +160,8 @@ def sync(
 async def asyncio_detailed(
     removal_token: str,
     *,
-    client: Client,
-    session_id: Union[Unset, None, str] = UNSET,
+    client: Union[AuthenticatedClient, Client],
+    session_id: Union[Unset, str] = UNSET,
 ) -> Response[Union[CustomerSessionToken, ErrorResultBase]]:
     """Remove active sessions
 
@@ -188,7 +171,7 @@ async def asyncio_detailed(
 
     Args:
         removal_token (str):
-        session_id (Union[Unset, None, str]):
+        session_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -200,12 +183,10 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         removal_token=removal_token,
-        client=client,
         session_id=session_id,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -213,8 +194,8 @@ async def asyncio_detailed(
 async def asyncio(
     removal_token: str,
     *,
-    client: Client,
-    session_id: Union[Unset, None, str] = UNSET,
+    client: Union[AuthenticatedClient, Client],
+    session_id: Union[Unset, str] = UNSET,
 ) -> Optional[Union[CustomerSessionToken, ErrorResultBase]]:
     """Remove active sessions
 
@@ -224,7 +205,7 @@ async def asyncio(
 
     Args:
         removal_token (str):
-        session_id (Union[Unset, None, str]):
+        session_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.address_base_salutation import AddressBaseSalutation
 from ..models.address_base_validation_status import AddressBaseValidationStatus
@@ -9,7 +10,7 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="AddressBase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AddressBase:
     """
     Attributes:
@@ -33,6 +34,9 @@ class AddressBase:
         vat_number (Union[Unset, str]): VAT number of a member country of the European Union
         phone_number (Union[Unset, str]): phone number of the customer formatted as <a
             href="https://en.wikipedia.org/wiki/E.164" target="_blank">E.164</a>
+        delivery_information (Union[Unset, str]): delivery information
+        academic_title (Union[Unset, str]): academic title
+        job_position (Union[Unset, str]): job position
         validation_status (Union[Unset, AddressBaseValidationStatus]): validation status of the address
         validation_hash (Union[Unset, str]): validation hash of a valid address
     """
@@ -54,31 +58,56 @@ class AddressBase:
     country: Union[Unset, str] = UNSET
     vat_number: Union[Unset, str] = UNSET
     phone_number: Union[Unset, str] = UNSET
+    delivery_information: Union[Unset, str] = UNSET
+    academic_title: Union[Unset, str] = UNSET
+    job_position: Union[Unset, str] = UNSET
     validation_status: Union[Unset, AddressBaseValidationStatus] = UNSET
     validation_hash: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         business_address = self.business_address
+
         salutation: Union[Unset, str] = UNSET
         if not isinstance(self.salutation, Unset):
             salutation = self.salutation.value
 
         title = self.title
+
         first_name = self.first_name
+
         last_name = self.last_name
+
         company_name = self.company_name
+
         additional_company_info = self.additional_company_info
+
         street = self.street
+
         street_number = self.street_number
+
         additional_street_info = self.additional_street_info
+
         postbox = self.postbox
+
         postcode = self.postcode
+
         city = self.city
+
         state = self.state
+
         country = self.country
+
         vat_number = self.vat_number
+
         phone_number = self.phone_number
+
+        delivery_information = self.delivery_information
+
+        academic_title = self.academic_title
+
+        job_position = self.job_position
+
         validation_status: Union[Unset, str] = UNSET
         if not isinstance(self.validation_status, Unset):
             validation_status = self.validation_status.value
@@ -122,6 +151,12 @@ class AddressBase:
             field_dict["vatNumber"] = vat_number
         if phone_number is not UNSET:
             field_dict["phoneNumber"] = phone_number
+        if delivery_information is not UNSET:
+            field_dict["deliveryInformation"] = delivery_information
+        if academic_title is not UNSET:
+            field_dict["academicTitle"] = academic_title
+        if job_position is not UNSET:
+            field_dict["jobPosition"] = job_position
         if validation_status is not UNSET:
             field_dict["validationStatus"] = validation_status
         if validation_hash is not UNSET:
@@ -171,6 +206,12 @@ class AddressBase:
 
         phone_number = d.pop("phoneNumber", UNSET)
 
+        delivery_information = d.pop("deliveryInformation", UNSET)
+
+        academic_title = d.pop("academicTitle", UNSET)
+
+        job_position = d.pop("jobPosition", UNSET)
+
         _validation_status = d.pop("validationStatus", UNSET)
         validation_status: Union[Unset, AddressBaseValidationStatus]
         if isinstance(_validation_status, Unset):
@@ -198,6 +239,9 @@ class AddressBase:
             country=country,
             vat_number=vat_number,
             phone_number=phone_number,
+            delivery_information=delivery_information,
+            academic_title=academic_title,
+            job_position=job_position,
             validation_status=validation_status,
             validation_hash=validation_hash,
         )

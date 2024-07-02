@@ -7,47 +7,28 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import Response
+from ...models.error_result_base import ErrorResultBase
+from ...types import Response, Unset
 
 log = logging.getLogger(__name__)
-
-from typing import Dict
-
-from ...models.error_result_base import ErrorResultBase
-from ...models.product_access_right_creation import ProductAccessRightCreation
 
 
 def _get_kwargs(
     access_right_id: int,
-    *,
-    client: AuthenticatedClient,
 ) -> Dict[str, Any]:
-    url = "{}/products/accessRights/{accessRightId}".format(client.api.value, accessRightId=access_right_id)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/products/accessRights/{access_right_id}",
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[ErrorResultBase, ProductAccessRightCreation]]:
-    if response.status_code == HTTPStatus.OK:
-        response_200 = ProductAccessRightCreation.from_dict(response.json())
-
-        return response_200
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[ErrorResultBase]:
     if response.status_code == HTTPStatus.BAD_REQUEST:
         response_400 = ErrorResultBase.from_dict(response.json())
 
@@ -79,22 +60,23 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[ErrorResultBase, ProductAccessRightCreation]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[ErrorResultBase]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 def sync_all(
     access_right_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResultBase, ProductAccessRightCreation]]:
-    all_results = ProductAccessRightCreation(items=[])  # type: ignore
+) -> Optional[ErrorResultBase]:
+    # TODO: Fix commented out macro
+    all_results = []  #  # type: ignore
 
     while True:
         try:
@@ -104,13 +86,14 @@ def sync_all(
             ).parsed
 
             if results and not isinstance(results, ErrorResultBase) and not isinstance(results.items, Unset):
-                all_results.items.extend(results.items)  # type: ignore
+                all_results.extend(results.items)  # type: ignore
 
                 cursor = results.additional_properties.get("startingAfterId")
 
                 if not cursor:
                     break
 
+                starting_after = cursor  # noqa
             else:
                 break
         except RetryError:
@@ -128,7 +111,7 @@ def sync_detailed(
     access_right_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResultBase, ProductAccessRightCreation]]:
+) -> Response[ErrorResultBase]:
     """Get
 
      Get access right that is identified by the passed access right id.
@@ -141,16 +124,14 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, ProductAccessRightCreation]]
+        Response[ErrorResultBase]
     """
 
     kwargs = _get_kwargs(
         access_right_id=access_right_id,
-        client=client,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -161,7 +142,7 @@ def sync(
     access_right_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResultBase, ProductAccessRightCreation]]:
+) -> Optional[ErrorResultBase]:
     """Get
 
      Get access right that is identified by the passed access right id.
@@ -174,7 +155,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, ProductAccessRightCreation]
+        ErrorResultBase
     """
 
     return sync_detailed(
@@ -192,7 +173,7 @@ async def asyncio_detailed(
     access_right_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResultBase, ProductAccessRightCreation]]:
+) -> Response[ErrorResultBase]:
     """Get
 
      Get access right that is identified by the passed access right id.
@@ -205,16 +186,14 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, ProductAccessRightCreation]]
+        Response[ErrorResultBase]
     """
 
     kwargs = _get_kwargs(
         access_right_id=access_right_id,
-        client=client,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -223,7 +202,7 @@ async def asyncio_all(
     access_right_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResultBase, ProductAccessRightCreation]]:
+) -> Response[ErrorResultBase]:
     all_results = []
 
     while True:
@@ -243,6 +222,7 @@ async def asyncio_all(
                 if not cursor:
                     break
 
+                starting_after = cursor  # noqa
             else:
                 break
         except RetryError:
@@ -255,7 +235,7 @@ async def asyncio(
     access_right_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResultBase, ProductAccessRightCreation]]:
+) -> Optional[ErrorResultBase]:
     """Get
 
      Get access right that is identified by the passed access right id.
@@ -268,7 +248,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, ProductAccessRightCreation]
+        ErrorResultBase
     """
 
     return (

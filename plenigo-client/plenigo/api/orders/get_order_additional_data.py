@@ -7,45 +7,31 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.api_base_date import ApiBaseDate
+from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
 log = logging.getLogger(__name__)
 
-from typing import Dict
-
-from ...models.additional_order_data import AdditionalOrderData
-from ...models.error_result_base import ErrorResultBase
-
 
 def _get_kwargs(
     order_id: int,
-    *,
-    client: AuthenticatedClient,
 ) -> Dict[str, Any]:
-    url = "{}/orders/{orderId}/additionalData".format(client.api.value, orderId=order_id)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/orders/{order_id}/additionalData",
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[AdditionalOrderData, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = AdditionalOrderData.from_dict(response.json())
+        response_200 = ApiBaseDate.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -75,14 +61,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[AdditionalOrderData, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -94,7 +80,7 @@ def sync_detailed(
     order_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[AdditionalOrderData, ErrorResultBase]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
     """Get additional data
 
      Returns additional data associated with the order associated with the provided order id.
@@ -107,16 +93,14 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AdditionalOrderData, ErrorResultBase]]
+        Response[Union[ApiBaseDate, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         order_id=order_id,
-        client=client,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -127,7 +111,7 @@ def sync(
     order_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[AdditionalOrderData, ErrorResultBase]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
     """Get additional data
 
      Returns additional data associated with the order associated with the provided order id.
@@ -140,7 +124,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AdditionalOrderData, ErrorResultBase]
+        Union[ApiBaseDate, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -158,7 +142,7 @@ async def asyncio_detailed(
     order_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[AdditionalOrderData, ErrorResultBase]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
     """Get additional data
 
      Returns additional data associated with the order associated with the provided order id.
@@ -171,16 +155,14 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AdditionalOrderData, ErrorResultBase]]
+        Response[Union[ApiBaseDate, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         order_id=order_id,
-        client=client,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -189,7 +171,7 @@ async def asyncio(
     order_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[AdditionalOrderData, ErrorResultBase]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
     """Get additional data
 
      Returns additional data associated with the order associated with the provided order id.
@@ -202,7 +184,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AdditionalOrderData, ErrorResultBase]
+        Union[ApiBaseDate, ErrorResultBase]
     """
 
     return (

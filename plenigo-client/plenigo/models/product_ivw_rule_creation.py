@@ -1,55 +1,89 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.product_ivw_rule_creation_ivw_price_type import ProductIvwRuleCreationIvwPriceType
 from ..models.product_ivw_rule_creation_ivw_type import ProductIvwRuleCreationIvwType
+from ..models.product_ivw_rule_creation_type import ProductIvwRuleCreationType
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.product_analog_ivw_rule import ProductAnalogIvwRule
+    from ..models.product_digital_ivw_rule import ProductDigitalIvwRule
+
 
 T = TypeVar("T", bound="ProductIvwRuleCreation")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ProductIvwRuleCreation:
     """
     Attributes:
         title (str): title of the ivw rule
         internal_title (str): internal title of the ivw rule
-        ivw_type (ProductIvwRuleCreationIvwType): the ivw type which should be used for this rule
-        ivw_price_type (ProductIvwRuleCreationIvwPriceType): the ivw price type which should be used for this rule
-        full_price_divergence_up (float): the divergence up to the price to be the specified ivw type
-        full_price_divergence_down (float): the divergence down to the price to be the specified ivw type
-        full_price_issue_id (int): id of the price issue associated with this ivw rule
-        other_sale_price_divergence_down (float): the divergence down to the price to be the specified ivw type
-        other_sale_price_issue_id (int): id of the price issue associated with this ivw rule
+        type (ProductIvwRuleCreationType): the type for this rule
+        rule (Union['ProductAnalogIvwRule', 'ProductDigitalIvwRule']): the object depends on the type of this rule.
         description (Union[Unset, str]): Internal description of the ivw rule
+        ivw_type (Union[Unset, ProductIvwRuleCreationIvwType]): the ivw type which should be used for this rule
+        ivw_price_type (Union[Unset, ProductIvwRuleCreationIvwPriceType]): the ivw price type which should be used for
+            this rule
+        full_price_divergence_up (Union[Unset, float]): the divergence up to the price to be the specified ivw type
+        full_price_divergence_down (Union[Unset, float]): the divergence down to the price to be the specified ivw type
+        full_price_issue_id (Union[Unset, int]): id of the price issue associated with this ivw rule
+        other_sale_price_divergence_down (Union[Unset, float]): the divergence down to the price to be the specified ivw
+            type
+        other_sale_price_issue_id (Union[Unset, int]): id of the price issue associated with this ivw rule
     """
 
     title: str
     internal_title: str
-    ivw_type: ProductIvwRuleCreationIvwType
-    ivw_price_type: ProductIvwRuleCreationIvwPriceType
-    full_price_divergence_up: float
-    full_price_divergence_down: float
-    full_price_issue_id: int
-    other_sale_price_divergence_down: float
-    other_sale_price_issue_id: int
+    type: ProductIvwRuleCreationType
+    rule: Union["ProductAnalogIvwRule", "ProductDigitalIvwRule"]
     description: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    ivw_type: Union[Unset, ProductIvwRuleCreationIvwType] = UNSET
+    ivw_price_type: Union[Unset, ProductIvwRuleCreationIvwPriceType] = UNSET
+    full_price_divergence_up: Union[Unset, float] = UNSET
+    full_price_divergence_down: Union[Unset, float] = UNSET
+    full_price_issue_id: Union[Unset, int] = UNSET
+    other_sale_price_divergence_down: Union[Unset, float] = UNSET
+    other_sale_price_issue_id: Union[Unset, int] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        title = self.title
-        internal_title = self.internal_title
-        ivw_type = self.ivw_type.value
+        from ..models.product_analog_ivw_rule import ProductAnalogIvwRule
 
-        ivw_price_type = self.ivw_price_type.value
+        title = self.title
+
+        internal_title = self.internal_title
+
+        type = self.type.value
+
+        rule: Dict[str, Any]
+        if isinstance(self.rule, ProductAnalogIvwRule):
+            rule = self.rule.to_dict()
+        else:
+            rule = self.rule.to_dict()
+
+        description = self.description
+
+        ivw_type: Union[Unset, str] = UNSET
+        if not isinstance(self.ivw_type, Unset):
+            ivw_type = self.ivw_type.value
+
+        ivw_price_type: Union[Unset, str] = UNSET
+        if not isinstance(self.ivw_price_type, Unset):
+            ivw_price_type = self.ivw_price_type.value
 
         full_price_divergence_up = self.full_price_divergence_up
+
         full_price_divergence_down = self.full_price_divergence_down
+
         full_price_issue_id = self.full_price_issue_id
+
         other_sale_price_divergence_down = self.other_sale_price_divergence_down
+
         other_sale_price_issue_id = self.other_sale_price_issue_id
-        description = self.description
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -57,46 +91,90 @@ class ProductIvwRuleCreation:
             {
                 "title": title,
                 "internalTitle": internal_title,
-                "ivwType": ivw_type,
-                "ivwPriceType": ivw_price_type,
-                "fullPriceDivergenceUp": full_price_divergence_up,
-                "fullPriceDivergenceDown": full_price_divergence_down,
-                "fullPriceIssueId": full_price_issue_id,
-                "otherSalePriceDivergenceDown": other_sale_price_divergence_down,
-                "otherSalePriceIssueId": other_sale_price_issue_id,
+                "type": type,
+                "rule": rule,
             }
         )
         if description is not UNSET:
             field_dict["description"] = description
+        if ivw_type is not UNSET:
+            field_dict["ivwType"] = ivw_type
+        if ivw_price_type is not UNSET:
+            field_dict["ivwPriceType"] = ivw_price_type
+        if full_price_divergence_up is not UNSET:
+            field_dict["fullPriceDivergenceUp"] = full_price_divergence_up
+        if full_price_divergence_down is not UNSET:
+            field_dict["fullPriceDivergenceDown"] = full_price_divergence_down
+        if full_price_issue_id is not UNSET:
+            field_dict["fullPriceIssueId"] = full_price_issue_id
+        if other_sale_price_divergence_down is not UNSET:
+            field_dict["otherSalePriceDivergenceDown"] = other_sale_price_divergence_down
+        if other_sale_price_issue_id is not UNSET:
+            field_dict["otherSalePriceIssueId"] = other_sale_price_issue_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.product_analog_ivw_rule import ProductAnalogIvwRule
+        from ..models.product_digital_ivw_rule import ProductDigitalIvwRule
+
         d = src_dict.copy()
         title = d.pop("title")
 
         internal_title = d.pop("internalTitle")
 
-        ivw_type = ProductIvwRuleCreationIvwType(d.pop("ivwType"))
+        type = ProductIvwRuleCreationType(d.pop("type"))
 
-        ivw_price_type = ProductIvwRuleCreationIvwPriceType(d.pop("ivwPriceType"))
+        def _parse_rule(data: object) -> Union["ProductAnalogIvwRule", "ProductDigitalIvwRule"]:
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                rule_type_0 = ProductAnalogIvwRule.from_dict(data)
 
-        full_price_divergence_up = d.pop("fullPriceDivergenceUp")
+                return rule_type_0
+            except:  # noqa: E722
+                pass
+            if not isinstance(data, dict):
+                raise TypeError()
+            rule_type_1 = ProductDigitalIvwRule.from_dict(data)
 
-        full_price_divergence_down = d.pop("fullPriceDivergenceDown")
+            return rule_type_1
 
-        full_price_issue_id = d.pop("fullPriceIssueId")
-
-        other_sale_price_divergence_down = d.pop("otherSalePriceDivergenceDown")
-
-        other_sale_price_issue_id = d.pop("otherSalePriceIssueId")
+        rule = _parse_rule(d.pop("rule"))
 
         description = d.pop("description", UNSET)
+
+        _ivw_type = d.pop("ivwType", UNSET)
+        ivw_type: Union[Unset, ProductIvwRuleCreationIvwType]
+        if isinstance(_ivw_type, Unset):
+            ivw_type = UNSET
+        else:
+            ivw_type = ProductIvwRuleCreationIvwType(_ivw_type)
+
+        _ivw_price_type = d.pop("ivwPriceType", UNSET)
+        ivw_price_type: Union[Unset, ProductIvwRuleCreationIvwPriceType]
+        if isinstance(_ivw_price_type, Unset):
+            ivw_price_type = UNSET
+        else:
+            ivw_price_type = ProductIvwRuleCreationIvwPriceType(_ivw_price_type)
+
+        full_price_divergence_up = d.pop("fullPriceDivergenceUp", UNSET)
+
+        full_price_divergence_down = d.pop("fullPriceDivergenceDown", UNSET)
+
+        full_price_issue_id = d.pop("fullPriceIssueId", UNSET)
+
+        other_sale_price_divergence_down = d.pop("otherSalePriceDivergenceDown", UNSET)
+
+        other_sale_price_issue_id = d.pop("otherSalePriceIssueId", UNSET)
 
         product_ivw_rule_creation = cls(
             title=title,
             internal_title=internal_title,
+            type=type,
+            rule=rule,
+            description=description,
             ivw_type=ivw_type,
             ivw_price_type=ivw_price_type,
             full_price_divergence_up=full_price_divergence_up,
@@ -104,7 +182,6 @@ class ProductIvwRuleCreation:
             full_price_issue_id=full_price_issue_id,
             other_sale_price_divergence_down=other_sale_price_divergence_down,
             other_sale_price_issue_id=other_sale_price_issue_id,
-            description=description,
         )
 
         product_ivw_rule_creation.additional_properties = d

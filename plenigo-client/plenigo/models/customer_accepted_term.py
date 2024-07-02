@@ -1,7 +1,8 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
@@ -9,28 +10,34 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="CustomerAcceptedTerm")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CustomerAcceptedTerm:
     """
     Attributes:
         term_id (Union[Unset, int]): technical id of the term for relation to the merchant backend term id
         unique_id (Union[Unset, str]): unique id of the last active term
-        acceptance_date (Union[Unset, datetime.datetime]): date time the term was accepted with date-time notation as
-            defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
-            for example, 2017-07-21T17:32:28Z
+        acceptance_date (Union[None, Unset, datetime.datetime]): date time the term was accepted with date-time notation
+            as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section
+            5.6</a>, for example, 2017-07-21T17:32:28Z
     """
 
     term_id: Union[Unset, int] = UNSET
     unique_id: Union[Unset, str] = UNSET
-    acceptance_date: Union[Unset, datetime.datetime] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    acceptance_date: Union[None, Unset, datetime.datetime] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         term_id = self.term_id
+
         unique_id = self.unique_id
-        acceptance_date: Union[Unset, str] = UNSET
-        if not isinstance(self.acceptance_date, Unset):
+
+        acceptance_date: Union[None, Unset, str]
+        if isinstance(self.acceptance_date, Unset):
+            acceptance_date = UNSET
+        elif isinstance(self.acceptance_date, datetime.datetime):
             acceptance_date = self.acceptance_date.isoformat()
+        else:
+            acceptance_date = self.acceptance_date
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -51,12 +58,22 @@ class CustomerAcceptedTerm:
 
         unique_id = d.pop("uniqueId", UNSET)
 
-        _acceptance_date = d.pop("acceptanceDate", UNSET)
-        acceptance_date: Union[Unset, datetime.datetime]
-        if isinstance(_acceptance_date, Unset):
-            acceptance_date = UNSET
-        else:
-            acceptance_date = isoparse(_acceptance_date)
+        def _parse_acceptance_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                acceptance_date_type_1 = isoparse(data)
+
+                return acceptance_date_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        acceptance_date = _parse_acceptance_date(d.pop("acceptanceDate", UNSET))
 
         customer_accepted_term = cls(
             term_id=term_id,
