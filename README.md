@@ -47,16 +47,7 @@ openapi-python-client generate \
   --custom-template-path templates
 ```
 
-If you need to make any changes, then update only the templates in the `templates` folder and the config.yml file and run the `update` command:
-
-```sh  
-openapi-python-client update \
-  --path openapi.json \
-  --config config.yml \
-  --custom-template-path templates
-```
-
-Try this command for the OpenAPI Python client 0.21.0+ which deprecates the `update` command. See the [release notes](https://github.com/openapi-generators/openapi-python-client/blob/main/CHANGELOG.md#0210-2024-06-08) for more information:
+If you need to make any changes, then update only the templates in the `templates` folder and the `config.yml` file and re-run the `generate` command with the `--overwrite` option:
 
 ```sh
 openapi-python-client generate \
@@ -64,8 +55,7 @@ openapi-python-client generate \
   --path openapi.json \
   --config config.yml \
   --custom-template-path templates \
-  --meta=none \
-  --output-path=plenigo-client/plenigo
+  --output-path=plenigo-client
 ```
 
 ### Generating the client from the specs

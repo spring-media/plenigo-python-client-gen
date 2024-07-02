@@ -19,19 +19,19 @@ include = ["CHANGELOG.md", "{{ package_name }}/py.typed"]
 
 {% if pdm %}
 dependencies = [
-    "httpx>=0.20.0,<0.27.0",
+    "httpx>=0.20.0,<0.28.0",
     "attrs>=21.3.0",
     "python-dateutil>=2.8.0",
 ]
 
 [tool.pdm]
-package-type = "library"
+distribution = true
 {% endif %}
 {% if poetry %}
 
 [tool.poetry.dependencies]
 python = "^3.8"
-httpx = ">=0.20.0,<0.27.0"
+httpx = ">=0.20.0,<0.28.0"
 attrs = ">=21.3.0"
 python-dateutil = "^2.8.0"
 tenacity = ">=8.2.2"
