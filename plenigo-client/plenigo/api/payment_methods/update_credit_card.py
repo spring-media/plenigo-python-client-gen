@@ -7,49 +7,40 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.credit_card_change import CreditCardChange
+from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
 log = logging.getLogger(__name__)
-
-from typing import Dict
-
-from ...models.credit_card_change import CreditCardChange
-from ...models.error_result_base import ErrorResultBase
 
 
 def _get_kwargs(
     credit_card_id: int,
     *,
-    client: AuthenticatedClient,
-    json_body: CreditCardChange,
+    body: CreditCardChange,
 ) -> Dict[str, Any]:
-    url = "{}/paymentMethods/creditCards/{creditCardId}".format(client.api.value, creditCardId=credit_card_id)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "put",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": f"/paymentMethods/creditCards/{credit_card_id}",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+
+    log.debug(_kwargs)
+
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[CreditCardChange, ErrorResultBase]]:
-    if response.status_code == HTTPStatus.OK:
-        response_200 = CreditCardChange.from_dict(response.json())
-
-        return response_200
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[ErrorResultBase]:
     if response.status_code == HTTPStatus.BAD_REQUEST:
         response_400 = ErrorResultBase.from_dict(response.json())
 
@@ -80,13 +71,15 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[CreditCardChange, ErrorResultBase]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[ErrorResultBase]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -98,32 +91,30 @@ def sync_detailed(
     credit_card_id: int,
     *,
     client: AuthenticatedClient,
-    json_body: CreditCardChange,
-) -> Response[Union[CreditCardChange, ErrorResultBase]]:
+    body: CreditCardChange,
+) -> Response[ErrorResultBase]:
     """Update a credit card entity
 
      Update credit card that is identified by the passed address id with the data provided.
 
     Args:
         credit_card_id (int):
-        json_body (CreditCardChange):
+        body (CreditCardChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CreditCardChange, ErrorResultBase]]
+        Response[ErrorResultBase]
     """
 
     kwargs = _get_kwargs(
         credit_card_id=credit_card_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -134,28 +125,28 @@ def sync(
     credit_card_id: int,
     *,
     client: AuthenticatedClient,
-    json_body: CreditCardChange,
-) -> Optional[Union[CreditCardChange, ErrorResultBase]]:
+    body: CreditCardChange,
+) -> Optional[ErrorResultBase]:
     """Update a credit card entity
 
      Update credit card that is identified by the passed address id with the data provided.
 
     Args:
         credit_card_id (int):
-        json_body (CreditCardChange):
+        body (CreditCardChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CreditCardChange, ErrorResultBase]
+        ErrorResultBase
     """
 
     return sync_detailed(
         credit_card_id=credit_card_id,
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -168,32 +159,30 @@ async def asyncio_detailed(
     credit_card_id: int,
     *,
     client: AuthenticatedClient,
-    json_body: CreditCardChange,
-) -> Response[Union[CreditCardChange, ErrorResultBase]]:
+    body: CreditCardChange,
+) -> Response[ErrorResultBase]:
     """Update a credit card entity
 
      Update credit card that is identified by the passed address id with the data provided.
 
     Args:
         credit_card_id (int):
-        json_body (CreditCardChange):
+        body (CreditCardChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CreditCardChange, ErrorResultBase]]
+        Response[ErrorResultBase]
     """
 
     kwargs = _get_kwargs(
         credit_card_id=credit_card_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -202,28 +191,28 @@ async def asyncio(
     credit_card_id: int,
     *,
     client: AuthenticatedClient,
-    json_body: CreditCardChange,
-) -> Optional[Union[CreditCardChange, ErrorResultBase]]:
+    body: CreditCardChange,
+) -> Optional[ErrorResultBase]:
     """Update a credit card entity
 
      Update credit card that is identified by the passed address id with the data provided.
 
     Args:
         credit_card_id (int):
-        json_body (CreditCardChange):
+        body (CreditCardChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CreditCardChange, ErrorResultBase]
+        ErrorResultBase
     """
 
     return (
         await asyncio_detailed(
             credit_card_id=credit_card_id,
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

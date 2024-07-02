@@ -1,7 +1,8 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
@@ -9,30 +10,49 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="PriceSegmentBase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class PriceSegmentBase:
     """
     Attributes:
         price (float): price of the product
         currency (str): currency of the order formatted as <a href='https://en.wikipedia.org/wiki/ISO_4217'
             target='_blank'>ISO 4217, alphabetic code</a>
-        valid_from (datetime.date): date price segment is valid from in full-date notation as defined by <a
+        valid_from (Union[None, datetime.date]): date price segment is valid from in full-date notation as defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
             2017-07-21
+        valid_from_existing_subscription (Union[None, Unset, datetime.date]): date price segment is valid for exisiting
+            subscriptions from in full-date notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6"
+            target="_blank">RFC 3339, section 5.6</a>, for example, 2017-07-21
         world_segment (Union[Unset, bool]): flag indicating if price is valid for the complete world if no other price
             segments are provided - must be set if price country segment id is not provided
     """
 
     price: float
     currency: str
-    valid_from: datetime.date
+    valid_from: Union[None, datetime.date]
+    valid_from_existing_subscription: Union[None, Unset, datetime.date] = UNSET
     world_segment: Union[Unset, bool] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         price = self.price
+
         currency = self.currency
-        valid_from = self.valid_from.isoformat()
+
+        valid_from: Union[None, str]
+        if isinstance(self.valid_from, datetime.date):
+            valid_from = self.valid_from.isoformat()
+        else:
+            valid_from = self.valid_from
+
+        valid_from_existing_subscription: Union[None, Unset, str]
+        if isinstance(self.valid_from_existing_subscription, Unset):
+            valid_from_existing_subscription = UNSET
+        elif isinstance(self.valid_from_existing_subscription, datetime.date):
+            valid_from_existing_subscription = self.valid_from_existing_subscription.isoformat()
+        else:
+            valid_from_existing_subscription = self.valid_from_existing_subscription
+
         world_segment = self.world_segment
 
         field_dict: Dict[str, Any] = {}
@@ -44,6 +64,8 @@ class PriceSegmentBase:
                 "validFrom": valid_from,
             }
         )
+        if valid_from_existing_subscription is not UNSET:
+            field_dict["validFromExistingSubscription"] = valid_from_existing_subscription
         if world_segment is not UNSET:
             field_dict["worldSegment"] = world_segment
 
@@ -56,7 +78,39 @@ class PriceSegmentBase:
 
         currency = d.pop("currency")
 
-        valid_from = isoparse(d.pop("validFrom")).date()
+        def _parse_valid_from(data: object) -> Union[None, datetime.date]:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                valid_from_type_1 = isoparse(data).date()
+
+                return valid_from_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, datetime.date], data)
+
+        valid_from = _parse_valid_from(d.pop("validFrom"))
+
+        def _parse_valid_from_existing_subscription(data: object) -> Union[None, Unset, datetime.date]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                valid_from_existing_subscription_type_1 = isoparse(data).date()
+
+                return valid_from_existing_subscription_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.date], data)
+
+        valid_from_existing_subscription = _parse_valid_from_existing_subscription(
+            d.pop("validFromExistingSubscription", UNSET)
+        )
 
         world_segment = d.pop("worldSegment", UNSET)
 
@@ -64,6 +118,7 @@ class PriceSegmentBase:
             price=price,
             currency=currency,
             valid_from=valid_from,
+            valid_from_existing_subscription=valid_from_existing_subscription,
             world_segment=world_segment,
         )
 

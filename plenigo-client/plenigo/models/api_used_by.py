@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -12,7 +13,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="ApiUsedBy")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ApiUsedBy:
     """
     Attributes:
@@ -24,7 +25,7 @@ class ApiUsedBy:
     voucher_purchases: Union[Unset, List["ApiUsedByOffer"]] = UNSET
     relation_rules: Union[Unset, List["ApiUsedByObject"]] = UNSET
     age_rules: Union[Unset, List["ApiUsedByObject"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         voucher_purchases: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -32,7 +33,6 @@ class ApiUsedBy:
             voucher_purchases = []
             for voucher_purchases_item_data in self.voucher_purchases:
                 voucher_purchases_item = voucher_purchases_item_data.to_dict()
-
                 voucher_purchases.append(voucher_purchases_item)
 
         relation_rules: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -40,7 +40,6 @@ class ApiUsedBy:
             relation_rules = []
             for relation_rules_item_data in self.relation_rules:
                 relation_rules_item = relation_rules_item_data.to_dict()
-
                 relation_rules.append(relation_rules_item)
 
         age_rules: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -48,7 +47,6 @@ class ApiUsedBy:
             age_rules = []
             for age_rules_item_data in self.age_rules:
                 age_rules_item = age_rules_item_data.to_dict()
-
                 age_rules.append(age_rules_item)
 
         field_dict: Dict[str, Any] = {}

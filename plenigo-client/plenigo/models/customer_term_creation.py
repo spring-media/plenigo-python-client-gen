@@ -1,39 +1,41 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.customer_term_translation import CustomerTermTranslation
+    from ..models.api_base_date import ApiBaseDate
 
 
 T = TypeVar("T", bound="CustomerTermCreation")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CustomerTermCreation:
     """
     Attributes:
         internal_title (str): internal title of the term
         unique_id (str): unique id to associate with the user after user has accepted term
-        translations (List['CustomerTermTranslation']): translations associated with this term
+        translations (List['ApiBaseDate']): translations associated with this term
         active (Union[Unset, bool]): flag indicating if term is currently active
     """
 
     internal_title: str
     unique_id: str
-    translations: List["CustomerTermTranslation"]
+    translations: List["ApiBaseDate"]
     active: Union[Unset, bool] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         internal_title = self.internal_title
+
         unique_id = self.unique_id
+
         translations = []
         for translations_item_data in self.translations:
             translations_item = translations_item_data.to_dict()
-
             translations.append(translations_item)
 
         active = self.active
@@ -54,7 +56,7 @@ class CustomerTermCreation:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.customer_term_translation import CustomerTermTranslation
+        from ..models.api_base_date import ApiBaseDate
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -64,7 +66,7 @@ class CustomerTermCreation:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = CustomerTermTranslation.from_dict(translations_item_data)
+            translations_item = ApiBaseDate.from_dict(translations_item_data)
 
             translations.append(translations_item)
 

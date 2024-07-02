@@ -1,8 +1,6 @@
 # plenigo-client
 A client library for accessing plenigo API v3
 
-> This is a read-only folder, please contribute by adding changes to the templates files.
-
 ## Usage
 First, create a client:
 
@@ -27,9 +25,10 @@ from plenigo.models import MyDataModel
 from plenigo.api.my_tag import get_my_data_model
 from plenigo.types import Response
 
-my_data: MyDataModel = get_my_data_model.sync(client=client)
-# or if you need more info (e.g. status_code)
-response: Response[MyDataModel] = get_my_data_model.sync_detailed(client=client)
+with client as client:
+    my_data: MyDataModel = get_my_data_model.sync(client=client)
+    # or if you need more info (e.g. status_code)
+    response: Response[MyDataModel] = get_my_data_model.sync_detailed(client=client)
 ```
 
 Or do the same thing with an async version:
@@ -39,8 +38,9 @@ from plenigo.models import MyDataModel
 from plenigo.api.my_tag import get_my_data_model
 from plenigo.types import Response
 
-my_data: MyDataModel = await get_my_data_model.asyncio(client=client)
-response: Response[MyDataModel] = await get_my_data_model.asyncio_detailed(client=client)
+async with client as client:
+    my_data: MyDataModel = await get_my_data_model.asyncio(client=client)
+    response: Response[MyDataModel] = await get_my_data_model.asyncio_detailed(client=client)
 ```
 
 By default, when you're calling an HTTPS API it will attempt to verify that SSL is working correctly. Using certificate verification is highly recommended most of the time, but sometimes you may need to authenticate to a server (especially an internal server) using a custom certificate bundle.
@@ -76,7 +76,43 @@ Things to know:
 1. If your endpoint had any tags on it, the first tag will be used as a module name for the function (my_tag above)
 1. Any endpoint which did not have a tag will be in `plenigo.api.default`
 
-## Building / publishing this Client
+## Advanced customizations
+
+There are more settings on the generated `Client` class which let you control more runtime behavior, check out the docstring on that class for more info. You can also customize the underlying `httpx.Client` or `httpx.AsyncClient` (depending on your use-case):
+
+```python
+from plenigo import Client
+
+def log_request(request):
+    print(f"Request event hook: {request.method} {request.url} - Waiting for response")
+
+def log_response(response):
+    request = response.request
+    print(f"Response event hook: {request.method} {request.url} - Status {response.status_code}")
+
+client = Client(
+    base_url="https://api.example.com",
+    httpx_args={"event_hooks": {"request": [log_request], "response": [log_response]}},
+)
+
+# Or get the underlying httpx client to modify directly with client.get_httpx_client() or client.get_async_httpx_client()
+```
+
+You can even set the httpx client directly, but beware that this will override any existing settings (e.g., base_url):
+
+```python
+import httpx
+from plenigo import Client
+
+client = Client(
+    base_url="https://api.example.com",
+)
+# Note that base_url needs to be re-set, as would any shared cookies, headers, etc.
+client.set_httpx_client(httpx.Client(base_url="https://api.example.com", proxies="http://localhost:8030"))
+```
+
+
+## Building / publishing this client
 This project uses [Poetry](https://python-poetry.org/) to manage dependencies  and packaging.  Here are the basics:
 1. Update the metadata in pyproject.toml (e.g. authors, version)
 1. If you're using a private repository, configure it with Poetry

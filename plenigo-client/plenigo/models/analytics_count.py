@@ -1,7 +1,8 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
@@ -9,24 +10,28 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="AnalyticsCount")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AnalyticsCount:
     """
     Attributes:
-        time (Union[Unset, datetime.datetime]): time the count is related to with date-time notation as defined by <a
-            href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
-            2017-07-21T17:32:28Z
+        time (Union[None, Unset, datetime.datetime]): time the count is related to with date-time notation as defined by
+            <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 2017-07-21T17:32:28Z
         amount (Union[Unset, int]): amount of elements for the specified time
     """
 
-    time: Union[Unset, datetime.datetime] = UNSET
+    time: Union[None, Unset, datetime.datetime] = UNSET
     amount: Union[Unset, int] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        time: Union[Unset, str] = UNSET
-        if not isinstance(self.time, Unset):
+        time: Union[None, Unset, str]
+        if isinstance(self.time, Unset):
+            time = UNSET
+        elif isinstance(self.time, datetime.datetime):
             time = self.time.isoformat()
+        else:
+            time = self.time
 
         amount = self.amount
 
@@ -43,12 +48,23 @@ class AnalyticsCount:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        _time = d.pop("time", UNSET)
-        time: Union[Unset, datetime.datetime]
-        if isinstance(_time, Unset):
-            time = UNSET
-        else:
-            time = isoparse(_time)
+
+        def _parse_time(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                time_type_1 = isoparse(data)
+
+                return time_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        time = _parse_time(d.pop("time", UNSET))
 
         amount = d.pop("amount", UNSET)
 

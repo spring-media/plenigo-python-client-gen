@@ -1,42 +1,43 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.customer_cancellation_reason_translation import CustomerCancellationReasonTranslation
+    from ..models.api_base_date import ApiBaseDate
 
 
 T = TypeVar("T", bound="CustomerCancellationReasonUpdate")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CustomerCancellationReasonUpdate:
     """
     Attributes:
         internal_title (str): internal title of the cancellation reason
-        translations (List['CustomerCancellationReasonTranslation']): translations associated with this cancellation
-            reason
+        translations (List['ApiBaseDate']): translations associated with this cancellation reason
         active (Union[Unset, bool]): flag indicating if cancellation reason is currently active
         priority (Union[Unset, int]): priority of the cancellation reason
     """
 
     internal_title: str
-    translations: List["CustomerCancellationReasonTranslation"]
+    translations: List["ApiBaseDate"]
     active: Union[Unset, bool] = UNSET
     priority: Union[Unset, int] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         internal_title = self.internal_title
+
         translations = []
         for translations_item_data in self.translations:
             translations_item = translations_item_data.to_dict()
-
             translations.append(translations_item)
 
         active = self.active
+
         priority = self.priority
 
         field_dict: Dict[str, Any] = {}
@@ -56,7 +57,7 @@ class CustomerCancellationReasonUpdate:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.customer_cancellation_reason_translation import CustomerCancellationReasonTranslation
+        from ..models.api_base_date import ApiBaseDate
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -64,7 +65,7 @@ class CustomerCancellationReasonUpdate:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = CustomerCancellationReasonTranslation.from_dict(translations_item_data)
+            translations_item = ApiBaseDate.from_dict(translations_item_data)
 
             translations.append(translations_item)
 

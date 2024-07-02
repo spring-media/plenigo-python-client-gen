@@ -3,6 +3,7 @@ from enum import Enum
 
 class UpdateAddonTrackingDataStatus(str, Enum):
     CANCELLED = "CANCELLED"
+    CONDITIONS_FULFILLED = "CONDITIONS_FULFILLED"
     DELIVERED = "DELIVERED"
     IN_DELIVERY = "IN_DELIVERY"
     OPEN = "OPEN"

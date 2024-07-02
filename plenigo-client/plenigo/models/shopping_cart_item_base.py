@@ -1,19 +1,20 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ShoppingCartItemBase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ShoppingCartItemBase:
     """
     Attributes:
         position (int): item position within the shopping cart or shopping cart group - must start with one and be in
             order
-        option (bool): flag indicating if product is an option - can be booked optionaly and is not automatically part
+        option (bool): flag indicating if product is an option - can be booked optionally and is not automatically part
             of the checkout
         default_selected (bool): flag indicating if product should be selected by default
         offer_id (Union[Unset, int]): id of the offer associated with this shopping cart item
@@ -30,15 +31,21 @@ class ShoppingCartItemBase:
     bonus: Union[Unset, int] = UNSET
     connected_offer_id: Union[Unset, int] = UNSET
     connected_leading_plenigo_offer_id: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         position = self.position
+
         option = self.option
+
         default_selected = self.default_selected
+
         offer_id = self.offer_id
+
         bonus = self.bonus
+
         connected_offer_id = self.connected_offer_id
+
         connected_leading_plenigo_offer_id = self.connected_leading_plenigo_offer_id
 
         field_dict: Dict[str, Any] = {}

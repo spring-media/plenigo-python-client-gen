@@ -7,45 +7,31 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.error_result_base import ErrorResultBase
+from ...models.success_status import SuccessStatus
 from ...types import Response
 
 log = logging.getLogger(__name__)
-
-from typing import Dict
-
-from ...models.error_result_base import ErrorResultBase
-from ...models.success_status import SuccessStatus
 
 
 def _get_kwargs(
     customer_id: str,
     access_right_unique_id: str,
     item_id: str,
-    *,
-    client: AuthenticatedClient,
 ) -> Dict[str, Any]:
-    url = "{}/accessRights/{customerId}/{accessRightUniqueId}/{itemId}/unblock".format(
-        client.api.value, customerId=customer_id, accessRightUniqueId=access_right_unique_id, itemId=item_id
-    )
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "put",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/accessRights/{customer_id}/{access_right_unique_id}/{item_id}/unblock",
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
     if response.status_code == HTTPStatus.ACCEPTED:
         response_202 = SuccessStatus.from_dict(response.json())
 
@@ -80,13 +66,15 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[ErrorResultBase, SuccessStatus]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResultBase, SuccessStatus]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -122,11 +110,9 @@ def sync_detailed(
         customer_id=customer_id,
         access_right_unique_id=access_right_unique_id,
         item_id=item_id,
-        client=client,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -198,11 +184,9 @@ async def asyncio_detailed(
         customer_id=customer_id,
         access_right_unique_id=access_right_unique_id,
         item_id=item_id,
-        client=client,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 

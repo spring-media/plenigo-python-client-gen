@@ -1,18 +1,19 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.product_misuse_rule_creation_duration_timespan import ProductMisuseRuleCreationDurationTimespan
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.misuse_rule_translation import MisuseRuleTranslation
+    from ..models.api_base_date import ApiBaseDate
 
 
 T = TypeVar("T", bound="ProductMisuseRuleCreation")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ProductMisuseRuleCreation:
     """
     Attributes:
@@ -21,9 +22,9 @@ class ProductMisuseRuleCreation:
         description (Union[Unset, str]): Internal description of the misuse rule
         duration (Union[Unset, int]): time duration the customer must wait to be able to buy the offer again - zero
             means forever
-        duration_timespan (Union[Unset, ProductMisuseRuleCreationDurationTimespan]): time span that the duration is
+        duration_timespan (Union[Unset, ProductMisuseRuleCreationDurationTimespan]): timespan that the duration is
             related to
-        translations (Union[Unset, List['MisuseRuleTranslation']]): translations associated with this misuse rule
+        translations (Union[Unset, List['ApiBaseDate']]): translations associated with this misuse rule
     """
 
     internal_title: str
@@ -31,14 +32,18 @@ class ProductMisuseRuleCreation:
     description: Union[Unset, str] = UNSET
     duration: Union[Unset, int] = UNSET
     duration_timespan: Union[Unset, ProductMisuseRuleCreationDurationTimespan] = UNSET
-    translations: Union[Unset, List["MisuseRuleTranslation"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    translations: Union[Unset, List["ApiBaseDate"]] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         internal_title = self.internal_title
+
         alternative_plenigo_offer_id = self.alternative_plenigo_offer_id
+
         description = self.description
+
         duration = self.duration
+
         duration_timespan: Union[Unset, str] = UNSET
         if not isinstance(self.duration_timespan, Unset):
             duration_timespan = self.duration_timespan.value
@@ -48,7 +53,6 @@ class ProductMisuseRuleCreation:
             translations = []
             for translations_item_data in self.translations:
                 translations_item = translations_item_data.to_dict()
-
                 translations.append(translations_item)
 
         field_dict: Dict[str, Any] = {}
@@ -72,7 +76,7 @@ class ProductMisuseRuleCreation:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.misuse_rule_translation import MisuseRuleTranslation
+        from ..models.api_base_date import ApiBaseDate
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -93,7 +97,7 @@ class ProductMisuseRuleCreation:
         translations = []
         _translations = d.pop("translations", UNSET)
         for translations_item_data in _translations or []:
-            translations_item = MisuseRuleTranslation.from_dict(translations_item_data)
+            translations_item = ApiBaseDate.from_dict(translations_item_data)
 
             translations.append(translations_item)
 

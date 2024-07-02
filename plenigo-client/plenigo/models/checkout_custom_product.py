@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.checkout_custom_product_tax_type import CheckoutCustomProductTaxType
 from ..types import UNSET, Unset
@@ -8,12 +9,11 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="CheckoutCustomProduct")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CheckoutCustomProduct:
     """
     Attributes:
         title (str): translated title
-        quantity (int): quantity of purchased entities
         price (float): price of the product
         currency (str): currency of the order formatted as <a href='https://en.wikipedia.org/wiki/ISO_4217'
             target='_blank'>ISO 4217, alphabetic code</a>
@@ -29,10 +29,10 @@ class CheckoutCustomProduct:
         logo_alt_text (Union[Unset, str]): image alt text
         cost_center (Union[Unset, str]): cost center associated with this product at the time of checkout
         discount_percentage (Union[Unset, int]): discount offered to the order
+        shipping_costs (Union[Unset, float]): shipping costs of the product
     """
 
     title: str
-    quantity: int
     price: float
     currency: str
     tax_type: CheckoutCustomProductTaxType
@@ -47,33 +47,47 @@ class CheckoutCustomProduct:
     logo_alt_text: Union[Unset, str] = UNSET
     cost_center: Union[Unset, str] = UNSET
     discount_percentage: Union[Unset, int] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    shipping_costs: Union[Unset, float] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         title = self.title
-        quantity = self.quantity
+
         price = self.price
+
         currency = self.currency
+
         tax_type = self.tax_type.value
 
         access_right_unique_id = self.access_right_unique_id
+
         plenigo_product_id = self.plenigo_product_id
+
         product_id = self.product_id
+
         description = self.description
+
         legal_text = self.legal_text
+
         summary_text = self.summary_text
+
         withdrawal_instruction = self.withdrawal_instruction
+
         logo_url = self.logo_url
+
         logo_alt_text = self.logo_alt_text
+
         cost_center = self.cost_center
+
         discount_percentage = self.discount_percentage
+
+        shipping_costs = self.shipping_costs
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "title": title,
-                "quantity": quantity,
                 "price": price,
                 "currency": currency,
                 "taxType": tax_type,
@@ -100,6 +114,8 @@ class CheckoutCustomProduct:
             field_dict["costCenter"] = cost_center
         if discount_percentage is not UNSET:
             field_dict["discountPercentage"] = discount_percentage
+        if shipping_costs is not UNSET:
+            field_dict["shippingCosts"] = shipping_costs
 
         return field_dict
 
@@ -107,8 +123,6 @@ class CheckoutCustomProduct:
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
         title = d.pop("title")
-
-        quantity = d.pop("quantity")
 
         price = d.pop("price")
 
@@ -138,9 +152,10 @@ class CheckoutCustomProduct:
 
         discount_percentage = d.pop("discountPercentage", UNSET)
 
+        shipping_costs = d.pop("shippingCosts", UNSET)
+
         checkout_custom_product = cls(
             title=title,
-            quantity=quantity,
             price=price,
             currency=currency,
             tax_type=tax_type,
@@ -155,6 +170,7 @@ class CheckoutCustomProduct:
             logo_alt_text=logo_alt_text,
             cost_center=cost_center,
             discount_percentage=discount_percentage,
+            shipping_costs=shipping_costs,
         )
 
         checkout_custom_product.additional_properties = d

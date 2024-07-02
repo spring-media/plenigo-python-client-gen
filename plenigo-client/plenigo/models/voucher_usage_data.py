@@ -1,13 +1,14 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="VoucherUsageData")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class VoucherUsageData:
     """
     Attributes:
@@ -18,10 +19,11 @@ class VoucherUsageData:
 
     purchase_order_id: Union[Unset, int] = UNSET
     purchase_order_item_position: Union[Unset, int] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         purchase_order_id = self.purchase_order_id
+
         purchase_order_item_position = self.purchase_order_item_position
 
         field_dict: Dict[str, Any] = {}

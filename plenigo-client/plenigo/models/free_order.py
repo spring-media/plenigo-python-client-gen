@@ -1,18 +1,19 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.additional_order_data import AdditionalOrderData
+    from ..models.api_base_date import ApiBaseDate
     from ..models.checkout_offer import CheckoutOffer
 
 
 T = TypeVar("T", bound="FreeOrder")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class FreeOrder:
     """
     Attributes:
@@ -23,7 +24,7 @@ class FreeOrder:
             overrules the session
         invoice_address_id (Union[Unset, int]): unique id of the invoice address to use
         delivery_address_id (Union[Unset, int]): unique id of the delivery address to use
-        additional_data (Union[Unset, AdditionalOrderData]):
+        additional_data (Union[Unset, ApiBaseDate]):
     """
 
     customer_id: str
@@ -32,17 +33,22 @@ class FreeOrder:
     customer_session: Union[Unset, str] = UNSET
     invoice_address_id: Union[Unset, int] = UNSET
     delivery_address_id: Union[Unset, int] = UNSET
-    additional_data: Union[Unset, "AdditionalOrderData"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_data: Union[Unset, "ApiBaseDate"] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         customer_id = self.customer_id
+
         customer_ip_address = self.customer_ip_address
+
         offer = self.offer.to_dict()
 
         customer_session = self.customer_session
+
         invoice_address_id = self.invoice_address_id
+
         delivery_address_id = self.delivery_address_id
+
         additional_data: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.additional_data, Unset):
             additional_data = self.additional_data.to_dict()
@@ -69,7 +75,7 @@ class FreeOrder:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.additional_order_data import AdditionalOrderData
+        from ..models.api_base_date import ApiBaseDate
         from ..models.checkout_offer import CheckoutOffer
 
         d = src_dict.copy()
@@ -86,11 +92,11 @@ class FreeOrder:
         delivery_address_id = d.pop("deliveryAddressId", UNSET)
 
         _additional_data = d.pop("additionalData", UNSET)
-        additional_data: Union[Unset, AdditionalOrderData]
+        additional_data: Union[Unset, ApiBaseDate]
         if isinstance(_additional_data, Unset):
             additional_data = UNSET
         else:
-            additional_data = AdditionalOrderData.from_dict(_additional_data)
+            additional_data = ApiBaseDate.from_dict(_additional_data)
 
         free_order = cls(
             customer_id=customer_id,

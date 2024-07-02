@@ -1,18 +1,19 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.credit_wallet_update_credit_validity_timespan import CreditWalletUpdateCreditValidityTimespan
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.credit_wallet_translation import CreditWalletTranslation
+    from ..models.api_base_date import ApiBaseDate
 
 
 T = TypeVar("T", bound="CreditWalletUpdate")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CreditWalletUpdate:
     """
     Attributes:
@@ -22,7 +23,7 @@ class CreditWalletUpdate:
         credit_validity_time (Union[Unset, int]): time credits are invalidated if credit count invalidation is active
         credit_validity_timespan (Union[Unset, CreditWalletUpdateCreditValidityTimespan]): time credit validity timespan
         event_list_id (Union[Unset, int]): id of the associated event list
-        translations (Union[Unset, List['CreditWalletTranslation']]): translations associated with this customer wallet
+        translations (Union[Unset, List['ApiBaseDate']]): translations associated with this customer wallet
     """
 
     internal_title: Union[Unset, str] = UNSET
@@ -30,24 +31,27 @@ class CreditWalletUpdate:
     credit_validity_time: Union[Unset, int] = UNSET
     credit_validity_timespan: Union[Unset, CreditWalletUpdateCreditValidityTimespan] = UNSET
     event_list_id: Union[Unset, int] = UNSET
-    translations: Union[Unset, List["CreditWalletTranslation"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    translations: Union[Unset, List["ApiBaseDate"]] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         internal_title = self.internal_title
+
         credit_count_invalidation = self.credit_count_invalidation
+
         credit_validity_time = self.credit_validity_time
+
         credit_validity_timespan: Union[Unset, str] = UNSET
         if not isinstance(self.credit_validity_timespan, Unset):
             credit_validity_timespan = self.credit_validity_timespan.value
 
         event_list_id = self.event_list_id
+
         translations: Union[Unset, List[Dict[str, Any]]] = UNSET
         if not isinstance(self.translations, Unset):
             translations = []
             for translations_item_data in self.translations:
                 translations_item = translations_item_data.to_dict()
-
                 translations.append(translations_item)
 
         field_dict: Dict[str, Any] = {}
@@ -70,7 +74,7 @@ class CreditWalletUpdate:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.credit_wallet_translation import CreditWalletTranslation
+        from ..models.api_base_date import ApiBaseDate
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle", UNSET)
@@ -91,7 +95,7 @@ class CreditWalletUpdate:
         translations = []
         _translations = d.pop("translations", UNSET)
         for translations_item_data in _translations or []:
-            translations_item = CreditWalletTranslation.from_dict(translations_item_data)
+            translations_item = ApiBaseDate.from_dict(translations_item_data)
 
             translations.append(translations_item)
 

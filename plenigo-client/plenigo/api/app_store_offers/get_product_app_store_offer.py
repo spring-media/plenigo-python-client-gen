@@ -7,47 +7,28 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
 log = logging.getLogger(__name__)
 
-from typing import Dict
-
-from ...models.app_store_offer_update import AppStoreOfferUpdate
-from ...models.error_result_base import ErrorResultBase
-
 
 def _get_kwargs(
     app_store_offer_id: int,
-    *,
-    client: AuthenticatedClient,
 ) -> Dict[str, Any]:
-    url = "{}/products/appStoreOffers/{appStoreOfferId}".format(client.api.value, appStoreOfferId=app_store_offer_id)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/products/appStoreOffers/{app_store_offer_id}",
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[AppStoreOfferUpdate, ErrorResultBase]]:
-    if response.status_code == HTTPStatus.OK:
-        response_200 = AppStoreOfferUpdate.from_dict(response.json())
-
-        return response_200
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[ErrorResultBase]:
     if response.status_code == HTTPStatus.BAD_REQUEST:
         response_400 = ErrorResultBase.from_dict(response.json())
 
@@ -79,14 +60,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[AppStoreOfferUpdate, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[ErrorResultBase]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -98,7 +79,7 @@ def sync_detailed(
     app_store_offer_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[AppStoreOfferUpdate, ErrorResultBase]]:
+) -> Response[ErrorResultBase]:
     """Get
 
      Get app store offer that is identified by the passed app store offer id.
@@ -111,16 +92,14 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AppStoreOfferUpdate, ErrorResultBase]]
+        Response[ErrorResultBase]
     """
 
     kwargs = _get_kwargs(
         app_store_offer_id=app_store_offer_id,
-        client=client,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -131,7 +110,7 @@ def sync(
     app_store_offer_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[AppStoreOfferUpdate, ErrorResultBase]]:
+) -> Optional[ErrorResultBase]:
     """Get
 
      Get app store offer that is identified by the passed app store offer id.
@@ -144,7 +123,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AppStoreOfferUpdate, ErrorResultBase]
+        ErrorResultBase
     """
 
     return sync_detailed(
@@ -162,7 +141,7 @@ async def asyncio_detailed(
     app_store_offer_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[AppStoreOfferUpdate, ErrorResultBase]]:
+) -> Response[ErrorResultBase]:
     """Get
 
      Get app store offer that is identified by the passed app store offer id.
@@ -175,16 +154,14 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AppStoreOfferUpdate, ErrorResultBase]]
+        Response[ErrorResultBase]
     """
 
     kwargs = _get_kwargs(
         app_store_offer_id=app_store_offer_id,
-        client=client,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -193,7 +170,7 @@ async def asyncio(
     app_store_offer_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[AppStoreOfferUpdate, ErrorResultBase]]:
+) -> Optional[ErrorResultBase]:
     """Get
 
      Get app store offer that is identified by the passed app store offer id.
@@ -206,7 +183,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AppStoreOfferUpdate, ErrorResultBase]
+        ErrorResultBase
     """
 
     return (

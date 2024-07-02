@@ -1,7 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
@@ -13,41 +14,52 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="AddonTrackingData")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AddonTrackingData:
     """
     Attributes:
         tracking_id (Union[Unset, str]): tracking id of the transportation service provider
         tracking_url (Union[Unset, str]): tracking url to track delivery
         service_provider (Union[Unset, str]): transportation service provider
-        sending_date (Union[Unset, datetime.datetime]): date the sending was starting with date-time notation as defined
-            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
-            example, 2017-07-21T17:32:28Z
-        arrival_date (Union[Unset, datetime.datetime]): date the delivery arrived with date-time notation as defined by
-            <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
-            example, 2017-07-21T17:32:28Z
+        sending_date (Union[None, Unset, datetime.datetime]): date the sending was starting with date-time notation as
+            defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
+            for example, 2017-07-21T17:32:28Z
+        arrival_date (Union[None, Unset, datetime.datetime]): date the delivery arrived with date-time notation as
+            defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
+            for example, 2017-07-21T17:32:28Z
         additional_data (Union[Unset, AddonTrackingDataAdditionalData]):
     """
 
     tracking_id: Union[Unset, str] = UNSET
     tracking_url: Union[Unset, str] = UNSET
     service_provider: Union[Unset, str] = UNSET
-    sending_date: Union[Unset, datetime.datetime] = UNSET
-    arrival_date: Union[Unset, datetime.datetime] = UNSET
+    sending_date: Union[None, Unset, datetime.datetime] = UNSET
+    arrival_date: Union[None, Unset, datetime.datetime] = UNSET
     additional_data: Union[Unset, "AddonTrackingDataAdditionalData"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         tracking_id = self.tracking_id
-        tracking_url = self.tracking_url
-        service_provider = self.service_provider
-        sending_date: Union[Unset, str] = UNSET
-        if not isinstance(self.sending_date, Unset):
-            sending_date = self.sending_date.isoformat()
 
-        arrival_date: Union[Unset, str] = UNSET
-        if not isinstance(self.arrival_date, Unset):
+        tracking_url = self.tracking_url
+
+        service_provider = self.service_provider
+
+        sending_date: Union[None, Unset, str]
+        if isinstance(self.sending_date, Unset):
+            sending_date = UNSET
+        elif isinstance(self.sending_date, datetime.datetime):
+            sending_date = self.sending_date.isoformat()
+        else:
+            sending_date = self.sending_date
+
+        arrival_date: Union[None, Unset, str]
+        if isinstance(self.arrival_date, Unset):
+            arrival_date = UNSET
+        elif isinstance(self.arrival_date, datetime.datetime):
             arrival_date = self.arrival_date.isoformat()
+        else:
+            arrival_date = self.arrival_date
 
         additional_data: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.additional_data, Unset):
@@ -82,19 +94,39 @@ class AddonTrackingData:
 
         service_provider = d.pop("serviceProvider", UNSET)
 
-        _sending_date = d.pop("sendingDate", UNSET)
-        sending_date: Union[Unset, datetime.datetime]
-        if isinstance(_sending_date, Unset):
-            sending_date = UNSET
-        else:
-            sending_date = isoparse(_sending_date)
+        def _parse_sending_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                sending_date_type_1 = isoparse(data)
 
-        _arrival_date = d.pop("arrivalDate", UNSET)
-        arrival_date: Union[Unset, datetime.datetime]
-        if isinstance(_arrival_date, Unset):
-            arrival_date = UNSET
-        else:
-            arrival_date = isoparse(_arrival_date)
+                return sending_date_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        sending_date = _parse_sending_date(d.pop("sendingDate", UNSET))
+
+        def _parse_arrival_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                arrival_date_type_1 = isoparse(data)
+
+                return arrival_date_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        arrival_date = _parse_arrival_date(d.pop("arrivalDate", UNSET))
 
         _additional_data = d.pop("additionalData", UNSET)
         additional_data: Union[Unset, AddonTrackingDataAdditionalData]

@@ -7,46 +7,41 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import Response
-
-log = logging.getLogger(__name__)
-
-from typing import Dict
-
 from ...models.corporate_account_user_code import CorporateAccountUserCode
 from ...models.error_result_base import ErrorResultBase
 from ...models.success_status import SuccessStatus
+from ...types import Response
+
+log = logging.getLogger(__name__)
 
 
 def _get_kwargs(
     customer_id: str,
     *,
-    client: AuthenticatedClient,
-    json_body: CorporateAccountUserCode,
+    body: CorporateAccountUserCode,
 ) -> Dict[str, Any]:
-    url = "{}/corporateAccounts/{customerId}/code/use".format(client.api.value, customerId=customer_id)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": f"/corporateAccounts/{customer_id}/code/use",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+
+    log.debug(_kwargs)
+
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = SuccessStatus.from_dict(response.json())
 
@@ -81,13 +76,15 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[ErrorResultBase, SuccessStatus]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResultBase, SuccessStatus]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -99,7 +96,7 @@ def sync_detailed(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: CorporateAccountUserCode,
+    body: CorporateAccountUserCode,
 ) -> Response[Union[ErrorResultBase, SuccessStatus]]:
     """Use
 
@@ -107,7 +104,7 @@ def sync_detailed(
 
     Args:
         customer_id (str):
-        json_body (CorporateAccountUserCode):
+        body (CorporateAccountUserCode):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -119,12 +116,10 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -135,7 +130,7 @@ def sync(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: CorporateAccountUserCode,
+    body: CorporateAccountUserCode,
 ) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
     """Use
 
@@ -143,7 +138,7 @@ def sync(
 
     Args:
         customer_id (str):
-        json_body (CorporateAccountUserCode):
+        body (CorporateAccountUserCode):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -156,7 +151,7 @@ def sync(
     return sync_detailed(
         customer_id=customer_id,
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -169,7 +164,7 @@ async def asyncio_detailed(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: CorporateAccountUserCode,
+    body: CorporateAccountUserCode,
 ) -> Response[Union[ErrorResultBase, SuccessStatus]]:
     """Use
 
@@ -177,7 +172,7 @@ async def asyncio_detailed(
 
     Args:
         customer_id (str):
-        json_body (CorporateAccountUserCode):
+        body (CorporateAccountUserCode):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -189,12 +184,10 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -203,7 +196,7 @@ async def asyncio(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: CorporateAccountUserCode,
+    body: CorporateAccountUserCode,
 ) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
     """Use
 
@@ -211,7 +204,7 @@ async def asyncio(
 
     Args:
         customer_id (str):
-        json_body (CorporateAccountUserCode):
+        body (CorporateAccountUserCode):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -225,6 +218,6 @@ async def asyncio(
         await asyncio_detailed(
             customer_id=customer_id,
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

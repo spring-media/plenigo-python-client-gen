@@ -6,7 +6,6 @@ class CorporateAccountUserCreationSalutation(str, Enum):
     MR = "MR"
     MRS = "MRS"
     NONE = "NONE"
-    VALUE_4 = ""
 
     def __str__(self) -> str:
         return str(self.value)
