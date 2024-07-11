@@ -110,16 +110,18 @@ def _build_response(*, client: Union[AuthenticatedClient, Client], response: htt
     )
 
 {% macro success_model(endpoint) %}
-{% for response in endpoint.responses if response.status_code.name == 'OK' %}{{ response.prop.class_info.name }}(items=[]) {% endfor %}
+{% for response in endpoint.responses %}
+{% if response.status_code == 200 %}
+{{ response.prop.class_info.name }}(items=[])
+{% endif %}
+{% endfor %}
 {% endmacro %}
 
 {% if 'search' in endpoint.name %}
 def sync_all(
     {{ arguments(endpoint) | indent(4) }}
 ) -> Optional[{{ return_string }}]:
-
-    # TODO: Fix commented out macro
-    all_results = [] # {{ success_model(endpoint) }} # type: ignore
+    all_results = {{ success_model(endpoint) }} # type: ignore
 
     while True:
         try:
@@ -128,7 +130,7 @@ def sync_all(
             ).parsed
 
             if results and not isinstance(results, ErrorResultBase) and not isinstance(results.items, Unset):
-                all_results.extend(results.items) # type: ignore
+                all_results.items.extend(results.items) # type: ignore
 
                 cursor = results.additional_properties.get("startingAfterId")
 
