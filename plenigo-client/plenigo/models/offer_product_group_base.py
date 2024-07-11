@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 if TYPE_CHECKING:
     from ..models.offer_translation import OfferTranslation
@@ -9,7 +10,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="OfferProductGroupBase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class OfferProductGroupBase:
     """
     Attributes:
@@ -19,14 +20,14 @@ class OfferProductGroupBase:
 
     internal_title: str
     translations: List["OfferTranslation"]
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         internal_title = self.internal_title
+
         translations = []
         for translations_item_data in self.translations:
             translations_item = translations_item_data.to_dict()
-
             translations.append(translations_item)
 
         field_dict: Dict[str, Any] = {}

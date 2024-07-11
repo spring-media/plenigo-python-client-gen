@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="CheckoutOffer")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CheckoutOffer:
     """
     Attributes:
@@ -40,18 +41,22 @@ class CheckoutOffer:
     withdrawal_instruction: Union[Unset, str] = UNSET
     logo_url: Union[Unset, str] = UNSET
     logo_alt_text: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         plenigo_offer_id = self.plenigo_offer_id
+
         quantity = self.quantity
+
         title = self.title
+
         legal_text = self.legal_text
+
         summary_text = self.summary_text
+
         products = []
         for products_item_data in self.products:
             products_item = products_item_data.to_dict()
-
             products.append(products_item)
 
         plenigo_bonus_ids: Union[Unset, List[str]] = UNSET
@@ -59,8 +64,11 @@ class CheckoutOffer:
             plenigo_bonus_ids = self.plenigo_bonus_ids
 
         description = self.description
+
         withdrawal_instruction = self.withdrawal_instruction
+
         logo_url = self.logo_url
+
         logo_alt_text = self.logo_alt_text
 
         field_dict: Dict[str, Any] = {}

@@ -1,9 +1,12 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
+from ..models.api_base_changed_by_type import ApiBaseChangedByType
+from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -14,17 +17,22 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="GooglePlayStorePurchase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class GooglePlayStorePurchase:
     """
     Attributes:
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        created_by (Union[Unset, str]): ID of who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
+        changed_by (Union[Unset, str]): ID of who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
         google_play_store_purchase_id (Union[Unset, int]): unique id of the purchase
-        changed_date (Union[Unset, datetime.datetime]): date time the purchase was changed with date-time notation as
-            defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
-            for example, 2017-07-21T17:32:28Z
-        purchase_date (Union[Unset, datetime.datetime]): date time the purchase was done with date-time notation as
-            defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
-            for example, 2017-07-21T17:32:28Z
+        purchase_date (Union[None, Unset, datetime.datetime]): date time the purchase was done with date-time notation
+            as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section
+            5.6</a>, for example, 2017-07-21T17:32:28Z
         token (Union[Unset, str]): token for the purchase
         package_name (Union[Unset, str]): package name of the application the inapp product was sold in
         product_id (Union[Unset, str]): inapp product SKU (for example, 'com.some.thing.inapp1')
@@ -36,9 +44,14 @@ class GooglePlayStorePurchase:
         product_purchase (Union[Unset, GooglePlayProductPurchase]):
     """
 
+    created_date: Union[None, Unset, datetime.datetime] = UNSET
+    changed_date: Union[None, Unset, datetime.datetime] = UNSET
+    created_by: Union[Unset, str] = UNSET
+    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
+    changed_by: Union[Unset, str] = UNSET
+    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
     google_play_store_purchase_id: Union[Unset, int] = UNSET
-    changed_date: Union[Unset, datetime.datetime] = UNSET
-    purchase_date: Union[Unset, datetime.datetime] = UNSET
+    purchase_date: Union[None, Unset, datetime.datetime] = UNSET
     token: Union[Unset, str] = UNSET
     package_name: Union[Unset, str] = UNSET
     product_id: Union[Unset, str] = UNSET
@@ -48,25 +61,61 @@ class GooglePlayStorePurchase:
     app_store_order_id: Union[Unset, int] = UNSET
     subscription_purchase: Union[Unset, "GooglePlaySubscriptionPurchase"] = UNSET
     product_purchase: Union[Unset, "GooglePlayProductPurchase"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        google_play_store_purchase_id = self.google_play_store_purchase_id
-        changed_date: Union[Unset, str] = UNSET
-        if not isinstance(self.changed_date, Unset):
-            changed_date = self.changed_date.isoformat()
+        created_date: Union[None, Unset, str]
+        if isinstance(self.created_date, Unset):
+            created_date = UNSET
+        elif isinstance(self.created_date, datetime.datetime):
+            created_date = self.created_date.isoformat()
+        else:
+            created_date = self.created_date
 
-        purchase_date: Union[Unset, str] = UNSET
-        if not isinstance(self.purchase_date, Unset):
+        changed_date: Union[None, Unset, str]
+        if isinstance(self.changed_date, Unset):
+            changed_date = UNSET
+        elif isinstance(self.changed_date, datetime.datetime):
+            changed_date = self.changed_date.isoformat()
+        else:
+            changed_date = self.changed_date
+
+        created_by = self.created_by
+
+        created_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.created_by_type, Unset):
+            created_by_type = self.created_by_type.value
+
+        changed_by = self.changed_by
+
+        changed_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.changed_by_type, Unset):
+            changed_by_type = self.changed_by_type.value
+
+        google_play_store_purchase_id = self.google_play_store_purchase_id
+
+        purchase_date: Union[None, Unset, str]
+        if isinstance(self.purchase_date, Unset):
+            purchase_date = UNSET
+        elif isinstance(self.purchase_date, datetime.datetime):
             purchase_date = self.purchase_date.isoformat()
+        else:
+            purchase_date = self.purchase_date
 
         token = self.token
+
         package_name = self.package_name
+
         product_id = self.product_id
+
         valid = self.valid
+
         subscription = self.subscription
+
         purchase_token = self.purchase_token
+
         app_store_order_id = self.app_store_order_id
+
         subscription_purchase: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.subscription_purchase, Unset):
             subscription_purchase = self.subscription_purchase.to_dict()
@@ -78,10 +127,20 @@ class GooglePlayStorePurchase:
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if google_play_store_purchase_id is not UNSET:
-            field_dict["googlePlayStorePurchaseId"] = google_play_store_purchase_id
+        if created_date is not UNSET:
+            field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
             field_dict["changedDate"] = changed_date
+        if created_by is not UNSET:
+            field_dict["createdBy"] = created_by
+        if created_by_type is not UNSET:
+            field_dict["createdByType"] = created_by_type
+        if changed_by is not UNSET:
+            field_dict["changedBy"] = changed_by
+        if changed_by_type is not UNSET:
+            field_dict["changedByType"] = changed_by_type
+        if google_play_store_purchase_id is not UNSET:
+            field_dict["googlePlayStorePurchaseId"] = google_play_store_purchase_id
         if purchase_date is not UNSET:
             field_dict["purchaseDate"] = purchase_date
         if token is not UNSET:
@@ -111,21 +170,77 @@ class GooglePlayStorePurchase:
         from ..models.google_play_subscription_purchase import GooglePlaySubscriptionPurchase
 
         d = src_dict.copy()
+
+        def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                created_date_type_0 = isoparse(data)
+
+                return created_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        created_date = _parse_created_date(d.pop("createdDate", UNSET))
+
+        def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                changed_date_type_0 = isoparse(data)
+
+                return changed_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
+
+        created_by = d.pop("createdBy", UNSET)
+
+        _created_by_type = d.pop("createdByType", UNSET)
+        created_by_type: Union[Unset, ApiBaseCreatedByType]
+        if isinstance(_created_by_type, Unset):
+            created_by_type = UNSET
+        else:
+            created_by_type = ApiBaseCreatedByType(_created_by_type)
+
+        changed_by = d.pop("changedBy", UNSET)
+
+        _changed_by_type = d.pop("changedByType", UNSET)
+        changed_by_type: Union[Unset, ApiBaseChangedByType]
+        if isinstance(_changed_by_type, Unset):
+            changed_by_type = UNSET
+        else:
+            changed_by_type = ApiBaseChangedByType(_changed_by_type)
+
         google_play_store_purchase_id = d.pop("googlePlayStorePurchaseId", UNSET)
 
-        _changed_date = d.pop("changedDate", UNSET)
-        changed_date: Union[Unset, datetime.datetime]
-        if isinstance(_changed_date, Unset):
-            changed_date = UNSET
-        else:
-            changed_date = isoparse(_changed_date)
+        def _parse_purchase_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                purchase_date_type_0 = isoparse(data)
 
-        _purchase_date = d.pop("purchaseDate", UNSET)
-        purchase_date: Union[Unset, datetime.datetime]
-        if isinstance(_purchase_date, Unset):
-            purchase_date = UNSET
-        else:
-            purchase_date = isoparse(_purchase_date)
+                return purchase_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        purchase_date = _parse_purchase_date(d.pop("purchaseDate", UNSET))
 
         token = d.pop("token", UNSET)
 
@@ -156,8 +271,13 @@ class GooglePlayStorePurchase:
             product_purchase = GooglePlayProductPurchase.from_dict(_product_purchase)
 
         google_play_store_purchase = cls(
-            google_play_store_purchase_id=google_play_store_purchase_id,
+            created_date=created_date,
             changed_date=changed_date,
+            created_by=created_by,
+            created_by_type=created_by_type,
+            changed_by=changed_by,
+            changed_by_type=changed_by_type,
+            google_play_store_purchase_id=google_play_store_purchase_id,
             purchase_date=purchase_date,
             token=token,
             package_name=package_name,

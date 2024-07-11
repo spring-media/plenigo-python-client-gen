@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="LedgerCreation")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class LedgerCreation:
     """
     Attributes:
@@ -72,35 +73,61 @@ class LedgerCreation:
     b_2_b_credit_loss_account: Union[Unset, str] = UNSET
     b_2_b_sales_tax: Union[Unset, str] = UNSET
     custom_accountings: Union[Unset, "LedgerCreationCustomAccountings"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         title = self.title
+
         description = self.description
+
         delivery_commitment_account = self.delivery_commitment_account
+
         voucher_delivery_commitment_account = self.voucher_delivery_commitment_account
+
         revenue_account = self.revenue_account
+
         bank_account_amazon_pay = self.bank_account_amazon_pay
+
         bank_account_apple_pay = self.bank_account_apple_pay
+
         bank_account_billing = self.bank_account_billing
+
         bank_account_credit_card = self.bank_account_credit_card
+
         bank_account_google_pay = self.bank_account_google_pay
+
         bank_account_pay_pal = self.bank_account_pay_pal
+
         bank_account_sepa = self.bank_account_sepa
+
         credit_loss_account = self.credit_loss_account
+
         sales_tax = self.sales_tax
+
         b_2_b_delivery_commitment_account = self.b_2_b_delivery_commitment_account
+
         b_2_b_voucher_delivery_commitment_account = self.b_2_b_voucher_delivery_commitment_account
+
         b_2_b_revenue_account = self.b_2_b_revenue_account
+
         b_2_b_bank_account_amazon_pay = self.b_2_b_bank_account_amazon_pay
+
         b_2_b_bank_account_apple_pay = self.b_2_b_bank_account_apple_pay
+
         b_2_b_bank_account_billing = self.b_2_b_bank_account_billing
+
         b_2_b_bank_account_credit_card = self.b_2_b_bank_account_credit_card
+
         b_2_b_bank_account_google_pay = self.b_2_b_bank_account_google_pay
+
         b_2_b_bank_account_pay_pal = self.b_2_b_bank_account_pay_pal
+
         b_2_b_bank_account_sepa = self.b_2_b_bank_account_sepa
+
         b_2_b_credit_loss_account = self.b_2_b_credit_loss_account
+
         b_2_b_sales_tax = self.b_2_b_sales_tax
+
         custom_accountings: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.custom_accountings, Unset):
             custom_accountings = self.custom_accountings.to_dict()

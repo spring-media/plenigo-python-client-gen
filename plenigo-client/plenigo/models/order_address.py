@@ -1,6 +1,9 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+import datetime
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.order_address_salutation import OrderAddressSalutation
 from ..types import UNSET, Unset
@@ -8,10 +11,14 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="OrderAddress")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class OrderAddress:
     """
     Attributes:
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
         business_address (Union[Unset, bool]): flag indicating if address represents a private or a business address
         salutation (Union[Unset, OrderAddressSalutation]): salutation to identify the correct designation of a customer
         title (Union[Unset, str]): title of the order
@@ -34,6 +41,8 @@ class OrderAddress:
             href="https://en.wikipedia.org/wiki/E.164" target="_blank">E.164</a>
     """
 
+    created_date: Union[None, Unset, datetime.datetime] = UNSET
+    changed_date: Union[None, Unset, datetime.datetime] = UNSET
     business_address: Union[Unset, bool] = UNSET
     salutation: Union[Unset, OrderAddressSalutation] = UNSET
     title: Union[Unset, str] = UNSET
@@ -51,33 +60,68 @@ class OrderAddress:
     country: Union[Unset, str] = UNSET
     vat_number: Union[Unset, str] = UNSET
     phone_number: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        created_date: Union[None, Unset, str]
+        if isinstance(self.created_date, Unset):
+            created_date = UNSET
+        elif isinstance(self.created_date, datetime.datetime):
+            created_date = self.created_date.isoformat()
+        else:
+            created_date = self.created_date
+
+        changed_date: Union[None, Unset, str]
+        if isinstance(self.changed_date, Unset):
+            changed_date = UNSET
+        elif isinstance(self.changed_date, datetime.datetime):
+            changed_date = self.changed_date.isoformat()
+        else:
+            changed_date = self.changed_date
+
         business_address = self.business_address
+
         salutation: Union[Unset, str] = UNSET
         if not isinstance(self.salutation, Unset):
             salutation = self.salutation.value
 
         title = self.title
+
         first_name = self.first_name
+
         last_name = self.last_name
+
         company_name = self.company_name
+
         additional_company_info = self.additional_company_info
+
         street = self.street
+
         street_number = self.street_number
+
         additional_street_info = self.additional_street_info
+
         postbox = self.postbox
+
         postcode = self.postcode
+
         city = self.city
+
         state = self.state
+
         country = self.country
+
         vat_number = self.vat_number
+
         phone_number = self.phone_number
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if created_date is not UNSET:
+            field_dict["createdDate"] = created_date
+        if changed_date is not UNSET:
+            field_dict["changedDate"] = changed_date
         if business_address is not UNSET:
             field_dict["businessAddress"] = business_address
         if salutation is not UNSET:
@@ -118,6 +162,41 @@ class OrderAddress:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+
+        def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                created_date_type_0 = isoparse(data)
+
+                return created_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        created_date = _parse_created_date(d.pop("createdDate", UNSET))
+
+        def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                changed_date_type_0 = isoparse(data)
+
+                return changed_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
+
         business_address = d.pop("businessAddress", UNSET)
 
         _salutation = d.pop("salutation", UNSET)
@@ -158,6 +237,8 @@ class OrderAddress:
         phone_number = d.pop("phoneNumber", UNSET)
 
         order_address = cls(
+            created_date=created_date,
+            changed_date=changed_date,
             business_address=business_address,
             salutation=salutation,
             title=title,

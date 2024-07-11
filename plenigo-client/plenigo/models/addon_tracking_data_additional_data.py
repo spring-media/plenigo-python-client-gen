@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 if TYPE_CHECKING:
     from ..models.addon_tracking_data_additional_data_additional_property import (
@@ -11,22 +12,18 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="AddonTrackingDataAdditionalData")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AddonTrackingDataAdditionalData:
     """ """
 
-    additional_properties: Dict[str, "AddonTrackingDataAdditionalDataAdditionalProperty"] = attr.ib(
+    additional_properties: Dict[str, "AddonTrackingDataAdditionalDataAdditionalProperty"] = _attrs_field(
         init=False, factory=dict
     )
 
     def to_dict(self) -> Dict[str, Any]:
-        pass
-
         field_dict: Dict[str, Any] = {}
         for prop_name, prop in self.additional_properties.items():
             field_dict[prop_name] = prop.to_dict()
-
-        field_dict.update({})
 
         return field_dict
 

@@ -1,13 +1,14 @@
 from typing import Any, Dict, List, Type, TypeVar
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.corporate_account_user_creation_salutation import CorporateAccountUserCreationSalutation
 
 T = TypeVar("T", bound="CorporateAccountUserCreation")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CorporateAccountUserCreation:
     """
     Attributes:
@@ -22,13 +23,15 @@ class CorporateAccountUserCreation:
     salutation: CorporateAccountUserCreationSalutation
     first_name: str
     last_name: str
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         email = self.email
+
         salutation = self.salutation.value
 
         first_name = self.first_name
+
         last_name = self.last_name
 
         field_dict: Dict[str, Any] = {}

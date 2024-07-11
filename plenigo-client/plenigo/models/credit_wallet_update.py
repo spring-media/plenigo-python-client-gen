@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.credit_wallet_update_credit_validity_timespan import CreditWalletUpdateCreditValidityTimespan
 from ..types import UNSET, Unset
@@ -12,7 +13,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="CreditWalletUpdate")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CreditWalletUpdate:
     """
     Attributes:
@@ -31,23 +32,26 @@ class CreditWalletUpdate:
     credit_validity_timespan: Union[Unset, CreditWalletUpdateCreditValidityTimespan] = UNSET
     event_list_id: Union[Unset, int] = UNSET
     translations: Union[Unset, List["CreditWalletTranslation"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         internal_title = self.internal_title
+
         credit_count_invalidation = self.credit_count_invalidation
+
         credit_validity_time = self.credit_validity_time
+
         credit_validity_timespan: Union[Unset, str] = UNSET
         if not isinstance(self.credit_validity_timespan, Unset):
             credit_validity_timespan = self.credit_validity_timespan.value
 
         event_list_id = self.event_list_id
+
         translations: Union[Unset, List[Dict[str, Any]]] = UNSET
         if not isinstance(self.translations, Unset):
             translations = []
             for translations_item_data in self.translations:
                 translations_item = translations_item_data.to_dict()
-
                 translations.append(translations_item)
 
         field_dict: Dict[str, Any] = {}

@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -12,7 +13,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="FreeOrder")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class FreeOrder:
     """
     Attributes:
@@ -33,16 +34,21 @@ class FreeOrder:
     invoice_address_id: Union[Unset, int] = UNSET
     delivery_address_id: Union[Unset, int] = UNSET
     additional_data: Union[Unset, "AdditionalOrderData"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         customer_id = self.customer_id
+
         customer_ip_address = self.customer_ip_address
+
         offer = self.offer.to_dict()
 
         customer_session = self.customer_session
+
         invoice_address_id = self.invoice_address_id
+
         delivery_address_id = self.delivery_address_id
+
         additional_data: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.additional_data, Unset):
             additional_data = self.additional_data.to_dict()

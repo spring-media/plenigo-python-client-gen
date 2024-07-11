@@ -9,51 +9,38 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...types import UNSET, Response
 
-log = logging.getLogger(__name__)
-
-from typing import Dict, Optional, Union, cast
+logger = logging.getLogger(__name__)
 
 from ...models.error_result_base import ErrorResultBase
 from ...models.success_status import SuccessStatus
-from ...types import UNSET, Unset
+from ...types import Unset
 
 
 def _get_kwargs(
     invoice_id: int,
     *,
-    client: AuthenticatedClient,
-    suppress_customer_mail: Union[Unset, None, bool] = UNSET,
-    suppress_refund: Union[Unset, None, bool] = UNSET,
+    suppress_customer_mail: Union[Unset, bool] = UNSET,
+    suppress_refund: Union[Unset, bool] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/invoices/{invoiceId}/cancel".format(client.api.value, invoiceId=invoice_id)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["suppressCustomerMail"] = suppress_customer_mail
 
     params["suppressRefund"] = suppress_refund
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "put",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/invoices/{invoice_id}/cancel",
         "params": params,
     }
 
-    log.debug(kwargs)
-
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Optional[Union[Any, ErrorResultBase, SuccessStatus]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = SuccessStatus.from_dict(response.json())
@@ -78,10 +65,8 @@ def _parse_response(
         response_500 = ErrorResultBase.from_dict(response.json())
 
         return response_500
-
     if (response.status_code == HTTPStatus.BAD_GATEWAY) or (response.status_code == HTTPStatus.GATEWAY_TIMEOUT):
         raise errors.RetryableError
-
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -89,14 +74,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Response[Union[Any, ErrorResultBase, SuccessStatus]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -108,8 +93,8 @@ def sync_detailed(
     invoice_id: int,
     *,
     client: AuthenticatedClient,
-    suppress_customer_mail: Union[Unset, None, bool] = UNSET,
-    suppress_refund: Union[Unset, None, bool] = UNSET,
+    suppress_customer_mail: Union[Unset, bool] = UNSET,
+    suppress_refund: Union[Unset, bool] = UNSET,
 ) -> Response[Union[Any, ErrorResultBase, SuccessStatus]]:
     """Cancel invoice
 
@@ -117,8 +102,8 @@ def sync_detailed(
 
     Args:
         invoice_id (int):
-        suppress_customer_mail (Union[Unset, None, bool]):
-        suppress_refund (Union[Unset, None, bool]):
+        suppress_customer_mail (Union[Unset, bool]):
+        suppress_refund (Union[Unset, bool]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -130,13 +115,11 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         invoice_id=invoice_id,
-        client=client,
         suppress_customer_mail=suppress_customer_mail,
         suppress_refund=suppress_refund,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -147,8 +130,8 @@ def sync(
     invoice_id: int,
     *,
     client: AuthenticatedClient,
-    suppress_customer_mail: Union[Unset, None, bool] = UNSET,
-    suppress_refund: Union[Unset, None, bool] = UNSET,
+    suppress_customer_mail: Union[Unset, bool] = UNSET,
+    suppress_refund: Union[Unset, bool] = UNSET,
 ) -> Optional[Union[Any, ErrorResultBase, SuccessStatus]]:
     """Cancel invoice
 
@@ -156,8 +139,8 @@ def sync(
 
     Args:
         invoice_id (int):
-        suppress_customer_mail (Union[Unset, None, bool]):
-        suppress_refund (Union[Unset, None, bool]):
+        suppress_customer_mail (Union[Unset, bool]):
+        suppress_refund (Union[Unset, bool]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -184,8 +167,8 @@ async def asyncio_detailed(
     invoice_id: int,
     *,
     client: AuthenticatedClient,
-    suppress_customer_mail: Union[Unset, None, bool] = UNSET,
-    suppress_refund: Union[Unset, None, bool] = UNSET,
+    suppress_customer_mail: Union[Unset, bool] = UNSET,
+    suppress_refund: Union[Unset, bool] = UNSET,
 ) -> Response[Union[Any, ErrorResultBase, SuccessStatus]]:
     """Cancel invoice
 
@@ -193,8 +176,8 @@ async def asyncio_detailed(
 
     Args:
         invoice_id (int):
-        suppress_customer_mail (Union[Unset, None, bool]):
-        suppress_refund (Union[Unset, None, bool]):
+        suppress_customer_mail (Union[Unset, bool]):
+        suppress_refund (Union[Unset, bool]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -206,13 +189,11 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         invoice_id=invoice_id,
-        client=client,
         suppress_customer_mail=suppress_customer_mail,
         suppress_refund=suppress_refund,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -221,8 +202,8 @@ async def asyncio(
     invoice_id: int,
     *,
     client: AuthenticatedClient,
-    suppress_customer_mail: Union[Unset, None, bool] = UNSET,
-    suppress_refund: Union[Unset, None, bool] = UNSET,
+    suppress_customer_mail: Union[Unset, bool] = UNSET,
+    suppress_refund: Union[Unset, bool] = UNSET,
 ) -> Optional[Union[Any, ErrorResultBase, SuccessStatus]]:
     """Cancel invoice
 
@@ -230,8 +211,8 @@ async def asyncio(
 
     Args:
         invoice_id (int):
-        suppress_customer_mail (Union[Unset, None, bool]):
-        suppress_refund (Union[Unset, None, bool]):
+        suppress_customer_mail (Union[Unset, bool]):
+        suppress_refund (Union[Unset, bool]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

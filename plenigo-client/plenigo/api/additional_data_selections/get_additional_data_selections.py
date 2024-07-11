@@ -9,46 +9,31 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...types import Response
 
-log = logging.getLogger(__name__)
-
-from typing import Dict
+logger = logging.getLogger(__name__)
 
 from ...models.additional_data_selection_list import AdditionalDataSelectionList
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 
 
-def _get_kwargs(
-    *,
-    client: AuthenticatedClient,
-) -> Dict[str, Any]:
-    url = "{}/settings/additionalDataSelections".format(client.api.value)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    kwargs = {
+def _get_kwargs() -> Dict[str, Any]:
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": "/settings/additionalDataSelections",
     }
 
-    log.debug(kwargs)
-
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[AdditionalDataSelectionList, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = AdditionalDataSelectionList.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -63,10 +48,8 @@ def _parse_response(
         response_500 = ErrorResultBase.from_dict(response.json())
 
         return response_500
-
     if (response.status_code == HTTPStatus.BAD_GATEWAY) or (response.status_code == HTTPStatus.GATEWAY_TIMEOUT):
         raise errors.RetryableError
-
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -74,14 +57,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[AdditionalDataSelectionList, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -92,7 +75,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[AdditionalDataSelectionList, ErrorResultBase]]:
+) -> Response[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]:
     """Get additional data selections
 
      Returns additional data selections.
@@ -102,15 +85,12 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AdditionalDataSelectionList, ErrorResultBase]]
+        Response[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]
     """
 
-    kwargs = _get_kwargs(
-        client=client,
-    )
+    kwargs = _get_kwargs()
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -120,7 +100,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[AdditionalDataSelectionList, ErrorResultBase]]:
+) -> Optional[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]:
     """Get additional data selections
 
      Returns additional data selections.
@@ -130,7 +110,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AdditionalDataSelectionList, ErrorResultBase]
+        Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -146,7 +126,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[AdditionalDataSelectionList, ErrorResultBase]]:
+) -> Response[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]:
     """Get additional data selections
 
      Returns additional data selections.
@@ -156,15 +136,12 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AdditionalDataSelectionList, ErrorResultBase]]
+        Response[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]
     """
 
-    kwargs = _get_kwargs(
-        client=client,
-    )
+    kwargs = _get_kwargs()
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -172,7 +149,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[AdditionalDataSelectionList, ErrorResultBase]]:
+) -> Optional[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]:
     """Get additional data selections
 
      Returns additional data selections.
@@ -182,7 +159,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AdditionalDataSelectionList, ErrorResultBase]
+        Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]
     """
 
     return (

@@ -1,6 +1,9 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+import datetime
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.shopping_cart_translation_image_image_type import ShoppingCartTranslationImageImageType
 from ..types import UNSET, Unset
@@ -8,7 +11,7 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="ShoppingCartTranslationImage")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ShoppingCartTranslationImage:
     """
     Attributes:
@@ -16,20 +19,44 @@ class ShoppingCartTranslationImage:
             per translation
         name (str): name of the image
         url (str): url to get image from
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
         alt_text (Union[Unset, str]): image alt text
     """
 
     image_type: ShoppingCartTranslationImageImageType
     name: str
     url: str
+    created_date: Union[None, Unset, datetime.datetime] = UNSET
+    changed_date: Union[None, Unset, datetime.datetime] = UNSET
     alt_text: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         image_type = self.image_type.value
 
         name = self.name
+
         url = self.url
+
+        created_date: Union[None, Unset, str]
+        if isinstance(self.created_date, Unset):
+            created_date = UNSET
+        elif isinstance(self.created_date, datetime.datetime):
+            created_date = self.created_date.isoformat()
+        else:
+            created_date = self.created_date
+
+        changed_date: Union[None, Unset, str]
+        if isinstance(self.changed_date, Unset):
+            changed_date = UNSET
+        elif isinstance(self.changed_date, datetime.datetime):
+            changed_date = self.changed_date.isoformat()
+        else:
+            changed_date = self.changed_date
+
         alt_text = self.alt_text
 
         field_dict: Dict[str, Any] = {}
@@ -41,6 +68,10 @@ class ShoppingCartTranslationImage:
                 "url": url,
             }
         )
+        if created_date is not UNSET:
+            field_dict["createdDate"] = created_date
+        if changed_date is not UNSET:
+            field_dict["changedDate"] = changed_date
         if alt_text is not UNSET:
             field_dict["altText"] = alt_text
 
@@ -55,12 +86,48 @@ class ShoppingCartTranslationImage:
 
         url = d.pop("url")
 
+        def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                created_date_type_0 = isoparse(data)
+
+                return created_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        created_date = _parse_created_date(d.pop("createdDate", UNSET))
+
+        def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                changed_date_type_0 = isoparse(data)
+
+                return changed_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
+
         alt_text = d.pop("altText", UNSET)
 
         shopping_cart_translation_image = cls(
             image_type=image_type,
             name=name,
             url=url,
+            created_date=created_date,
+            changed_date=changed_date,
             alt_text=alt_text,
         )
 

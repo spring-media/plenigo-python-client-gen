@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="AccessRightDataGranted")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AccessRightDataGranted:
     """
     Attributes:
@@ -25,18 +26,20 @@ class AccessRightDataGranted:
     customer_blocked: Union[Unset, bool] = UNSET
     access_granted: Union[Unset, bool] = UNSET
     items: Union[Unset, List["AccessRightItemDataGranted"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         customer_id = self.customer_id
+
         customer_blocked = self.customer_blocked
+
         access_granted = self.access_granted
+
         items: Union[Unset, List[Dict[str, Any]]] = UNSET
         if not isinstance(self.items, Unset):
             items = []
             for items_item_data in self.items:
                 items_item = items_item_data.to_dict()
-
                 items.append(items_item)
 
         field_dict: Dict[str, Any] = {}

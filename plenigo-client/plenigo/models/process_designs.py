@@ -1,13 +1,14 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ProcessDesigns")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ProcessDesigns:
     """
     Attributes:
@@ -31,17 +32,25 @@ class ProcessDesigns:
     link_color: Union[Unset, str] = UNSET
     checkout_css: Union[Unset, str] = UNSET
     checkout_java_script: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         checkout_logo = self.checkout_logo
+
         background_color = self.background_color
+
         first_color = self.first_color
+
         second_color = self.second_color
+
         font = self.font
+
         font_color = self.font_color
+
         link_color = self.link_color
+
         checkout_css = self.checkout_css
+
         checkout_java_script = self.checkout_java_script
 
         field_dict: Dict[str, Any] = {}

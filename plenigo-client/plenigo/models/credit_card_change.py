@@ -1,7 +1,8 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..models.credit_card_change_card_type import CreditCardChangeCardType
@@ -10,14 +11,14 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="CreditCardChange")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CreditCardChange:
     """
     Attributes:
         owner (str): name on credit card
         provider_token (str): unique credit card token provided by the payment service provider to identify credit card
         obfuscated_number (str): obfuscated credit card number
-        valid_to (datetime.date): date the credit card is valid to with full-date notation as defined by <a
+        valid_to (Union[None, datetime.date]): date the credit card is valid to with full-date notation as defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
             2017-07-01 - must be in the future
         card_type (Union[Unset, CreditCardChangeCardType]): type of the credit card provided
@@ -29,22 +30,31 @@ class CreditCardChange:
     owner: str
     provider_token: str
     obfuscated_number: str
-    valid_to: datetime.date
+    valid_to: Union[None, datetime.date]
     card_type: Union[Unset, CreditCardChangeCardType] = UNSET
     preferred: Union[Unset, bool] = UNSET
     invalid: Union[Unset, bool] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         owner = self.owner
+
         provider_token = self.provider_token
+
         obfuscated_number = self.obfuscated_number
-        valid_to = self.valid_to.isoformat()
+
+        valid_to: Union[None, str]
+        if isinstance(self.valid_to, datetime.date):
+            valid_to = self.valid_to.isoformat()
+        else:
+            valid_to = self.valid_to
+
         card_type: Union[Unset, str] = UNSET
         if not isinstance(self.card_type, Unset):
             card_type = self.card_type.value
 
         preferred = self.preferred
+
         invalid = self.invalid
 
         field_dict: Dict[str, Any] = {}
@@ -75,7 +85,20 @@ class CreditCardChange:
 
         obfuscated_number = d.pop("obfuscatedNumber")
 
-        valid_to = isoparse(d.pop("validTo")).date()
+        def _parse_valid_to(data: object) -> Union[None, datetime.date]:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                valid_to_type_0 = isoparse(data).date()
+
+                return valid_to_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, datetime.date], data)
+
+        valid_to = _parse_valid_to(d.pop("validTo"))
 
         _card_type = d.pop("cardType", UNSET)
         card_type: Union[Unset, CreditCardChangeCardType]

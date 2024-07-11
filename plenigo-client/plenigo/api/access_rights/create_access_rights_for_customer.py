@@ -9,44 +9,38 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...types import Response
 
-log = logging.getLogger(__name__)
-
-from typing import Dict
+logger = logging.getLogger(__name__)
 
 from ...models.access_right_data import AccessRightData
 from ...models.access_right_item_creation import AccessRightItemCreation
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 
 
 def _get_kwargs(
     customer_id: str,
     *,
-    client: AuthenticatedClient,
-    json_body: AccessRightItemCreation,
+    body: AccessRightItemCreation,
 ) -> Dict[str, Any]:
-    url = "{}/accessRights/{customerId}".format(client.api.value, customerId=customer_id)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": f"/accessRights/{customer_id}",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[AccessRightData, ErrorResultBase]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[AccessRightData, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.CREATED:
         response_201 = AccessRightData.from_dict(response.json())
 
@@ -56,7 +50,7 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
 
         return response_208
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -75,23 +69,23 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         response_500 = ErrorResultBase.from_dict(response.json())
 
         return response_500
-
     if (response.status_code == HTTPStatus.BAD_GATEWAY) or (response.status_code == HTTPStatus.GATEWAY_TIMEOUT):
         raise errors.RetryableError
-
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[AccessRightData, ErrorResultBase]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[AccessRightData, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -103,8 +97,8 @@ def sync_detailed(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: AccessRightItemCreation,
-) -> Response[Union[AccessRightData, ErrorResultBase]]:
+    body: AccessRightItemCreation,
+) -> Response[Union[AccessRightData, ErrorResult, ErrorResultBase]]:
     """Create customer access right
 
      Create a new access right item with the data provided for a customer identified by the passed
@@ -112,24 +106,22 @@ def sync_detailed(
 
     Args:
         customer_id (str):
-        json_body (AccessRightItemCreation):
+        body (AccessRightItemCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AccessRightData, ErrorResultBase]]
+        Response[Union[AccessRightData, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -140,8 +132,8 @@ def sync(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: AccessRightItemCreation,
-) -> Optional[Union[AccessRightData, ErrorResultBase]]:
+    body: AccessRightItemCreation,
+) -> Optional[Union[AccessRightData, ErrorResult, ErrorResultBase]]:
     """Create customer access right
 
      Create a new access right item with the data provided for a customer identified by the passed
@@ -149,20 +141,20 @@ def sync(
 
     Args:
         customer_id (str):
-        json_body (AccessRightItemCreation):
+        body (AccessRightItemCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AccessRightData, ErrorResultBase]
+        Union[AccessRightData, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
         customer_id=customer_id,
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -175,8 +167,8 @@ async def asyncio_detailed(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: AccessRightItemCreation,
-) -> Response[Union[AccessRightData, ErrorResultBase]]:
+    body: AccessRightItemCreation,
+) -> Response[Union[AccessRightData, ErrorResult, ErrorResultBase]]:
     """Create customer access right
 
      Create a new access right item with the data provided for a customer identified by the passed
@@ -184,24 +176,22 @@ async def asyncio_detailed(
 
     Args:
         customer_id (str):
-        json_body (AccessRightItemCreation):
+        body (AccessRightItemCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AccessRightData, ErrorResultBase]]
+        Response[Union[AccessRightData, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -210,8 +200,8 @@ async def asyncio(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: AccessRightItemCreation,
-) -> Optional[Union[AccessRightData, ErrorResultBase]]:
+    body: AccessRightItemCreation,
+) -> Optional[Union[AccessRightData, ErrorResult, ErrorResultBase]]:
     """Create customer access right
 
      Create a new access right item with the data provided for a customer identified by the passed
@@ -219,20 +209,20 @@ async def asyncio(
 
     Args:
         customer_id (str):
-        json_body (AccessRightItemCreation):
+        body (AccessRightItemCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AccessRightData, ErrorResultBase]
+        Union[AccessRightData, ErrorResult, ErrorResultBase]
     """
 
     return (
         await asyncio_detailed(
             customer_id=customer_id,
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 if TYPE_CHECKING:
     from ..models.additional_chain_data_data_additional_property import AdditionalChainDataDataAdditionalProperty
@@ -9,20 +10,18 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="AdditionalChainDataData")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AdditionalChainDataData:
     """ """
 
-    additional_properties: Dict[str, "AdditionalChainDataDataAdditionalProperty"] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, "AdditionalChainDataDataAdditionalProperty"] = _attrs_field(
+        init=False, factory=dict
+    )
 
     def to_dict(self) -> Dict[str, Any]:
-        pass
-
         field_dict: Dict[str, Any] = {}
         for prop_name, prop in self.additional_properties.items():
             field_dict[prop_name] = prop.to_dict()
-
-        field_dict.update({})
 
         return field_dict
 

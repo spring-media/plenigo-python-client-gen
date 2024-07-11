@@ -9,54 +9,42 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...types import UNSET, Response
 
-log = logging.getLogger(__name__)
-
-from typing import Dict
+logger = logging.getLogger(__name__)
 
 from ...models.access_right_data_granted import AccessRightDataGranted
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 
 
 def _get_kwargs(
     customer_id: str,
     *,
-    client: AuthenticatedClient,
     access_right_unique_ids: str,
 ) -> Dict[str, Any]:
-    url = "{}/accessRights/{customerId}/hasAccess".format(client.api.value, customerId=customer_id)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["accessRightUniqueIds"] = access_right_unique_ids
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/accessRights/{customer_id}/hasAccess",
         "params": params,
     }
 
-    log.debug(kwargs)
-
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[AccessRightDataGranted, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[AccessRightDataGranted, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = AccessRightDataGranted.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -75,10 +63,8 @@ def _parse_response(
         response_500 = ErrorResultBase.from_dict(response.json())
 
         return response_500
-
     if (response.status_code == HTTPStatus.BAD_GATEWAY) or (response.status_code == HTTPStatus.GATEWAY_TIMEOUT):
         raise errors.RetryableError
-
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -86,14 +72,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[AccessRightDataGranted, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[AccessRightDataGranted, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -106,7 +92,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     access_right_unique_ids: str,
-) -> Response[Union[AccessRightDataGranted, ErrorResultBase]]:
+) -> Response[Union[AccessRightDataGranted, ErrorResult, ErrorResultBase]]:
     """Check customer has access
 
      Check if customer has a valid access right for one or multiple access rights identified by the
@@ -121,17 +107,15 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AccessRightDataGranted, ErrorResultBase]]
+        Response[Union[AccessRightDataGranted, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
         access_right_unique_ids=access_right_unique_ids,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -143,7 +127,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     access_right_unique_ids: str,
-) -> Optional[Union[AccessRightDataGranted, ErrorResultBase]]:
+) -> Optional[Union[AccessRightDataGranted, ErrorResult, ErrorResultBase]]:
     """Check customer has access
 
      Check if customer has a valid access right for one or multiple access rights identified by the
@@ -158,7 +142,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AccessRightDataGranted, ErrorResultBase]
+        Union[AccessRightDataGranted, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -178,7 +162,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     access_right_unique_ids: str,
-) -> Response[Union[AccessRightDataGranted, ErrorResultBase]]:
+) -> Response[Union[AccessRightDataGranted, ErrorResult, ErrorResultBase]]:
     """Check customer has access
 
      Check if customer has a valid access right for one or multiple access rights identified by the
@@ -193,17 +177,15 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AccessRightDataGranted, ErrorResultBase]]
+        Response[Union[AccessRightDataGranted, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
         access_right_unique_ids=access_right_unique_ids,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -213,7 +195,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     access_right_unique_ids: str,
-) -> Optional[Union[AccessRightDataGranted, ErrorResultBase]]:
+) -> Optional[Union[AccessRightDataGranted, ErrorResult, ErrorResultBase]]:
     """Check customer has access
 
      Check if customer has a valid access right for one or multiple access rights identified by the
@@ -228,7 +210,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AccessRightDataGranted, ErrorResultBase]
+        Union[AccessRightDataGranted, ErrorResult, ErrorResultBase]
     """
 
     return (

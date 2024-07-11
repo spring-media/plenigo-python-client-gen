@@ -7,52 +7,60 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import Response
+from ...types import UNSET, Response
 
-log = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
-from typing import Dict
-
-from ...models.api_channel_base import ApiChannelBase
+from ...models.api_channel import ApiChannel
 from ...models.channel_update import ChannelUpdate
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
+from ...models.success_status import SuccessStatus
+from ...types import Unset
 
 
 def _get_kwargs(
     channel_id: str,
     *,
-    client: AuthenticatedClient,
-    json_body: ChannelUpdate,
+    body: ChannelUpdate,
+    callback: Union[Unset, bool] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/vouchers/channels/{channelId}".format(client.api.value, channelId=channel_id)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
+    params: Dict[str, Any] = {}
 
-    json_json_body = json_body.to_dict()
+    params["callback"] = callback
 
-    kwargs = {
+    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
+
+    _kwargs: Dict[str, Any] = {
         "method": "put",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": f"/vouchers/channels/{channel_id}",
+        "params": params,
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[ApiChannelBase, ErrorResultBase]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = ApiChannelBase.from_dict(response.json())
+        response_200 = ApiChannel.from_dict(response.json())
 
         return response_200
+    if response.status_code == HTTPStatus.ACCEPTED:
+        response_202 = SuccessStatus.from_dict(response.json())
+
+        return response_202
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -60,7 +68,7 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
 
         return response_401
     if response.status_code == HTTPStatus.PAYMENT_REQUIRED:
-        response_402 = ErrorResultBase.from_dict(response.json())
+        response_402 = ErrorResult.from_dict(response.json())
 
         return response_402
     if response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
@@ -71,23 +79,23 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         response_500 = ErrorResultBase.from_dict(response.json())
 
         return response_500
-
     if (response.status_code == HTTPStatus.BAD_GATEWAY) or (response.status_code == HTTPStatus.GATEWAY_TIMEOUT):
         raise errors.RetryableError
-
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[ApiChannelBase, ErrorResultBase]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -99,32 +107,34 @@ def sync_detailed(
     channel_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: ChannelUpdate,
-) -> Response[Union[ApiChannelBase, ErrorResultBase]]:
+    body: ChannelUpdate,
+    callback: Union[Unset, bool] = UNSET,
+) -> Response[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]:
     """Update channel
 
-     Update channel that is identified by the passed channel id. ATTENTION - this process is async.
+     *ASYNC* Update channel that is identified by the passed channel id. ATTENTION - this process is
+    async.
 
     Args:
         channel_id (str):
-        json_body (ChannelUpdate):
+        callback (Union[Unset, bool]):
+        body (ChannelUpdate):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiChannelBase, ErrorResultBase]]
+        Response[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]
     """
 
     kwargs = _get_kwargs(
         channel_id=channel_id,
-        client=client,
-        json_body=json_body,
+        body=body,
+        callback=callback,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -135,28 +145,32 @@ def sync(
     channel_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: ChannelUpdate,
-) -> Optional[Union[ApiChannelBase, ErrorResultBase]]:
+    body: ChannelUpdate,
+    callback: Union[Unset, bool] = UNSET,
+) -> Optional[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]:
     """Update channel
 
-     Update channel that is identified by the passed channel id. ATTENTION - this process is async.
+     *ASYNC* Update channel that is identified by the passed channel id. ATTENTION - this process is
+    async.
 
     Args:
         channel_id (str):
-        json_body (ChannelUpdate):
+        callback (Union[Unset, bool]):
+        body (ChannelUpdate):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiChannelBase, ErrorResultBase]
+        Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]
     """
 
     return sync_detailed(
         channel_id=channel_id,
         client=client,
-        json_body=json_body,
+        body=body,
+        callback=callback,
     ).parsed
 
 
@@ -169,32 +183,34 @@ async def asyncio_detailed(
     channel_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: ChannelUpdate,
-) -> Response[Union[ApiChannelBase, ErrorResultBase]]:
+    body: ChannelUpdate,
+    callback: Union[Unset, bool] = UNSET,
+) -> Response[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]:
     """Update channel
 
-     Update channel that is identified by the passed channel id. ATTENTION - this process is async.
+     *ASYNC* Update channel that is identified by the passed channel id. ATTENTION - this process is
+    async.
 
     Args:
         channel_id (str):
-        json_body (ChannelUpdate):
+        callback (Union[Unset, bool]):
+        body (ChannelUpdate):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiChannelBase, ErrorResultBase]]
+        Response[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]
     """
 
     kwargs = _get_kwargs(
         channel_id=channel_id,
-        client=client,
-        json_body=json_body,
+        body=body,
+        callback=callback,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -203,28 +219,32 @@ async def asyncio(
     channel_id: str,
     *,
     client: AuthenticatedClient,
-    json_body: ChannelUpdate,
-) -> Optional[Union[ApiChannelBase, ErrorResultBase]]:
+    body: ChannelUpdate,
+    callback: Union[Unset, bool] = UNSET,
+) -> Optional[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]:
     """Update channel
 
-     Update channel that is identified by the passed channel id. ATTENTION - this process is async.
+     *ASYNC* Update channel that is identified by the passed channel id. ATTENTION - this process is
+    async.
 
     Args:
         channel_id (str):
-        json_body (ChannelUpdate):
+        callback (Union[Unset, bool]):
+        body (ChannelUpdate):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiChannelBase, ErrorResultBase]
+        Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]
     """
 
     return (
         await asyncio_detailed(
             channel_id=channel_id,
             client=client,
-            json_body=json_body,
+            body=body,
+            callback=callback,
         )
     ).parsed

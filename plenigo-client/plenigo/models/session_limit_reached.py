@@ -1,38 +1,43 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.active_customer_sessions import ActiveCustomerSessions
+    from ..models.active_sessions import ActiveSessions
 
 
 T = TypeVar("T", bound="SessionLimitReached")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class SessionLimitReached:
     """
     Attributes:
-        active_sessions (Union[Unset, ActiveCustomerSessions]):
-        removal_token (Union[Unset, datetime.datetime]): temporary session for removing active session
+        active_sessions (Union[Unset, ActiveSessions]):
+        removal_token (Union[None, Unset, datetime.datetime]): temporary session for removing active session
     """
 
-    active_sessions: Union[Unset, "ActiveCustomerSessions"] = UNSET
-    removal_token: Union[Unset, datetime.datetime] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    active_sessions: Union[Unset, "ActiveSessions"] = UNSET
+    removal_token: Union[None, Unset, datetime.datetime] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         active_sessions: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.active_sessions, Unset):
             active_sessions = self.active_sessions.to_dict()
 
-        removal_token: Union[Unset, str] = UNSET
-        if not isinstance(self.removal_token, Unset):
+        removal_token: Union[None, Unset, str]
+        if isinstance(self.removal_token, Unset):
+            removal_token = UNSET
+        elif isinstance(self.removal_token, datetime.datetime):
             removal_token = self.removal_token.isoformat()
+        else:
+            removal_token = self.removal_token
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -46,22 +51,32 @@ class SessionLimitReached:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.active_customer_sessions import ActiveCustomerSessions
+        from ..models.active_sessions import ActiveSessions
 
         d = src_dict.copy()
         _active_sessions = d.pop("activeSessions", UNSET)
-        active_sessions: Union[Unset, ActiveCustomerSessions]
+        active_sessions: Union[Unset, ActiveSessions]
         if isinstance(_active_sessions, Unset):
             active_sessions = UNSET
         else:
-            active_sessions = ActiveCustomerSessions.from_dict(_active_sessions)
+            active_sessions = ActiveSessions.from_dict(_active_sessions)
 
-        _removal_token = d.pop("removalToken", UNSET)
-        removal_token: Union[Unset, datetime.datetime]
-        if isinstance(_removal_token, Unset):
-            removal_token = UNSET
-        else:
-            removal_token = isoparse(_removal_token)
+        def _parse_removal_token(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                removal_token_type_0 = isoparse(data)
+
+                return removal_token_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        removal_token = _parse_removal_token(d.pop("removalToken", UNSET))
 
         session_limit_reached = cls(
             active_sessions=active_sessions,
