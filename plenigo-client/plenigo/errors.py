@@ -1,4 +1,4 @@
-""" Contains shared errors types that can be raised from API functions """
+"""Contains shared errors types that can be raised from API functions"""
 
 
 class UnexpectedStatus(Exception):
@@ -8,14 +8,16 @@ class UnexpectedStatus(Exception):
         self.status_code = status_code
         self.content = content
 
-        super().__init__(f"Unexpected status code: {status_code}")
+        super().__init__(
+            f"Unexpected status code: {status_code}\n\nResponse content:\n{content.decode(errors='ignore')}"
+        )
 
 
 class RetryableError(Exception):
     """Raised because of a problem with the gateway or proxy server, indenpended on the api server or clinet"""
 
     def __init__(self, *args, **kwargs):
-        super().__init__(f"Gateway error, retrying the request")
+        super().__init__("Gateway error, retrying the request")
 
 
 __all__ = ["UnexpectedStatus", "RetryableError"]

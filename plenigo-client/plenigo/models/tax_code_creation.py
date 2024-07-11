@@ -1,13 +1,15 @@
-from typing import Any, Dict, List, Type, TypeVar, cast
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.tax_code_creation_country_type import TaxCodeCreationCountryType
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="TaxCodeCreation")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class TaxCodeCreation:
     """
     Attributes:
@@ -17,6 +19,7 @@ class TaxCodeCreation:
         tax (float): tax percentage operated on this order item
         analog_tag (str): tag for the analog tax code
         digital_tag (str): tag for the digital tax code
+        description (Union[Unset, str]): description of the tax code
     """
 
     country_type: TaxCodeCreationCountryType
@@ -24,7 +27,8 @@ class TaxCodeCreation:
     tax: float
     analog_tag: str
     digital_tag: str
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    description: Union[Unset, str] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         country_type = self.country_type.value
@@ -32,8 +36,12 @@ class TaxCodeCreation:
         countries = self.countries
 
         tax = self.tax
+
         analog_tag = self.analog_tag
+
         digital_tag = self.digital_tag
+
+        description = self.description
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -46,6 +54,8 @@ class TaxCodeCreation:
                 "digitalTag": digital_tag,
             }
         )
+        if description is not UNSET:
+            field_dict["description"] = description
 
         return field_dict
 
@@ -62,12 +72,15 @@ class TaxCodeCreation:
 
         digital_tag = d.pop("digitalTag")
 
+        description = d.pop("description", UNSET)
+
         tax_code_creation = cls(
             country_type=country_type,
             countries=countries,
             tax=tax,
             analog_tag=analog_tag,
             digital_tag=digital_tag,
+            description=description,
         )
 
         tax_code_creation.additional_properties = d

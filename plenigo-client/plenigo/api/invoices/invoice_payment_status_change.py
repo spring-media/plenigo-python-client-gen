@@ -9,9 +9,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...types import Response
 
-log = logging.getLogger(__name__)
-
-from typing import Dict
+logger = logging.getLogger(__name__)
 
 from ...models.error_result_base import ErrorResultBase
 from ...models.invoice_payment_status_change import InvoicePaymentStatusChange
@@ -21,32 +19,27 @@ from ...models.success_status import SuccessStatus
 def _get_kwargs(
     invoice_id: int,
     *,
-    client: AuthenticatedClient,
-    json_body: InvoicePaymentStatusChange,
+    body: InvoicePaymentStatusChange,
 ) -> Dict[str, Any]:
-    url = "{}/invoices/{invoiceId}/statusChange".format(client.api.value, invoiceId=invoice_id)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "put",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": f"/invoices/{invoice_id}/statusChange",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = SuccessStatus.from_dict(response.json())
 
@@ -67,23 +60,23 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         response_500 = ErrorResultBase.from_dict(response.json())
 
         return response_500
-
     if (response.status_code == HTTPStatus.BAD_GATEWAY) or (response.status_code == HTTPStatus.GATEWAY_TIMEOUT):
         raise errors.RetryableError
-
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[ErrorResultBase, SuccessStatus]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResultBase, SuccessStatus]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -95,7 +88,7 @@ def sync_detailed(
     invoice_id: int,
     *,
     client: AuthenticatedClient,
-    json_body: InvoicePaymentStatusChange,
+    body: InvoicePaymentStatusChange,
 ) -> Response[Union[ErrorResultBase, SuccessStatus]]:
     """Invoice payment status change
 
@@ -104,7 +97,7 @@ def sync_detailed(
 
     Args:
         invoice_id (int):
-        json_body (InvoicePaymentStatusChange):
+        body (InvoicePaymentStatusChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -116,12 +109,10 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         invoice_id=invoice_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -132,7 +123,7 @@ def sync(
     invoice_id: int,
     *,
     client: AuthenticatedClient,
-    json_body: InvoicePaymentStatusChange,
+    body: InvoicePaymentStatusChange,
 ) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
     """Invoice payment status change
 
@@ -141,7 +132,7 @@ def sync(
 
     Args:
         invoice_id (int):
-        json_body (InvoicePaymentStatusChange):
+        body (InvoicePaymentStatusChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -154,7 +145,7 @@ def sync(
     return sync_detailed(
         invoice_id=invoice_id,
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -167,7 +158,7 @@ async def asyncio_detailed(
     invoice_id: int,
     *,
     client: AuthenticatedClient,
-    json_body: InvoicePaymentStatusChange,
+    body: InvoicePaymentStatusChange,
 ) -> Response[Union[ErrorResultBase, SuccessStatus]]:
     """Invoice payment status change
 
@@ -176,7 +167,7 @@ async def asyncio_detailed(
 
     Args:
         invoice_id (int):
-        json_body (InvoicePaymentStatusChange):
+        body (InvoicePaymentStatusChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -188,12 +179,10 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         invoice_id=invoice_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -202,7 +191,7 @@ async def asyncio(
     invoice_id: int,
     *,
     client: AuthenticatedClient,
-    json_body: InvoicePaymentStatusChange,
+    body: InvoicePaymentStatusChange,
 ) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
     """Invoice payment status change
 
@@ -211,7 +200,7 @@ async def asyncio(
 
     Args:
         invoice_id (int):
-        json_body (InvoicePaymentStatusChange):
+        body (InvoicePaymentStatusChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -225,6 +214,6 @@ async def asyncio(
         await asyncio_detailed(
             invoice_id=invoice_id,
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

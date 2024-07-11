@@ -1,24 +1,24 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.refund_status_change_status import RefundStatusChangeStatus
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="RefundStatusChange")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class RefundStatusChange:
     """
     Attributes:
         status (RefundStatusChangeStatus): status of the refund
-        reason (Union[Unset, str]): reason for status change
+        reason (str): reason for status change
     """
 
     status: RefundStatusChangeStatus
-    reason: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    reason: str
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         status = self.status.value
@@ -30,10 +30,9 @@ class RefundStatusChange:
         field_dict.update(
             {
                 "status": status,
+                "reason": reason,
             }
         )
-        if reason is not UNSET:
-            field_dict["reason"] = reason
 
         return field_dict
 
@@ -42,7 +41,7 @@ class RefundStatusChange:
         d = src_dict.copy()
         status = RefundStatusChangeStatus(d.pop("status"))
 
-        reason = d.pop("reason", UNSET)
+        reason = d.pop("reason")
 
         refund_status_change = cls(
             status=status,

@@ -1,7 +1,8 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
@@ -9,14 +10,15 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="SftpLogEntry")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class SftpLogEntry:
     """
     Attributes:
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
         sftp_log_entry_id (Union[Unset, int]): unique id of the sftp log entry
-        changed_date (Union[Unset, datetime.datetime]): date time the sftp log entry entity was changed with date-time
-            notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339,
-            section 5.6</a>, for example, 2017-07-21T17:32:28Z
         server (Union[Unset, str]): sftp server used
         username (Union[Unset, str]): username used to connect
         target_directory (Union[Unset, str]): target directory used
@@ -24,34 +26,54 @@ class SftpLogEntry:
         error_msg (Union[Unset, str]): error message in case of an error
     """
 
+    created_date: Union[None, Unset, datetime.datetime] = UNSET
+    changed_date: Union[None, Unset, datetime.datetime] = UNSET
     sftp_log_entry_id: Union[Unset, int] = UNSET
-    changed_date: Union[Unset, datetime.datetime] = UNSET
     server: Union[Unset, str] = UNSET
     username: Union[Unset, str] = UNSET
     target_directory: Union[Unset, str] = UNSET
     success: Union[Unset, bool] = UNSET
     error_msg: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        sftp_log_entry_id = self.sftp_log_entry_id
-        changed_date: Union[Unset, str] = UNSET
-        if not isinstance(self.changed_date, Unset):
+        created_date: Union[None, Unset, str]
+        if isinstance(self.created_date, Unset):
+            created_date = UNSET
+        elif isinstance(self.created_date, datetime.datetime):
+            created_date = self.created_date.isoformat()
+        else:
+            created_date = self.created_date
+
+        changed_date: Union[None, Unset, str]
+        if isinstance(self.changed_date, Unset):
+            changed_date = UNSET
+        elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
+        else:
+            changed_date = self.changed_date
+
+        sftp_log_entry_id = self.sftp_log_entry_id
 
         server = self.server
+
         username = self.username
+
         target_directory = self.target_directory
+
         success = self.success
+
         error_msg = self.error_msg
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if sftp_log_entry_id is not UNSET:
-            field_dict["sftpLogEntryId"] = sftp_log_entry_id
+        if created_date is not UNSET:
+            field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
             field_dict["changedDate"] = changed_date
+        if sftp_log_entry_id is not UNSET:
+            field_dict["sftpLogEntryId"] = sftp_log_entry_id
         if server is not UNSET:
             field_dict["server"] = server
         if username is not UNSET:
@@ -68,14 +90,42 @@ class SftpLogEntry:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        sftp_log_entry_id = d.pop("sftpLogEntryId", UNSET)
 
-        _changed_date = d.pop("changedDate", UNSET)
-        changed_date: Union[Unset, datetime.datetime]
-        if isinstance(_changed_date, Unset):
-            changed_date = UNSET
-        else:
-            changed_date = isoparse(_changed_date)
+        def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                created_date_type_0 = isoparse(data)
+
+                return created_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        created_date = _parse_created_date(d.pop("createdDate", UNSET))
+
+        def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                changed_date_type_0 = isoparse(data)
+
+                return changed_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
+
+        sftp_log_entry_id = d.pop("sftpLogEntryId", UNSET)
 
         server = d.pop("server", UNSET)
 
@@ -88,8 +138,9 @@ class SftpLogEntry:
         error_msg = d.pop("errorMsg", UNSET)
 
         sftp_log_entry = cls(
-            sftp_log_entry_id=sftp_log_entry_id,
+            created_date=created_date,
             changed_date=changed_date,
+            sftp_log_entry_id=sftp_log_entry_id,
             server=server,
             username=username,
             target_directory=target_directory,

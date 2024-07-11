@@ -1,7 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..models.offer_product_base_product_type import OfferProductBaseProductType
@@ -18,7 +19,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="OfferProductBase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class OfferProductBase:
     """
     Attributes:
@@ -30,8 +31,9 @@ class OfferProductBase:
         translations (List['OfferTranslation']): translations associated with this product
         internal_title (Union[Unset, str]): internal title of the product
         subscription (Union[Unset, bool]): flag indicating if product represents a subscription
+        delivery_list_id (Union[Unset, int]): id of the delivery list to use
         validity_time (Union[Unset, int]): validity time of this product in days
-        validity_end_time (Union[Unset, datetime.datetime]): date the this product validity will be end
+        validity_end_time (Union[None, Unset, datetime.datetime]): date the this product validity will be end
         cost_center_id (Union[Unset, int]): id of the cost center associated with this product
         ledger_id (Union[Unset, int]): id of the ledger associated with this product
         ivw_rule_id (Union[Unset, int]): id of the ivw rule associated with this product
@@ -45,6 +47,8 @@ class OfferProductBase:
         additional_data (Union[Unset, OfferProductBaseAdditionalData]):
         data (Union[Unset, OfferProductBaseData]): additional data field
         price_issue_id (Union[Unset, int]): id of the price issue associated with this product
+        shipping_cost_price_issue_id (Union[Unset, int]): id of the shipping cost price issue associated with this
+            product
         credit_count_walled_id (Union[Unset, int]): id of the credit card wallet associated with this credit count
             wallet
         credit_count (Union[Unset, int]): credit count added with this product
@@ -59,8 +63,9 @@ class OfferProductBase:
     translations: List["OfferTranslation"]
     internal_title: Union[Unset, str] = UNSET
     subscription: Union[Unset, bool] = UNSET
+    delivery_list_id: Union[Unset, int] = UNSET
     validity_time: Union[Unset, int] = UNSET
-    validity_end_time: Union[Unset, datetime.datetime] = UNSET
+    validity_end_time: Union[None, Unset, datetime.datetime] = UNSET
     cost_center_id: Union[Unset, int] = UNSET
     ledger_id: Union[Unset, int] = UNSET
     ivw_rule_id: Union[Unset, int] = UNSET
@@ -71,38 +76,56 @@ class OfferProductBase:
     additional_data: Union[Unset, "OfferProductBaseAdditionalData"] = UNSET
     data: Union[Unset, "OfferProductBaseData"] = UNSET
     price_issue_id: Union[Unset, int] = UNSET
+    shipping_cost_price_issue_id: Union[Unset, int] = UNSET
     credit_count_walled_id: Union[Unset, int] = UNSET
     credit_count: Union[Unset, int] = UNSET
     option: Union[Unset, bool] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         position = self.position
+
         tax_type = self.tax_type.value
 
         product_type = self.product_type.value
 
         amount = self.amount
+
         access_right_id = self.access_right_id
+
         translations = []
         for translations_item_data in self.translations:
             translations_item = translations_item_data.to_dict()
-
             translations.append(translations_item)
 
         internal_title = self.internal_title
+
         subscription = self.subscription
+
+        delivery_list_id = self.delivery_list_id
+
         validity_time = self.validity_time
-        validity_end_time: Union[Unset, str] = UNSET
-        if not isinstance(self.validity_end_time, Unset):
+
+        validity_end_time: Union[None, Unset, str]
+        if isinstance(self.validity_end_time, Unset):
+            validity_end_time = UNSET
+        elif isinstance(self.validity_end_time, datetime.datetime):
             validity_end_time = self.validity_end_time.isoformat()
+        else:
+            validity_end_time = self.validity_end_time
 
         cost_center_id = self.cost_center_id
+
         ledger_id = self.ledger_id
+
         ivw_rule_id = self.ivw_rule_id
+
         voucher_target_plenigo_offer_id = self.voucher_target_plenigo_offer_id
+
         voucher_template_id = self.voucher_template_id
+
         voucher_validity_time = self.voucher_validity_time
+
         voucher_validity_timespan: Union[Unset, str] = UNSET
         if not isinstance(self.voucher_validity_timespan, Unset):
             voucher_validity_timespan = self.voucher_validity_timespan.value
@@ -116,8 +139,13 @@ class OfferProductBase:
             data = self.data.to_dict()
 
         price_issue_id = self.price_issue_id
+
+        shipping_cost_price_issue_id = self.shipping_cost_price_issue_id
+
         credit_count_walled_id = self.credit_count_walled_id
+
         credit_count = self.credit_count
+
         option = self.option
 
         field_dict: Dict[str, Any] = {}
@@ -136,6 +164,8 @@ class OfferProductBase:
             field_dict["internalTitle"] = internal_title
         if subscription is not UNSET:
             field_dict["subscription"] = subscription
+        if delivery_list_id is not UNSET:
+            field_dict["deliveryListId"] = delivery_list_id
         if validity_time is not UNSET:
             field_dict["validityTime"] = validity_time
         if validity_end_time is not UNSET:
@@ -160,6 +190,8 @@ class OfferProductBase:
             field_dict["data"] = data
         if price_issue_id is not UNSET:
             field_dict["priceIssueId"] = price_issue_id
+        if shipping_cost_price_issue_id is not UNSET:
+            field_dict["shippingCostPriceIssueId"] = shipping_cost_price_issue_id
         if credit_count_walled_id is not UNSET:
             field_dict["creditCountWalledId"] = credit_count_walled_id
         if credit_count is not UNSET:
@@ -197,14 +229,26 @@ class OfferProductBase:
 
         subscription = d.pop("subscription", UNSET)
 
+        delivery_list_id = d.pop("deliveryListId", UNSET)
+
         validity_time = d.pop("validityTime", UNSET)
 
-        _validity_end_time = d.pop("validityEndTime", UNSET)
-        validity_end_time: Union[Unset, datetime.datetime]
-        if isinstance(_validity_end_time, Unset):
-            validity_end_time = UNSET
-        else:
-            validity_end_time = isoparse(_validity_end_time)
+        def _parse_validity_end_time(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                validity_end_time_type_0 = isoparse(data)
+
+                return validity_end_time_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        validity_end_time = _parse_validity_end_time(d.pop("validityEndTime", UNSET))
 
         cost_center_id = d.pop("costCenterId", UNSET)
 
@@ -241,6 +285,8 @@ class OfferProductBase:
 
         price_issue_id = d.pop("priceIssueId", UNSET)
 
+        shipping_cost_price_issue_id = d.pop("shippingCostPriceIssueId", UNSET)
+
         credit_count_walled_id = d.pop("creditCountWalledId", UNSET)
 
         credit_count = d.pop("creditCount", UNSET)
@@ -256,6 +302,7 @@ class OfferProductBase:
             translations=translations,
             internal_title=internal_title,
             subscription=subscription,
+            delivery_list_id=delivery_list_id,
             validity_time=validity_time,
             validity_end_time=validity_end_time,
             cost_center_id=cost_center_id,
@@ -268,6 +315,7 @@ class OfferProductBase:
             additional_data=additional_data,
             data=data,
             price_issue_id=price_issue_id,
+            shipping_cost_price_issue_id=shipping_cost_price_issue_id,
             credit_count_walled_id=credit_count_walled_id,
             credit_count=credit_count,
             option=option,

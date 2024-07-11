@@ -1,7 +1,8 @@
 import datetime
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
@@ -9,7 +10,7 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="SubscriptionCancellationDates")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class SubscriptionCancellationDates:
     """
     Attributes:
@@ -17,7 +18,7 @@ class SubscriptionCancellationDates:
     """
 
     items: Union[Unset, List[datetime.date]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         items: Union[Unset, List[str]] = UNSET

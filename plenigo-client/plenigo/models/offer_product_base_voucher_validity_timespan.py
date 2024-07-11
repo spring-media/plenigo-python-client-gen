@@ -4,6 +4,7 @@ from enum import Enum
 class OfferProductBaseVoucherValidityTimespan(str, Enum):
     DAY = "DAY"
     MONTH = "MONTH"
+    NONE = "NONE"
     WEEK = "WEEK"
     YEAR = "YEAR"
 

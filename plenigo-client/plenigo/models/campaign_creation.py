@@ -1,7 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..models.campaign_creation_voucher_type import CampaignCreationVoucherType
@@ -14,45 +15,55 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="CampaignCreation")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CampaignCreation:
     """
     Attributes:
         campaign_name (str): name of the campaign
         voucher_type (CampaignCreationVoucherType): represents the type of the vouchers of this campaign
-        start_date (datetime.date): start date of the campaign with full-date notation as defined by <a
+        plenigo_offer_id (str): plenigo offer id the vouchers are for
+        start_date (Union[None, datetime.date]): start date of the campaign with full-date notation as defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
             2017-07-21
         channels (List['ChannelCreation']):
-        plenigo_offer_id (Union[Unset, str]): plenigo offer id the vouchers are for
-        end_date (Union[Unset, datetime.date]): end date of the campaign with full-date notation as defined by <a
+        end_date (Union[None, Unset, datetime.date]): end date of the campaign with full-date notation as defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
             2017-07-21
     """
 
     campaign_name: str
     voucher_type: CampaignCreationVoucherType
-    start_date: datetime.date
+    plenigo_offer_id: str
+    start_date: Union[None, datetime.date]
     channels: List["ChannelCreation"]
-    plenigo_offer_id: Union[Unset, str] = UNSET
-    end_date: Union[Unset, datetime.date] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    end_date: Union[None, Unset, datetime.date] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         campaign_name = self.campaign_name
+
         voucher_type = self.voucher_type.value
 
-        start_date = self.start_date.isoformat()
+        plenigo_offer_id = self.plenigo_offer_id
+
+        start_date: Union[None, str]
+        if isinstance(self.start_date, datetime.date):
+            start_date = self.start_date.isoformat()
+        else:
+            start_date = self.start_date
+
         channels = []
         for channels_item_data in self.channels:
             channels_item = channels_item_data.to_dict()
-
             channels.append(channels_item)
 
-        plenigo_offer_id = self.plenigo_offer_id
-        end_date: Union[Unset, str] = UNSET
-        if not isinstance(self.end_date, Unset):
+        end_date: Union[None, Unset, str]
+        if isinstance(self.end_date, Unset):
+            end_date = UNSET
+        elif isinstance(self.end_date, datetime.date):
             end_date = self.end_date.isoformat()
+        else:
+            end_date = self.end_date
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -60,12 +71,11 @@ class CampaignCreation:
             {
                 "campaignName": campaign_name,
                 "voucherType": voucher_type,
+                "plenigoOfferId": plenigo_offer_id,
                 "startDate": start_date,
                 "channels": channels,
             }
         )
-        if plenigo_offer_id is not UNSET:
-            field_dict["plenigoOfferId"] = plenigo_offer_id
         if end_date is not UNSET:
             field_dict["endDate"] = end_date
 
@@ -80,7 +90,22 @@ class CampaignCreation:
 
         voucher_type = CampaignCreationVoucherType(d.pop("voucherType"))
 
-        start_date = isoparse(d.pop("startDate")).date()
+        plenigo_offer_id = d.pop("plenigoOfferId")
+
+        def _parse_start_date(data: object) -> Union[None, datetime.date]:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                start_date_type_0 = isoparse(data).date()
+
+                return start_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, datetime.date], data)
+
+        start_date = _parse_start_date(d.pop("startDate"))
 
         channels = []
         _channels = d.pop("channels")
@@ -89,21 +114,29 @@ class CampaignCreation:
 
             channels.append(channels_item)
 
-        plenigo_offer_id = d.pop("plenigoOfferId", UNSET)
+        def _parse_end_date(data: object) -> Union[None, Unset, datetime.date]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                end_date_type_0 = isoparse(data).date()
 
-        _end_date = d.pop("endDate", UNSET)
-        end_date: Union[Unset, datetime.date]
-        if isinstance(_end_date, Unset):
-            end_date = UNSET
-        else:
-            end_date = isoparse(_end_date).date()
+                return end_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.date], data)
+
+        end_date = _parse_end_date(d.pop("endDate", UNSET))
 
         campaign_creation = cls(
             campaign_name=campaign_name,
             voucher_type=voucher_type,
+            plenigo_offer_id=plenigo_offer_id,
             start_date=start_date,
             channels=channels,
-            plenigo_offer_id=plenigo_offer_id,
             end_date=end_date,
         )
 

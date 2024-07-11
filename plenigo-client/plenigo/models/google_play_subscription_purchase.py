@@ -1,13 +1,14 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="GooglePlaySubscriptionPurchase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class GooglePlaySubscriptionPurchase:
     """
     Attributes:
@@ -64,27 +65,45 @@ class GooglePlaySubscriptionPurchase:
     purchase_type: Union[Unset, int] = UNSET
     start_time_millis: Union[Unset, int] = UNSET
     user_cancellation_time_millis: Union[Unset, int] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         auto_renewing = self.auto_renewing
+
         auto_resume_time_millis = self.auto_resume_time_millis
+
         cancel_reason = self.cancel_reason
+
         cancel_survey_reason = self.cancel_survey_reason
+
         user_input_cancel_reason = self.user_input_cancel_reason
+
         country_code = self.country_code
+
         developer_payload = self.developer_payload
+
         expiry_time_millis = self.expiry_time_millis
+
         kind = self.kind
+
         linked_purchase_token = self.linked_purchase_token
+
         order_id = self.order_id
+
         payment_state = self.payment_state
+
         price_amount_micros = self.price_amount_micros
+
         price_currency_code = self.price_currency_code
+
         profile_id = self.profile_id
+
         profile_name = self.profile_name
+
         purchase_type = self.purchase_type
+
         start_time_millis = self.start_time_millis
+
         user_cancellation_time_millis = self.user_cancellation_time_millis
 
         field_dict: Dict[str, Any] = {}

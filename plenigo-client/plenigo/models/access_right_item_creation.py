@@ -1,7 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
@@ -13,58 +14,78 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="AccessRightItemCreation")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AccessRightItemCreation:
     """
     Attributes:
-        life_time_start (Union[Unset, datetime.datetime]): date the access right will start with date-time notation as
+        life_time_start (Union[None, Unset, datetime.datetime]): date the access right will start with date-time
+            notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339,
+            section 5.6</a>, for example, 2017-07-21T17:32:28Z
+        life_time_end (Union[None, Unset, datetime.datetime]): date the access right will end with date-time notation as
             defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
             for example, 2017-07-21T17:32:28Z
-        life_time_end (Union[Unset, datetime.datetime]): date the access right will end with date-time notation as
-            defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
-            for example, 2017-07-21T17:32:28Z
-        access_time_start (Union[Unset, datetime.datetime]): time the access right will start with time notation as
+        access_time_start (Union[None, Unset, datetime.datetime]): time the access right will start with time notation
+            as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section
+            5.6</a>, for example, 17:32:28
+        access_time_end (Union[None, Unset, datetime.datetime]): time the access right will end with time notation as
             defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
             for example, 17:32:28
-        access_time_end (Union[Unset, datetime.datetime]): time the access right will end with time notation as defined
-            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
-            example, 17:32:28
-        max_cache_date (Union[Unset, datetime.datetime]): max cache date with date-time notation as defined by <a
+        max_cache_date (Union[None, Unset, datetime.datetime]): max cache date with date-time notation as defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
             2017-07-21T17:32:28Z
         data (Union[Unset, AccessRightItemCreationData]):
         blocked (Union[Unset, bool]): flag indicating if access is blocked
     """
 
-    life_time_start: Union[Unset, datetime.datetime] = UNSET
-    life_time_end: Union[Unset, datetime.datetime] = UNSET
-    access_time_start: Union[Unset, datetime.datetime] = UNSET
-    access_time_end: Union[Unset, datetime.datetime] = UNSET
-    max_cache_date: Union[Unset, datetime.datetime] = UNSET
+    life_time_start: Union[None, Unset, datetime.datetime] = UNSET
+    life_time_end: Union[None, Unset, datetime.datetime] = UNSET
+    access_time_start: Union[None, Unset, datetime.datetime] = UNSET
+    access_time_end: Union[None, Unset, datetime.datetime] = UNSET
+    max_cache_date: Union[None, Unset, datetime.datetime] = UNSET
     data: Union[Unset, "AccessRightItemCreationData"] = UNSET
     blocked: Union[Unset, bool] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        life_time_start: Union[Unset, str] = UNSET
-        if not isinstance(self.life_time_start, Unset):
+        life_time_start: Union[None, Unset, str]
+        if isinstance(self.life_time_start, Unset):
+            life_time_start = UNSET
+        elif isinstance(self.life_time_start, datetime.datetime):
             life_time_start = self.life_time_start.isoformat()
+        else:
+            life_time_start = self.life_time_start
 
-        life_time_end: Union[Unset, str] = UNSET
-        if not isinstance(self.life_time_end, Unset):
+        life_time_end: Union[None, Unset, str]
+        if isinstance(self.life_time_end, Unset):
+            life_time_end = UNSET
+        elif isinstance(self.life_time_end, datetime.datetime):
             life_time_end = self.life_time_end.isoformat()
+        else:
+            life_time_end = self.life_time_end
 
-        access_time_start: Union[Unset, str] = UNSET
-        if not isinstance(self.access_time_start, Unset):
+        access_time_start: Union[None, Unset, str]
+        if isinstance(self.access_time_start, Unset):
+            access_time_start = UNSET
+        elif isinstance(self.access_time_start, datetime.datetime):
             access_time_start = self.access_time_start.isoformat()
+        else:
+            access_time_start = self.access_time_start
 
-        access_time_end: Union[Unset, str] = UNSET
-        if not isinstance(self.access_time_end, Unset):
+        access_time_end: Union[None, Unset, str]
+        if isinstance(self.access_time_end, Unset):
+            access_time_end = UNSET
+        elif isinstance(self.access_time_end, datetime.datetime):
             access_time_end = self.access_time_end.isoformat()
+        else:
+            access_time_end = self.access_time_end
 
-        max_cache_date: Union[Unset, str] = UNSET
-        if not isinstance(self.max_cache_date, Unset):
+        max_cache_date: Union[None, Unset, str]
+        if isinstance(self.max_cache_date, Unset):
+            max_cache_date = UNSET
+        elif isinstance(self.max_cache_date, datetime.datetime):
             max_cache_date = self.max_cache_date.isoformat()
+        else:
+            max_cache_date = self.max_cache_date
 
         data: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.data, Unset):
@@ -97,40 +118,91 @@ class AccessRightItemCreation:
         from ..models.access_right_item_creation_data import AccessRightItemCreationData
 
         d = src_dict.copy()
-        _life_time_start = d.pop("lifeTimeStart", UNSET)
-        life_time_start: Union[Unset, datetime.datetime]
-        if isinstance(_life_time_start, Unset):
-            life_time_start = UNSET
-        else:
-            life_time_start = isoparse(_life_time_start)
 
-        _life_time_end = d.pop("lifeTimeEnd", UNSET)
-        life_time_end: Union[Unset, datetime.datetime]
-        if isinstance(_life_time_end, Unset):
-            life_time_end = UNSET
-        else:
-            life_time_end = isoparse(_life_time_end)
+        def _parse_life_time_start(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                life_time_start_type_0 = isoparse(data)
 
-        _access_time_start = d.pop("accessTimeStart", UNSET)
-        access_time_start: Union[Unset, datetime.datetime]
-        if isinstance(_access_time_start, Unset):
-            access_time_start = UNSET
-        else:
-            access_time_start = isoparse(_access_time_start)
+                return life_time_start_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
 
-        _access_time_end = d.pop("accessTimeEnd", UNSET)
-        access_time_end: Union[Unset, datetime.datetime]
-        if isinstance(_access_time_end, Unset):
-            access_time_end = UNSET
-        else:
-            access_time_end = isoparse(_access_time_end)
+        life_time_start = _parse_life_time_start(d.pop("lifeTimeStart", UNSET))
 
-        _max_cache_date = d.pop("maxCacheDate", UNSET)
-        max_cache_date: Union[Unset, datetime.datetime]
-        if isinstance(_max_cache_date, Unset):
-            max_cache_date = UNSET
-        else:
-            max_cache_date = isoparse(_max_cache_date)
+        def _parse_life_time_end(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                life_time_end_type_0 = isoparse(data)
+
+                return life_time_end_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        life_time_end = _parse_life_time_end(d.pop("lifeTimeEnd", UNSET))
+
+        def _parse_access_time_start(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                access_time_start_type_0 = isoparse(data)
+
+                return access_time_start_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        access_time_start = _parse_access_time_start(d.pop("accessTimeStart", UNSET))
+
+        def _parse_access_time_end(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                access_time_end_type_0 = isoparse(data)
+
+                return access_time_end_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        access_time_end = _parse_access_time_end(d.pop("accessTimeEnd", UNSET))
+
+        def _parse_max_cache_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                max_cache_date_type_0 = isoparse(data)
+
+                return max_cache_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        max_cache_date = _parse_max_cache_date(d.pop("maxCacheDate", UNSET))
 
         _data = d.pop("data", UNSET)
         data: Union[Unset, AccessRightItemCreationData]

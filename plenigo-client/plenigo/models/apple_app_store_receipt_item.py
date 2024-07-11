@@ -1,7 +1,8 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
@@ -9,7 +10,7 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="AppleAppStoreReceiptItem")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AppleAppStoreReceiptItem:
     """
     Attributes:
@@ -26,17 +27,17 @@ class AppleAppStoreReceiptItem:
         is_in_intro_offer_period (Union[Unset, str]): value for this key is "true" if the customer’s subscription is
             currently in an introductory price period, or "false" if not.
         is_upgraded (Union[Unset, str]): flag indicating if item is an upgrade of another item
-        expires_date (Union[Unset, datetime.datetime]): expiration date for the subscription with date-time notation as
-            defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
-            for example, 2017-07-21T17:32:28Z
-        purchase_date (Union[Unset, datetime.datetime]): date and time that the item was purchased with date-time
+        expires_date (Union[None, Unset, datetime.datetime]): expiration date for the subscription with date-time
             notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339,
             section 5.6</a>, for example, 2017-07-21T17:32:28Z
-        original_purchase_date (Union[Unset, datetime.datetime]): for a transaction that restores a previous
+        purchase_date (Union[None, Unset, datetime.datetime]): date and time that the item was purchased with date-time
+            notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339,
+            section 5.6</a>, for example, 2017-07-21T17:32:28Z
+        original_purchase_date (Union[None, Unset, datetime.datetime]): for a transaction that restores a previous
             transaction, the date of the original transaction with date-time notation as defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
             2017-07-21T17:32:28Z
-        cancellation_date (Union[Unset, datetime.datetime]): for a transaction that was canceled by Apple customer
+        cancellation_date (Union[None, Unset, datetime.datetime]): for a transaction that was canceled by Apple customer
             support, the time and date of the cancellation - for an auto-renewable subscription plan that was upgraded, the
             time and date of the upgrade transaction with date-time notation as defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
@@ -54,39 +55,65 @@ class AppleAppStoreReceiptItem:
     is_trial_period: Union[Unset, str] = UNSET
     is_in_intro_offer_period: Union[Unset, str] = UNSET
     is_upgraded: Union[Unset, str] = UNSET
-    expires_date: Union[Unset, datetime.datetime] = UNSET
-    purchase_date: Union[Unset, datetime.datetime] = UNSET
-    original_purchase_date: Union[Unset, datetime.datetime] = UNSET
-    cancellation_date: Union[Unset, datetime.datetime] = UNSET
+    expires_date: Union[None, Unset, datetime.datetime] = UNSET
+    purchase_date: Union[None, Unset, datetime.datetime] = UNSET
+    original_purchase_date: Union[None, Unset, datetime.datetime] = UNSET
+    cancellation_date: Union[None, Unset, datetime.datetime] = UNSET
     cancellation_reason: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         quantity = self.quantity
+
         product_id = self.product_id
+
         transaction_id = self.transaction_id
+
         original_transaction_id = self.original_transaction_id
+
         web_order_line_item_id = self.web_order_line_item_id
+
         promotional_offer_id = self.promotional_offer_id
+
         subscription_group_identifier = self.subscription_group_identifier
+
         is_trial_period = self.is_trial_period
+
         is_in_intro_offer_period = self.is_in_intro_offer_period
+
         is_upgraded = self.is_upgraded
-        expires_date: Union[Unset, str] = UNSET
-        if not isinstance(self.expires_date, Unset):
+
+        expires_date: Union[None, Unset, str]
+        if isinstance(self.expires_date, Unset):
+            expires_date = UNSET
+        elif isinstance(self.expires_date, datetime.datetime):
             expires_date = self.expires_date.isoformat()
+        else:
+            expires_date = self.expires_date
 
-        purchase_date: Union[Unset, str] = UNSET
-        if not isinstance(self.purchase_date, Unset):
+        purchase_date: Union[None, Unset, str]
+        if isinstance(self.purchase_date, Unset):
+            purchase_date = UNSET
+        elif isinstance(self.purchase_date, datetime.datetime):
             purchase_date = self.purchase_date.isoformat()
+        else:
+            purchase_date = self.purchase_date
 
-        original_purchase_date: Union[Unset, str] = UNSET
-        if not isinstance(self.original_purchase_date, Unset):
+        original_purchase_date: Union[None, Unset, str]
+        if isinstance(self.original_purchase_date, Unset):
+            original_purchase_date = UNSET
+        elif isinstance(self.original_purchase_date, datetime.datetime):
             original_purchase_date = self.original_purchase_date.isoformat()
+        else:
+            original_purchase_date = self.original_purchase_date
 
-        cancellation_date: Union[Unset, str] = UNSET
-        if not isinstance(self.cancellation_date, Unset):
+        cancellation_date: Union[None, Unset, str]
+        if isinstance(self.cancellation_date, Unset):
+            cancellation_date = UNSET
+        elif isinstance(self.cancellation_date, datetime.datetime):
             cancellation_date = self.cancellation_date.isoformat()
+        else:
+            cancellation_date = self.cancellation_date
 
         cancellation_reason = self.cancellation_reason
 
@@ -149,33 +176,73 @@ class AppleAppStoreReceiptItem:
 
         is_upgraded = d.pop("isUpgraded", UNSET)
 
-        _expires_date = d.pop("expiresDate", UNSET)
-        expires_date: Union[Unset, datetime.datetime]
-        if isinstance(_expires_date, Unset):
-            expires_date = UNSET
-        else:
-            expires_date = isoparse(_expires_date)
+        def _parse_expires_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                expires_date_type_0 = isoparse(data)
 
-        _purchase_date = d.pop("purchaseDate", UNSET)
-        purchase_date: Union[Unset, datetime.datetime]
-        if isinstance(_purchase_date, Unset):
-            purchase_date = UNSET
-        else:
-            purchase_date = isoparse(_purchase_date)
+                return expires_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
 
-        _original_purchase_date = d.pop("originalPurchaseDate", UNSET)
-        original_purchase_date: Union[Unset, datetime.datetime]
-        if isinstance(_original_purchase_date, Unset):
-            original_purchase_date = UNSET
-        else:
-            original_purchase_date = isoparse(_original_purchase_date)
+        expires_date = _parse_expires_date(d.pop("expiresDate", UNSET))
 
-        _cancellation_date = d.pop("cancellationDate", UNSET)
-        cancellation_date: Union[Unset, datetime.datetime]
-        if isinstance(_cancellation_date, Unset):
-            cancellation_date = UNSET
-        else:
-            cancellation_date = isoparse(_cancellation_date)
+        def _parse_purchase_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                purchase_date_type_0 = isoparse(data)
+
+                return purchase_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        purchase_date = _parse_purchase_date(d.pop("purchaseDate", UNSET))
+
+        def _parse_original_purchase_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                original_purchase_date_type_0 = isoparse(data)
+
+                return original_purchase_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        original_purchase_date = _parse_original_purchase_date(d.pop("originalPurchaseDate", UNSET))
+
+        def _parse_cancellation_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                cancellation_date_type_0 = isoparse(data)
+
+                return cancellation_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        cancellation_date = _parse_cancellation_date(d.pop("cancellationDate", UNSET))
 
         cancellation_reason = d.pop("cancellationReason", UNSET)
 

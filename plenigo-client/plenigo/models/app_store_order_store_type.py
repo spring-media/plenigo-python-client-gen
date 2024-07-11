@@ -2,7 +2,6 @@ from enum import Enum
 
 
 class AppStoreOrderStoreType(str, Enum):
-    AMAZON = "AMAZON"
     APPSTORE = "APPSTORE"
     PLAYSTORE = "PLAYSTORE"
 

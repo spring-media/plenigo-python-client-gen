@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -11,27 +12,23 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="Bonuses")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class Bonuses:
     """
     Attributes:
-        items (Union[Unset, None, List['Bonus']]): list of bonuses requested
+        items (Union[Unset, List['Bonus']]): list of bonuses requested
     """
 
-    items: Union[Unset, None, List["Bonus"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    items: Union[Unset, List["Bonus"]] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        items: Union[Unset, None, List[Dict[str, Any]]] = UNSET
+        items: Union[Unset, List[Dict[str, Any]]] = UNSET
         if not isinstance(self.items, Unset):
-            if self.items is None:
-                items = None
-            else:
-                items = []
-                for items_item_data in self.items:
-                    items_item = items_item_data.to_dict()
-
-                    items.append(items_item)
+            items = []
+            for items_item_data in self.items:
+                items_item = items_item_data.to_dict()
+                items.append(items_item)
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)

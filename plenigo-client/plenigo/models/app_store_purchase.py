@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -11,13 +12,13 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="AppStorePurchase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AppStorePurchase:
     """
     Attributes:
         customer_id (Union[Unset, str]): id of the customer purchase is associated with - only set if purchase is
             already associated
-        token (Union[Unset, str]): token that uniquely identifes this purchase and is used for further API requests
+        token (Union[Unset, str]): token that uniquely identifies this purchase and is used for further API requests
         has_orders (Union[Unset, bool]): flag indicating if purchase has orders
         orders (Union[Unset, List['AppStorePurchaseDetail']]):
     """
@@ -26,18 +27,20 @@ class AppStorePurchase:
     token: Union[Unset, str] = UNSET
     has_orders: Union[Unset, bool] = UNSET
     orders: Union[Unset, List["AppStorePurchaseDetail"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         customer_id = self.customer_id
+
         token = self.token
+
         has_orders = self.has_orders
+
         orders: Union[Unset, List[Dict[str, Any]]] = UNSET
         if not isinstance(self.orders, Unset):
             orders = []
             for orders_item_data in self.orders:
                 orders_item = orders_item_data.to_dict()
-
                 orders.append(orders_item)
 
         field_dict: Dict[str, Any] = {}

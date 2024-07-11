@@ -1,9 +1,12 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
+from ..models.api_base_changed_by_type import ApiBaseChangedByType
+from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..models.purchased_addon_addon_type import PurchasedAddonAddonType
 from ..models.purchased_addon_delivery_condition import PurchasedAddonDeliveryCondition
 from ..models.purchased_addon_status import PurchasedAddonStatus
@@ -16,7 +19,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="PurchasedAddon")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class PurchasedAddon:
     """
     Attributes:
@@ -30,9 +33,17 @@ class PurchasedAddon:
             combination with the orderId
         status (PurchasedAddonStatus): status of the purchased addon
         delivery_condition (PurchasedAddonDeliveryCondition): delivery condition of the purchased addon
-        delivery_date (Union[Unset, datetime.datetime]): date the delivery was done with date-time notation as defined
-            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
-            example, 2017-07-21T17:32:28Z
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        created_by (Union[Unset, str]): ID of who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
+        changed_by (Union[Unset, str]): ID of who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
+        delivery_date (Union[None, Unset, datetime.datetime]): date the delivery was done with date-time notation as
+            defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
+            for example, 2017-07-21T17:32:28Z
         tracking_data (Union[Unset, AddonTrackingData]):
     """
 
@@ -45,26 +56,70 @@ class PurchasedAddon:
     order_item_position: int
     status: PurchasedAddonStatus
     delivery_condition: PurchasedAddonDeliveryCondition
-    delivery_date: Union[Unset, datetime.datetime] = UNSET
+    created_date: Union[None, Unset, datetime.datetime] = UNSET
+    changed_date: Union[None, Unset, datetime.datetime] = UNSET
+    created_by: Union[Unset, str] = UNSET
+    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
+    changed_by: Union[Unset, str] = UNSET
+    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
+    delivery_date: Union[None, Unset, datetime.datetime] = UNSET
     tracking_data: Union[Unset, "AddonTrackingData"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         purchased_addon_id = self.purchased_addon_id
+
         delivery_customer_id = self.delivery_customer_id
+
         addon_type = self.addon_type.value
 
         plenigo_addon_id = self.plenigo_addon_id
+
         access_right_unique_id = self.access_right_unique_id
+
         order_id = self.order_id
+
         order_item_position = self.order_item_position
+
         status = self.status.value
 
         delivery_condition = self.delivery_condition.value
 
-        delivery_date: Union[Unset, str] = UNSET
-        if not isinstance(self.delivery_date, Unset):
+        created_date: Union[None, Unset, str]
+        if isinstance(self.created_date, Unset):
+            created_date = UNSET
+        elif isinstance(self.created_date, datetime.datetime):
+            created_date = self.created_date.isoformat()
+        else:
+            created_date = self.created_date
+
+        changed_date: Union[None, Unset, str]
+        if isinstance(self.changed_date, Unset):
+            changed_date = UNSET
+        elif isinstance(self.changed_date, datetime.datetime):
+            changed_date = self.changed_date.isoformat()
+        else:
+            changed_date = self.changed_date
+
+        created_by = self.created_by
+
+        created_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.created_by_type, Unset):
+            created_by_type = self.created_by_type.value
+
+        changed_by = self.changed_by
+
+        changed_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.changed_by_type, Unset):
+            changed_by_type = self.changed_by_type.value
+
+        delivery_date: Union[None, Unset, str]
+        if isinstance(self.delivery_date, Unset):
+            delivery_date = UNSET
+        elif isinstance(self.delivery_date, datetime.datetime):
             delivery_date = self.delivery_date.isoformat()
+        else:
+            delivery_date = self.delivery_date
 
         tracking_data: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.tracking_data, Unset):
@@ -85,6 +140,18 @@ class PurchasedAddon:
                 "deliveryCondition": delivery_condition,
             }
         )
+        if created_date is not UNSET:
+            field_dict["createdDate"] = created_date
+        if changed_date is not UNSET:
+            field_dict["changedDate"] = changed_date
+        if created_by is not UNSET:
+            field_dict["createdBy"] = created_by
+        if created_by_type is not UNSET:
+            field_dict["createdByType"] = created_by_type
+        if changed_by is not UNSET:
+            field_dict["changedBy"] = changed_by
+        if changed_by_type is not UNSET:
+            field_dict["changedByType"] = changed_by_type
         if delivery_date is not UNSET:
             field_dict["deliveryDate"] = delivery_date
         if tracking_data is not UNSET:
@@ -115,12 +182,74 @@ class PurchasedAddon:
 
         delivery_condition = PurchasedAddonDeliveryCondition(d.pop("deliveryCondition"))
 
-        _delivery_date = d.pop("deliveryDate", UNSET)
-        delivery_date: Union[Unset, datetime.datetime]
-        if isinstance(_delivery_date, Unset):
-            delivery_date = UNSET
+        def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                created_date_type_0 = isoparse(data)
+
+                return created_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        created_date = _parse_created_date(d.pop("createdDate", UNSET))
+
+        def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                changed_date_type_0 = isoparse(data)
+
+                return changed_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
+
+        created_by = d.pop("createdBy", UNSET)
+
+        _created_by_type = d.pop("createdByType", UNSET)
+        created_by_type: Union[Unset, ApiBaseCreatedByType]
+        if isinstance(_created_by_type, Unset):
+            created_by_type = UNSET
         else:
-            delivery_date = isoparse(_delivery_date)
+            created_by_type = ApiBaseCreatedByType(_created_by_type)
+
+        changed_by = d.pop("changedBy", UNSET)
+
+        _changed_by_type = d.pop("changedByType", UNSET)
+        changed_by_type: Union[Unset, ApiBaseChangedByType]
+        if isinstance(_changed_by_type, Unset):
+            changed_by_type = UNSET
+        else:
+            changed_by_type = ApiBaseChangedByType(_changed_by_type)
+
+        def _parse_delivery_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                delivery_date_type_0 = isoparse(data)
+
+                return delivery_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        delivery_date = _parse_delivery_date(d.pop("deliveryDate", UNSET))
 
         _tracking_data = d.pop("trackingData", UNSET)
         tracking_data: Union[Unset, AddonTrackingData]
@@ -139,6 +268,12 @@ class PurchasedAddon:
             order_item_position=order_item_position,
             status=status,
             delivery_condition=delivery_condition,
+            created_date=created_date,
+            changed_date=changed_date,
+            created_by=created_by,
+            created_by_type=created_by_type,
+            changed_by=changed_by,
+            changed_by_type=changed_by_type,
             delivery_date=delivery_date,
             tracking_data=tracking_data,
         )

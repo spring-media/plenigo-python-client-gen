@@ -1,11 +1,12 @@
 from typing import Any, Dict, List, Type, TypeVar
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 T = TypeVar("T", bound="ErrorResultBase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ErrorResultBase:
     """
     Attributes:
@@ -15,10 +16,11 @@ class ErrorResultBase:
 
     error_code: int
     error_message: str
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         error_code = self.error_code
+
         error_message = self.error_message
 
         field_dict: Dict[str, Any] = {}

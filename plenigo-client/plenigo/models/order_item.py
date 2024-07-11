@@ -1,7 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..models.order_item_tax_type import OrderItemTaxType
@@ -16,7 +17,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="OrderItem")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class OrderItem:
     """
     Attributes:
@@ -33,6 +34,10 @@ class OrderItem:
         quantity (int): purchase quantity
         discount_percentage (int): discount offered to the order item
         delivery_customer_id (str): id of the customer the delivery belongs to (also includes digital products)
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
         plenigo_offer_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo offer id is
             provided here
         plenigo_product_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo product id is
@@ -50,7 +55,7 @@ class OrderItem:
         external_billing (Union[Unset, bool]): indicates if payments are handled by plenigo or an external system
         tax_state (Union[Unset, str]): country state used for taxes - only needed in USA and Brasil
         purchased_addon_id (Union[Unset, int]): unique id of the purchased addon
-        validity_end_date (Union[Unset, None, datetime.datetime]): validity end date with date-time notation as defined
+        validity_end_date (Union[None, Unset, datetime.datetime]): validity end date with date-time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 2017-07-21T17:32:28Z
         voucher_purchase (Union[Unset, VoucherPurchaseData]):
@@ -67,6 +72,8 @@ class OrderItem:
     quantity: int
     discount_percentage: int
     delivery_customer_id: str
+    created_date: Union[None, Unset, datetime.datetime] = UNSET
+    changed_date: Union[None, Unset, datetime.datetime] = UNSET
     plenigo_offer_id: Union[Unset, str] = UNSET
     plenigo_product_id: Union[Unset, str] = UNSET
     plenigo_step_id: Union[Unset, str] = UNSET
@@ -79,41 +86,81 @@ class OrderItem:
     external_billing: Union[Unset, bool] = UNSET
     tax_state: Union[Unset, str] = UNSET
     purchased_addon_id: Union[Unset, int] = UNSET
-    validity_end_date: Union[Unset, None, datetime.datetime] = UNSET
+    validity_end_date: Union[None, Unset, datetime.datetime] = UNSET
     voucher_purchase: Union[Unset, "VoucherPurchaseData"] = UNSET
     voucher_usage: Union[Unset, "VoucherUsageData"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         position = self.position
+
         product_id = self.product_id
+
         title = self.title
+
         tax_type = self.tax_type.value
 
         price = self.price
+
         tax = self.tax
+
         tax_country = self.tax_country
+
         quantity = self.quantity
+
         discount_percentage = self.discount_percentage
+
         delivery_customer_id = self.delivery_customer_id
+
+        created_date: Union[None, Unset, str]
+        if isinstance(self.created_date, Unset):
+            created_date = UNSET
+        elif isinstance(self.created_date, datetime.datetime):
+            created_date = self.created_date.isoformat()
+        else:
+            created_date = self.created_date
+
+        changed_date: Union[None, Unset, str]
+        if isinstance(self.changed_date, Unset):
+            changed_date = UNSET
+        elif isinstance(self.changed_date, datetime.datetime):
+            changed_date = self.changed_date.isoformat()
+        else:
+            changed_date = self.changed_date
+
         plenigo_offer_id = self.plenigo_offer_id
+
         plenigo_product_id = self.plenigo_product_id
+
         plenigo_step_id = self.plenigo_step_id
+
         access_right_unique_id = self.access_right_unique_id
+
         internal_title = self.internal_title
+
         cost_center = self.cost_center
+
         voucher_code = self.voucher_code
+
         delivery_address: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.delivery_address, Unset):
             delivery_address = self.delivery_address.to_dict()
 
         subscription_item_id = self.subscription_item_id
+
         external_billing = self.external_billing
+
         tax_state = self.tax_state
+
         purchased_addon_id = self.purchased_addon_id
-        validity_end_date: Union[Unset, None, str] = UNSET
-        if not isinstance(self.validity_end_date, Unset):
-            validity_end_date = self.validity_end_date.isoformat() if self.validity_end_date else None
+
+        validity_end_date: Union[None, Unset, str]
+        if isinstance(self.validity_end_date, Unset):
+            validity_end_date = UNSET
+        elif isinstance(self.validity_end_date, datetime.datetime):
+            validity_end_date = self.validity_end_date.isoformat()
+        else:
+            validity_end_date = self.validity_end_date
 
         voucher_purchase: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.voucher_purchase, Unset):
@@ -139,6 +186,10 @@ class OrderItem:
                 "deliveryCustomerId": delivery_customer_id,
             }
         )
+        if created_date is not UNSET:
+            field_dict["createdDate"] = created_date
+        if changed_date is not UNSET:
+            field_dict["changedDate"] = changed_date
         if plenigo_offer_id is not UNSET:
             field_dict["plenigoOfferId"] = plenigo_offer_id
         if plenigo_product_id is not UNSET:
@@ -199,6 +250,40 @@ class OrderItem:
 
         delivery_customer_id = d.pop("deliveryCustomerId")
 
+        def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                created_date_type_0 = isoparse(data)
+
+                return created_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        created_date = _parse_created_date(d.pop("createdDate", UNSET))
+
+        def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                changed_date_type_0 = isoparse(data)
+
+                return changed_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
+
         plenigo_offer_id = d.pop("plenigoOfferId", UNSET)
 
         plenigo_product_id = d.pop("plenigoProductId", UNSET)
@@ -228,14 +313,22 @@ class OrderItem:
 
         purchased_addon_id = d.pop("purchasedAddonId", UNSET)
 
-        _validity_end_date = d.pop("validityEndDate", UNSET)
-        validity_end_date: Union[Unset, None, datetime.datetime]
-        if _validity_end_date is None:
-            validity_end_date = None
-        elif isinstance(_validity_end_date, Unset):
-            validity_end_date = UNSET
-        else:
-            validity_end_date = isoparse(_validity_end_date)
+        def _parse_validity_end_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                validity_end_date_type_0 = isoparse(data)
+
+                return validity_end_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        validity_end_date = _parse_validity_end_date(d.pop("validityEndDate", UNSET))
 
         _voucher_purchase = d.pop("voucherPurchase", UNSET)
         voucher_purchase: Union[Unset, VoucherPurchaseData]
@@ -262,6 +355,8 @@ class OrderItem:
             quantity=quantity,
             discount_percentage=discount_percentage,
             delivery_customer_id=delivery_customer_id,
+            created_date=created_date,
+            changed_date=changed_date,
             plenigo_offer_id=plenigo_offer_id,
             plenigo_product_id=plenigo_product_id,
             plenigo_step_id=plenigo_step_id,

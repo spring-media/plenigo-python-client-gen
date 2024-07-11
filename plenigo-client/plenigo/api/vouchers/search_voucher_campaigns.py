@@ -9,58 +9,51 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...types import UNSET, Response
 
-log = logging.getLogger(__name__)
-
-from typing import Dict, Optional, Union
+logger = logging.getLogger(__name__)
 
 from ...models.api_campaign_page import ApiCampaignPage
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
-from ...types import UNSET, Unset
+from ...types import Unset
 
 
 def _get_kwargs(
     *,
-    client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    voucher_code: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/vouchers/campaigns".format(client.api.value)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["size"] = size
 
     params["startingAfter"] = starting_after
 
     params["endingBefore"] = ending_before
 
+    params["voucherCode"] = voucher_code
+
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": "/vouchers/campaigns",
         "params": params,
     }
 
-    log.debug(kwargs)
-
-    return kwargs
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[ApiCampaignPage, ErrorResultBase]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = ApiCampaignPage.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -68,7 +61,7 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
 
         return response_401
     if response.status_code == HTTPStatus.PAYMENT_REQUIRED:
-        response_402 = ErrorResultBase.from_dict(response.json())
+        response_402 = ErrorResult.from_dict(response.json())
 
         return response_402
     if response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
@@ -79,32 +72,33 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         response_500 = ErrorResultBase.from_dict(response.json())
 
         return response_500
-
     if (response.status_code == HTTPStatus.BAD_GATEWAY) or (response.status_code == HTTPStatus.GATEWAY_TIMEOUT):
         raise errors.RetryableError
-
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[ApiCampaignPage, ErrorResultBase]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 def sync_all(
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[ApiCampaignPage, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    voucher_code: Union[Unset, str] = UNSET,
+) -> Optional[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
     all_results = ApiCampaignPage(items=[])  # type: ignore
 
     while True:
@@ -114,6 +108,7 @@ def sync_all(
                 size=size,
                 starting_after=starting_after,
                 ending_before=ending_before,
+                voucher_code=voucher_code,
             ).parsed
 
             if results and not isinstance(results, ErrorResultBase) and not isinstance(results.items, Unset):
@@ -141,36 +136,37 @@ def sync_all(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-) -> Response[Union[ApiCampaignPage, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    voucher_code: Union[Unset, str] = UNSET,
+) -> Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
     """Search
 
      Search all campaigns that correspond to the given search conditions.
 
     Args:
-        size (Union[Unset, None, int]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        voucher_code (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiCampaignPage, ErrorResultBase]]
+        Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
         size=size,
         starting_after=starting_after,
         ending_before=ending_before,
+        voucher_code=voucher_code,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -180,25 +176,27 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[ApiCampaignPage, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    voucher_code: Union[Unset, str] = UNSET,
+) -> Optional[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
     """Search
 
      Search all campaigns that correspond to the given search conditions.
 
     Args:
-        size (Union[Unset, None, int]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        voucher_code (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiCampaignPage, ErrorResultBase]
+        Union[ApiCampaignPage, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -206,6 +204,7 @@ def sync(
         size=size,
         starting_after=starting_after,
         ending_before=ending_before,
+        voucher_code=voucher_code,
     ).parsed
 
 
@@ -217,36 +216,37 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-) -> Response[Union[ApiCampaignPage, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    voucher_code: Union[Unset, str] = UNSET,
+) -> Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
     """Search
 
      Search all campaigns that correspond to the given search conditions.
 
     Args:
-        size (Union[Unset, None, int]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        voucher_code (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiCampaignPage, ErrorResultBase]]
+        Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
         size=size,
         starting_after=starting_after,
         ending_before=ending_before,
+        voucher_code=voucher_code,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -254,10 +254,11 @@ async def asyncio_detailed(
 async def asyncio_all(
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-) -> Response[Union[ApiCampaignPage, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    voucher_code: Union[Unset, str] = UNSET,
+) -> Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
     all_results = []
 
     while True:
@@ -268,6 +269,7 @@ async def asyncio_all(
                     size=size,
                     starting_after=starting_after,
                     ending_before=ending_before,
+                    voucher_code=voucher_code,
                 )
             ).parsed
 
@@ -291,25 +293,27 @@ async def asyncio_all(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[ApiCampaignPage, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    voucher_code: Union[Unset, str] = UNSET,
+) -> Optional[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
     """Search
 
      Search all campaigns that correspond to the given search conditions.
 
     Args:
-        size (Union[Unset, None, int]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        voucher_code (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiCampaignPage, ErrorResultBase]
+        Union[ApiCampaignPage, ErrorResult, ErrorResultBase]
     """
 
     return (
@@ -318,5 +322,6 @@ async def asyncio(
             size=size,
             starting_after=starting_after,
             ending_before=ending_before,
+            voucher_code=voucher_code,
         )
     ).parsed

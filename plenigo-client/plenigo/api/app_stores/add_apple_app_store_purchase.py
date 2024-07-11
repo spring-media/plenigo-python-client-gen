@@ -9,46 +9,38 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...types import Response
 
-log = logging.getLogger(__name__)
-
-from typing import Dict, Union
+logger = logging.getLogger(__name__)
 
 from ...models.app_store_purchase import AppStorePurchase
 from ...models.app_store_purchase_list import AppStorePurchaseList
 from ...models.apple_app_store_purchase_addition import AppleAppStorePurchaseAddition
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 
 
 def _get_kwargs(
     *,
-    client: AuthenticatedClient,
-    json_body: AppleAppStorePurchaseAddition,
+    body: AppleAppStorePurchaseAddition,
 ) -> Dict[str, Any]:
-    url = "{}/appStores/appleAppStore".format(client.api.value)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": "/appStores/appleAppStore",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResult, ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     if response.status_code == HTTPStatus.CREATED:
 
         def _parse_response_201(data: object) -> Union["AppStorePurchase", "AppStorePurchaseList"]:
@@ -70,7 +62,7 @@ def _parse_response(
 
         return response_201
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -85,10 +77,8 @@ def _parse_response(
         response_500 = ErrorResultBase.from_dict(response.json())
 
         return response_500
-
     if (response.status_code == HTTPStatus.BAD_GATEWAY) or (response.status_code == HTTPStatus.GATEWAY_TIMEOUT):
         raise errors.RetryableError
-
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -96,14 +86,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResult, ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -114,30 +104,28 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    json_body: AppleAppStorePurchaseAddition,
-) -> Response[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
+    body: AppleAppStorePurchaseAddition,
+) -> Response[Union[ErrorResult, ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     """Add Apple purchase
 
      Add an Apple app store purchase to the plenigo system and retrieve a token for further processing.
 
     Args:
-        json_body (AppleAppStorePurchaseAddition):
+        body (AppleAppStorePurchaseAddition):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]]
+        Response[Union[ErrorResult, ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -147,26 +135,26 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    json_body: AppleAppStorePurchaseAddition,
-) -> Optional[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
+    body: AppleAppStorePurchaseAddition,
+) -> Optional[Union[ErrorResult, ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     """Add Apple purchase
 
      Add an Apple app store purchase to the plenigo system and retrieve a token for further processing.
 
     Args:
-        json_body (AppleAppStorePurchaseAddition):
+        body (AppleAppStorePurchaseAddition):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]
+        Union[ErrorResult, ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]
     """
 
     return sync_detailed(
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -178,30 +166,28 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    json_body: AppleAppStorePurchaseAddition,
-) -> Response[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
+    body: AppleAppStorePurchaseAddition,
+) -> Response[Union[ErrorResult, ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     """Add Apple purchase
 
      Add an Apple app store purchase to the plenigo system and retrieve a token for further processing.
 
     Args:
-        json_body (AppleAppStorePurchaseAddition):
+        body (AppleAppStorePurchaseAddition):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]]
+        Response[Union[ErrorResult, ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -209,26 +195,26 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    json_body: AppleAppStorePurchaseAddition,
-) -> Optional[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
+    body: AppleAppStorePurchaseAddition,
+) -> Optional[Union[ErrorResult, ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     """Add Apple purchase
 
      Add an Apple app store purchase to the plenigo system and retrieve a token for further processing.
 
     Args:
-        json_body (AppleAppStorePurchaseAddition):
+        body (AppleAppStorePurchaseAddition):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]
+        Union[ErrorResult, ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]
     """
 
     return (
         await asyncio_detailed(
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

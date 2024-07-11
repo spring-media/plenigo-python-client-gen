@@ -1,13 +1,14 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="GooglePlayProductPurchase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class GooglePlayProductPurchase:
     """
     Attributes:
@@ -31,16 +32,23 @@ class GooglePlayProductPurchase:
     purchase_state: Union[Unset, int] = UNSET
     purchase_time_millis: Union[Unset, int] = UNSET
     purchase_type: Union[Unset, int] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         acknowledgement_state = self.acknowledgement_state
+
         consumption_state = self.consumption_state
+
         developer_payload = self.developer_payload
+
         kind = self.kind
+
         order_id = self.order_id
+
         purchase_state = self.purchase_state
+
         purchase_time_millis = self.purchase_time_millis
+
         purchase_type = self.purchase_type
 
         field_dict: Dict[str, Any] = {}

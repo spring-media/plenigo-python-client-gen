@@ -1,7 +1,8 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..models.transaction_payment_action import TransactionPaymentAction
@@ -13,15 +14,12 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="Transaction")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class Transaction:
     """
     Attributes:
         transaction_id (int): unique id of the transaction also used for pagination
         plenigo_transaction_id (str): unique plenigo transaction id used to communicate with payment provider
-        changed_date (datetime.datetime): date the transaction was changed with date-time notation as defined by <a
-            href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
-            2017-07-21T17:32:28Z
         amount (float): amount of the transaction
         currency (str): currency of the transaction formatted as <a href="https://en.wikipedia.org/wiki/ISO_4217"
             target="_blank">ISO 4217, alphabetic code</a>
@@ -30,12 +28,16 @@ class Transaction:
         payment_action (TransactionPaymentAction): payment action executed
         payment_status (TransactionPaymentStatus): status of the transaction
         customer_id (str): unique id of the customer the transaction is related to
-        transaction_date (Union[Unset, datetime.datetime]): date the transaction was done with date-time notation as
-            defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
-            for example, 2017-07-21T17:32:28Z
-        fulfillment_date (Union[Unset, datetime.datetime]): date the transaction was fullfilled with date-time notation
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        transaction_date (Union[None, Unset, datetime.datetime]): date the transaction was done with date-time notation
             as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section
             5.6</a>, for example, 2017-07-21T17:32:28Z
+        fulfillment_date (Union[None, Unset, datetime.datetime]): date the transaction was fulfilled with date-time
+            notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339,
+            section 5.6</a>, for example, 2017-07-21T17:32:28Z
         psp_transaction_id (Union[Unset, str]): id of the payment service provider if one was provided
         description (Union[Unset, str]): description describing the transaction reason
         error_code (Union[Unset, str]): error code for transaction failure
@@ -44,7 +46,6 @@ class Transaction:
 
     transaction_id: int
     plenigo_transaction_id: str
-    changed_date: datetime.datetime
     amount: float
     currency: str
     payment_provider: TransactionPaymentProvider
@@ -52,21 +53,25 @@ class Transaction:
     payment_action: TransactionPaymentAction
     payment_status: TransactionPaymentStatus
     customer_id: str
-    transaction_date: Union[Unset, datetime.datetime] = UNSET
-    fulfillment_date: Union[Unset, datetime.datetime] = UNSET
+    created_date: Union[None, Unset, datetime.datetime] = UNSET
+    changed_date: Union[None, Unset, datetime.datetime] = UNSET
+    transaction_date: Union[None, Unset, datetime.datetime] = UNSET
+    fulfillment_date: Union[None, Unset, datetime.datetime] = UNSET
     psp_transaction_id: Union[Unset, str] = UNSET
     description: Union[Unset, str] = UNSET
     error_code: Union[Unset, str] = UNSET
     error_message: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         transaction_id = self.transaction_id
+
         plenigo_transaction_id = self.plenigo_transaction_id
-        changed_date = self.changed_date.isoformat()
 
         amount = self.amount
+
         currency = self.currency
+
         payment_provider = self.payment_provider.value
 
         payment_method = self.payment_method.value
@@ -76,17 +81,45 @@ class Transaction:
         payment_status = self.payment_status.value
 
         customer_id = self.customer_id
-        transaction_date: Union[Unset, str] = UNSET
-        if not isinstance(self.transaction_date, Unset):
-            transaction_date = self.transaction_date.isoformat()
 
-        fulfillment_date: Union[Unset, str] = UNSET
-        if not isinstance(self.fulfillment_date, Unset):
+        created_date: Union[None, Unset, str]
+        if isinstance(self.created_date, Unset):
+            created_date = UNSET
+        elif isinstance(self.created_date, datetime.datetime):
+            created_date = self.created_date.isoformat()
+        else:
+            created_date = self.created_date
+
+        changed_date: Union[None, Unset, str]
+        if isinstance(self.changed_date, Unset):
+            changed_date = UNSET
+        elif isinstance(self.changed_date, datetime.datetime):
+            changed_date = self.changed_date.isoformat()
+        else:
+            changed_date = self.changed_date
+
+        transaction_date: Union[None, Unset, str]
+        if isinstance(self.transaction_date, Unset):
+            transaction_date = UNSET
+        elif isinstance(self.transaction_date, datetime.datetime):
+            transaction_date = self.transaction_date.isoformat()
+        else:
+            transaction_date = self.transaction_date
+
+        fulfillment_date: Union[None, Unset, str]
+        if isinstance(self.fulfillment_date, Unset):
+            fulfillment_date = UNSET
+        elif isinstance(self.fulfillment_date, datetime.datetime):
             fulfillment_date = self.fulfillment_date.isoformat()
+        else:
+            fulfillment_date = self.fulfillment_date
 
         psp_transaction_id = self.psp_transaction_id
+
         description = self.description
+
         error_code = self.error_code
+
         error_message = self.error_message
 
         field_dict: Dict[str, Any] = {}
@@ -95,7 +128,6 @@ class Transaction:
             {
                 "transactionId": transaction_id,
                 "plenigoTransactionId": plenigo_transaction_id,
-                "changedDate": changed_date,
                 "amount": amount,
                 "currency": currency,
                 "paymentProvider": payment_provider,
@@ -105,6 +137,10 @@ class Transaction:
                 "customerId": customer_id,
             }
         )
+        if created_date is not UNSET:
+            field_dict["createdDate"] = created_date
+        if changed_date is not UNSET:
+            field_dict["changedDate"] = changed_date
         if transaction_date is not UNSET:
             field_dict["transactionDate"] = transaction_date
         if fulfillment_date is not UNSET:
@@ -127,8 +163,6 @@ class Transaction:
 
         plenigo_transaction_id = d.pop("plenigoTransactionId")
 
-        changed_date = isoparse(d.pop("changedDate"))
-
         amount = d.pop("amount")
 
         currency = d.pop("currency")
@@ -143,19 +177,73 @@ class Transaction:
 
         customer_id = d.pop("customerId")
 
-        _transaction_date = d.pop("transactionDate", UNSET)
-        transaction_date: Union[Unset, datetime.datetime]
-        if isinstance(_transaction_date, Unset):
-            transaction_date = UNSET
-        else:
-            transaction_date = isoparse(_transaction_date)
+        def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                created_date_type_0 = isoparse(data)
 
-        _fulfillment_date = d.pop("fulfillmentDate", UNSET)
-        fulfillment_date: Union[Unset, datetime.datetime]
-        if isinstance(_fulfillment_date, Unset):
-            fulfillment_date = UNSET
-        else:
-            fulfillment_date = isoparse(_fulfillment_date)
+                return created_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        created_date = _parse_created_date(d.pop("createdDate", UNSET))
+
+        def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                changed_date_type_0 = isoparse(data)
+
+                return changed_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
+
+        def _parse_transaction_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                transaction_date_type_0 = isoparse(data)
+
+                return transaction_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        transaction_date = _parse_transaction_date(d.pop("transactionDate", UNSET))
+
+        def _parse_fulfillment_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                fulfillment_date_type_0 = isoparse(data)
+
+                return fulfillment_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        fulfillment_date = _parse_fulfillment_date(d.pop("fulfillmentDate", UNSET))
 
         psp_transaction_id = d.pop("pspTransactionId", UNSET)
 
@@ -168,7 +256,6 @@ class Transaction:
         transaction = cls(
             transaction_id=transaction_id,
             plenigo_transaction_id=plenigo_transaction_id,
-            changed_date=changed_date,
             amount=amount,
             currency=currency,
             payment_provider=payment_provider,
@@ -176,6 +263,8 @@ class Transaction:
             payment_action=payment_action,
             payment_status=payment_status,
             customer_id=customer_id,
+            created_date=created_date,
+            changed_date=changed_date,
             transaction_date=transaction_date,
             fulfillment_date=fulfillment_date,
             psp_transaction_id=psp_transaction_id,

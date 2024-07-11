@@ -1,13 +1,14 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ChannelCreation")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ChannelCreation:
     """
     Attributes:
@@ -19,11 +20,13 @@ class ChannelCreation:
     channel_name: Union[Unset, str] = UNSET
     custom_data: Union[Unset, str] = UNSET
     voucher_amount: Union[Unset, int] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         channel_name = self.channel_name
+
         custom_data = self.custom_data
+
         voucher_amount = self.voucher_amount
 
         field_dict: Dict[str, Any] = {}

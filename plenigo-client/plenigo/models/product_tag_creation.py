@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.product_tag_creation_category import ProductTagCreationCategory
 from ..types import UNSET, Unset
@@ -8,7 +9,7 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="ProductTagCreation")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ProductTagCreation:
     """
     Attributes:
@@ -20,12 +21,13 @@ class ProductTagCreation:
     category: ProductTagCreationCategory
     name: Union[Unset, str] = UNSET
     description: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         category = self.category.value
 
         name = self.name
+
         description = self.description
 
         field_dict: Dict[str, Any] = {}

@@ -9,47 +9,33 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...types import Response
 
-log = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
-from typing import Dict
-
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
-from ...models.product_ivw_rule_creation import ProductIvwRuleCreation
+from ...models.product_ivw_rule import ProductIvwRule
 
 
 def _get_kwargs(
     ivw_rule_id: int,
-    *,
-    client: AuthenticatedClient,
 ) -> Dict[str, Any]:
-    url = "{}/products/ivwRules/{ivwRuleId}".format(client.api.value, ivwRuleId=ivw_rule_id)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/products/ivwRules/{ivw_rule_id}",
     }
 
-    log.debug(kwargs)
-
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[ErrorResultBase, ProductIvwRuleCreation]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResult, ErrorResultBase, ProductIvwRule]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = ProductIvwRuleCreation.from_dict(response.json())
+        response_200 = ProductIvwRule.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -68,10 +54,8 @@ def _parse_response(
         response_500 = ErrorResultBase.from_dict(response.json())
 
         return response_500
-
     if (response.status_code == HTTPStatus.BAD_GATEWAY) or (response.status_code == HTTPStatus.GATEWAY_TIMEOUT):
         raise errors.RetryableError
-
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -79,14 +63,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[ErrorResultBase, ProductIvwRuleCreation]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResult, ErrorResultBase, ProductIvwRule]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -98,7 +82,7 @@ def sync_detailed(
     ivw_rule_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResultBase, ProductIvwRuleCreation]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, ProductIvwRule]]:
     """Get
 
      Get ivw rule that is identified by the passed ivw rule id.
@@ -111,16 +95,14 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, ProductIvwRuleCreation]]
+        Response[Union[ErrorResult, ErrorResultBase, ProductIvwRule]]
     """
 
     kwargs = _get_kwargs(
         ivw_rule_id=ivw_rule_id,
-        client=client,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -131,7 +113,7 @@ def sync(
     ivw_rule_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResultBase, ProductIvwRuleCreation]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, ProductIvwRule]]:
     """Get
 
      Get ivw rule that is identified by the passed ivw rule id.
@@ -144,7 +126,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, ProductIvwRuleCreation]
+        Union[ErrorResult, ErrorResultBase, ProductIvwRule]
     """
 
     return sync_detailed(
@@ -162,7 +144,7 @@ async def asyncio_detailed(
     ivw_rule_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResultBase, ProductIvwRuleCreation]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, ProductIvwRule]]:
     """Get
 
      Get ivw rule that is identified by the passed ivw rule id.
@@ -175,16 +157,14 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, ProductIvwRuleCreation]]
+        Response[Union[ErrorResult, ErrorResultBase, ProductIvwRule]]
     """
 
     kwargs = _get_kwargs(
         ivw_rule_id=ivw_rule_id,
-        client=client,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -193,7 +173,7 @@ async def asyncio(
     ivw_rule_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResultBase, ProductIvwRuleCreation]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, ProductIvwRule]]:
     """Get
 
      Get ivw rule that is identified by the passed ivw rule id.
@@ -206,7 +186,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, ProductIvwRuleCreation]
+        Union[ErrorResult, ErrorResultBase, ProductIvwRule]
     """
 
     return (

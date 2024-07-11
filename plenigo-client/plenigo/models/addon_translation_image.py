@@ -1,45 +1,71 @@
+import datetime
 from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="AddonTranslationImage")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AddonTranslationImage:
     """
     Attributes:
         name (str): description of the image Example: Promotion image.
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
         addon_translation_image_id (Union[Unset, int]): unique id of the image within the contract company Example:
             100324.
         alt_text (Union[Unset, str]): alt text of the image Example: A very nice promotion.
-        image (Union[Unset, None, List[int]]): image as byte array
+        image (Union[Unset, List[int]]): image as byte array
         meta_data (Union[Unset, Any]): additional meta data
         url (Union[Unset, str]): url to the image Example: https://example.com/test.jpg.
     """
 
     name: str
+    created_date: Union[None, Unset, datetime.datetime] = UNSET
+    changed_date: Union[None, Unset, datetime.datetime] = UNSET
     addon_translation_image_id: Union[Unset, int] = UNSET
     alt_text: Union[Unset, str] = UNSET
-    image: Union[Unset, None, List[int]] = UNSET
+    image: Union[Unset, List[int]] = UNSET
     meta_data: Union[Unset, Any] = UNSET
     url: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         name = self.name
+
+        created_date: Union[None, Unset, str]
+        if isinstance(self.created_date, Unset):
+            created_date = UNSET
+        elif isinstance(self.created_date, datetime.datetime):
+            created_date = self.created_date.isoformat()
+        else:
+            created_date = self.created_date
+
+        changed_date: Union[None, Unset, str]
+        if isinstance(self.changed_date, Unset):
+            changed_date = UNSET
+        elif isinstance(self.changed_date, datetime.datetime):
+            changed_date = self.changed_date.isoformat()
+        else:
+            changed_date = self.changed_date
+
         addon_translation_image_id = self.addon_translation_image_id
+
         alt_text = self.alt_text
-        image: Union[Unset, None, List[int]] = UNSET
+
+        image: Union[Unset, List[int]] = UNSET
         if not isinstance(self.image, Unset):
-            if self.image is None:
-                image = None
-            else:
-                image = self.image
+            image = self.image
 
         meta_data = self.meta_data
+
         url = self.url
 
         field_dict: Dict[str, Any] = {}
@@ -49,6 +75,10 @@ class AddonTranslationImage:
                 "name": name,
             }
         )
+        if created_date is not UNSET:
+            field_dict["createdDate"] = created_date
+        if changed_date is not UNSET:
+            field_dict["changedDate"] = changed_date
         if addon_translation_image_id is not UNSET:
             field_dict["addonTranslationImageId"] = addon_translation_image_id
         if alt_text is not UNSET:
@@ -67,6 +97,40 @@ class AddonTranslationImage:
         d = src_dict.copy()
         name = d.pop("name")
 
+        def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                created_date_type_0 = isoparse(data)
+
+                return created_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        created_date = _parse_created_date(d.pop("createdDate", UNSET))
+
+        def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                changed_date_type_0 = isoparse(data)
+
+                return changed_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
+
         addon_translation_image_id = d.pop("addonTranslationImageId", UNSET)
 
         alt_text = d.pop("altText", UNSET)
@@ -79,6 +143,8 @@ class AddonTranslationImage:
 
         addon_translation_image = cls(
             name=name,
+            created_date=created_date,
+            changed_date=changed_date,
             addon_translation_image_id=addon_translation_image_id,
             alt_text=alt_text,
             image=image,

@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -12,7 +13,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="CustomerData")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CustomerData:
     """
     Attributes:
@@ -28,7 +29,7 @@ class CustomerData:
     first_name: Union[Unset, str] = UNSET
     last_name: Union[Unset, str] = UNSET
     logging_data: Union[Unset, "LoggingData"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         step_token: Union[Unset, Dict[str, Any]] = UNSET
@@ -36,8 +37,11 @@ class CustomerData:
             step_token = self.step_token.to_dict()
 
         username = self.username
+
         first_name = self.first_name
+
         last_name = self.last_name
+
         logging_data: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.logging_data, Unset):
             logging_data = self.logging_data.to_dict()
