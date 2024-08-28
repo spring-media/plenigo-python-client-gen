@@ -111,7 +111,7 @@ class DeliveryListChange:
 
         _additional_data = d.pop("additionalData", UNSET)
         additional_data: Union[Unset, DeliveryListChangeAdditionalData]
-        if isinstance(_additional_data, Unset):
+        if isinstance(_additional_data, Unset) or not _additional_data:
             additional_data = UNSET
         else:
             additional_data = DeliveryListChangeAdditionalData.from_dict(_additional_data)

@@ -114,21 +114,21 @@ class ProductContractBase:
 
         _time_based_condition = d.pop("timeBasedCondition", UNSET)
         time_based_condition: Union[Unset, TimeBasedProductContractCondition]
-        if isinstance(_time_based_condition, Unset):
+        if isinstance(_time_based_condition, Unset) or not _time_based_condition:
             time_based_condition = UNSET
         else:
             time_based_condition = TimeBasedProductContractCondition.from_dict(_time_based_condition)
 
         _issue_based_condition = d.pop("issueBasedCondition", UNSET)
         issue_based_condition: Union[Unset, IssueBasedProductContractCondition]
-        if isinstance(_issue_based_condition, Unset):
+        if isinstance(_issue_based_condition, Unset) or not _issue_based_condition:
             issue_based_condition = UNSET
         else:
             issue_based_condition = IssueBasedProductContractCondition.from_dict(_issue_based_condition)
 
         _credit_based_condition = d.pop("creditBasedCondition", UNSET)
         credit_based_condition: Union[Unset, CreditBasedProductContractCondition]
-        if isinstance(_credit_based_condition, Unset):
+        if isinstance(_credit_based_condition, Unset) or not _credit_based_condition:
             credit_based_condition = UNSET
         else:
             credit_based_condition = CreditBasedProductContractCondition.from_dict(_credit_based_condition)

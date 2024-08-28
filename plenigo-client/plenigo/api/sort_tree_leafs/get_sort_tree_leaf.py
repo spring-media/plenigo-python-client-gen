@@ -7,8 +7,9 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.api_base_date import ApiBaseDate
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
+from ...models.sort_tree_leaf import SortTreeLeaf
 from ...types import Response
 
 log = logging.getLogger(__name__)
@@ -29,13 +30,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, SortTreeLeaf]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = ApiBaseDate.from_dict(response.json())
+        response_200 = SortTreeLeaf.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -66,7 +67,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, SortTreeLeaf]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -84,7 +85,7 @@ def sync_detailed(
     sort_tree_leaf_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, SortTreeLeaf]]:
     """Get sort tree leaf by id
 
      Get sort tree leaf that is identified by the passed sort tree leaf id.
@@ -97,7 +98,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiBaseDate, ErrorResultBase]]
+        Response[Union[ErrorResult, ErrorResultBase, SortTreeLeaf]]
     """
 
     kwargs = _get_kwargs(
@@ -115,7 +116,7 @@ def sync(
     sort_tree_leaf_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, SortTreeLeaf]]:
     """Get sort tree leaf by id
 
      Get sort tree leaf that is identified by the passed sort tree leaf id.
@@ -128,7 +129,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiBaseDate, ErrorResultBase]
+        Union[ErrorResult, ErrorResultBase, SortTreeLeaf]
     """
 
     return sync_detailed(
@@ -146,7 +147,7 @@ async def asyncio_detailed(
     sort_tree_leaf_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, SortTreeLeaf]]:
     """Get sort tree leaf by id
 
      Get sort tree leaf that is identified by the passed sort tree leaf id.
@@ -159,7 +160,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiBaseDate, ErrorResultBase]]
+        Response[Union[ErrorResult, ErrorResultBase, SortTreeLeaf]]
     """
 
     kwargs = _get_kwargs(
@@ -175,7 +176,7 @@ async def asyncio(
     sort_tree_leaf_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, SortTreeLeaf]]:
     """Get sort tree leaf by id
 
      Get sort tree leaf that is identified by the passed sort tree leaf id.
@@ -188,7 +189,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiBaseDate, ErrorResultBase]
+        Union[ErrorResult, ErrorResultBase, SortTreeLeaf]
     """
 
     return (

@@ -84,9 +84,9 @@ class AppStorePurchaseDetail:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                purchase_date_type_1 = isoparse(data)
+                purchase_date_type_0 = isoparse(data)
 
-                return purchase_date_type_1
+                return purchase_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -101,7 +101,7 @@ class AppStorePurchaseDetail:
 
         _access_rights = d.pop("accessRights", UNSET)
         access_rights: Union[Unset, AppStoreAccessRights]
-        if isinstance(_access_rights, Unset):
+        if isinstance(_access_rights, Unset) or not _access_rights:
             access_rights = UNSET
         else:
             access_rights = AppStoreAccessRights.from_dict(_access_rights)

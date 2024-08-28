@@ -53,7 +53,7 @@ class CheckoutAddressSettings:
         d = src_dict.copy()
         _take_over = d.pop("takeOver", UNSET)
         take_over: Union[Unset, CheckoutAddressSettingsTakeOver]
-        if isinstance(_take_over, Unset):
+        if isinstance(_take_over, Unset) or not _take_over:
             take_over = UNSET
         else:
             take_over = CheckoutAddressSettingsTakeOver(_take_over)

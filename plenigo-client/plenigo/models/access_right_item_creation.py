@@ -127,9 +127,9 @@ class AccessRightItemCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                life_time_start_type_1 = isoparse(data)
+                life_time_start_type_0 = isoparse(data)
 
-                return life_time_start_type_1
+                return life_time_start_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -144,9 +144,9 @@ class AccessRightItemCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                life_time_end_type_1 = isoparse(data)
+                life_time_end_type_0 = isoparse(data)
 
-                return life_time_end_type_1
+                return life_time_end_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -161,9 +161,9 @@ class AccessRightItemCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                access_time_start_type_1 = isoparse(data)
+                access_time_start_type_0 = isoparse(data)
 
-                return access_time_start_type_1
+                return access_time_start_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -178,9 +178,9 @@ class AccessRightItemCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                access_time_end_type_1 = isoparse(data)
+                access_time_end_type_0 = isoparse(data)
 
-                return access_time_end_type_1
+                return access_time_end_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -195,9 +195,9 @@ class AccessRightItemCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                max_cache_date_type_1 = isoparse(data)
+                max_cache_date_type_0 = isoparse(data)
 
-                return max_cache_date_type_1
+                return max_cache_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -206,7 +206,7 @@ class AccessRightItemCreation:
 
         _data = d.pop("data", UNSET)
         data: Union[Unset, AccessRightItemCreationData]
-        if isinstance(_data, Unset):
+        if isinstance(_data, Unset) or not _data:
             data = UNSET
         else:
             data = AccessRightItemCreationData.from_dict(_data)

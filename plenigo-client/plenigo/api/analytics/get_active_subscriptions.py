@@ -8,6 +8,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.analytics_count_result import AnalyticsCountResult
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.get_active_subscriptions_interval import GetActiveSubscriptionsInterval
 from ...models.get_active_subscriptions_sort import GetActiveSubscriptionsSort
@@ -53,13 +54,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[AnalyticsCountResult, Any, ErrorResultBase]]:
+) -> Optional[Union[AnalyticsCountResult, Any, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = AnalyticsCountResult.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -89,7 +90,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[AnalyticsCountResult, Any, ErrorResultBase]]:
+) -> Response[Union[AnalyticsCountResult, Any, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -110,7 +111,7 @@ def sync_detailed(
     interval: GetActiveSubscriptionsInterval,
     size: int,
     sort: Union[Unset, GetActiveSubscriptionsSort] = UNSET,
-) -> Response[Union[AnalyticsCountResult, Any, ErrorResultBase]]:
+) -> Response[Union[AnalyticsCountResult, Any, ErrorResult, ErrorResultBase]]:
     """Get active subscriptions
 
      Get statistical information about active subscription chains within the defined time range.
@@ -126,7 +127,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AnalyticsCountResult, Any, ErrorResultBase]]
+        Response[Union[AnalyticsCountResult, Any, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -150,7 +151,7 @@ def sync(
     interval: GetActiveSubscriptionsInterval,
     size: int,
     sort: Union[Unset, GetActiveSubscriptionsSort] = UNSET,
-) -> Optional[Union[AnalyticsCountResult, Any, ErrorResultBase]]:
+) -> Optional[Union[AnalyticsCountResult, Any, ErrorResult, ErrorResultBase]]:
     """Get active subscriptions
 
      Get statistical information about active subscription chains within the defined time range.
@@ -166,7 +167,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AnalyticsCountResult, Any, ErrorResultBase]
+        Union[AnalyticsCountResult, Any, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -190,7 +191,7 @@ async def asyncio_detailed(
     interval: GetActiveSubscriptionsInterval,
     size: int,
     sort: Union[Unset, GetActiveSubscriptionsSort] = UNSET,
-) -> Response[Union[AnalyticsCountResult, Any, ErrorResultBase]]:
+) -> Response[Union[AnalyticsCountResult, Any, ErrorResult, ErrorResultBase]]:
     """Get active subscriptions
 
      Get statistical information about active subscription chains within the defined time range.
@@ -206,7 +207,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AnalyticsCountResult, Any, ErrorResultBase]]
+        Response[Union[AnalyticsCountResult, Any, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -228,7 +229,7 @@ async def asyncio(
     interval: GetActiveSubscriptionsInterval,
     size: int,
     sort: Union[Unset, GetActiveSubscriptionsSort] = UNSET,
-) -> Optional[Union[AnalyticsCountResult, Any, ErrorResultBase]]:
+) -> Optional[Union[AnalyticsCountResult, Any, ErrorResult, ErrorResultBase]]:
     """Get active subscriptions
 
      Get statistical information about active subscription chains within the defined time range.
@@ -244,7 +245,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AnalyticsCountResult, Any, ErrorResultBase]
+        Union[AnalyticsCountResult, Any, ErrorResult, ErrorResultBase]
     """
 
     return (

@@ -42,7 +42,7 @@ class AnalyticsGroupResult:
         d = src_dict.copy()
         _types = d.pop("types", UNSET)
         types: Union[Unset, AnalyticsGroupResultTypes]
-        if isinstance(_types, Unset):
+        if isinstance(_types, Unset) or not _types:
             types = UNSET
         else:
             types = AnalyticsGroupResultTypes.from_dict(_types)

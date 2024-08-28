@@ -7,8 +7,10 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
-from ...models.twint_account_change import TwintAccountChange
+from ...models.twint_account import TwintAccount
+from ...models.twint_account_creation import TwintAccountCreation
 from ...types import Response
 
 log = logging.getLogger(__name__)
@@ -16,7 +18,7 @@ log = logging.getLogger(__name__)
 
 def _get_kwargs(
     *,
-    body: TwintAccountChange,
+    body: TwintAccountCreation,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
 
@@ -39,9 +41,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, TwintAccount]]:
+    if response.status_code == HTTPStatus.CREATED:
+        response_201 = TwintAccount.from_dict(response.json())
+
+        return response_201
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -72,7 +78,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[ErrorResultBase]:
+) -> Response[Union[ErrorResult, ErrorResultBase, TwintAccount]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -89,21 +95,21 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: TwintAccountChange,
-) -> Response[ErrorResultBase]:
+    body: TwintAccountCreation,
+) -> Response[Union[ErrorResult, ErrorResultBase, TwintAccount]]:
     """Create a Twint account entity
 
      Create a new Twint account with the data provided.
 
     Args:
-        body (TwintAccountChange):
+        body (TwintAccountCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[ErrorResult, ErrorResultBase, TwintAccount]]
     """
 
     kwargs = _get_kwargs(
@@ -120,21 +126,21 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: TwintAccountChange,
-) -> Optional[ErrorResultBase]:
+    body: TwintAccountCreation,
+) -> Optional[Union[ErrorResult, ErrorResultBase, TwintAccount]]:
     """Create a Twint account entity
 
      Create a new Twint account with the data provided.
 
     Args:
-        body (TwintAccountChange):
+        body (TwintAccountCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[ErrorResult, ErrorResultBase, TwintAccount]
     """
 
     return sync_detailed(
@@ -151,21 +157,21 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: TwintAccountChange,
-) -> Response[ErrorResultBase]:
+    body: TwintAccountCreation,
+) -> Response[Union[ErrorResult, ErrorResultBase, TwintAccount]]:
     """Create a Twint account entity
 
      Create a new Twint account with the data provided.
 
     Args:
-        body (TwintAccountChange):
+        body (TwintAccountCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[ErrorResult, ErrorResultBase, TwintAccount]]
     """
 
     kwargs = _get_kwargs(
@@ -180,21 +186,21 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: TwintAccountChange,
-) -> Optional[ErrorResultBase]:
+    body: TwintAccountCreation,
+) -> Optional[Union[ErrorResult, ErrorResultBase, TwintAccount]]:
     """Create a Twint account entity
 
      Create a new Twint account with the data provided.
 
     Args:
-        body (TwintAccountChange):
+        body (TwintAccountCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[ErrorResult, ErrorResultBase, TwintAccount]
     """
 
     return (

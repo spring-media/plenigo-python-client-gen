@@ -42,7 +42,7 @@ class AdditionalCustomerData:
         d = src_dict.copy()
         _data = d.pop("data", UNSET)
         data: Union[Unset, AdditionalCustomerDataData]
-        if isinstance(_data, Unset):
+        if isinstance(_data, Unset) or not _data:
             data = UNSET
         else:
             data = AdditionalCustomerDataData.from_dict(_data)

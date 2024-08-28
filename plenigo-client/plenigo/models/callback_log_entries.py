@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
+    from ..models.callback_log_entry import CallbackLogEntry
 
 
 T = TypeVar("T", bound="CallbackLogEntries")
@@ -16,10 +16,10 @@ T = TypeVar("T", bound="CallbackLogEntries")
 class CallbackLogEntries:
     """
     Attributes:
-        items (Union[Unset, List['ApiBaseDate']]):
+        items (Union[Unset, List['CallbackLogEntry']]):
     """
 
-    items: Union[Unset, List["ApiBaseDate"]] = UNSET
+    items: Union[Unset, List["CallbackLogEntry"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -40,13 +40,13 @@ class CallbackLogEntries:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
+        from ..models.callback_log_entry import CallbackLogEntry
 
         d = src_dict.copy()
         items = []
         _items = d.pop("items", UNSET)
         for items_item_data in _items or []:
-            items_item = ApiBaseDate.from_dict(items_item_data)
+            items_item = CallbackLogEntry.from_dict(items_item_data)
 
             items.append(items_item)
 

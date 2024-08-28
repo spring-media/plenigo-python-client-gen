@@ -171,7 +171,7 @@ class AddressBase:
 
         _salutation = d.pop("salutation", UNSET)
         salutation: Union[Unset, AddressBaseSalutation]
-        if isinstance(_salutation, Unset):
+        if isinstance(_salutation, Unset) or not _salutation:
             salutation = UNSET
         else:
             salutation = AddressBaseSalutation(_salutation)
@@ -214,7 +214,7 @@ class AddressBase:
 
         _validation_status = d.pop("validationStatus", UNSET)
         validation_status: Union[Unset, AddressBaseValidationStatus]
-        if isinstance(_validation_status, Unset):
+        if isinstance(_validation_status, Unset) or not _validation_status:
             validation_status = UNSET
         else:
             validation_status = AddressBaseValidationStatus(_validation_status)

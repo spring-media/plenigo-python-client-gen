@@ -147,14 +147,14 @@ class ProductIvwRuleCreation:
 
         _ivw_type = d.pop("ivwType", UNSET)
         ivw_type: Union[Unset, ProductIvwRuleCreationIvwType]
-        if isinstance(_ivw_type, Unset):
+        if isinstance(_ivw_type, Unset) or not _ivw_type:
             ivw_type = UNSET
         else:
             ivw_type = ProductIvwRuleCreationIvwType(_ivw_type)
 
         _ivw_price_type = d.pop("ivwPriceType", UNSET)
         ivw_price_type: Union[Unset, ProductIvwRuleCreationIvwPriceType]
-        if isinstance(_ivw_price_type, Unset):
+        if isinstance(_ivw_price_type, Unset) or not _ivw_price_type:
             ivw_price_type = UNSET
         else:
             ivw_price_type = ProductIvwRuleCreationIvwPriceType(_ivw_price_type)

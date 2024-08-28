@@ -57,9 +57,9 @@ class AnalyticsCount:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                time_type_1 = isoparse(data)
+                time_type_0 = isoparse(data)
 
-                return time_type_1
+                return time_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)

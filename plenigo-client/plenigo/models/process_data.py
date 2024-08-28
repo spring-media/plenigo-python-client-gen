@@ -6,8 +6,8 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
     from ..models.process_designs import ProcessDesigns
+    from ..models.process_settings import ProcessSettings
 
 
 T = TypeVar("T", bound="ProcessData")
@@ -18,11 +18,11 @@ class ProcessData:
     """
     Attributes:
         designs (Union[Unset, ProcessDesigns]):
-        settings (Union[Unset, ApiBaseDate]):
+        settings (Union[Unset, ProcessSettings]):
     """
 
     designs: Union[Unset, "ProcessDesigns"] = UNSET
-    settings: Union[Unset, "ApiBaseDate"] = UNSET
+    settings: Union[Unset, "ProcessSettings"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -46,23 +46,23 @@ class ProcessData:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
         from ..models.process_designs import ProcessDesigns
+        from ..models.process_settings import ProcessSettings
 
         d = src_dict.copy()
         _designs = d.pop("designs", UNSET)
         designs: Union[Unset, ProcessDesigns]
-        if isinstance(_designs, Unset):
+        if isinstance(_designs, Unset) or not _designs:
             designs = UNSET
         else:
             designs = ProcessDesigns.from_dict(_designs)
 
         _settings = d.pop("settings", UNSET)
-        settings: Union[Unset, ApiBaseDate]
-        if isinstance(_settings, Unset):
+        settings: Union[Unset, ProcessSettings]
+        if isinstance(_settings, Unset) or not _settings:
             settings = UNSET
         else:
-            settings = ApiBaseDate.from_dict(_settings)
+            settings = ProcessSettings.from_dict(_settings)
 
         process_data = cls(
             designs=designs,

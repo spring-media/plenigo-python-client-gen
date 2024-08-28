@@ -7,8 +7,10 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.update_customer_mark_customer_mark import UpdateCustomerMarkCustomerMark
+from ...models.wbz_customer_mark import WbzCustomerMark
 from ...models.wbz_customer_mark_base import WbzCustomerMarkBase
 from ...types import Response
 
@@ -42,9 +44,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, ErrorResultBase]]:
+) -> Optional[Union[Any, ErrorResult, ErrorResultBase, WbzCustomerMark]]:
+    if response.status_code == HTTPStatus.OK:
+        response_200 = WbzCustomerMark.from_dict(response.json())
+
+        return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -59,7 +65,7 @@ def _parse_response(
 
         return response_404
     if response.status_code == HTTPStatus.CONFLICT:
-        response_409 = ErrorResultBase.from_dict(response.json())
+        response_409 = ErrorResult.from_dict(response.json())
 
         return response_409
     if response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR:
@@ -78,7 +84,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, ErrorResultBase]]:
+) -> Response[Union[Any, ErrorResult, ErrorResultBase, WbzCustomerMark]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -98,7 +104,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: WbzCustomerMarkBase,
-) -> Response[Union[Any, ErrorResultBase]]:
+) -> Response[Union[Any, ErrorResult, ErrorResultBase, WbzCustomerMark]]:
     """Update customer mark data
 
      Update customer mark data.
@@ -113,7 +119,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorResultBase]]
+        Response[Union[Any, ErrorResult, ErrorResultBase, WbzCustomerMark]]
     """
 
     kwargs = _get_kwargs(
@@ -135,7 +141,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: WbzCustomerMarkBase,
-) -> Optional[Union[Any, ErrorResultBase]]:
+) -> Optional[Union[Any, ErrorResult, ErrorResultBase, WbzCustomerMark]]:
     """Update customer mark data
 
      Update customer mark data.
@@ -150,7 +156,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorResultBase]
+        Union[Any, ErrorResult, ErrorResultBase, WbzCustomerMark]
     """
 
     return sync_detailed(
@@ -172,7 +178,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: WbzCustomerMarkBase,
-) -> Response[Union[Any, ErrorResultBase]]:
+) -> Response[Union[Any, ErrorResult, ErrorResultBase, WbzCustomerMark]]:
     """Update customer mark data
 
      Update customer mark data.
@@ -187,7 +193,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorResultBase]]
+        Response[Union[Any, ErrorResult, ErrorResultBase, WbzCustomerMark]]
     """
 
     kwargs = _get_kwargs(
@@ -207,7 +213,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: WbzCustomerMarkBase,
-) -> Optional[Union[Any, ErrorResultBase]]:
+) -> Optional[Union[Any, ErrorResult, ErrorResultBase, WbzCustomerMark]]:
     """Update customer mark data
 
      Update customer mark data.
@@ -222,7 +228,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorResultBase]
+        Union[Any, ErrorResult, ErrorResultBase, WbzCustomerMark]
     """
 
     return (

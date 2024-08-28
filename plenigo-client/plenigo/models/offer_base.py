@@ -11,9 +11,9 @@ from ..models.offer_base_pdf_template_usage import OfferBasePdfTemplateUsage
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
     from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
     from ..models.offer_partner_settings import OfferPartnerSettings
+    from ..models.offer_translation import OfferTranslation
 
 
 T = TypeVar("T", bound="OfferBase")
@@ -24,7 +24,7 @@ class OfferBase:
     """
     Attributes:
         internal_title (str): internal title of the product group
-        translations (List['ApiBaseDate']): translations associated with this product
+        translations (List['OfferTranslation']): translations associated with this product
         pause_able (Union[Unset, bool]): flag indicating if subscription is pause able
         invoice_address_mandatory (Union[Unset, bool]): flag indicating if invoice address must be provided by the
             customer
@@ -57,7 +57,7 @@ class OfferBase:
     """
 
     internal_title: str
-    translations: List["ApiBaseDate"]
+    translations: List["OfferTranslation"]
     pause_able: Union[Unset, bool] = UNSET
     invoice_address_mandatory: Union[Unset, bool] = UNSET
     delivery_address_mandatory: Union[Unset, bool] = UNSET
@@ -205,9 +205,9 @@ class OfferBase:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
         from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
         from ..models.offer_partner_settings import OfferPartnerSettings
+        from ..models.offer_translation import OfferTranslation
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -215,7 +215,7 @@ class OfferBase:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = ApiBaseDate.from_dict(translations_item_data)
+            translations_item = OfferTranslation.from_dict(translations_item_data)
 
             translations.append(translations_item)
 
@@ -237,9 +237,9 @@ class OfferBase:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                fixed_start_date_type_1 = isoparse(data).date()
+                fixed_start_date_type_0 = isoparse(data).date()
 
-                return fixed_start_date_type_1
+                return fixed_start_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.date], data)
@@ -261,7 +261,7 @@ class OfferBase:
 
         _connected_company_settings = d.pop("connectedCompanySettings", UNSET)
         connected_company_settings: Union[Unset, OfferConnectedCompanySettings]
-        if isinstance(_connected_company_settings, Unset):
+        if isinstance(_connected_company_settings, Unset) or not _connected_company_settings:
             connected_company_settings = UNSET
         else:
             connected_company_settings = OfferConnectedCompanySettings.from_dict(_connected_company_settings)
@@ -282,21 +282,21 @@ class OfferBase:
 
         _managed_by = d.pop("managedBy", UNSET)
         managed_by: Union[Unset, OfferBaseManagedBy]
-        if isinstance(_managed_by, Unset):
+        if isinstance(_managed_by, Unset) or not _managed_by:
             managed_by = UNSET
         else:
             managed_by = OfferBaseManagedBy(_managed_by)
 
         _pdf_template_usage = d.pop("pdfTemplateUsage", UNSET)
         pdf_template_usage: Union[Unset, OfferBasePdfTemplateUsage]
-        if isinstance(_pdf_template_usage, Unset):
+        if isinstance(_pdf_template_usage, Unset) or not _pdf_template_usage:
             pdf_template_usage = UNSET
         else:
             pdf_template_usage = OfferBasePdfTemplateUsage(_pdf_template_usage)
 
         _partner_settings = d.pop("partnerSettings", UNSET)
         partner_settings: Union[Unset, OfferPartnerSettings]
-        if isinstance(_partner_settings, Unset):
+        if isinstance(_partner_settings, Unset) or not _partner_settings:
             partner_settings = UNSET
         else:
             partner_settings = OfferPartnerSettings.from_dict(_partner_settings)

@@ -11,7 +11,7 @@ from ..models.checkout_preparation_gift_option import CheckoutPreparationGiftOpt
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
+    from ..models.additional_order_data import AdditionalOrderData
     from ..models.checkout_address_settings import CheckoutAddressSettings
     from ..models.checkout_offer import CheckoutOffer
     from ..models.connected_offer_request import ConnectedOfferRequest
@@ -55,7 +55,7 @@ class CheckoutPreparation:
         gift_option (Union[Unset, CheckoutPreparationGiftOption]): flag that controls if the checkout should be run as a
             gift checkout, should show a gift checkout box or hide it - the default value is
             HIDE_GIFT_OPTION
-        additional_data (Union[Unset, ApiBaseDate]):
+        additional_data (Union[Unset, AdditionalOrderData]):
         voucher_code (Union[Unset, str]): voucher code - if voucher code is provided no items must be provided
         items (Union[Unset, List['CheckoutOffer']]): offers that should be sold via checkout
         connected_offer_items (Union[Unset, List['ConnectedOfferRequest']]): connected offers that should be sold via
@@ -80,7 +80,7 @@ class CheckoutPreparation:
     subscription_start_date: Union[None, Unset, datetime.datetime] = UNSET
     address_settings: Union[Unset, "CheckoutAddressSettings"] = UNSET
     gift_option: Union[Unset, CheckoutPreparationGiftOption] = UNSET
-    additional_data: Union[Unset, "ApiBaseDate"] = UNSET
+    additional_data: Union[Unset, "AdditionalOrderData"] = UNSET
     voucher_code: Union[Unset, str] = UNSET
     items: Union[Unset, List["CheckoutOffer"]] = UNSET
     connected_offer_items: Union[Unset, List["ConnectedOfferRequest"]] = UNSET
@@ -214,7 +214,7 @@ class CheckoutPreparation:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
+        from ..models.additional_order_data import AdditionalOrderData
         from ..models.checkout_address_settings import CheckoutAddressSettings
         from ..models.checkout_offer import CheckoutOffer
         from ..models.connected_offer_request import ConnectedOfferRequest
@@ -236,7 +236,7 @@ class CheckoutPreparation:
 
         _force_payment_method = d.pop("forcePaymentMethod", UNSET)
         force_payment_method: Union[Unset, CheckoutPreparationForcePaymentMethod]
-        if isinstance(_force_payment_method, Unset):
+        if isinstance(_force_payment_method, Unset) or not _force_payment_method:
             force_payment_method = UNSET
         else:
             force_payment_method = CheckoutPreparationForcePaymentMethod(_force_payment_method)
@@ -270,9 +270,9 @@ class CheckoutPreparation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                subscription_start_date_type_1 = isoparse(data)
+                subscription_start_date_type_0 = isoparse(data)
 
-                return subscription_start_date_type_1
+                return subscription_start_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -281,24 +281,24 @@ class CheckoutPreparation:
 
         _address_settings = d.pop("addressSettings", UNSET)
         address_settings: Union[Unset, CheckoutAddressSettings]
-        if isinstance(_address_settings, Unset):
+        if isinstance(_address_settings, Unset) or not _address_settings:
             address_settings = UNSET
         else:
             address_settings = CheckoutAddressSettings.from_dict(_address_settings)
 
         _gift_option = d.pop("giftOption", UNSET)
         gift_option: Union[Unset, CheckoutPreparationGiftOption]
-        if isinstance(_gift_option, Unset):
+        if isinstance(_gift_option, Unset) or not _gift_option:
             gift_option = UNSET
         else:
             gift_option = CheckoutPreparationGiftOption(_gift_option)
 
         _additional_data = d.pop("additionalData", UNSET)
-        additional_data: Union[Unset, ApiBaseDate]
-        if isinstance(_additional_data, Unset):
+        additional_data: Union[Unset, AdditionalOrderData]
+        if isinstance(_additional_data, Unset) or not _additional_data:
             additional_data = UNSET
         else:
-            additional_data = ApiBaseDate.from_dict(_additional_data)
+            additional_data = AdditionalOrderData.from_dict(_additional_data)
 
         voucher_code = d.pop("voucherCode", UNSET)
 

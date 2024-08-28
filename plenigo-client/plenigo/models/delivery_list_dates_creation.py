@@ -113,9 +113,9 @@ class DeliveryListDatesCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                publishing_date_type_1 = isoparse(data)
+                publishing_date_type_0 = isoparse(data)
 
-                return publishing_date_type_1
+                return publishing_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, datetime.datetime], data)
@@ -134,9 +134,9 @@ class DeliveryListDatesCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                delivery_date_type_1 = isoparse(data)
+                delivery_date_type_0 = isoparse(data)
 
-                return delivery_date_type_1
+                return delivery_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -151,9 +151,9 @@ class DeliveryListDatesCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                redelivery_date_type_1 = isoparse(data)
+                redelivery_date_type_0 = isoparse(data)
 
-                return redelivery_date_type_1
+                return redelivery_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -162,7 +162,7 @@ class DeliveryListDatesCreation:
 
         _additional_data = d.pop("additionalData", UNSET)
         additional_data: Union[Unset, DeliveryListDatesCreationAdditionalData]
-        if isinstance(_additional_data, Unset):
+        if isinstance(_additional_data, Unset) or not _additional_data:
             additional_data = UNSET
         else:
             additional_data = DeliveryListDatesCreationAdditionalData.from_dict(_additional_data)

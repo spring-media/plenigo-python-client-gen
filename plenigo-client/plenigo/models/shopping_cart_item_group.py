@@ -8,8 +8,8 @@ from dateutil.parser import isoparse
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
     from ..models.shopping_cart_item import ShoppingCartItem
+    from ..models.shopping_cart_translation import ShoppingCartTranslation
 
 
 T = TypeVar("T", bound="ShoppingCartItemGroup")
@@ -20,19 +20,17 @@ class ShoppingCartItemGroup:
     """
     Attributes:
         internal_title (str): internal title of the shopping cart item group
-        translations (List['ApiBaseDate']): translations associated with this shopping cart item group
+        translations (List['ShoppingCartTranslation']): translations associated with this shopping cart item group
         shopping_cart_item_group_id (int): unique id of the shopping cart item group within a contract company
         items (List['ShoppingCartItem']): items associated with this shopping cart item group
-        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
-            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
-            example, 17:32:28
-        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
-            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
-            example, 17:32:28
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
     """
 
     internal_title: str
-    translations: List["ApiBaseDate"]
+    translations: List["ShoppingCartTranslation"]
     shopping_cart_item_group_id: int
     items: List["ShoppingCartItem"]
     created_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -89,8 +87,8 @@ class ShoppingCartItemGroup:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
         from ..models.shopping_cart_item import ShoppingCartItem
+        from ..models.shopping_cart_translation import ShoppingCartTranslation
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -98,7 +96,7 @@ class ShoppingCartItemGroup:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = ApiBaseDate.from_dict(translations_item_data)
+            translations_item = ShoppingCartTranslation.from_dict(translations_item_data)
 
             translations.append(translations_item)
 
@@ -119,9 +117,9 @@ class ShoppingCartItemGroup:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_1 = isoparse(data)
+                created_date_type_0 = isoparse(data)
 
-                return created_date_type_1
+                return created_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -136,9 +134,9 @@ class ShoppingCartItemGroup:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_1 = isoparse(data)
+                changed_date_type_0 = isoparse(data)
 
-                return changed_date_type_1
+                return changed_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)

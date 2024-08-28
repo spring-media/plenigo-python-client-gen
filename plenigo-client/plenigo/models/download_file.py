@@ -49,7 +49,7 @@ class DownloadFile:
         d = src_dict.copy()
         _file_type = d.pop("fileType", UNSET)
         file_type: Union[Unset, DownloadFileFileType]
-        if isinstance(_file_type, Unset):
+        if isinstance(_file_type, Unset) or not _file_type:
             file_type = UNSET
         else:
             file_type = DownloadFileFileType(_file_type)

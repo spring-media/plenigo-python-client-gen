@@ -9,6 +9,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.app_store_association import AppStoreAssociation
 from ...models.app_store_purchase import AppStorePurchase
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
@@ -41,13 +42,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[AppStorePurchase, ErrorResultBase]]:
+) -> Optional[Union[AppStorePurchase, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = AppStorePurchase.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -74,7 +75,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[AppStorePurchase, ErrorResultBase]]:
+) -> Response[Union[AppStorePurchase, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -93,7 +94,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: AppStoreAssociation,
-) -> Response[Union[AppStorePurchase, ErrorResultBase]]:
+) -> Response[Union[AppStorePurchase, ErrorResult, ErrorResultBase]]:
     """Associate Apple purchase
 
      Associate an Apple app store purchase with a customer. Only app store purchases that include actual
@@ -108,7 +109,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AppStorePurchase, ErrorResultBase]]
+        Response[Union[AppStorePurchase, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -128,7 +129,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: AppStoreAssociation,
-) -> Optional[Union[AppStorePurchase, ErrorResultBase]]:
+) -> Optional[Union[AppStorePurchase, ErrorResult, ErrorResultBase]]:
     """Associate Apple purchase
 
      Associate an Apple app store purchase with a customer. Only app store purchases that include actual
@@ -143,7 +144,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AppStorePurchase, ErrorResultBase]
+        Union[AppStorePurchase, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -163,7 +164,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: AppStoreAssociation,
-) -> Response[Union[AppStorePurchase, ErrorResultBase]]:
+) -> Response[Union[AppStorePurchase, ErrorResult, ErrorResultBase]]:
     """Associate Apple purchase
 
      Associate an Apple app store purchase with a customer. Only app store purchases that include actual
@@ -178,7 +179,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AppStorePurchase, ErrorResultBase]]
+        Response[Union[AppStorePurchase, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -196,7 +197,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: AppStoreAssociation,
-) -> Optional[Union[AppStorePurchase, ErrorResultBase]]:
+) -> Optional[Union[AppStorePurchase, ErrorResult, ErrorResultBase]]:
     """Associate Apple purchase
 
      Associate an Apple app store purchase with a customer. Only app store purchases that include actual
@@ -211,7 +212,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AppStorePurchase, ErrorResultBase]
+        Union[AppStorePurchase, ErrorResult, ErrorResultBase]
     """
 
     return (

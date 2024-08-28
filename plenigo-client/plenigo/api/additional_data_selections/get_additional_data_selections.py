@@ -8,6 +8,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.additional_data_selection_list import AdditionalDataSelectionList
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
@@ -27,13 +28,13 @@ def _get_kwargs() -> Dict[str, Any]:
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[AdditionalDataSelectionList, ErrorResultBase]]:
+) -> Optional[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = AdditionalDataSelectionList.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -60,7 +61,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[AdditionalDataSelectionList, ErrorResultBase]]:
+) -> Response[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -77,7 +78,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[AdditionalDataSelectionList, ErrorResultBase]]:
+) -> Response[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]:
     """Get additional data selections
 
      Returns additional data selections.
@@ -87,7 +88,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AdditionalDataSelectionList, ErrorResultBase]]
+        Response[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs()
@@ -102,7 +103,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[AdditionalDataSelectionList, ErrorResultBase]]:
+) -> Optional[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]:
     """Get additional data selections
 
      Returns additional data selections.
@@ -112,7 +113,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AdditionalDataSelectionList, ErrorResultBase]
+        Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -128,7 +129,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[AdditionalDataSelectionList, ErrorResultBase]]:
+) -> Response[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]:
     """Get additional data selections
 
      Returns additional data selections.
@@ -138,7 +139,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AdditionalDataSelectionList, ErrorResultBase]]
+        Response[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs()
@@ -151,7 +152,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[AdditionalDataSelectionList, ErrorResultBase]]:
+) -> Optional[Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]]:
     """Get additional data selections
 
      Returns additional data selections.
@@ -161,7 +162,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AdditionalDataSelectionList, ErrorResultBase]
+        Union[AdditionalDataSelectionList, ErrorResult, ErrorResultBase]
     """
 
     return (

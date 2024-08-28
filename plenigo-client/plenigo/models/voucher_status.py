@@ -53,7 +53,7 @@ class VoucherStatus:
 
         _status = d.pop("status", UNSET)
         status: Union[Unset, VoucherStatusStatus]
-        if isinstance(_status, Unset):
+        if isinstance(_status, Unset) or not _status:
             status = UNSET
         else:
             status = VoucherStatusStatus(_status)

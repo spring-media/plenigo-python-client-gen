@@ -8,6 +8,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.error_result_base import ErrorResultBase
+from ...models.ledger import Ledger
 from ...models.ledger_creation import LedgerCreation
 from ...types import Response
 
@@ -39,7 +40,11 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[ErrorResultBase, Ledger]]:
+    if response.status_code == HTTPStatus.CREATED:
+        response_201 = Ledger.from_dict(response.json())
+
+        return response_201
     if response.status_code == HTTPStatus.BAD_REQUEST:
         response_400 = ErrorResultBase.from_dict(response.json())
 
@@ -68,7 +73,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[ErrorResultBase]:
+) -> Response[Union[ErrorResultBase, Ledger]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -86,7 +91,7 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: LedgerCreation,
-) -> Response[ErrorResultBase]:
+) -> Response[Union[ErrorResultBase, Ledger]]:
     """Create ledger
 
      Create a new ledger with the data provided.
@@ -99,7 +104,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[ErrorResultBase, Ledger]]
     """
 
     kwargs = _get_kwargs(
@@ -117,7 +122,7 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     body: LedgerCreation,
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[ErrorResultBase, Ledger]]:
     """Create ledger
 
      Create a new ledger with the data provided.
@@ -130,7 +135,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[ErrorResultBase, Ledger]
     """
 
     return sync_detailed(
@@ -148,7 +153,7 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: LedgerCreation,
-) -> Response[ErrorResultBase]:
+) -> Response[Union[ErrorResultBase, Ledger]]:
     """Create ledger
 
      Create a new ledger with the data provided.
@@ -161,7 +166,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[ErrorResultBase, Ledger]]
     """
 
     kwargs = _get_kwargs(
@@ -177,7 +182,7 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     body: LedgerCreation,
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[ErrorResultBase, Ledger]]:
     """Create ledger
 
      Create a new ledger with the data provided.
@@ -190,7 +195,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[ErrorResultBase, Ledger]
     """
 
     return (

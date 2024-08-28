@@ -7,7 +7,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.api_base_date import ApiBaseDate
+from ...models.cross_client_transaction import CrossClientTransaction
 from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
@@ -29,9 +29,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Optional[Union[CrossClientTransaction, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = ApiBaseDate.from_dict(response.json())
+        response_200 = CrossClientTransaction.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -62,7 +62,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Response[Union[CrossClientTransaction, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -80,7 +80,7 @@ def sync_detailed(
     cross_client_transaction_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Response[Union[CrossClientTransaction, ErrorResultBase]]:
     """Get cross client transaction
 
      Get cross client transaction that is identified by the passed address id.
@@ -93,7 +93,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiBaseDate, ErrorResultBase]]
+        Response[Union[CrossClientTransaction, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -111,7 +111,7 @@ def sync(
     cross_client_transaction_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Optional[Union[CrossClientTransaction, ErrorResultBase]]:
     """Get cross client transaction
 
      Get cross client transaction that is identified by the passed address id.
@@ -124,7 +124,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiBaseDate, ErrorResultBase]
+        Union[CrossClientTransaction, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -142,7 +142,7 @@ async def asyncio_detailed(
     cross_client_transaction_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Response[Union[CrossClientTransaction, ErrorResultBase]]:
     """Get cross client transaction
 
      Get cross client transaction that is identified by the passed address id.
@@ -155,7 +155,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiBaseDate, ErrorResultBase]]
+        Response[Union[CrossClientTransaction, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -171,7 +171,7 @@ async def asyncio(
     cross_client_transaction_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Optional[Union[CrossClientTransaction, ErrorResultBase]]:
     """Get cross client transaction
 
      Get cross client transaction that is identified by the passed address id.
@@ -184,7 +184,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiBaseDate, ErrorResultBase]
+        Union[CrossClientTransaction, ErrorResultBase]
     """
 
     return (

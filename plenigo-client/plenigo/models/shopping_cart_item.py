@@ -25,12 +25,10 @@ class ShoppingCartItem:
         connected_offer_id (Union[Unset, int]): id of the connected offer associated with this shopping cart item
         connected_leading_plenigo_offer_id (Union[Unset, str]): unique id of the offer the connected offer is associated
             with
-        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
-            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
-            example, 17:32:28
-        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
-            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
-            example, 17:32:28
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
         plenigo_offer_id (Union[Unset, str]): unique id of the offer within the shopping cart
         plenigo_bonus_id (Union[Unset, str]): unique id of the bonus within the shopping cart
         connected_plenigo_offer_id (Union[Unset, str]): unique id of the connected offer within the shopping cart
@@ -154,9 +152,9 @@ class ShoppingCartItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_1 = isoparse(data)
+                created_date_type_0 = isoparse(data)
 
-                return created_date_type_1
+                return created_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -171,9 +169,9 @@ class ShoppingCartItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_1 = isoparse(data)
+                changed_date_type_0 = isoparse(data)
 
-                return changed_date_type_1
+                return changed_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)

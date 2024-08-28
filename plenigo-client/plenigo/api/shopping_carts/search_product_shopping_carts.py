@@ -8,7 +8,9 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
+from ...models.shopping_carts import ShoppingCarts
 from ...types import UNSET, Response, Unset
 
 log = logging.getLogger(__name__)
@@ -58,9 +60,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, ShoppingCarts]]:
+    if response.status_code == HTTPStatus.OK:
+        response_200 = ShoppingCarts.from_dict(response.json())
+
+        return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -87,7 +93,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[ErrorResultBase]:
+) -> Response[Union[ErrorResult, ErrorResultBase, ShoppingCarts]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -105,9 +111,9 @@ def sync_all(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     plenigo_shopping_cart_id: Union[Unset, str] = UNSET,
-) -> Optional[ErrorResultBase]:
-    # TODO: Fix commented out macro
-    all_results = []  #  # type: ignore
+) -> Optional[Union[ErrorResult, ErrorResultBase, ShoppingCarts]]:
+    all_results = ShoppingCarts(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -122,7 +128,7 @@ def sync_all(
             ).parsed
 
             if results and not isinstance(results, ErrorResultBase) and not isinstance(results.items, Unset):
-                all_results.extend(results.items)  # type: ignore
+                all_results.items.extend(results.items)  # type: ignore
 
                 cursor = results.additional_properties.get("startingAfterId")
 
@@ -152,7 +158,7 @@ def sync_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     plenigo_shopping_cart_id: Union[Unset, str] = UNSET,
-) -> Response[ErrorResultBase]:
+) -> Response[Union[ErrorResult, ErrorResultBase, ShoppingCarts]]:
     """Search shopping carts
 
      Search all shopping carts that correspond to the given search conditions.
@@ -170,7 +176,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[ErrorResult, ErrorResultBase, ShoppingCarts]]
     """
 
     kwargs = _get_kwargs(
@@ -198,7 +204,7 @@ def sync(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     plenigo_shopping_cart_id: Union[Unset, str] = UNSET,
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, ShoppingCarts]]:
     """Search shopping carts
 
      Search all shopping carts that correspond to the given search conditions.
@@ -216,7 +222,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[ErrorResult, ErrorResultBase, ShoppingCarts]
     """
 
     return sync_detailed(
@@ -244,7 +250,7 @@ async def asyncio_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     plenigo_shopping_cart_id: Union[Unset, str] = UNSET,
-) -> Response[ErrorResultBase]:
+) -> Response[Union[ErrorResult, ErrorResultBase, ShoppingCarts]]:
     """Search shopping carts
 
      Search all shopping carts that correspond to the given search conditions.
@@ -262,7 +268,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[ErrorResult, ErrorResultBase, ShoppingCarts]]
     """
 
     kwargs = _get_kwargs(
@@ -288,8 +294,9 @@ async def asyncio_all(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     plenigo_shopping_cart_id: Union[Unset, str] = UNSET,
-) -> Response[ErrorResultBase]:
-    all_results = []
+) -> Response[Union[ErrorResult, ErrorResultBase, ShoppingCarts]]:
+    all_results = ShoppingCarts(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -331,7 +338,7 @@ async def asyncio(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     plenigo_shopping_cart_id: Union[Unset, str] = UNSET,
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, ShoppingCarts]]:
     """Search shopping carts
 
      Search all shopping carts that correspond to the given search conditions.
@@ -349,7 +356,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[ErrorResult, ErrorResultBase, ShoppingCarts]
     """
 
     return (

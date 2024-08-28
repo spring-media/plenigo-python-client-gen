@@ -7,7 +7,7 @@ from ..models.relation_rule_base_identity_check_type import RelationRuleBaseIden
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
+    from ..models.rule_translation import RuleTranslation
 
 
 T = TypeVar("T", bound="RelationRuleBase")
@@ -25,7 +25,7 @@ class RelationRuleBase:
         send_customer_email (Union[Unset, bool]): flag indicating if customer email should be sent in case of a
             cancellation
         identity_check_type (Union[Unset, RelationRuleBaseIdentityCheckType]): identity check type to use
-        translations (Union[Unset, List['ApiBaseDate']]): translations for customer texts
+        translations (Union[Unset, List['RuleTranslation']]): translations for customer texts
     """
 
     internal_title: Union[Unset, str] = UNSET
@@ -35,7 +35,7 @@ class RelationRuleBase:
     cancel_unrelated: Union[Unset, bool] = UNSET
     send_customer_email: Union[Unset, bool] = UNSET
     identity_check_type: Union[Unset, RelationRuleBaseIdentityCheckType] = UNSET
-    translations: Union[Unset, List["ApiBaseDate"]] = UNSET
+    translations: Union[Unset, List["RuleTranslation"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -86,7 +86,7 @@ class RelationRuleBase:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
+        from ..models.rule_translation import RuleTranslation
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle", UNSET)
@@ -103,7 +103,7 @@ class RelationRuleBase:
 
         _identity_check_type = d.pop("identityCheckType", UNSET)
         identity_check_type: Union[Unset, RelationRuleBaseIdentityCheckType]
-        if isinstance(_identity_check_type, Unset):
+        if isinstance(_identity_check_type, Unset) or not _identity_check_type:
             identity_check_type = UNSET
         else:
             identity_check_type = RelationRuleBaseIdentityCheckType(_identity_check_type)
@@ -111,7 +111,7 @@ class RelationRuleBase:
         translations = []
         _translations = d.pop("translations", UNSET)
         for translations_item_data in _translations or []:
-            translations_item = ApiBaseDate.from_dict(translations_item_data)
+            translations_item = RuleTranslation.from_dict(translations_item_data)
 
             translations.append(translations_item)
 

@@ -70,7 +70,7 @@ class CustomerData:
         d = src_dict.copy()
         _step_token = d.pop("stepToken", UNSET)
         step_token: Union[Unset, StepToken]
-        if isinstance(_step_token, Unset):
+        if isinstance(_step_token, Unset) or not _step_token:
             step_token = UNSET
         else:
             step_token = StepToken.from_dict(_step_token)
@@ -83,7 +83,7 @@ class CustomerData:
 
         _logging_data = d.pop("loggingData", UNSET)
         logging_data: Union[Unset, LoggingData]
-        if isinstance(_logging_data, Unset):
+        if isinstance(_logging_data, Unset) or not _logging_data:
             logging_data = UNSET
         else:
             logging_data = LoggingData.from_dict(_logging_data)

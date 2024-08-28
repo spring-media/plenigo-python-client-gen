@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
+    from ..models.download import Download
 
 
 T = TypeVar("T", bound="Downloads")
@@ -16,10 +16,10 @@ T = TypeVar("T", bound="Downloads")
 class Downloads:
     """
     Attributes:
-        items (Union[Unset, List['ApiBaseDate']]):
+        items (Union[Unset, List['Download']]):
     """
 
-    items: Union[Unset, List["ApiBaseDate"]] = UNSET
+    items: Union[Unset, List["Download"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -40,13 +40,13 @@ class Downloads:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
+        from ..models.download import Download
 
         d = src_dict.copy()
         items = []
         _items = d.pop("items", UNSET)
         for items_item_data in _items or []:
-            items_item = ApiBaseDate.from_dict(items_item_data)
+            items_item = Download.from_dict(items_item_data)
 
             items.append(items_item)
 

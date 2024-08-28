@@ -9,6 +9,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.corporate_accounts import CorporateAccounts
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...types import UNSET, Response, Unset
 
@@ -59,17 +60,17 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[CorporateAccounts, ErrorResultBase]]:
+) -> Optional[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = CorporateAccounts.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
-        response_401 = ErrorResultBase.from_dict(response.json())
+        response_401 = ErrorResult.from_dict(response.json())
 
         return response_401
     if response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
@@ -92,7 +93,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[CorporateAccounts, ErrorResultBase]]:
+) -> Response[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -115,7 +116,7 @@ def sync_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     corporate_account_id: Union[Unset, int] = UNSET,
-) -> Response[Union[CorporateAccounts, ErrorResultBase]]:
+) -> Response[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]:
     """Search
 
      Search all corporate accounts that correspond to the given search conditions.
@@ -133,7 +134,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CorporateAccounts, ErrorResultBase]]
+        Response[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -161,7 +162,7 @@ def sync(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     corporate_account_id: Union[Unset, int] = UNSET,
-) -> Optional[Union[CorporateAccounts, ErrorResultBase]]:
+) -> Optional[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]:
     """Search
 
      Search all corporate accounts that correspond to the given search conditions.
@@ -179,7 +180,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CorporateAccounts, ErrorResultBase]
+        Union[CorporateAccounts, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -207,7 +208,7 @@ async def asyncio_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     corporate_account_id: Union[Unset, int] = UNSET,
-) -> Response[Union[CorporateAccounts, ErrorResultBase]]:
+) -> Response[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]:
     """Search
 
      Search all corporate accounts that correspond to the given search conditions.
@@ -225,7 +226,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CorporateAccounts, ErrorResultBase]]
+        Response[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -251,7 +252,7 @@ async def asyncio(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     corporate_account_id: Union[Unset, int] = UNSET,
-) -> Optional[Union[CorporateAccounts, ErrorResultBase]]:
+) -> Optional[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]:
     """Search
 
      Search all corporate accounts that correspond to the given search conditions.
@@ -269,7 +270,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CorporateAccounts, ErrorResultBase]
+        Union[CorporateAccounts, ErrorResult, ErrorResultBase]
     """
 
     return (

@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.delivery_list_dates_creation import DeliveryListDatesCreation
+    from ..models.delivery_list_dates_change import DeliveryListDatesChange
 
 
 T = TypeVar("T", bound="DeliveryListDates")
@@ -16,10 +16,10 @@ T = TypeVar("T", bound="DeliveryListDates")
 class DeliveryListDates:
     """
     Attributes:
-        items (Union[Unset, List['DeliveryListDatesCreation']]): delivery dates
+        items (Union[Unset, List['DeliveryListDatesChange']]): delivery dates
     """
 
-    items: Union[Unset, List["DeliveryListDatesCreation"]] = UNSET
+    items: Union[Unset, List["DeliveryListDatesChange"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -40,13 +40,13 @@ class DeliveryListDates:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.delivery_list_dates_creation import DeliveryListDatesCreation
+        from ..models.delivery_list_dates_change import DeliveryListDatesChange
 
         d = src_dict.copy()
         items = []
         _items = d.pop("items", UNSET)
         for items_item_data in _items or []:
-            items_item = DeliveryListDatesCreation.from_dict(items_item_data)
+            items_item = DeliveryListDatesChange.from_dict(items_item_data)
 
             items.append(items_item)
 

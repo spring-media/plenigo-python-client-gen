@@ -11,9 +11,9 @@ from ..models.offer_product_base_voucher_validity_timespan import OfferProductBa
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
     from ..models.offer_product_base_additional_data import OfferProductBaseAdditionalData
     from ..models.offer_product_base_data import OfferProductBaseData
+    from ..models.offer_translation import OfferTranslation
 
 
 T = TypeVar("T", bound="OfferProductBase")
@@ -28,7 +28,7 @@ class OfferProductBase:
         product_type (OfferProductBaseProductType): defines the type of product
         amount (int): amount of goods represented by this product
         access_right_id (int): id of the access right associated with this product
-        translations (List['ApiBaseDate']): translations associated with this product
+        translations (List['OfferTranslation']): translations associated with this product
         internal_title (Union[Unset, str]): internal title of the product
         subscription (Union[Unset, bool]): flag indicating if product represents a subscription
         delivery_list_id (Union[Unset, int]): id of the delivery list to use
@@ -60,7 +60,7 @@ class OfferProductBase:
     product_type: OfferProductBaseProductType
     amount: int
     access_right_id: int
-    translations: List["ApiBaseDate"]
+    translations: List["OfferTranslation"]
     internal_title: Union[Unset, str] = UNSET
     subscription: Union[Unset, bool] = UNSET
     delivery_list_id: Union[Unset, int] = UNSET
@@ -203,9 +203,9 @@ class OfferProductBase:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
         from ..models.offer_product_base_additional_data import OfferProductBaseAdditionalData
         from ..models.offer_product_base_data import OfferProductBaseData
+        from ..models.offer_translation import OfferTranslation
 
         d = src_dict.copy()
         position = d.pop("position")
@@ -221,7 +221,7 @@ class OfferProductBase:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = ApiBaseDate.from_dict(translations_item_data)
+            translations_item = OfferTranslation.from_dict(translations_item_data)
 
             translations.append(translations_item)
 
@@ -241,9 +241,9 @@ class OfferProductBase:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                validity_end_time_type_1 = isoparse(data)
+                validity_end_time_type_0 = isoparse(data)
 
-                return validity_end_time_type_1
+                return validity_end_time_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -264,21 +264,21 @@ class OfferProductBase:
 
         _voucher_validity_timespan = d.pop("voucherValidityTimespan", UNSET)
         voucher_validity_timespan: Union[Unset, OfferProductBaseVoucherValidityTimespan]
-        if isinstance(_voucher_validity_timespan, Unset):
+        if isinstance(_voucher_validity_timespan, Unset) or not _voucher_validity_timespan:
             voucher_validity_timespan = UNSET
         else:
             voucher_validity_timespan = OfferProductBaseVoucherValidityTimespan(_voucher_validity_timespan)
 
         _additional_data = d.pop("additionalData", UNSET)
         additional_data: Union[Unset, OfferProductBaseAdditionalData]
-        if isinstance(_additional_data, Unset):
+        if isinstance(_additional_data, Unset) or not _additional_data:
             additional_data = UNSET
         else:
             additional_data = OfferProductBaseAdditionalData.from_dict(_additional_data)
 
         _data = d.pop("data", UNSET)
         data: Union[Unset, OfferProductBaseData]
-        if isinstance(_data, Unset):
+        if isinstance(_data, Unset) or not _data:
             data = UNSET
         else:
             data = OfferProductBaseData.from_dict(_data)

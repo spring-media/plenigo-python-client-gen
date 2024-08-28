@@ -51,14 +51,14 @@ class OptInsUpdateOptIns:
         d = src_dict.copy()
         _key = d.pop("key", UNSET)
         key: Union[Unset, OptInsUpdateOptInsKey]
-        if isinstance(_key, Unset):
+        if isinstance(_key, Unset) or not _key:
             key = UNSET
         else:
             key = OptInsUpdateOptInsKey(_key)
 
         _value = d.pop("value", UNSET)
         value: Union[Unset, OptInUpdate]
-        if isinstance(_value, Unset):
+        if isinstance(_value, Unset) or not _value:
             value = UNSET
         else:
             value = OptInUpdate.from_dict(_value)

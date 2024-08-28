@@ -39,7 +39,7 @@ class CrossClientTransactionPaidStatusUpdate:
         d = src_dict.copy()
         _paid_status = d.pop("paidStatus", UNSET)
         paid_status: Union[Unset, CrossClientTransactionPaidStatusUpdatePaidStatus]
-        if isinstance(_paid_status, Unset):
+        if isinstance(_paid_status, Unset) or not _paid_status:
             paid_status = UNSET
         else:
             paid_status = CrossClientTransactionPaidStatusUpdatePaidStatus(_paid_status)

@@ -1,9 +1,10 @@
 from enum import Enum
 
 
-class SubscriptionStatusNewStatus(str, Enum):
+class OrderStatus(str, Enum):
     ACTIVE = "ACTIVE"
-    BLOCKED = "BLOCKED"
+    CANCELLED = "CANCELLED"
+    DONE = "DONE"
 
     def __str__(self) -> str:
         return str(self.value)

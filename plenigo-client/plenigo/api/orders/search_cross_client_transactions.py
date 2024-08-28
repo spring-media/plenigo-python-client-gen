@@ -9,6 +9,7 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.cross_client_transactions import CrossClientTransactions
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.search_cross_client_transactions_paid_status import SearchCrossClientTransactionsPaidStatus
 from ...models.search_cross_client_transactions_type import SearchCrossClientTransactionsType
@@ -84,13 +85,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[CrossClientTransactions, ErrorResultBase]]:
+) -> Optional[Union[CrossClientTransactions, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = CrossClientTransactions.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -117,7 +118,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[CrossClientTransactions, ErrorResultBase]]:
+) -> Response[Union[CrossClientTransactions, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -140,9 +141,9 @@ def sync_all(
     type: Union[Unset, SearchCrossClientTransactionsType] = UNSET,
     paid_status: Union[Unset, SearchCrossClientTransactionsPaidStatus] = UNSET,
     connected_company_id: Union[Unset, str] = UNSET,
-) -> Optional[Union[CrossClientTransactions, ErrorResultBase]]:
-    # TODO: Fix commented out macro
-    all_results = []  # CrossClientTransactions(items=[])  # type: ignore
+) -> Optional[Union[CrossClientTransactions, ErrorResult, ErrorResultBase]]:
+    all_results = CrossClientTransactions(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -162,7 +163,7 @@ def sync_all(
             ).parsed
 
             if results and not isinstance(results, ErrorResultBase) and not isinstance(results.items, Unset):
-                all_results.extend(results.items)  # type: ignore
+                all_results.items.extend(results.items)  # type: ignore
 
                 cursor = results.additional_properties.get("startingAfterId")
 
@@ -197,7 +198,7 @@ def sync_detailed(
     type: Union[Unset, SearchCrossClientTransactionsType] = UNSET,
     paid_status: Union[Unset, SearchCrossClientTransactionsPaidStatus] = UNSET,
     connected_company_id: Union[Unset, str] = UNSET,
-) -> Response[Union[CrossClientTransactions, ErrorResultBase]]:
+) -> Response[Union[CrossClientTransactions, ErrorResult, ErrorResultBase]]:
     """Search cross client transactions
 
      Search all cross client transactions that correspond to the given search conditions.
@@ -220,7 +221,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CrossClientTransactions, ErrorResultBase]]
+        Response[Union[CrossClientTransactions, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -258,7 +259,7 @@ def sync(
     type: Union[Unset, SearchCrossClientTransactionsType] = UNSET,
     paid_status: Union[Unset, SearchCrossClientTransactionsPaidStatus] = UNSET,
     connected_company_id: Union[Unset, str] = UNSET,
-) -> Optional[Union[CrossClientTransactions, ErrorResultBase]]:
+) -> Optional[Union[CrossClientTransactions, ErrorResult, ErrorResultBase]]:
     """Search cross client transactions
 
      Search all cross client transactions that correspond to the given search conditions.
@@ -281,7 +282,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CrossClientTransactions, ErrorResultBase]
+        Union[CrossClientTransactions, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -319,7 +320,7 @@ async def asyncio_detailed(
     type: Union[Unset, SearchCrossClientTransactionsType] = UNSET,
     paid_status: Union[Unset, SearchCrossClientTransactionsPaidStatus] = UNSET,
     connected_company_id: Union[Unset, str] = UNSET,
-) -> Response[Union[CrossClientTransactions, ErrorResultBase]]:
+) -> Response[Union[CrossClientTransactions, ErrorResult, ErrorResultBase]]:
     """Search cross client transactions
 
      Search all cross client transactions that correspond to the given search conditions.
@@ -342,7 +343,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CrossClientTransactions, ErrorResultBase]]
+        Response[Union[CrossClientTransactions, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -378,8 +379,9 @@ async def asyncio_all(
     type: Union[Unset, SearchCrossClientTransactionsType] = UNSET,
     paid_status: Union[Unset, SearchCrossClientTransactionsPaidStatus] = UNSET,
     connected_company_id: Union[Unset, str] = UNSET,
-) -> Response[Union[CrossClientTransactions, ErrorResultBase]]:
-    all_results = []
+) -> Response[Union[CrossClientTransactions, ErrorResult, ErrorResultBase]]:
+    all_results = CrossClientTransactions(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -431,7 +433,7 @@ async def asyncio(
     type: Union[Unset, SearchCrossClientTransactionsType] = UNSET,
     paid_status: Union[Unset, SearchCrossClientTransactionsPaidStatus] = UNSET,
     connected_company_id: Union[Unset, str] = UNSET,
-) -> Optional[Union[CrossClientTransactions, ErrorResultBase]]:
+) -> Optional[Union[CrossClientTransactions, ErrorResult, ErrorResultBase]]:
     """Search cross client transactions
 
      Search all cross client transactions that correspond to the given search conditions.
@@ -454,7 +456,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CrossClientTransactions, ErrorResultBase]
+        Union[CrossClientTransactions, ErrorResult, ErrorResultBase]
     """
 
     return (

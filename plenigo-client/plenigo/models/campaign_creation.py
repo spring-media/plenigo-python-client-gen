@@ -98,9 +98,9 @@ class CampaignCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                start_date_type_1 = isoparse(data).date()
+                start_date_type_0 = isoparse(data).date()
 
-                return start_date_type_1
+                return start_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, datetime.date], data)
@@ -122,9 +122,9 @@ class CampaignCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                end_date_type_1 = isoparse(data).date()
+                end_date_type_0 = isoparse(data).date()
 
-                return end_date_type_1
+                return end_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.date], data)

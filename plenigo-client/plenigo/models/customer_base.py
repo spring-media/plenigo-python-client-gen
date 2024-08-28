@@ -31,9 +31,9 @@ class CustomerBase:
             href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank">ISO 639-1</a>
         mobile_number (Union[Unset, str]): mobile number of the customer formatted as <a
             href="https://en.wikipedia.org/wiki/E.164" target="_blank">E.164</a>
-        birthday (Union[None, Unset, datetime.date]): birthday of the customer with full-date notation as defined by <a
-            href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
-            2017-07-01
+        birthday (Union[None, Unset, datetime.datetime]): birthday of the customer with full-date notation as defined by
+            <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 2017-07-01
         miscellaneous_data (Union[Unset, CustomerMiscellaneousData]):
     """
 
@@ -46,7 +46,7 @@ class CustomerBase:
     invoice_email: Union[Unset, str] = UNSET
     language: Union[Unset, str] = UNSET
     mobile_number: Union[Unset, str] = UNSET
-    birthday: Union[None, Unset, datetime.date] = UNSET
+    birthday: Union[None, Unset, datetime.datetime] = UNSET
     miscellaneous_data: Union[Unset, "CustomerMiscellaneousData"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -74,7 +74,7 @@ class CustomerBase:
         birthday: Union[None, Unset, str]
         if isinstance(self.birthday, Unset):
             birthday = UNSET
-        elif isinstance(self.birthday, datetime.date):
+        elif isinstance(self.birthday, datetime.datetime):
             birthday = self.birthday.isoformat()
         else:
             birthday = self.birthday
@@ -124,7 +124,7 @@ class CustomerBase:
 
         _salutation = d.pop("salutation", UNSET)
         salutation: Union[Unset, CustomerBaseSalutation]
-        if isinstance(_salutation, Unset):
+        if isinstance(_salutation, Unset) or not _salutation:
             salutation = UNSET
         else:
             salutation = CustomerBaseSalutation(_salutation)
@@ -139,7 +139,7 @@ class CustomerBase:
 
         mobile_number = d.pop("mobileNumber", UNSET)
 
-        def _parse_birthday(data: object) -> Union[None, Unset, datetime.date]:
+        def _parse_birthday(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
             if isinstance(data, Unset):
@@ -147,18 +147,18 @@ class CustomerBase:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                birthday_type_1 = isoparse(data).date()
+                birthday_type_0 = isoparse(data)
 
-                return birthday_type_1
+                return birthday_type_0
             except:  # noqa: E722
                 pass
-            return cast(Union[None, Unset, datetime.date], data)
+            return cast(Union[None, Unset, datetime.datetime], data)
 
         birthday = _parse_birthday(d.pop("birthday", UNSET))
 
         _miscellaneous_data = d.pop("miscellaneousData", UNSET)
         miscellaneous_data: Union[Unset, CustomerMiscellaneousData]
-        if isinstance(_miscellaneous_data, Unset):
+        if isinstance(_miscellaneous_data, Unset) or not _miscellaneous_data:
             miscellaneous_data = UNSET
         else:
             miscellaneous_data = CustomerMiscellaneousData.from_dict(_miscellaneous_data)

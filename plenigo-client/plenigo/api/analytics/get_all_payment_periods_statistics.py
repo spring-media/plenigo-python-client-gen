@@ -8,6 +8,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.analytics_payment_periods_result import AnalyticsPaymentPeriodsResult
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.get_all_payment_periods_statistics_interval import GetAllPaymentPeriodsStatisticsInterval
 from ...models.get_all_payment_periods_statistics_sort import GetAllPaymentPeriodsStatisticsSort
@@ -53,13 +54,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[AnalyticsPaymentPeriodsResult, ErrorResultBase]]:
+) -> Optional[Union[AnalyticsPaymentPeriodsResult, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = AnalyticsPaymentPeriodsResult.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -86,7 +87,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[AnalyticsPaymentPeriodsResult, ErrorResultBase]]:
+) -> Response[Union[AnalyticsPaymentPeriodsResult, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -107,7 +108,7 @@ def sync_detailed(
     interval: GetAllPaymentPeriodsStatisticsInterval,
     size: int,
     sort: Union[Unset, GetAllPaymentPeriodsStatisticsSort] = UNSET,
-) -> Response[Union[AnalyticsPaymentPeriodsResult, ErrorResultBase]]:
+) -> Response[Union[AnalyticsPaymentPeriodsResult, ErrorResult, ErrorResultBase]]:
     """Get all payment periods
 
      Get statistical information about all payment periods within the defined time range.
@@ -123,7 +124,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AnalyticsPaymentPeriodsResult, ErrorResultBase]]
+        Response[Union[AnalyticsPaymentPeriodsResult, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -147,7 +148,7 @@ def sync(
     interval: GetAllPaymentPeriodsStatisticsInterval,
     size: int,
     sort: Union[Unset, GetAllPaymentPeriodsStatisticsSort] = UNSET,
-) -> Optional[Union[AnalyticsPaymentPeriodsResult, ErrorResultBase]]:
+) -> Optional[Union[AnalyticsPaymentPeriodsResult, ErrorResult, ErrorResultBase]]:
     """Get all payment periods
 
      Get statistical information about all payment periods within the defined time range.
@@ -163,7 +164,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AnalyticsPaymentPeriodsResult, ErrorResultBase]
+        Union[AnalyticsPaymentPeriodsResult, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -187,7 +188,7 @@ async def asyncio_detailed(
     interval: GetAllPaymentPeriodsStatisticsInterval,
     size: int,
     sort: Union[Unset, GetAllPaymentPeriodsStatisticsSort] = UNSET,
-) -> Response[Union[AnalyticsPaymentPeriodsResult, ErrorResultBase]]:
+) -> Response[Union[AnalyticsPaymentPeriodsResult, ErrorResult, ErrorResultBase]]:
     """Get all payment periods
 
      Get statistical information about all payment periods within the defined time range.
@@ -203,7 +204,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AnalyticsPaymentPeriodsResult, ErrorResultBase]]
+        Response[Union[AnalyticsPaymentPeriodsResult, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -225,7 +226,7 @@ async def asyncio(
     interval: GetAllPaymentPeriodsStatisticsInterval,
     size: int,
     sort: Union[Unset, GetAllPaymentPeriodsStatisticsSort] = UNSET,
-) -> Optional[Union[AnalyticsPaymentPeriodsResult, ErrorResultBase]]:
+) -> Optional[Union[AnalyticsPaymentPeriodsResult, ErrorResult, ErrorResultBase]]:
     """Get all payment periods
 
      Get statistical information about all payment periods within the defined time range.
@@ -241,7 +242,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AnalyticsPaymentPeriodsResult, ErrorResultBase]
+        Union[AnalyticsPaymentPeriodsResult, ErrorResult, ErrorResultBase]
     """
 
     return (

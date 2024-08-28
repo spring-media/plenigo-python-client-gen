@@ -74,9 +74,9 @@ class SessionInformation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_at_type_1 = isoparse(data)
+                created_at_type_0 = isoparse(data)
 
-                return created_at_type_1
+                return created_at_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)

@@ -112,8 +112,8 @@ def sync_all(
     starting_after: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchCustomerAssociatedOptInsSort] = UNSET,
 ) -> Optional[Union[ErrorResultBase, OptInsList]]:
-    # TODO: Fix commented out macro
-    all_results = []  # OptInsList(items=[])  # type: ignore
+    all_results = OptInsList(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -127,7 +127,7 @@ def sync_all(
             ).parsed
 
             if results and not isinstance(results, ErrorResultBase) and not isinstance(results.items, Unset):
-                all_results.extend(results.items)  # type: ignore
+                all_results.items.extend(results.items)  # type: ignore
 
                 cursor = results.additional_properties.get("startingAfterId")
 
@@ -284,7 +284,8 @@ async def asyncio_all(
     starting_after: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchCustomerAssociatedOptInsSort] = UNSET,
 ) -> Response[Union[ErrorResultBase, OptInsList]]:
-    all_results = []
+    all_results = OptInsList(items=[])
+    # type: ignore
 
     while True:
         try:

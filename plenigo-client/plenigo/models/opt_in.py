@@ -75,9 +75,9 @@ class OptIn:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_1 = isoparse(data)
+                changed_date_type_0 = isoparse(data)
 
-                return changed_date_type_1
+                return changed_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -86,7 +86,7 @@ class OptIn:
 
         _status = d.pop("status", UNSET)
         status: Union[Unset, OptInStatus]
-        if isinstance(_status, Unset):
+        if isinstance(_status, Unset) or not _status:
             status = UNSET
         else:
             status = OptInStatus(_status)

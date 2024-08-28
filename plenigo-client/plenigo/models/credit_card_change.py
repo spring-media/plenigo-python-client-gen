@@ -91,9 +91,9 @@ class CreditCardChange:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_to_type_1 = isoparse(data).date()
+                valid_to_type_0 = isoparse(data).date()
 
-                return valid_to_type_1
+                return valid_to_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, datetime.date], data)
@@ -102,7 +102,7 @@ class CreditCardChange:
 
         _card_type = d.pop("cardType", UNSET)
         card_type: Union[Unset, CreditCardChangeCardType]
-        if isinstance(_card_type, Unset):
+        if isinstance(_card_type, Unset) or not _card_type:
             card_type = UNSET
         else:
             card_type = CreditCardChangeCardType(_card_type)

@@ -194,9 +194,9 @@ class OrderImport:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                start_date_type_1 = isoparse(data)
+                start_date_type_0 = isoparse(data)
 
-                return start_date_type_1
+                return start_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, datetime.datetime], data)
@@ -223,9 +223,9 @@ class OrderImport:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                order_date_type_1 = isoparse(data)
+                order_date_type_0 = isoparse(data)
 
-                return order_date_type_1
+                return order_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -240,9 +240,9 @@ class OrderImport:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                end_date_type_1 = isoparse(data)
+                end_date_type_0 = isoparse(data)
 
-                return end_date_type_1
+                return end_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -257,9 +257,9 @@ class OrderImport:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                reference_start_date_type_1 = isoparse(data)
+                reference_start_date_type_0 = isoparse(data)
 
-                return reference_start_date_type_1
+                return reference_start_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -274,9 +274,9 @@ class OrderImport:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                next_booking_date_type_1 = isoparse(data)
+                next_booking_date_type_0 = isoparse(data)
 
-                return next_booking_date_type_1
+                return next_booking_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -289,7 +289,7 @@ class OrderImport:
 
         _managed_by = d.pop("managedBy", UNSET)
         managed_by: Union[Unset, OrderImportManagedBy]
-        if isinstance(_managed_by, Unset):
+        if isinstance(_managed_by, Unset) or not _managed_by:
             managed_by = UNSET
         else:
             managed_by = OrderImportManagedBy(_managed_by)

@@ -7,7 +7,7 @@ from ..models.product_misuse_rule_creation_duration_timespan import ProductMisus
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
+    from ..models.misuse_rule_translation import MisuseRuleTranslation
 
 
 T = TypeVar("T", bound="ProductMisuseRuleCreation")
@@ -24,7 +24,7 @@ class ProductMisuseRuleCreation:
             means forever
         duration_timespan (Union[Unset, ProductMisuseRuleCreationDurationTimespan]): timespan that the duration is
             related to
-        translations (Union[Unset, List['ApiBaseDate']]): translations associated with this misuse rule
+        translations (Union[Unset, List['MisuseRuleTranslation']]): translations associated with this misuse rule
     """
 
     internal_title: str
@@ -32,7 +32,7 @@ class ProductMisuseRuleCreation:
     description: Union[Unset, str] = UNSET
     duration: Union[Unset, int] = UNSET
     duration_timespan: Union[Unset, ProductMisuseRuleCreationDurationTimespan] = UNSET
-    translations: Union[Unset, List["ApiBaseDate"]] = UNSET
+    translations: Union[Unset, List["MisuseRuleTranslation"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -76,7 +76,7 @@ class ProductMisuseRuleCreation:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
+        from ..models.misuse_rule_translation import MisuseRuleTranslation
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -89,7 +89,7 @@ class ProductMisuseRuleCreation:
 
         _duration_timespan = d.pop("durationTimespan", UNSET)
         duration_timespan: Union[Unset, ProductMisuseRuleCreationDurationTimespan]
-        if isinstance(_duration_timespan, Unset):
+        if isinstance(_duration_timespan, Unset) or not _duration_timespan:
             duration_timespan = UNSET
         else:
             duration_timespan = ProductMisuseRuleCreationDurationTimespan(_duration_timespan)
@@ -97,7 +97,7 @@ class ProductMisuseRuleCreation:
         translations = []
         _translations = d.pop("translations", UNSET)
         for translations_item_data in _translations or []:
-            translations_item = ApiBaseDate.from_dict(translations_item_data)
+            translations_item = MisuseRuleTranslation.from_dict(translations_item_data)
 
             translations.append(translations_item)
 

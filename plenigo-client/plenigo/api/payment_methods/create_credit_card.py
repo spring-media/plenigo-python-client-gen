@@ -7,7 +7,9 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.credit_card_change import CreditCardChange
+from ...models.credit_card import CreditCard
+from ...models.credit_card_creation import CreditCardCreation
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
@@ -16,7 +18,7 @@ log = logging.getLogger(__name__)
 
 def _get_kwargs(
     *,
-    body: CreditCardChange,
+    body: CreditCardCreation,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
 
@@ -39,9 +41,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[CreditCard, ErrorResult, ErrorResultBase]]:
+    if response.status_code == HTTPStatus.CREATED:
+        response_201 = CreditCard.from_dict(response.json())
+
+        return response_201
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -72,7 +78,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[ErrorResultBase]:
+) -> Response[Union[CreditCard, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -89,21 +95,21 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: CreditCardChange,
-) -> Response[ErrorResultBase]:
+    body: CreditCardCreation,
+) -> Response[Union[CreditCard, ErrorResult, ErrorResultBase]]:
     """Create a credit card
 
      Create a new credit card with the data provided.
 
     Args:
-        body (CreditCardChange):
+        body (CreditCardCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[CreditCard, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -120,21 +126,21 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: CreditCardChange,
-) -> Optional[ErrorResultBase]:
+    body: CreditCardCreation,
+) -> Optional[Union[CreditCard, ErrorResult, ErrorResultBase]]:
     """Create a credit card
 
      Create a new credit card with the data provided.
 
     Args:
-        body (CreditCardChange):
+        body (CreditCardCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[CreditCard, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -151,21 +157,21 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: CreditCardChange,
-) -> Response[ErrorResultBase]:
+    body: CreditCardCreation,
+) -> Response[Union[CreditCard, ErrorResult, ErrorResultBase]]:
     """Create a credit card
 
      Create a new credit card with the data provided.
 
     Args:
-        body (CreditCardChange):
+        body (CreditCardCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[CreditCard, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -180,21 +186,21 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: CreditCardChange,
-) -> Optional[ErrorResultBase]:
+    body: CreditCardCreation,
+) -> Optional[Union[CreditCard, ErrorResult, ErrorResultBase]]:
     """Create a credit card
 
      Create a new credit card with the data provided.
 
     Args:
-        body (CreditCardChange):
+        body (CreditCardCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[CreditCard, ErrorResult, ErrorResultBase]
     """
 
     return (

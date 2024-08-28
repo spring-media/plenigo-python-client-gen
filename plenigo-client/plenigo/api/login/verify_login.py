@@ -7,11 +7,12 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.customer_password_authentication import CustomerPasswordAuthentication
 from ...models.customer_session_token import CustomerSessionToken
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
-from ...models.logging_data import LoggingData
+from ...models.next_step import NextStep
 from ...models.session_limit_reached import SessionLimitReached
-from ...models.step_token import StepToken
 from ...types import Response
 
 log = logging.getLogger(__name__)
@@ -19,7 +20,7 @@ log = logging.getLogger(__name__)
 
 def _get_kwargs(
     *,
-    body: LoggingData,
+    body: CustomerPasswordAuthentication,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
 
@@ -42,9 +43,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached, StepToken]]:
+) -> Optional[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, NextStep, SessionLimitReached]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = StepToken.from_dict(response.json())
+        response_200 = NextStep.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.ACCEPTED:
@@ -56,11 +57,11 @@ def _parse_response(
 
         return response_207
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.FORBIDDEN:
-        response_403 = ErrorResultBase.from_dict(response.json())
+        response_403 = ErrorResult.from_dict(response.json())
 
         return response_403
     if response.status_code == HTTPStatus.NOT_FOUND:
@@ -87,7 +88,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached, StepToken]]:
+) -> Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, NextStep, SessionLimitReached]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -104,8 +105,8 @@ def _build_response(
 def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
-    body: LoggingData,
-) -> Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached, StepToken]]:
+    body: CustomerPasswordAuthentication,
+) -> Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, NextStep, SessionLimitReached]]:
     """Verify login
 
      This functionality verifies the log in data of a customer and executes the log in. The caller must
@@ -114,14 +115,14 @@ def sync_detailed(
     will be used.
 
     Args:
-        body (LoggingData):
+        body (CustomerPasswordAuthentication):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached, StepToken]]
+        Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, NextStep, SessionLimitReached]]
     """
 
     kwargs = _get_kwargs(
@@ -138,8 +139,8 @@ def sync_detailed(
 def sync(
     *,
     client: Union[AuthenticatedClient, Client],
-    body: LoggingData,
-) -> Optional[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached, StepToken]]:
+    body: CustomerPasswordAuthentication,
+) -> Optional[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, NextStep, SessionLimitReached]]:
     """Verify login
 
      This functionality verifies the log in data of a customer and executes the log in. The caller must
@@ -148,14 +149,14 @@ def sync(
     will be used.
 
     Args:
-        body (LoggingData):
+        body (CustomerPasswordAuthentication):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached, StepToken]
+        Union[CustomerSessionToken, ErrorResult, ErrorResultBase, NextStep, SessionLimitReached]
     """
 
     return sync_detailed(
@@ -172,8 +173,8 @@ def sync(
 async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
-    body: LoggingData,
-) -> Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached, StepToken]]:
+    body: CustomerPasswordAuthentication,
+) -> Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, NextStep, SessionLimitReached]]:
     """Verify login
 
      This functionality verifies the log in data of a customer and executes the log in. The caller must
@@ -182,14 +183,14 @@ async def asyncio_detailed(
     will be used.
 
     Args:
-        body (LoggingData):
+        body (CustomerPasswordAuthentication):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached, StepToken]]
+        Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, NextStep, SessionLimitReached]]
     """
 
     kwargs = _get_kwargs(
@@ -204,8 +205,8 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
-    body: LoggingData,
-) -> Optional[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached, StepToken]]:
+    body: CustomerPasswordAuthentication,
+) -> Optional[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, NextStep, SessionLimitReached]]:
     """Verify login
 
      This functionality verifies the log in data of a customer and executes the log in. The caller must
@@ -214,14 +215,14 @@ async def asyncio(
     will be used.
 
     Args:
-        body (LoggingData):
+        body (CustomerPasswordAuthentication):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached, StepToken]
+        Union[CustomerSessionToken, ErrorResult, ErrorResultBase, NextStep, SessionLimitReached]
     """
 
     return (

@@ -8,6 +8,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.error_result_base import ErrorResultBase
+from ...models.schemas_amazon_pay_account import SchemasAmazonPayAccount
 from ...types import Response
 
 log = logging.getLogger(__name__)
@@ -28,7 +29,11 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[ErrorResultBase, SchemasAmazonPayAccount]]:
+    if response.status_code == HTTPStatus.OK:
+        response_200 = SchemasAmazonPayAccount.from_dict(response.json())
+
+        return response_200
     if response.status_code == HTTPStatus.UNAUTHORIZED:
         response_401 = ErrorResultBase.from_dict(response.json())
 
@@ -57,7 +62,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[ErrorResultBase]:
+) -> Response[Union[ErrorResultBase, SchemasAmazonPayAccount]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -75,7 +80,7 @@ def sync_detailed(
     amazon_pay_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[ErrorResultBase]:
+) -> Response[Union[ErrorResultBase, SchemasAmazonPayAccount]]:
     """Get a amazon pay account entity
 
      Get amazon pay account that is identified by the passed amazon pay account id.
@@ -88,7 +93,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[ErrorResultBase, SchemasAmazonPayAccount]]
     """
 
     kwargs = _get_kwargs(
@@ -106,7 +111,7 @@ def sync(
     amazon_pay_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[ErrorResultBase, SchemasAmazonPayAccount]]:
     """Get a amazon pay account entity
 
      Get amazon pay account that is identified by the passed amazon pay account id.
@@ -119,7 +124,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[ErrorResultBase, SchemasAmazonPayAccount]
     """
 
     return sync_detailed(
@@ -137,7 +142,7 @@ async def asyncio_detailed(
     amazon_pay_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[ErrorResultBase]:
+) -> Response[Union[ErrorResultBase, SchemasAmazonPayAccount]]:
     """Get a amazon pay account entity
 
      Get amazon pay account that is identified by the passed amazon pay account id.
@@ -150,7 +155,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[ErrorResultBase, SchemasAmazonPayAccount]]
     """
 
     kwargs = _get_kwargs(
@@ -166,7 +171,7 @@ async def asyncio(
     amazon_pay_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[ErrorResultBase, SchemasAmazonPayAccount]]:
     """Get a amazon pay account entity
 
      Get amazon pay account that is identified by the passed amazon pay account id.
@@ -179,7 +184,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[ErrorResultBase, SchemasAmazonPayAccount]
     """
 
     return (

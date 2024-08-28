@@ -42,7 +42,7 @@ class OfferPartnerSettings:
         d = src_dict.copy()
         _doo_settings = d.pop("dooSettings", UNSET)
         doo_settings: Union[Unset, OfferDooSettings]
-        if isinstance(_doo_settings, Unset):
+        if isinstance(_doo_settings, Unset) or not _doo_settings:
             doo_settings = UNSET
         else:
             doo_settings = OfferDooSettings.from_dict(_doo_settings)

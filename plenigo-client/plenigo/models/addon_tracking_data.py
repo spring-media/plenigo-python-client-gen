@@ -102,9 +102,9 @@ class AddonTrackingData:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                sending_date_type_1 = isoparse(data)
+                sending_date_type_0 = isoparse(data)
 
-                return sending_date_type_1
+                return sending_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -119,9 +119,9 @@ class AddonTrackingData:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                arrival_date_type_1 = isoparse(data)
+                arrival_date_type_0 = isoparse(data)
 
-                return arrival_date_type_1
+                return arrival_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -130,7 +130,7 @@ class AddonTrackingData:
 
         _additional_data = d.pop("additionalData", UNSET)
         additional_data: Union[Unset, AddonTrackingDataAdditionalData]
-        if isinstance(_additional_data, Unset):
+        if isinstance(_additional_data, Unset) or not _additional_data:
             additional_data = UNSET
         else:
             additional_data = AddonTrackingDataAdditionalData.from_dict(_additional_data)

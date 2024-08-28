@@ -97,7 +97,7 @@ class TimeBasedProductContractCondition:
 
         _term_timespan = d.pop("termTimespan", UNSET)
         term_timespan: Union[Unset, TimeBasedProductContractConditionTermTimespan]
-        if isinstance(_term_timespan, Unset):
+        if isinstance(_term_timespan, Unset) or not _term_timespan:
             term_timespan = UNSET
         else:
             term_timespan = TimeBasedProductContractConditionTermTimespan(_term_timespan)
@@ -106,7 +106,7 @@ class TimeBasedProductContractCondition:
 
         _duration_timespan = d.pop("durationTimespan", UNSET)
         duration_timespan: Union[Unset, TimeBasedProductContractConditionDurationTimespan]
-        if isinstance(_duration_timespan, Unset):
+        if isinstance(_duration_timespan, Unset) or not _duration_timespan:
             duration_timespan = UNSET
         else:
             duration_timespan = TimeBasedProductContractConditionDurationTimespan(_duration_timespan)
@@ -115,7 +115,7 @@ class TimeBasedProductContractCondition:
 
         _accounting_timespan = d.pop("accountingTimespan", UNSET)
         accounting_timespan: Union[Unset, TimeBasedProductContractConditionAccountingTimespan]
-        if isinstance(_accounting_timespan, Unset):
+        if isinstance(_accounting_timespan, Unset) or not _accounting_timespan:
             accounting_timespan = UNSET
         else:
             accounting_timespan = TimeBasedProductContractConditionAccountingTimespan(_accounting_timespan)
@@ -124,7 +124,7 @@ class TimeBasedProductContractCondition:
 
         _cancellation_timespan = d.pop("cancellationTimespan", UNSET)
         cancellation_timespan: Union[Unset, TimeBasedProductContractConditionCancellationTimespan]
-        if isinstance(_cancellation_timespan, Unset):
+        if isinstance(_cancellation_timespan, Unset) or not _cancellation_timespan:
             cancellation_timespan = UNSET
         else:
             cancellation_timespan = TimeBasedProductContractConditionCancellationTimespan(_cancellation_timespan)

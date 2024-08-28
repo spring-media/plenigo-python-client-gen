@@ -8,6 +8,8 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.customer_username import CustomerUsername
+from ...models.customers import Customers
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
@@ -40,9 +42,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[Customers, ErrorResult, ErrorResultBase]]:
+    if response.status_code == HTTPStatus.OK:
+        response_200 = Customers.from_dict(response.json())
+
+        return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -73,7 +79,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[ErrorResultBase]:
+) -> Response[Union[Customers, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -92,7 +98,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: CustomerUsername,
-) -> Response[ErrorResultBase]:
+) -> Response[Union[Customers, ErrorResult, ErrorResultBase]]:
     """Change username
 
      Changes a customer's username
@@ -106,7 +112,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[Customers, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -126,7 +132,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: CustomerUsername,
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[Customers, ErrorResult, ErrorResultBase]]:
     """Change username
 
      Changes a customer's username
@@ -140,7 +146,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[Customers, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -160,7 +166,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: CustomerUsername,
-) -> Response[ErrorResultBase]:
+) -> Response[Union[Customers, ErrorResult, ErrorResultBase]]:
     """Change username
 
      Changes a customer's username
@@ -174,7 +180,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[Customers, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -192,7 +198,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: CustomerUsername,
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[Customers, ErrorResult, ErrorResultBase]]:
     """Change username
 
      Changes a customer's username
@@ -206,7 +212,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[Customers, ErrorResult, ErrorResultBase]
     """
 
     return (

@@ -66,9 +66,9 @@ class AnalyticsPaymentMethod:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                time_type_1 = isoparse(data)
+                time_type_0 = isoparse(data)
 
-                return time_type_1
+                return time_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -77,7 +77,7 @@ class AnalyticsPaymentMethod:
 
         _payment_method = d.pop("paymentMethod", UNSET)
         payment_method: Union[Unset, AnalyticsPaymentMethodPaymentMethod]
-        if isinstance(_payment_method, Unset):
+        if isinstance(_payment_method, Unset) or not _payment_method:
             payment_method = UNSET
         else:
             payment_method = AnalyticsPaymentMethodPaymentMethod(_payment_method)

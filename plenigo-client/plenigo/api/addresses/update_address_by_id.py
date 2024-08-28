@@ -7,7 +7,9 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.address_base import AddressBase
+from ...models.address import Address
+from ...models.address_change import AddressChange
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...types import UNSET, Response, Unset
 
@@ -17,7 +19,7 @@ log = logging.getLogger(__name__)
 def _get_kwargs(
     address_id: int,
     *,
-    body: AddressBase,
+    body: AddressChange,
     override_validation: Union[Unset, bool] = UNSET,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
@@ -48,9 +50,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[Address, ErrorResult, ErrorResultBase]]:
+    if response.status_code == HTTPStatus.OK:
+        response_200 = Address.from_dict(response.json())
+
+        return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -81,7 +87,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[ErrorResultBase]:
+) -> Response[Union[Address, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -99,9 +105,9 @@ def sync_detailed(
     address_id: int,
     *,
     client: AuthenticatedClient,
-    body: AddressBase,
+    body: AddressChange,
     override_validation: Union[Unset, bool] = UNSET,
-) -> Response[ErrorResultBase]:
+) -> Response[Union[Address, ErrorResult, ErrorResultBase]]:
     """Update address
 
      Update an address that is identified by the passed address id with the data provided. If fields were
@@ -111,14 +117,14 @@ def sync_detailed(
     Args:
         address_id (int):
         override_validation (Union[Unset, bool]):
-        body (AddressBase):
+        body (AddressChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[Address, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -138,9 +144,9 @@ def sync(
     address_id: int,
     *,
     client: AuthenticatedClient,
-    body: AddressBase,
+    body: AddressChange,
     override_validation: Union[Unset, bool] = UNSET,
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[Address, ErrorResult, ErrorResultBase]]:
     """Update address
 
      Update an address that is identified by the passed address id with the data provided. If fields were
@@ -150,14 +156,14 @@ def sync(
     Args:
         address_id (int):
         override_validation (Union[Unset, bool]):
-        body (AddressBase):
+        body (AddressChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[Address, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -177,9 +183,9 @@ async def asyncio_detailed(
     address_id: int,
     *,
     client: AuthenticatedClient,
-    body: AddressBase,
+    body: AddressChange,
     override_validation: Union[Unset, bool] = UNSET,
-) -> Response[ErrorResultBase]:
+) -> Response[Union[Address, ErrorResult, ErrorResultBase]]:
     """Update address
 
      Update an address that is identified by the passed address id with the data provided. If fields were
@@ -189,14 +195,14 @@ async def asyncio_detailed(
     Args:
         address_id (int):
         override_validation (Union[Unset, bool]):
-        body (AddressBase):
+        body (AddressChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[Address, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -214,9 +220,9 @@ async def asyncio(
     address_id: int,
     *,
     client: AuthenticatedClient,
-    body: AddressBase,
+    body: AddressChange,
     override_validation: Union[Unset, bool] = UNSET,
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[Address, ErrorResult, ErrorResultBase]]:
     """Update address
 
      Update an address that is identified by the passed address id with the data provided. If fields were
@@ -226,14 +232,14 @@ async def asyncio(
     Args:
         address_id (int):
         override_validation (Union[Unset, bool]):
-        body (AddressBase):
+        body (AddressChange):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[Address, ErrorResult, ErrorResultBase]
     """
 
     return (

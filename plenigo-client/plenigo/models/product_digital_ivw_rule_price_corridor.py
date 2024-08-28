@@ -49,7 +49,7 @@ class ProductDigitalIvwRulePriceCorridor:
         d = src_dict.copy()
         _key = d.pop("key", UNSET)
         key: Union[Unset, datetime.date]
-        if isinstance(_key, Unset):
+        if isinstance(_key, Unset) or not _key:
             key = UNSET
         else:
             key = isoparse(_key).date()

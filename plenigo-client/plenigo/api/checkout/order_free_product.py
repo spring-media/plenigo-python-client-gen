@@ -8,6 +8,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.checkout_order_id_result import CheckoutOrderIdResult
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.free_order import FreeOrder
 from ...types import Response
@@ -40,13 +41,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[CheckoutOrderIdResult, ErrorResultBase]]:
+) -> Optional[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.CREATED:
         response_201 = CheckoutOrderIdResult.from_dict(response.json())
 
         return response_201
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -77,7 +78,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[CheckoutOrderIdResult, ErrorResultBase]]:
+) -> Response[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -95,7 +96,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: FreeOrder,
-) -> Response[Union[CheckoutOrderIdResult, ErrorResultBase]]:
+) -> Response[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]:
     """Order free product
 
      Purchases a free product for a given customer. The product must be free of charge and if it is a
@@ -109,7 +110,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CheckoutOrderIdResult, ErrorResultBase]]
+        Response[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -127,7 +128,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: FreeOrder,
-) -> Optional[Union[CheckoutOrderIdResult, ErrorResultBase]]:
+) -> Optional[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]:
     """Order free product
 
      Purchases a free product for a given customer. The product must be free of charge and if it is a
@@ -141,7 +142,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CheckoutOrderIdResult, ErrorResultBase]
+        Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -159,7 +160,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: FreeOrder,
-) -> Response[Union[CheckoutOrderIdResult, ErrorResultBase]]:
+) -> Response[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]:
     """Order free product
 
      Purchases a free product for a given customer. The product must be free of charge and if it is a
@@ -173,7 +174,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CheckoutOrderIdResult, ErrorResultBase]]
+        Response[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -189,7 +190,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: FreeOrder,
-) -> Optional[Union[CheckoutOrderIdResult, ErrorResultBase]]:
+) -> Optional[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]:
     """Order free product
 
      Purchases a free product for a given customer. The product must be free of charge and if it is a
@@ -203,7 +204,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CheckoutOrderIdResult, ErrorResultBase]
+        Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]
     """
 
     return (

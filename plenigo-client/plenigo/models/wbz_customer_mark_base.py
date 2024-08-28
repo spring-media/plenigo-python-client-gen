@@ -131,7 +131,7 @@ class WbzCustomerMarkBase:
 
         _data = d.pop("data", UNSET)
         data: Union[Unset, WbzCustomerMarkBaseData]
-        if isinstance(_data, Unset):
+        if isinstance(_data, Unset) or not _data:
             data = UNSET
         else:
             data = WbzCustomerMarkBaseData.from_dict(_data)

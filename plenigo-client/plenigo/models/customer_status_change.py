@@ -48,7 +48,7 @@ class CustomerStatusChange:
         d = src_dict.copy()
         _status = d.pop("status", UNSET)
         status: Union[Unset, CustomerStatusChangeStatus]
-        if isinstance(_status, Unset):
+        if isinstance(_status, Unset) or not _status:
             status = UNSET
         else:
             status = CustomerStatusChangeStatus(_status)

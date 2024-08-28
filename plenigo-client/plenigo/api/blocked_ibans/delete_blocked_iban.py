@@ -7,6 +7,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.success_status import SuccessStatus
 from ...types import Response
@@ -29,13 +30,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, SuccessStatus]]:
     if response.status_code == HTTPStatus.ACCEPTED:
         response_202 = SuccessStatus.from_dict(response.json())
 
         return response_202
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -58,7 +59,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResultBase, SuccessStatus]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, SuccessStatus]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -76,7 +77,7 @@ def sync_detailed(
     blocked_iban_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResultBase, SuccessStatus]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, SuccessStatus]]:
     """Delete a blocked iban
 
      Delete a blocked iban for a company.
@@ -89,7 +90,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, SuccessStatus]]
+        Response[Union[ErrorResult, ErrorResultBase, SuccessStatus]]
     """
 
     kwargs = _get_kwargs(
@@ -107,7 +108,7 @@ def sync(
     blocked_iban_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, SuccessStatus]]:
     """Delete a blocked iban
 
      Delete a blocked iban for a company.
@@ -120,7 +121,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, SuccessStatus]
+        Union[ErrorResult, ErrorResultBase, SuccessStatus]
     """
 
     return sync_detailed(
@@ -138,7 +139,7 @@ async def asyncio_detailed(
     blocked_iban_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResultBase, SuccessStatus]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, SuccessStatus]]:
     """Delete a blocked iban
 
      Delete a blocked iban for a company.
@@ -151,7 +152,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, SuccessStatus]]
+        Response[Union[ErrorResult, ErrorResultBase, SuccessStatus]]
     """
 
     kwargs = _get_kwargs(
@@ -167,7 +168,7 @@ async def asyncio(
     blocked_iban_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, SuccessStatus]]:
     """Delete a blocked iban
 
      Delete a blocked iban for a company.
@@ -180,7 +181,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, SuccessStatus]
+        Union[ErrorResult, ErrorResultBase, SuccessStatus]
     """
 
     return (

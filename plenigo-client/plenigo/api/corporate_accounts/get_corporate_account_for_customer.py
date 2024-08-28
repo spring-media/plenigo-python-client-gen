@@ -7,7 +7,8 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.api_base_date import ApiBaseDate
+from ...models.corporate_account import CorporateAccount
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
@@ -30,17 +31,17 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Optional[Union[CorporateAccount, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = ApiBaseDate.from_dict(response.json())
+        response_200 = CorporateAccount.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
-        response_401 = ErrorResultBase.from_dict(response.json())
+        response_401 = ErrorResult.from_dict(response.json())
 
         return response_401
     if response.status_code == HTTPStatus.NOT_FOUND:
@@ -67,7 +68,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Response[Union[CorporateAccount, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -86,7 +87,7 @@ def sync_detailed(
     corporate_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Response[Union[CorporateAccount, ErrorResult, ErrorResultBase]]:
     """Get for customer
 
      Get the corporate account of the customer.
@@ -100,7 +101,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiBaseDate, ErrorResultBase]]
+        Response[Union[CorporateAccount, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -120,7 +121,7 @@ def sync(
     corporate_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Optional[Union[CorporateAccount, ErrorResult, ErrorResultBase]]:
     """Get for customer
 
      Get the corporate account of the customer.
@@ -134,7 +135,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiBaseDate, ErrorResultBase]
+        Union[CorporateAccount, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -154,7 +155,7 @@ async def asyncio_detailed(
     corporate_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Response[Union[CorporateAccount, ErrorResult, ErrorResultBase]]:
     """Get for customer
 
      Get the corporate account of the customer.
@@ -168,7 +169,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiBaseDate, ErrorResultBase]]
+        Response[Union[CorporateAccount, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -186,7 +187,7 @@ async def asyncio(
     corporate_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Optional[Union[CorporateAccount, ErrorResult, ErrorResultBase]]:
     """Get for customer
 
      Get the corporate account of the customer.
@@ -200,7 +201,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiBaseDate, ErrorResultBase]
+        Union[CorporateAccount, ErrorResult, ErrorResultBase]
     """
 
     return (

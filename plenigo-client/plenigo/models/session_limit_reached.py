@@ -56,7 +56,7 @@ class SessionLimitReached:
         d = src_dict.copy()
         _active_sessions = d.pop("activeSessions", UNSET)
         active_sessions: Union[Unset, ActiveSessions]
-        if isinstance(_active_sessions, Unset):
+        if isinstance(_active_sessions, Unset) or not _active_sessions:
             active_sessions = UNSET
         else:
             active_sessions = ActiveSessions.from_dict(_active_sessions)
@@ -69,9 +69,9 @@ class SessionLimitReached:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                removal_token_type_1 = isoparse(data)
+                removal_token_type_0 = isoparse(data)
 
-                return removal_token_type_1
+                return removal_token_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)

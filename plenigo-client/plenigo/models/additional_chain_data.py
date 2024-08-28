@@ -42,7 +42,7 @@ class AdditionalChainData:
         d = src_dict.copy()
         _data = d.pop("data", UNSET)
         data: Union[Unset, AdditionalChainDataData]
-        if isinstance(_data, Unset):
+        if isinstance(_data, Unset) or not _data:
             data = UNSET
         else:
             data = AdditionalChainDataData.from_dict(_data)

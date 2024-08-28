@@ -53,7 +53,7 @@ class UpdateAddonTrackingData:
 
         _tracking_data = d.pop("trackingData", UNSET)
         tracking_data: Union[Unset, AddonTrackingData]
-        if isinstance(_tracking_data, Unset):
+        if isinstance(_tracking_data, Unset) or not _tracking_data:
             tracking_data = UNSET
         else:
             tracking_data = AddonTrackingData.from_dict(_tracking_data)

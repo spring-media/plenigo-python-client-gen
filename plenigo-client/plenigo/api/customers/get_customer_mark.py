@@ -9,6 +9,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.error_result_base import ErrorResultBase
 from ...models.get_customer_mark_customer_mark import GetCustomerMarkCustomerMark
+from ...models.wbz_customer_mark import WbzCustomerMark
 from ...types import Response
 
 log = logging.getLogger(__name__)
@@ -30,7 +31,11 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, ErrorResultBase]]:
+) -> Optional[Union[Any, ErrorResultBase, WbzCustomerMark]]:
+    if response.status_code == HTTPStatus.OK:
+        response_200 = WbzCustomerMark.from_dict(response.json())
+
+        return response_200
     if response.status_code == HTTPStatus.UNAUTHORIZED:
         response_401 = ErrorResultBase.from_dict(response.json())
 
@@ -58,7 +63,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, ErrorResultBase]]:
+) -> Response[Union[Any, ErrorResultBase, WbzCustomerMark]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -77,7 +82,7 @@ def sync_detailed(
     customer_mark: GetCustomerMarkCustomerMark,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, ErrorResultBase]]:
+) -> Response[Union[Any, ErrorResultBase, WbzCustomerMark]]:
     """Get customer mark data
 
      Get the customer mark data.
@@ -91,7 +96,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorResultBase]]
+        Response[Union[Any, ErrorResultBase, WbzCustomerMark]]
     """
 
     kwargs = _get_kwargs(
@@ -111,7 +116,7 @@ def sync(
     customer_mark: GetCustomerMarkCustomerMark,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, ErrorResultBase]]:
+) -> Optional[Union[Any, ErrorResultBase, WbzCustomerMark]]:
     """Get customer mark data
 
      Get the customer mark data.
@@ -125,7 +130,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorResultBase]
+        Union[Any, ErrorResultBase, WbzCustomerMark]
     """
 
     return sync_detailed(
@@ -145,7 +150,7 @@ async def asyncio_detailed(
     customer_mark: GetCustomerMarkCustomerMark,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[Any, ErrorResultBase]]:
+) -> Response[Union[Any, ErrorResultBase, WbzCustomerMark]]:
     """Get customer mark data
 
      Get the customer mark data.
@@ -159,7 +164,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorResultBase]]
+        Response[Union[Any, ErrorResultBase, WbzCustomerMark]]
     """
 
     kwargs = _get_kwargs(
@@ -177,7 +182,7 @@ async def asyncio(
     customer_mark: GetCustomerMarkCustomerMark,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[Any, ErrorResultBase]]:
+) -> Optional[Union[Any, ErrorResultBase, WbzCustomerMark]]:
     """Get customer mark data
 
      Get the customer mark data.
@@ -191,7 +196,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorResultBase]
+        Union[Any, ErrorResultBase, WbzCustomerMark]
     """
 
     return (

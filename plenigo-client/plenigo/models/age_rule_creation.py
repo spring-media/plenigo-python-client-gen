@@ -7,7 +7,7 @@ from ..models.age_rule_creation_relational_operator import AgeRuleCreationRelati
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
+    from ..models.rule_translation import RuleTranslation
 
 
 T = TypeVar("T", bound="AgeRuleCreation")
@@ -26,7 +26,7 @@ class AgeRuleCreation:
             if age rule is no longer fulfilled
         replacement_plenigo_offer_id (Union[Unset, str]): plenigo offer id that is used if rule is not fulfilled
         stop_on_fail (Union[Unset, bool]): flag indicating if age verification is a must have
-        translations (Union[Unset, List['ApiBaseDate']]): translations for customer texts
+        translations (Union[Unset, List['RuleTranslation']]): translations for customer texts
     """
 
     internal_title: str
@@ -37,7 +37,7 @@ class AgeRuleCreation:
     follow_up_plenigo_offer_id: Union[Unset, str] = UNSET
     replacement_plenigo_offer_id: Union[Unset, str] = UNSET
     stop_on_fail: Union[Unset, bool] = UNSET
-    translations: Union[Unset, List["ApiBaseDate"]] = UNSET
+    translations: Union[Unset, List["RuleTranslation"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -89,7 +89,7 @@ class AgeRuleCreation:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
+        from ..models.rule_translation import RuleTranslation
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -111,7 +111,7 @@ class AgeRuleCreation:
         translations = []
         _translations = d.pop("translations", UNSET)
         for translations_item_data in _translations or []:
-            translations_item = ApiBaseDate.from_dict(translations_item_data)
+            translations_item = RuleTranslation.from_dict(translations_item_data)
 
             translations.append(translations_item)
 

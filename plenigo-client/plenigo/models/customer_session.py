@@ -91,9 +91,9 @@ class CustomerSession:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_type_1 = isoparse(data)
+                created_type_0 = isoparse(data)
 
-                return created_type_1
+                return created_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -102,7 +102,7 @@ class CustomerSession:
 
         _type = d.pop("type", UNSET)
         type: Union[Unset, CustomerSessionType]
-        if isinstance(_type, Unset):
+        if isinstance(_type, Unset) or not _type:
             type = UNSET
         else:
             type = CustomerSessionType(_type)

@@ -7,8 +7,9 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.access_right_data import AccessRightData
 from ...models.access_right_item_creation import AccessRightItemCreation
-from ...models.api_base_date import ApiBaseDate
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
@@ -41,17 +42,17 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Optional[Union[AccessRightData, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.CREATED:
-        response_201 = ApiBaseDate.from_dict(response.json())
+        response_201 = AccessRightData.from_dict(response.json())
 
         return response_201
     if response.status_code == HTTPStatus.ALREADY_REPORTED:
-        response_208 = ApiBaseDate.from_dict(response.json())
+        response_208 = AccessRightData.from_dict(response.json())
 
         return response_208
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -82,7 +83,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Response[Union[AccessRightData, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -101,7 +102,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: AccessRightItemCreation,
-) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Response[Union[AccessRightData, ErrorResult, ErrorResultBase]]:
     """Create customer access right
 
      Create a new access right item with the data provided for a customer identified by the passed
@@ -116,7 +117,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiBaseDate, ErrorResultBase]]
+        Response[Union[AccessRightData, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -136,7 +137,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: AccessRightItemCreation,
-) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Optional[Union[AccessRightData, ErrorResult, ErrorResultBase]]:
     """Create customer access right
 
      Create a new access right item with the data provided for a customer identified by the passed
@@ -151,7 +152,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiBaseDate, ErrorResultBase]
+        Union[AccessRightData, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -171,7 +172,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: AccessRightItemCreation,
-) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Response[Union[AccessRightData, ErrorResult, ErrorResultBase]]:
     """Create customer access right
 
      Create a new access right item with the data provided for a customer identified by the passed
@@ -186,7 +187,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiBaseDate, ErrorResultBase]]
+        Response[Union[AccessRightData, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -204,7 +205,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: AccessRightItemCreation,
-) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
+) -> Optional[Union[AccessRightData, ErrorResult, ErrorResultBase]]:
     """Create customer access right
 
      Create a new access right item with the data provided for a customer identified by the passed
@@ -219,7 +220,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiBaseDate, ErrorResultBase]
+        Union[AccessRightData, ErrorResult, ErrorResultBase]
     """
 
     return (

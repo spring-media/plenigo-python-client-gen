@@ -8,6 +8,7 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.search_sort_tree_leafs_by_type_type import SearchSortTreeLeafsByTypeType
 from ...models.sort_tree_leafs import SortTreeLeafs
@@ -58,13 +59,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResultBase, SortTreeLeafs]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, SortTreeLeafs]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = SortTreeLeafs.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -91,7 +92,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResultBase, SortTreeLeafs]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, SortTreeLeafs]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -109,9 +110,9 @@ def sync_all(
     end_time: Union[Unset, datetime.datetime] = UNSET,
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
-) -> Optional[Union[ErrorResultBase, SortTreeLeafs]]:
-    # TODO: Fix commented out macro
-    all_results = []  # SortTreeLeafs(items=[])  # type: ignore
+) -> Optional[Union[ErrorResult, ErrorResultBase, SortTreeLeafs]]:
+    all_results = SortTreeLeafs(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -126,7 +127,7 @@ def sync_all(
             ).parsed
 
             if results and not isinstance(results, ErrorResultBase) and not isinstance(results.items, Unset):
-                all_results.extend(results.items)  # type: ignore
+                all_results.items.extend(results.items)  # type: ignore
 
                 cursor = results.additional_properties.get("startingAfterId")
 
@@ -156,7 +157,7 @@ def sync_detailed(
     end_time: Union[Unset, datetime.datetime] = UNSET,
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
-) -> Response[Union[ErrorResultBase, SortTreeLeafs]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, SortTreeLeafs]]:
     """Search sort tree leafs by type
 
      Search all sort tree leafs that correspond to the given search conditions and type.
@@ -174,7 +175,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, SortTreeLeafs]]
+        Response[Union[ErrorResult, ErrorResultBase, SortTreeLeafs]]
     """
 
     kwargs = _get_kwargs(
@@ -202,7 +203,7 @@ def sync(
     end_time: Union[Unset, datetime.datetime] = UNSET,
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
-) -> Optional[Union[ErrorResultBase, SortTreeLeafs]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, SortTreeLeafs]]:
     """Search sort tree leafs by type
 
      Search all sort tree leafs that correspond to the given search conditions and type.
@@ -220,7 +221,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, SortTreeLeafs]
+        Union[ErrorResult, ErrorResultBase, SortTreeLeafs]
     """
 
     return sync_detailed(
@@ -248,7 +249,7 @@ async def asyncio_detailed(
     end_time: Union[Unset, datetime.datetime] = UNSET,
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
-) -> Response[Union[ErrorResultBase, SortTreeLeafs]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, SortTreeLeafs]]:
     """Search sort tree leafs by type
 
      Search all sort tree leafs that correspond to the given search conditions and type.
@@ -266,7 +267,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, SortTreeLeafs]]
+        Response[Union[ErrorResult, ErrorResultBase, SortTreeLeafs]]
     """
 
     kwargs = _get_kwargs(
@@ -292,8 +293,9 @@ async def asyncio_all(
     end_time: Union[Unset, datetime.datetime] = UNSET,
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
-) -> Response[Union[ErrorResultBase, SortTreeLeafs]]:
-    all_results = []
+) -> Response[Union[ErrorResult, ErrorResultBase, SortTreeLeafs]]:
+    all_results = SortTreeLeafs(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -335,7 +337,7 @@ async def asyncio(
     end_time: Union[Unset, datetime.datetime] = UNSET,
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
-) -> Optional[Union[ErrorResultBase, SortTreeLeafs]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, SortTreeLeafs]]:
     """Search sort tree leafs by type
 
      Search all sort tree leafs that correspond to the given search conditions and type.
@@ -353,7 +355,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, SortTreeLeafs]
+        Union[ErrorResult, ErrorResultBase, SortTreeLeafs]
     """
 
     return (

@@ -84,9 +84,9 @@ class AnalyticsTransactions:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                time_type_1 = isoparse(data)
+                time_type_0 = isoparse(data)
 
-                return time_type_1
+                return time_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -97,21 +97,21 @@ class AnalyticsTransactions:
 
         _payment_method = d.pop("paymentMethod", UNSET)
         payment_method: Union[Unset, AnalyticsTransactionsPaymentMethod]
-        if isinstance(_payment_method, Unset):
+        if isinstance(_payment_method, Unset) or not _payment_method:
             payment_method = UNSET
         else:
             payment_method = AnalyticsTransactionsPaymentMethod(_payment_method)
 
         _payment_action = d.pop("paymentAction", UNSET)
         payment_action: Union[Unset, AnalyticsTransactionsPaymentAction]
-        if isinstance(_payment_action, Unset):
+        if isinstance(_payment_action, Unset) or not _payment_action:
             payment_action = UNSET
         else:
             payment_action = AnalyticsTransactionsPaymentAction(_payment_action)
 
         _payment_status = d.pop("paymentStatus", UNSET)
         payment_status: Union[Unset, AnalyticsTransactionsPaymentStatus]
-        if isinstance(_payment_status, Unset):
+        if isinstance(_payment_status, Unset) or not _payment_status:
             payment_status = UNSET
         else:
             payment_status = AnalyticsTransactionsPaymentStatus(_payment_status)

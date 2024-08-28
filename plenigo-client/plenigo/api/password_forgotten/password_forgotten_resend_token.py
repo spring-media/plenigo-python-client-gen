@@ -8,8 +8,9 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.customer_password_forgotten_resend import CustomerPasswordForgottenResend
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
-from ...models.step_token import StepToken
+from ...models.next_step import NextStep
 from ...types import Response
 
 log = logging.getLogger(__name__)
@@ -40,17 +41,17 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResultBase, StepToken]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, NextStep]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = StepToken.from_dict(response.json())
+        response_200 = NextStep.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.FORBIDDEN:
-        response_403 = ErrorResultBase.from_dict(response.json())
+        response_403 = ErrorResult.from_dict(response.json())
 
         return response_403
     if response.status_code == HTTPStatus.NOT_FOUND:
@@ -58,15 +59,15 @@ def _parse_response(
 
         return response_404
     if response.status_code == HTTPStatus.REQUEST_TIMEOUT:
-        response_408 = ErrorResultBase.from_dict(response.json())
+        response_408 = ErrorResult.from_dict(response.json())
 
         return response_408
     if response.status_code == HTTPStatus.PRECONDITION_FAILED:
-        response_412 = ErrorResultBase.from_dict(response.json())
+        response_412 = ErrorResult.from_dict(response.json())
 
         return response_412
     if response.status_code == HTTPStatus.PRECONDITION_REQUIRED:
-        response_428 = ErrorResultBase.from_dict(response.json())
+        response_428 = ErrorResult.from_dict(response.json())
 
         return response_428
     if response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
@@ -89,7 +90,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResultBase, StepToken]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, NextStep]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -107,7 +108,7 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: CustomerPasswordForgottenResend,
-) -> Response[Union[ErrorResultBase, StepToken]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, NextStep]]:
     """Resend token
 
      This functionality resend the password forgotten token to reset password.
@@ -120,7 +121,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, StepToken]]
+        Response[Union[ErrorResult, ErrorResultBase, NextStep]]
     """
 
     kwargs = _get_kwargs(
@@ -138,7 +139,7 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     body: CustomerPasswordForgottenResend,
-) -> Optional[Union[ErrorResultBase, StepToken]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, NextStep]]:
     """Resend token
 
      This functionality resend the password forgotten token to reset password.
@@ -151,7 +152,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, StepToken]
+        Union[ErrorResult, ErrorResultBase, NextStep]
     """
 
     return sync_detailed(
@@ -169,7 +170,7 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: CustomerPasswordForgottenResend,
-) -> Response[Union[ErrorResultBase, StepToken]]:
+) -> Response[Union[ErrorResult, ErrorResultBase, NextStep]]:
     """Resend token
 
      This functionality resend the password forgotten token to reset password.
@@ -182,7 +183,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, StepToken]]
+        Response[Union[ErrorResult, ErrorResultBase, NextStep]]
     """
 
     kwargs = _get_kwargs(
@@ -198,7 +199,7 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     body: CustomerPasswordForgottenResend,
-) -> Optional[Union[ErrorResultBase, StepToken]]:
+) -> Optional[Union[ErrorResult, ErrorResultBase, NextStep]]:
     """Resend token
 
      This functionality resend the password forgotten token to reset password.
@@ -211,7 +212,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, StepToken]
+        Union[ErrorResult, ErrorResultBase, NextStep]
     """
 
     return (

@@ -1,10 +1,12 @@
 from enum import Enum
 
 
-class CorporateAccountUserStatusStatus(str, Enum):
+class ApiChannelBaseStatus(str, Enum):
     ACTIVE = "ACTIVE"
+    CREATING = "CREATING"
+    DELETED = "DELETED"
     INACTIVE = "INACTIVE"
-    INVITED = "INVITED"
+    UPDATING = "UPDATING"
 
     def __str__(self) -> str:
         return str(self.value)

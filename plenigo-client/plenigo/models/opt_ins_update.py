@@ -42,7 +42,7 @@ class OptInsUpdate:
         d = src_dict.copy()
         _opt_ins = d.pop("optIns", UNSET)
         opt_ins: Union[Unset, OptInsUpdateOptIns]
-        if isinstance(_opt_ins, Unset):
+        if isinstance(_opt_ins, Unset) or not _opt_ins:
             opt_ins = UNSET
         else:
             opt_ins = OptInsUpdateOptIns.from_dict(_opt_ins)

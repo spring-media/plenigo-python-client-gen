@@ -105,7 +105,7 @@ class CreditBasedProductContractCondition:
 
         _term_timespan = d.pop("termTimespan", UNSET)
         term_timespan: Union[Unset, CreditBasedProductContractConditionTermTimespan]
-        if isinstance(_term_timespan, Unset):
+        if isinstance(_term_timespan, Unset) or not _term_timespan:
             term_timespan = UNSET
         else:
             term_timespan = CreditBasedProductContractConditionTermTimespan(_term_timespan)
@@ -114,7 +114,7 @@ class CreditBasedProductContractCondition:
 
         _duration_timespan = d.pop("durationTimespan", UNSET)
         duration_timespan: Union[Unset, CreditBasedProductContractConditionDurationTimespan]
-        if isinstance(_duration_timespan, Unset):
+        if isinstance(_duration_timespan, Unset) or not _duration_timespan:
             duration_timespan = UNSET
         else:
             duration_timespan = CreditBasedProductContractConditionDurationTimespan(_duration_timespan)
@@ -123,7 +123,7 @@ class CreditBasedProductContractCondition:
 
         _accounting_timespan = d.pop("accountingTimespan", UNSET)
         accounting_timespan: Union[Unset, CreditBasedProductContractConditionAccountingTimespan]
-        if isinstance(_accounting_timespan, Unset):
+        if isinstance(_accounting_timespan, Unset) or not _accounting_timespan:
             accounting_timespan = UNSET
         else:
             accounting_timespan = CreditBasedProductContractConditionAccountingTimespan(_accounting_timespan)
@@ -132,7 +132,7 @@ class CreditBasedProductContractCondition:
 
         _cancellation_timespan = d.pop("cancellationTimespan", UNSET)
         cancellation_timespan: Union[Unset, CreditBasedProductContractConditionCancellationTimespan]
-        if isinstance(_cancellation_timespan, Unset):
+        if isinstance(_cancellation_timespan, Unset) or not _cancellation_timespan:
             cancellation_timespan = UNSET
         else:
             cancellation_timespan = CreditBasedProductContractConditionCancellationTimespan(_cancellation_timespan)

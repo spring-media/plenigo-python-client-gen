@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.address_base import AddressBase
+    from ..models.address_change import AddressChange
 
 
 T = TypeVar("T", bound="CustomerRegistrationCreation")
@@ -29,8 +29,8 @@ class CustomerRegistrationCreation:
             url (token and step) and it is passed to the registration mail.
             This way the application that embeds the plenigo registration from can handle a user verification via link
             instead of a token process.
-        invoice_address (Union[Unset, AddressBase]):
-        delivery_address (Union[Unset, AddressBase]):
+        invoice_address (Union[Unset, AddressChange]):
+        delivery_address (Union[Unset, AddressChange]):
     """
 
     email: str
@@ -43,8 +43,8 @@ class CustomerRegistrationCreation:
     first_name: Union[Unset, str] = UNSET
     last_name: Union[Unset, str] = UNSET
     verification_url: Union[Unset, str] = UNSET
-    invoice_address: Union[Unset, "AddressBase"] = UNSET
-    delivery_address: Union[Unset, "AddressBase"] = UNSET
+    invoice_address: Union[Unset, "AddressChange"] = UNSET
+    delivery_address: Union[Unset, "AddressChange"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -108,7 +108,7 @@ class CustomerRegistrationCreation:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.address_base import AddressBase
+        from ..models.address_change import AddressChange
 
         d = src_dict.copy()
         email = d.pop("email")
@@ -132,18 +132,18 @@ class CustomerRegistrationCreation:
         verification_url = d.pop("verificationUrl", UNSET)
 
         _invoice_address = d.pop("invoiceAddress", UNSET)
-        invoice_address: Union[Unset, AddressBase]
-        if isinstance(_invoice_address, Unset):
+        invoice_address: Union[Unset, AddressChange]
+        if isinstance(_invoice_address, Unset) or not _invoice_address:
             invoice_address = UNSET
         else:
-            invoice_address = AddressBase.from_dict(_invoice_address)
+            invoice_address = AddressChange.from_dict(_invoice_address)
 
         _delivery_address = d.pop("deliveryAddress", UNSET)
-        delivery_address: Union[Unset, AddressBase]
-        if isinstance(_delivery_address, Unset):
+        delivery_address: Union[Unset, AddressChange]
+        if isinstance(_delivery_address, Unset) or not _delivery_address:
             delivery_address = UNSET
         else:
-            delivery_address = AddressBase.from_dict(_delivery_address)
+            delivery_address = AddressChange.from_dict(_delivery_address)
 
         customer_registration_creation = cls(
             email=email,

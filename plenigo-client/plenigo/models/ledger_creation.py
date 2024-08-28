@@ -253,7 +253,7 @@ class LedgerCreation:
 
         _custom_accountings = d.pop("customAccountings", UNSET)
         custom_accountings: Union[Unset, LedgerCreationCustomAccountings]
-        if isinstance(_custom_accountings, Unset):
+        if isinstance(_custom_accountings, Unset) or not _custom_accountings:
             custom_accountings = UNSET
         else:
             custom_accountings = LedgerCreationCustomAccountings.from_dict(_custom_accountings)

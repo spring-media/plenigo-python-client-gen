@@ -9,6 +9,7 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.error_result_base import ErrorResultBase
+from ...models.ledgers import Ledgers
 from ...models.search_ledgers_sort import SearchLedgersSort
 from ...types import UNSET, Response, Unset
 
@@ -63,7 +64,11 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[ErrorResultBase, Ledgers]]:
+    if response.status_code == HTTPStatus.OK:
+        response_200 = Ledgers.from_dict(response.json())
+
+        return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
         response_400 = ErrorResultBase.from_dict(response.json())
 
@@ -92,7 +97,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[ErrorResultBase]:
+) -> Response[Union[ErrorResultBase, Ledgers]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -110,9 +115,9 @@ def sync_all(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchLedgersSort] = UNSET,
-) -> Optional[ErrorResultBase]:
-    # TODO: Fix commented out macro
-    all_results = []  #  # type: ignore
+) -> Optional[Union[ErrorResultBase, Ledgers]]:
+    all_results = Ledgers(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -127,7 +132,7 @@ def sync_all(
             ).parsed
 
             if results and not isinstance(results, ErrorResultBase) and not isinstance(results.items, Unset):
-                all_results.extend(results.items)  # type: ignore
+                all_results.items.extend(results.items)  # type: ignore
 
                 cursor = results.additional_properties.get("startingAfterId")
 
@@ -157,7 +162,7 @@ def sync_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchLedgersSort] = UNSET,
-) -> Response[ErrorResultBase]:
+) -> Response[Union[ErrorResultBase, Ledgers]]:
     """Search ledgers
 
      Search all ledgers that correspond to the given search conditions.
@@ -175,7 +180,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[ErrorResultBase, Ledgers]]
     """
 
     kwargs = _get_kwargs(
@@ -203,7 +208,7 @@ def sync(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchLedgersSort] = UNSET,
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[ErrorResultBase, Ledgers]]:
     """Search ledgers
 
      Search all ledgers that correspond to the given search conditions.
@@ -221,7 +226,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[ErrorResultBase, Ledgers]
     """
 
     return sync_detailed(
@@ -249,7 +254,7 @@ async def asyncio_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchLedgersSort] = UNSET,
-) -> Response[ErrorResultBase]:
+) -> Response[Union[ErrorResultBase, Ledgers]]:
     """Search ledgers
 
      Search all ledgers that correspond to the given search conditions.
@@ -267,7 +272,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ErrorResultBase]
+        Response[Union[ErrorResultBase, Ledgers]]
     """
 
     kwargs = _get_kwargs(
@@ -293,8 +298,9 @@ async def asyncio_all(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchLedgersSort] = UNSET,
-) -> Response[ErrorResultBase]:
-    all_results = []
+) -> Response[Union[ErrorResultBase, Ledgers]]:
+    all_results = Ledgers(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -336,7 +342,7 @@ async def asyncio(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchLedgersSort] = UNSET,
-) -> Optional[ErrorResultBase]:
+) -> Optional[Union[ErrorResultBase, Ledgers]]:
     """Search ledgers
 
      Search all ledgers that correspond to the given search conditions.
@@ -354,7 +360,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ErrorResultBase
+        Union[ErrorResultBase, Ledgers]
     """
 
     return (

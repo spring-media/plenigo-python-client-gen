@@ -159,9 +159,9 @@ class AppleAppStoreReceipt:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                receipt_creation_date_type_1 = isoparse(data)
+                receipt_creation_date_type_0 = isoparse(data)
 
-                return receipt_creation_date_type_1
+                return receipt_creation_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -176,9 +176,9 @@ class AppleAppStoreReceipt:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                request_date_type_1 = isoparse(data)
+                request_date_type_0 = isoparse(data)
 
-                return request_date_type_1
+                return request_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
@@ -193,9 +193,9 @@ class AppleAppStoreReceipt:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                original_purchase_date_type_1 = isoparse(data)
+                original_purchase_date_type_0 = isoparse(data)
 
-                return original_purchase_date_type_1
+                return original_purchase_date_type_0
             except:  # noqa: E722
                 pass
             return cast(Union[None, Unset, datetime.datetime], data)
