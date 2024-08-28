@@ -1,4 +1,5 @@
-""" A client library for accessing plenigo API v3 """
+"""A client library for accessing plenigo API v3"""
+
 from enum import StrEnum
 
 from .client import AuthenticatedClient, Client

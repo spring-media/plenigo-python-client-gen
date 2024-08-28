@@ -121,7 +121,7 @@ def _build_response(*, client: Union[AuthenticatedClient, Client], response: htt
 def sync_all(
     {{ arguments(endpoint) | indent(4) }}
 ) -> Optional[{{ return_string }}]:
-    all_results = {{ success_model(endpoint) }} # type: ignore
+    all_results = {{ success_model(endpoint) }}  # type: ignore
 
     while True:
         try:
@@ -200,8 +200,7 @@ async def asyncio_detailed(
 async def asyncio_all(
     {{ arguments(endpoint) | indent(4) }}
 ) -> Response[{{ return_string }}]:
-
-    all_results = []
+    all_results = {{ success_model(endpoint) }}  # type: ignore
 
     while True:
         try:
