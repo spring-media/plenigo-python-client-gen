@@ -1,3 +1,4 @@
+import datetime
 import logging
 from http import HTTPStatus
 from typing import Any, Dict, Optional, Union
@@ -7,58 +8,45 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import UNSET, Response
-
-log = logging.getLogger(__name__)
-
-import datetime
-from typing import Dict, Optional, Union
-
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.search_subscription_delivery_dates_sort import SearchSubscriptionDeliveryDatesSort
 from ...models.subscription_delivery_dates import SubscriptionDeliveryDates
-from ...types import UNSET, Unset
+from ...types import UNSET, Response, Unset
+
+log = logging.getLogger(__name__)
 
 
 def _get_kwargs(
     delivery_list_id: int,
     delivery_list_date_id: int,
     *,
-    client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchSubscriptionDeliveryDatesSort] = UNSET,
-    delivery_customer_id: Union[Unset, None, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchSubscriptionDeliveryDatesSort] = UNSET,
+    delivery_customer_id: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/subscriptions/deliveryLists/{deliveryListId}/dates/{deliveryListDateId}".format(
-        client.api.value, deliveryListId=delivery_list_id, deliveryListDateId=delivery_list_date_id
-    )
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["size"] = size
 
-    json_start_time: Union[Unset, None, str] = UNSET
+    json_start_time: Union[Unset, str] = UNSET
     if not isinstance(start_time, Unset):
-        json_start_time = start_time.isoformat() if start_time else None
-
+        json_start_time = start_time.isoformat()
     params["startTime"] = json_start_time
 
-    json_end_time: Union[Unset, None, str] = UNSET
+    json_end_time: Union[Unset, str] = UNSET
     if not isinstance(end_time, Unset):
-        json_end_time = end_time.isoformat() if end_time else None
-
+        json_end_time = end_time.isoformat()
     params["endTime"] = json_end_time
 
     params["startingAfter"] = starting_after
 
-    json_sort: Union[Unset, None, str] = UNSET
+    json_sort: Union[Unset, str] = UNSET
     if not isinstance(sort, Unset):
-        json_sort = sort.value if sort else None
+        json_sort = sort.value
 
     params["sort"] = json_sort
 
@@ -66,30 +54,26 @@ def _get_kwargs(
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/subscriptions/deliveryLists/{delivery_list_id}/dates/{delivery_list_date_id}",
         "params": params,
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[ErrorResultBase, SubscriptionDeliveryDates]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResult, ErrorResultBase, SubscriptionDeliveryDates]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = SubscriptionDeliveryDates.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -115,14 +99,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[ErrorResultBase, SubscriptionDeliveryDates]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResult, ErrorResultBase, SubscriptionDeliveryDates]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 def sync_all(
@@ -130,14 +114,15 @@ def sync_all(
     delivery_list_date_id: int,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchSubscriptionDeliveryDatesSort] = UNSET,
-    delivery_customer_id: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[ErrorResultBase, SubscriptionDeliveryDates]]:
-    all_results = SubscriptionDeliveryDates(items=[])  # type: ignore
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchSubscriptionDeliveryDatesSort] = UNSET,
+    delivery_customer_id: Union[Unset, str] = UNSET,
+) -> Optional[Union[ErrorResult, ErrorResultBase, SubscriptionDeliveryDates]]:
+    all_results = SubscriptionDeliveryDates(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -161,7 +146,7 @@ def sync_all(
                 if not cursor:
                     break
 
-                starting_after = cursor
+                starting_after = cursor  # noqa
             else:
                 break
         except RetryError:
@@ -180,13 +165,13 @@ def sync_detailed(
     delivery_list_date_id: int,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchSubscriptionDeliveryDatesSort] = UNSET,
-    delivery_customer_id: Union[Unset, None, str] = UNSET,
-) -> Response[Union[ErrorResultBase, SubscriptionDeliveryDates]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchSubscriptionDeliveryDatesSort] = UNSET,
+    delivery_customer_id: Union[Unset, str] = UNSET,
+) -> Response[Union[ErrorResult, ErrorResultBase, SubscriptionDeliveryDates]]:
     """Search subscription delivery dates
 
      Search all subscriptions delivery dates that correspond to the given search conditions.
@@ -194,25 +179,24 @@ def sync_detailed(
     Args:
         delivery_list_id (int):
         delivery_list_date_id (int):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        sort (Union[Unset, None, SearchSubscriptionDeliveryDatesSort]):
-        delivery_customer_id (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        sort (Union[Unset, SearchSubscriptionDeliveryDatesSort]):
+        delivery_customer_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, SubscriptionDeliveryDates]]
+        Response[Union[ErrorResult, ErrorResultBase, SubscriptionDeliveryDates]]
     """
 
     kwargs = _get_kwargs(
         delivery_list_id=delivery_list_id,
         delivery_list_date_id=delivery_list_date_id,
-        client=client,
         size=size,
         start_time=start_time,
         end_time=end_time,
@@ -221,8 +205,7 @@ def sync_detailed(
         delivery_customer_id=delivery_customer_id,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -234,13 +217,13 @@ def sync(
     delivery_list_date_id: int,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchSubscriptionDeliveryDatesSort] = UNSET,
-    delivery_customer_id: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[ErrorResultBase, SubscriptionDeliveryDates]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchSubscriptionDeliveryDatesSort] = UNSET,
+    delivery_customer_id: Union[Unset, str] = UNSET,
+) -> Optional[Union[ErrorResult, ErrorResultBase, SubscriptionDeliveryDates]]:
     """Search subscription delivery dates
 
      Search all subscriptions delivery dates that correspond to the given search conditions.
@@ -248,19 +231,19 @@ def sync(
     Args:
         delivery_list_id (int):
         delivery_list_date_id (int):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        sort (Union[Unset, None, SearchSubscriptionDeliveryDatesSort]):
-        delivery_customer_id (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        sort (Union[Unset, SearchSubscriptionDeliveryDatesSort]):
+        delivery_customer_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, SubscriptionDeliveryDates]
+        Union[ErrorResult, ErrorResultBase, SubscriptionDeliveryDates]
     """
 
     return sync_detailed(
@@ -286,13 +269,13 @@ async def asyncio_detailed(
     delivery_list_date_id: int,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchSubscriptionDeliveryDatesSort] = UNSET,
-    delivery_customer_id: Union[Unset, None, str] = UNSET,
-) -> Response[Union[ErrorResultBase, SubscriptionDeliveryDates]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchSubscriptionDeliveryDatesSort] = UNSET,
+    delivery_customer_id: Union[Unset, str] = UNSET,
+) -> Response[Union[ErrorResult, ErrorResultBase, SubscriptionDeliveryDates]]:
     """Search subscription delivery dates
 
      Search all subscriptions delivery dates that correspond to the given search conditions.
@@ -300,25 +283,24 @@ async def asyncio_detailed(
     Args:
         delivery_list_id (int):
         delivery_list_date_id (int):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        sort (Union[Unset, None, SearchSubscriptionDeliveryDatesSort]):
-        delivery_customer_id (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        sort (Union[Unset, SearchSubscriptionDeliveryDatesSort]):
+        delivery_customer_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, SubscriptionDeliveryDates]]
+        Response[Union[ErrorResult, ErrorResultBase, SubscriptionDeliveryDates]]
     """
 
     kwargs = _get_kwargs(
         delivery_list_id=delivery_list_id,
         delivery_list_date_id=delivery_list_date_id,
-        client=client,
         size=size,
         start_time=start_time,
         end_time=end_time,
@@ -327,8 +309,7 @@ async def asyncio_detailed(
         delivery_customer_id=delivery_customer_id,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -338,14 +319,15 @@ async def asyncio_all(
     delivery_list_date_id: int,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchSubscriptionDeliveryDatesSort] = UNSET,
-    delivery_customer_id: Union[Unset, None, str] = UNSET,
-) -> Response[Union[ErrorResultBase, SubscriptionDeliveryDates]]:
-    all_results = []
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchSubscriptionDeliveryDatesSort] = UNSET,
+    delivery_customer_id: Union[Unset, str] = UNSET,
+) -> Response[Union[ErrorResult, ErrorResultBase, SubscriptionDeliveryDates]]:
+    all_results = SubscriptionDeliveryDates(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -371,7 +353,7 @@ async def asyncio_all(
                 if not cursor:
                     break
 
-                starting_after = cursor
+                starting_after = cursor  # noqa
             else:
                 break
         except RetryError:
@@ -385,13 +367,13 @@ async def asyncio(
     delivery_list_date_id: int,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchSubscriptionDeliveryDatesSort] = UNSET,
-    delivery_customer_id: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[ErrorResultBase, SubscriptionDeliveryDates]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchSubscriptionDeliveryDatesSort] = UNSET,
+    delivery_customer_id: Union[Unset, str] = UNSET,
+) -> Optional[Union[ErrorResult, ErrorResultBase, SubscriptionDeliveryDates]]:
     """Search subscription delivery dates
 
      Search all subscriptions delivery dates that correspond to the given search conditions.
@@ -399,19 +381,19 @@ async def asyncio(
     Args:
         delivery_list_id (int):
         delivery_list_date_id (int):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        sort (Union[Unset, None, SearchSubscriptionDeliveryDatesSort]):
-        delivery_customer_id (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        sort (Union[Unset, SearchSubscriptionDeliveryDatesSort]):
+        delivery_customer_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, SubscriptionDeliveryDates]
+        Union[ErrorResult, ErrorResultBase, SubscriptionDeliveryDates]
     """
 
     return (

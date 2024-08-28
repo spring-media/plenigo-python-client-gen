@@ -6,74 +6,61 @@ import httpx
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from ... import errors
-from ...client import Client
-from ...types import UNSET, Response
-
-log = logging.getLogger(__name__)
-
-from typing import Dict, Optional, Union, cast
-
+from ...client import AuthenticatedClient, Client
 from ...models.analytics_payment_method_result import AnalyticsPaymentMethodResult
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.get_invoice_payment_method_statistics_interval import GetInvoicePaymentMethodStatisticsInterval
 from ...models.get_invoice_payment_method_statistics_sort import GetInvoicePaymentMethodStatisticsSort
-from ...types import UNSET, Unset
+from ...types import UNSET, Response, Unset
+
+log = logging.getLogger(__name__)
 
 
 def _get_kwargs(
     *,
-    client: Client,
-    calculation_date: Union[Unset, None, str] = UNSET,
+    calculation_date: Union[Unset, str] = UNSET,
     interval: GetInvoicePaymentMethodStatisticsInterval,
     size: int,
-    sort: Union[Unset, None, GetInvoicePaymentMethodStatisticsSort] = UNSET,
+    sort: Union[Unset, GetInvoicePaymentMethodStatisticsSort] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/analytics/invoices/paymentMethods".format(client.api.value)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["calculationDate"] = calculation_date
 
     json_interval = interval.value
-
     params["interval"] = json_interval
 
     params["size"] = size
 
-    json_sort: Union[Unset, None, str] = UNSET
+    json_sort: Union[Unset, str] = UNSET
     if not isinstance(sort, Unset):
-        json_sort = sort.value if sort else None
+        json_sort = sort.value
 
     params["sort"] = json_sort
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": "/analytics/invoices/paymentMethods",
         "params": params,
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[AnalyticsPaymentMethodResult, Any, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[AnalyticsPaymentMethodResult, Any, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = AnalyticsPaymentMethodResult.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -102,14 +89,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[AnalyticsPaymentMethodResult, Any, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[AnalyticsPaymentMethodResult, Any, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -119,40 +106,38 @@ def _build_response(
 )
 def sync_detailed(
     *,
-    client: Client,
-    calculation_date: Union[Unset, None, str] = UNSET,
+    client: Union[AuthenticatedClient, Client],
+    calculation_date: Union[Unset, str] = UNSET,
     interval: GetInvoicePaymentMethodStatisticsInterval,
     size: int,
-    sort: Union[Unset, None, GetInvoicePaymentMethodStatisticsSort] = UNSET,
-) -> Response[Union[AnalyticsPaymentMethodResult, Any, ErrorResultBase]]:
+    sort: Union[Unset, GetInvoicePaymentMethodStatisticsSort] = UNSET,
+) -> Response[Union[AnalyticsPaymentMethodResult, Any, ErrorResult, ErrorResultBase]]:
     """Get invoice payment methods
 
      Get statistical information about invoice payment methods within the defined time range.
 
     Args:
-        calculation_date (Union[Unset, None, str]):
+        calculation_date (Union[Unset, str]):
         interval (GetInvoicePaymentMethodStatisticsInterval):
         size (int):
-        sort (Union[Unset, None, GetInvoicePaymentMethodStatisticsSort]):
+        sort (Union[Unset, GetInvoicePaymentMethodStatisticsSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AnalyticsPaymentMethodResult, Any, ErrorResultBase]]
+        Response[Union[AnalyticsPaymentMethodResult, Any, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
         calculation_date=calculation_date,
         interval=interval,
         size=size,
         sort=sort,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -161,28 +146,28 @@ def sync_detailed(
 
 def sync(
     *,
-    client: Client,
-    calculation_date: Union[Unset, None, str] = UNSET,
+    client: Union[AuthenticatedClient, Client],
+    calculation_date: Union[Unset, str] = UNSET,
     interval: GetInvoicePaymentMethodStatisticsInterval,
     size: int,
-    sort: Union[Unset, None, GetInvoicePaymentMethodStatisticsSort] = UNSET,
-) -> Optional[Union[AnalyticsPaymentMethodResult, Any, ErrorResultBase]]:
+    sort: Union[Unset, GetInvoicePaymentMethodStatisticsSort] = UNSET,
+) -> Optional[Union[AnalyticsPaymentMethodResult, Any, ErrorResult, ErrorResultBase]]:
     """Get invoice payment methods
 
      Get statistical information about invoice payment methods within the defined time range.
 
     Args:
-        calculation_date (Union[Unset, None, str]):
+        calculation_date (Union[Unset, str]):
         interval (GetInvoicePaymentMethodStatisticsInterval):
         size (int):
-        sort (Union[Unset, None, GetInvoicePaymentMethodStatisticsSort]):
+        sort (Union[Unset, GetInvoicePaymentMethodStatisticsSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AnalyticsPaymentMethodResult, Any, ErrorResultBase]
+        Union[AnalyticsPaymentMethodResult, Any, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -201,68 +186,66 @@ def sync(
 )
 async def asyncio_detailed(
     *,
-    client: Client,
-    calculation_date: Union[Unset, None, str] = UNSET,
+    client: Union[AuthenticatedClient, Client],
+    calculation_date: Union[Unset, str] = UNSET,
     interval: GetInvoicePaymentMethodStatisticsInterval,
     size: int,
-    sort: Union[Unset, None, GetInvoicePaymentMethodStatisticsSort] = UNSET,
-) -> Response[Union[AnalyticsPaymentMethodResult, Any, ErrorResultBase]]:
+    sort: Union[Unset, GetInvoicePaymentMethodStatisticsSort] = UNSET,
+) -> Response[Union[AnalyticsPaymentMethodResult, Any, ErrorResult, ErrorResultBase]]:
     """Get invoice payment methods
 
      Get statistical information about invoice payment methods within the defined time range.
 
     Args:
-        calculation_date (Union[Unset, None, str]):
+        calculation_date (Union[Unset, str]):
         interval (GetInvoicePaymentMethodStatisticsInterval):
         size (int):
-        sort (Union[Unset, None, GetInvoicePaymentMethodStatisticsSort]):
+        sort (Union[Unset, GetInvoicePaymentMethodStatisticsSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AnalyticsPaymentMethodResult, Any, ErrorResultBase]]
+        Response[Union[AnalyticsPaymentMethodResult, Any, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
         calculation_date=calculation_date,
         interval=interval,
         size=size,
         sort=sort,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
 
 async def asyncio(
     *,
-    client: Client,
-    calculation_date: Union[Unset, None, str] = UNSET,
+    client: Union[AuthenticatedClient, Client],
+    calculation_date: Union[Unset, str] = UNSET,
     interval: GetInvoicePaymentMethodStatisticsInterval,
     size: int,
-    sort: Union[Unset, None, GetInvoicePaymentMethodStatisticsSort] = UNSET,
-) -> Optional[Union[AnalyticsPaymentMethodResult, Any, ErrorResultBase]]:
+    sort: Union[Unset, GetInvoicePaymentMethodStatisticsSort] = UNSET,
+) -> Optional[Union[AnalyticsPaymentMethodResult, Any, ErrorResult, ErrorResultBase]]:
     """Get invoice payment methods
 
      Get statistical information about invoice payment methods within the defined time range.
 
     Args:
-        calculation_date (Union[Unset, None, str]):
+        calculation_date (Union[Unset, str]):
         interval (GetInvoicePaymentMethodStatisticsInterval):
         size (int):
-        sort (Union[Unset, None, GetInvoicePaymentMethodStatisticsSort]):
+        sort (Union[Unset, GetInvoicePaymentMethodStatisticsSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AnalyticsPaymentMethodResult, Any, ErrorResultBase]
+        Union[AnalyticsPaymentMethodResult, Any, ErrorResult, ErrorResultBase]
     """
 
     return (

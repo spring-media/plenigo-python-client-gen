@@ -6,56 +6,52 @@ import httpx
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from ... import errors
-from ...client import Client
+from ...client import AuthenticatedClient, Client
+from ...models.customer_registration_creation import CustomerRegistrationCreation
+from ...models.error_result import ErrorResult
+from ...models.error_result_base import ErrorResultBase
+from ...models.next_step import NextStep
 from ...types import Response
 
 log = logging.getLogger(__name__)
 
-from typing import Dict
-
-from ...models.customer_registration_creation import CustomerRegistrationCreation
-from ...models.error_result_base import ErrorResultBase
-from ...models.step_token import StepToken
-
 
 def _get_kwargs(
     *,
-    client: Client,
-    json_body: CustomerRegistrationCreation,
+    body: CustomerRegistrationCreation,
 ) -> Dict[str, Any]:
-    url = "{}/processes/registration/start".format(client.api.value)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": "/processes/registration/start",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+
+    log.debug(_kwargs)
+
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[ErrorResultBase, StepToken]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResult, ErrorResultBase, NextStep]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = StepToken.from_dict(response.json())
+        response_200 = NextStep.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.PRECONDITION_FAILED:
-        response_412 = ErrorResultBase.from_dict(response.json())
+        response_412 = ErrorResult.from_dict(response.json())
 
         return response_412
     if response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
@@ -76,13 +72,15 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[ErrorResultBase, StepToken]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResult, ErrorResultBase, NextStep]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -92,9 +90,9 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[Uni
 )
 def sync_detailed(
     *,
-    client: Client,
-    json_body: CustomerRegistrationCreation,
-) -> Response[Union[ErrorResultBase, StepToken]]:
+    client: Union[AuthenticatedClient, Client],
+    body: CustomerRegistrationCreation,
+) -> Response[Union[ErrorResult, ErrorResultBase, NextStep]]:
     """Start registration
 
      This functionality starts the registration process for a new customer. If address data will be
@@ -104,23 +102,21 @@ def sync_detailed(
     provided the first and last name of the customer will be filled.
 
     Args:
-        json_body (CustomerRegistrationCreation):
+        body (CustomerRegistrationCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, StepToken]]
+        Response[Union[ErrorResult, ErrorResultBase, NextStep]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -129,9 +125,9 @@ def sync_detailed(
 
 def sync(
     *,
-    client: Client,
-    json_body: CustomerRegistrationCreation,
-) -> Optional[Union[ErrorResultBase, StepToken]]:
+    client: Union[AuthenticatedClient, Client],
+    body: CustomerRegistrationCreation,
+) -> Optional[Union[ErrorResult, ErrorResultBase, NextStep]]:
     """Start registration
 
      This functionality starts the registration process for a new customer. If address data will be
@@ -141,19 +137,19 @@ def sync(
     provided the first and last name of the customer will be filled.
 
     Args:
-        json_body (CustomerRegistrationCreation):
+        body (CustomerRegistrationCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, StepToken]
+        Union[ErrorResult, ErrorResultBase, NextStep]
     """
 
     return sync_detailed(
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -164,9 +160,9 @@ def sync(
 )
 async def asyncio_detailed(
     *,
-    client: Client,
-    json_body: CustomerRegistrationCreation,
-) -> Response[Union[ErrorResultBase, StepToken]]:
+    client: Union[AuthenticatedClient, Client],
+    body: CustomerRegistrationCreation,
+) -> Response[Union[ErrorResult, ErrorResultBase, NextStep]]:
     """Start registration
 
      This functionality starts the registration process for a new customer. If address data will be
@@ -176,32 +172,30 @@ async def asyncio_detailed(
     provided the first and last name of the customer will be filled.
 
     Args:
-        json_body (CustomerRegistrationCreation):
+        body (CustomerRegistrationCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, StepToken]]
+        Response[Union[ErrorResult, ErrorResultBase, NextStep]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
 
 async def asyncio(
     *,
-    client: Client,
-    json_body: CustomerRegistrationCreation,
-) -> Optional[Union[ErrorResultBase, StepToken]]:
+    client: Union[AuthenticatedClient, Client],
+    body: CustomerRegistrationCreation,
+) -> Optional[Union[ErrorResult, ErrorResultBase, NextStep]]:
     """Start registration
 
      This functionality starts the registration process for a new customer. If address data will be
@@ -211,19 +205,19 @@ async def asyncio(
     provided the first and last name of the customer will be filled.
 
     Args:
-        json_body (CustomerRegistrationCreation):
+        body (CustomerRegistrationCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, StepToken]
+        Union[ErrorResult, ErrorResultBase, NextStep]
     """
 
     return (
         await asyncio_detailed(
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

@@ -6,48 +6,44 @@ import httpx
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from ... import errors
-from ...client import Client
+from ...client import AuthenticatedClient, Client
+from ...models.error_result_base import ErrorResultBase
+from ...models.tax_code import TaxCode
+from ...models.tax_code_creation import TaxCodeCreation
 from ...types import Response
 
 log = logging.getLogger(__name__)
-
-from typing import Dict
-
-from ...models.error_result_base import ErrorResultBase
-from ...models.tax_code_creation import TaxCodeCreation
 
 
 def _get_kwargs(
     tax_code_id: int,
     *,
-    client: Client,
-    json_body: TaxCodeCreation,
+    body: TaxCodeCreation,
 ) -> Dict[str, Any]:
-    url = "{}/accounting/taxCodes/{taxCodeId}".format(client.api.value, taxCodeId=tax_code_id)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "put",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": f"/accounting/taxCodes/{tax_code_id}",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+
+    log.debug(_kwargs)
+
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[ErrorResultBase, TaxCodeCreation]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResultBase, TaxCode]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = TaxCodeCreation.from_dict(response.json())
+        response_200 = TaxCode.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
@@ -76,13 +72,15 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[ErrorResultBase, TaxCodeCreation]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResultBase, TaxCode]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -93,33 +91,31 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[Uni
 def sync_detailed(
     tax_code_id: int,
     *,
-    client: Client,
-    json_body: TaxCodeCreation,
-) -> Response[Union[ErrorResultBase, TaxCodeCreation]]:
+    client: Union[AuthenticatedClient, Client],
+    body: TaxCodeCreation,
+) -> Response[Union[ErrorResultBase, TaxCode]]:
     """Update tax code
 
      Update an tax code that is identified by the passed tax code id with the data provided.
 
     Args:
         tax_code_id (int):
-        json_body (TaxCodeCreation):
+        body (TaxCodeCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, TaxCodeCreation]]
+        Response[Union[ErrorResultBase, TaxCode]]
     """
 
     kwargs = _get_kwargs(
         tax_code_id=tax_code_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -129,29 +125,29 @@ def sync_detailed(
 def sync(
     tax_code_id: int,
     *,
-    client: Client,
-    json_body: TaxCodeCreation,
-) -> Optional[Union[ErrorResultBase, TaxCodeCreation]]:
+    client: Union[AuthenticatedClient, Client],
+    body: TaxCodeCreation,
+) -> Optional[Union[ErrorResultBase, TaxCode]]:
     """Update tax code
 
      Update an tax code that is identified by the passed tax code id with the data provided.
 
     Args:
         tax_code_id (int):
-        json_body (TaxCodeCreation):
+        body (TaxCodeCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, TaxCodeCreation]
+        Union[ErrorResultBase, TaxCode]
     """
 
     return sync_detailed(
         tax_code_id=tax_code_id,
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -163,33 +159,31 @@ def sync(
 async def asyncio_detailed(
     tax_code_id: int,
     *,
-    client: Client,
-    json_body: TaxCodeCreation,
-) -> Response[Union[ErrorResultBase, TaxCodeCreation]]:
+    client: Union[AuthenticatedClient, Client],
+    body: TaxCodeCreation,
+) -> Response[Union[ErrorResultBase, TaxCode]]:
     """Update tax code
 
      Update an tax code that is identified by the passed tax code id with the data provided.
 
     Args:
         tax_code_id (int):
-        json_body (TaxCodeCreation):
+        body (TaxCodeCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, TaxCodeCreation]]
+        Response[Union[ErrorResultBase, TaxCode]]
     """
 
     kwargs = _get_kwargs(
         tax_code_id=tax_code_id,
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -197,29 +191,29 @@ async def asyncio_detailed(
 async def asyncio(
     tax_code_id: int,
     *,
-    client: Client,
-    json_body: TaxCodeCreation,
-) -> Optional[Union[ErrorResultBase, TaxCodeCreation]]:
+    client: Union[AuthenticatedClient, Client],
+    body: TaxCodeCreation,
+) -> Optional[Union[ErrorResultBase, TaxCode]]:
     """Update tax code
 
      Update an tax code that is identified by the passed tax code id with the data provided.
 
     Args:
         tax_code_id (int):
-        json_body (TaxCodeCreation):
+        body (TaxCodeCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, TaxCodeCreation]
+        Union[ErrorResultBase, TaxCode]
     """
 
     return (
         await asyncio_detailed(
             tax_code_id=tax_code_id,
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

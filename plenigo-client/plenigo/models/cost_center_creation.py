@@ -1,38 +1,45 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="CostCenterCreation")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CostCenterCreation:
     """
     Attributes:
-        cost_center (str): Cost center value of the cost center
+        cost_center (Union[Unset, str]): Cost center value of the cost center
+        purchase_number (Union[Unset, str]): Purchase number to use
         description (Union[Unset, str]): description of the cost center
         short_description (Union[Unset, str]): short description of the cost center
     """
 
-    cost_center: str
+    cost_center: Union[Unset, str] = UNSET
+    purchase_number: Union[Unset, str] = UNSET
     description: Union[Unset, str] = UNSET
     short_description: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         cost_center = self.cost_center
+
+        purchase_number = self.purchase_number
+
         description = self.description
+
         short_description = self.short_description
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "costCenter": cost_center,
-            }
-        )
+        field_dict.update({})
+        if cost_center is not UNSET:
+            field_dict["costCenter"] = cost_center
+        if purchase_number is not UNSET:
+            field_dict["purchaseNumber"] = purchase_number
         if description is not UNSET:
             field_dict["description"] = description
         if short_description is not UNSET:
@@ -43,7 +50,9 @@ class CostCenterCreation:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        cost_center = d.pop("costCenter")
+        cost_center = d.pop("costCenter", UNSET)
+
+        purchase_number = d.pop("purchaseNumber", UNSET)
 
         description = d.pop("description", UNSET)
 
@@ -51,6 +60,7 @@ class CostCenterCreation:
 
         cost_center_creation = cls(
             cost_center=cost_center,
+            purchase_number=purchase_number,
             description=description,
             short_description=short_description,
         )

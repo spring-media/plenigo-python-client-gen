@@ -1,25 +1,26 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.product_access_right_creation import ProductAccessRightCreation
+    from ..models.product_access_right import ProductAccessRight
 
 
 T = TypeVar("T", bound="ProductAccessRights")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ProductAccessRights:
     """
     Attributes:
-        items (Union[Unset, List['ProductAccessRightCreation']]): product access rights
+        items (Union[Unset, List['ProductAccessRight']]): product access rights
     """
 
-    items: Union[Unset, List["ProductAccessRightCreation"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    items: Union[Unset, List["ProductAccessRight"]] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         items: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -27,7 +28,6 @@ class ProductAccessRights:
             items = []
             for items_item_data in self.items:
                 items_item = items_item_data.to_dict()
-
                 items.append(items_item)
 
         field_dict: Dict[str, Any] = {}
@@ -40,13 +40,13 @@ class ProductAccessRights:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.product_access_right_creation import ProductAccessRightCreation
+        from ..models.product_access_right import ProductAccessRight
 
         d = src_dict.copy()
         items = []
         _items = d.pop("items", UNSET)
         for items_item_data in _items or []:
-            items_item = ProductAccessRightCreation.from_dict(items_item_data)
+            items_item = ProductAccessRight.from_dict(items_item_data)
 
             items.append(items_item)
 

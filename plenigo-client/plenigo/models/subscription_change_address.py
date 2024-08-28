@@ -1,13 +1,14 @@
 from typing import Any, Dict, List, Type, TypeVar
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.subscription_change_address_address_type import SubscriptionChangeAddressAddressType
 
 T = TypeVar("T", bound="SubscriptionChangeAddress")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class SubscriptionChangeAddress:
     """
     Attributes:
@@ -17,10 +18,11 @@ class SubscriptionChangeAddress:
 
     address_id: int
     address_type: SubscriptionChangeAddressAddressType
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         address_id = self.address_id
+
         address_type = self.address_type.value
 
         field_dict: Dict[str, Any] = {}

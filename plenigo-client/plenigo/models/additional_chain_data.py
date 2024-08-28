@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="AdditionalChainData")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AdditionalChainData:
     """
     Attributes:
@@ -19,7 +20,7 @@ class AdditionalChainData:
     """
 
     data: Union[Unset, "AdditionalChainDataData"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         data: Union[Unset, Dict[str, Any]] = UNSET
@@ -41,7 +42,7 @@ class AdditionalChainData:
         d = src_dict.copy()
         _data = d.pop("data", UNSET)
         data: Union[Unset, AdditionalChainDataData]
-        if isinstance(_data, Unset):
+        if isinstance(_data, Unset) or not _data:
             data = UNSET
         else:
             data = AdditionalChainDataData.from_dict(_data)

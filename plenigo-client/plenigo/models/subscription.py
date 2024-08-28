@@ -1,31 +1,36 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
+from ..models.api_base_changed_by_type import ApiBaseChangedByType
+from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..models.subscription_accounting_period_time_span import SubscriptionAccountingPeriodTimeSpan
 from ..models.subscription_cancellation_period_time_span import SubscriptionCancellationPeriodTimeSpan
+from ..models.subscription_cancellation_type import SubscriptionCancellationType
 from ..models.subscription_duration_period_time_span import SubscriptionDurationPeriodTimeSpan
+from ..models.subscription_managed_by import SubscriptionManagedBy
 from ..models.subscription_payment_method import SubscriptionPaymentMethod
 from ..models.subscription_precursor_reason import SubscriptionPrecursorReason
-from ..models.subscription_precursor_reason_detail import SubscriptionPrecursorReasonDetail
 from ..models.subscription_status import SubscriptionStatus
 from ..models.subscription_subscription_type import SubscriptionSubscriptionType
 from ..models.subscription_successor_reason import SubscriptionSuccessorReason
-from ..models.subscription_successor_reason_detail import SubscriptionSuccessorReasonDetail
 from ..models.subscription_term_time_span import SubscriptionTermTimeSpan
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.payment_method_details import PaymentMethodDetails
+    from ..models.subscription_connected_offer_info import SubscriptionConnectedOfferInfo
     from ..models.subscription_item import SubscriptionItem
+    from ..models.subscription_pause_at import SubscriptionPauseAt
 
 
 T = TypeVar("T", bound="Subscription")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class Subscription:
     """
     Attributes:
@@ -40,13 +45,21 @@ class Subscription:
         cancellation_period (int): cancellation period of the subscription
         cancellation_period_time_span (SubscriptionCancellationPeriodTimeSpan): represents the time span that is
             represented by the cancellation period
+        start_date (Union[None, datetime.datetime]): start date time of the subscription with date-time notation as
+            defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
+            for example, 2017-07-21T17:32:28Z
         currency (str): currency of the subscription formatted as <a href="https://en.wikipedia.org/wiki/ISO_4217"
             target="_blank">ISO 4217, alphabetic code</a>
         payment_method (SubscriptionPaymentMethod): payment method used to pay for the subscription (ZERO indicates a
             free subscription)
-        changed_date (Union[Unset, datetime.datetime]): date the subscription entity was changed with date-time notation
-            as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section
-            5.6</a>, for example, 2017-07-21T17:32:28Z
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        created_by (Union[Unset, str]): ID of who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
+        changed_by (Union[Unset, str]): ID of who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
         analog_invoice (Union[Unset, bool]): flag indicating if the subscription is a analog invoice
         external_system_id (Union[Unset, str]): if subscription was imported from another system this field contains the
             unique id of the other system
@@ -57,13 +70,15 @@ class Subscription:
             provided here
         invoice_address_id (Union[Unset, int]): id of the invoice address that is associated with this subscription
         delivery_address_id (Union[Unset, int]): id of the delivery address that is associated with this subscription
-        start_date (Optional[datetime.datetime]): start date time of the subscription with date-time notation as defined
-            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
-            example, 2017-07-21T17:32:28Z
-        end_date (Union[Unset, None, datetime.datetime]): end date time of the subscription with date-time notation as
+        cancellation_type (Union[Unset, SubscriptionCancellationType]): represents the cancellation type of the
+            subscription
+        reference_start_date (Union[None, Unset, datetime.datetime]): reference start date time of the subscription with
+            date-time notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC
+            3339, section 5.6</a>, for example, 2017-07-21T17:32:28Z
+        end_date (Union[None, Unset, datetime.datetime]): end date time of the subscription with date-time notation as
             defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
             for example, 2017-07-21T17:32:28Z
-        cancellation_date (Union[Unset, None, datetime.datetime]): cancellation date time of the subscription with date-
+        cancellation_date (Union[None, Unset, datetime.datetime]): cancellation date time of the subscription with date-
             time notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339,
             section 5.6</a>, for example, 2017-07-21T17:32:28Z
         status (Union[Unset, SubscriptionStatus]): current status of the subscription
@@ -71,27 +86,25 @@ class Subscription:
         payment_method_details (Union[Unset, PaymentMethodDetails]):
         access_blocked (Union[Unset, bool]): flag indicating if subscription is blocked and delivery customer cannot
             access products related to subscription, for example because of payment failed
-        first_booking_date (Union[Unset, None, datetime.date]): date the first booking was executed for this
+        first_booking_date (Union[None, Unset, datetime.date]): date the first booking was executed for this
             subscription with full-date notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6"
             target="_blank">RFC 3339, section 5.6</a>, for example, 2017-07-21
-        last_booking_date (Union[Unset, None, datetime.date]): date the last booking was executed for this subscription
+        last_booking_date (Union[None, Unset, datetime.date]): date the last booking was executed for this subscription
             with full-date notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6"
             target="_blank">RFC 3339, section 5.6</a>, for example, 2017-07-21
-        next_booking_date (Union[Unset, None, datetime.date]): date the next booking is going to be executed for this
+        next_booking_date (Union[None, Unset, datetime.date]): date the next booking is going to be executed for this
             subscription with full-date notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6"
             target="_blank">RFC 3339, section 5.6</a>, for example, 2017-07-21
         precursor_id (Union[Unset, int]): if there is another subscription preceding this subscription the id of the
             preceding subscription is provided here
         precursor_reason (Union[Unset, SubscriptionPrecursorReason]): reason for changing the subscription from the
             precursor
-        precursor_reason_detail (Union[Unset, SubscriptionPrecursorReasonDetail]): reason detail for changing the
-            subscription from the precursor
+        precursor_reason_detail (Union[Unset, str]): reason detail for changing the subscription from the precursor
         successor_id (Union[Unset, int]): if there is another subscription following up this subscription the id of the
             next subscription is provided here
         successor_reason (Union[Unset, SubscriptionSuccessorReason]): reason for changing the subscription to the
             successor
-        successor_reason_detail (Union[Unset, SubscriptionSuccessorReasonDetail]): reason detail for changing the
-            subscription to the successor
+        successor_reason_detail (Union[Unset, str]): reason detail for changing the subscription to the successor
         external_billing (Union[Unset, bool]): indicates if payments are handled by plenigo or an external system
         customer_cancellation_blocked (Union[Unset, bool]): indicates if a subscription cannot be cancelled by a
             customer
@@ -104,10 +117,22 @@ class Subscription:
         duration_period_time_span (Union[Unset, SubscriptionDurationPeriodTimeSpan]): represents the time span that is
             represented by the duration period
         managed_external (Union[Unset, bool]): flag indicates if a subscription is not managed by plenigo
+        managed_by (Union[Unset, SubscriptionManagedBy]): managed by of the given subscription.
         payment_tries_done (Union[Unset, int]): amount of payment tries done in the current accounting period
         subscription_type (Union[Unset, SubscriptionSubscriptionType]): represents the type of the subscription
         suppress_invoice_sending (Union[Unset, bool]): flag indicating if the subscription invoice sending is suppressed
         purchase_order_indicator (Union[Unset, str]): purchase order indicator to set
+        connected_offer (Union[Unset, bool]): flag indicates if a subscription is a connected offer
+        connected_offer_info (Union[Unset, SubscriptionConnectedOfferInfo]):
+        finished_deliveries (Union[Unset, int]): the current amount of finished deliveries
+        open_deliveries (Union[Unset, int]): the current amount of open deliveries
+        deliveries (Union[Unset, int]): the amount of deliveries
+        chargeable_deliveries (Union[Unset, int]): the amount of chargeable deliveries
+        recurring_deliveries (Union[Unset, int]): the amount of recurring deliveries
+        active_partners (Union[Unset, List[str]]): the active partners
+        delivery_paused (Union[Unset, SubscriptionPauseAt]):
+        paused (Union[Unset, SubscriptionPauseAt]):
+        payment_paused (Union[Unset, SubscriptionPauseAt]):
         items (Union[Unset, List['SubscriptionItem']]):
     """
 
@@ -120,31 +145,38 @@ class Subscription:
     accounting_period_time_span: SubscriptionAccountingPeriodTimeSpan
     cancellation_period: int
     cancellation_period_time_span: SubscriptionCancellationPeriodTimeSpan
+    start_date: Union[None, datetime.datetime]
     currency: str
     payment_method: SubscriptionPaymentMethod
-    start_date: Optional[datetime.datetime]
-    changed_date: Union[Unset, datetime.datetime] = UNSET
+    created_date: Union[None, Unset, datetime.datetime] = UNSET
+    changed_date: Union[None, Unset, datetime.datetime] = UNSET
+    created_by: Union[Unset, str] = UNSET
+    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
+    changed_by: Union[Unset, str] = UNSET
+    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
     analog_invoice: Union[Unset, bool] = UNSET
     external_system_id: Union[Unset, str] = UNSET
     chain_id: Union[Unset, int] = UNSET
     plenigo_offer_id: Union[Unset, str] = UNSET
     invoice_address_id: Union[Unset, int] = UNSET
     delivery_address_id: Union[Unset, int] = UNSET
-    end_date: Union[Unset, None, datetime.datetime] = UNSET
-    cancellation_date: Union[Unset, None, datetime.datetime] = UNSET
+    cancellation_type: Union[Unset, SubscriptionCancellationType] = UNSET
+    reference_start_date: Union[None, Unset, datetime.datetime] = UNSET
+    end_date: Union[None, Unset, datetime.datetime] = UNSET
+    cancellation_date: Union[None, Unset, datetime.datetime] = UNSET
     status: Union[Unset, SubscriptionStatus] = UNSET
     payment_method_id: Union[Unset, int] = UNSET
     payment_method_details: Union[Unset, "PaymentMethodDetails"] = UNSET
     access_blocked: Union[Unset, bool] = UNSET
-    first_booking_date: Union[Unset, None, datetime.date] = UNSET
-    last_booking_date: Union[Unset, None, datetime.date] = UNSET
-    next_booking_date: Union[Unset, None, datetime.date] = UNSET
+    first_booking_date: Union[None, Unset, datetime.date] = UNSET
+    last_booking_date: Union[None, Unset, datetime.date] = UNSET
+    next_booking_date: Union[None, Unset, datetime.date] = UNSET
     precursor_id: Union[Unset, int] = UNSET
     precursor_reason: Union[Unset, SubscriptionPrecursorReason] = UNSET
-    precursor_reason_detail: Union[Unset, SubscriptionPrecursorReasonDetail] = UNSET
+    precursor_reason_detail: Union[Unset, str] = UNSET
     successor_id: Union[Unset, int] = UNSET
     successor_reason: Union[Unset, SubscriptionSuccessorReason] = UNSET
-    successor_reason_detail: Union[Unset, SubscriptionSuccessorReasonDetail] = UNSET
+    successor_reason_detail: Union[Unset, str] = UNSET
     external_billing: Union[Unset, bool] = UNSET
     customer_cancellation_blocked: Union[Unset, bool] = UNSET
     cancellation_reason_unique_id: Union[Unset, str] = UNSET
@@ -152,112 +184,241 @@ class Subscription:
     duration_period: Union[Unset, int] = UNSET
     duration_period_time_span: Union[Unset, SubscriptionDurationPeriodTimeSpan] = UNSET
     managed_external: Union[Unset, bool] = UNSET
+    managed_by: Union[Unset, SubscriptionManagedBy] = UNSET
     payment_tries_done: Union[Unset, int] = UNSET
     subscription_type: Union[Unset, SubscriptionSubscriptionType] = UNSET
     suppress_invoice_sending: Union[Unset, bool] = UNSET
     purchase_order_indicator: Union[Unset, str] = UNSET
+    connected_offer: Union[Unset, bool] = UNSET
+    connected_offer_info: Union[Unset, "SubscriptionConnectedOfferInfo"] = UNSET
+    finished_deliveries: Union[Unset, int] = UNSET
+    open_deliveries: Union[Unset, int] = UNSET
+    deliveries: Union[Unset, int] = UNSET
+    chargeable_deliveries: Union[Unset, int] = UNSET
+    recurring_deliveries: Union[Unset, int] = UNSET
+    active_partners: Union[Unset, List[str]] = UNSET
+    delivery_paused: Union[Unset, "SubscriptionPauseAt"] = UNSET
+    paused: Union[Unset, "SubscriptionPauseAt"] = UNSET
+    payment_paused: Union[Unset, "SubscriptionPauseAt"] = UNSET
     items: Union[Unset, List["SubscriptionItem"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         subscription_id = self.subscription_id
+
         invoice_customer_id = self.invoice_customer_id
+
         delivery_customer_id = self.delivery_customer_id
+
         term = self.term
+
         term_time_span = self.term_time_span.value
 
         accounting_period = self.accounting_period
+
         accounting_period_time_span = self.accounting_period_time_span.value
 
         cancellation_period = self.cancellation_period
+
         cancellation_period_time_span = self.cancellation_period_time_span.value
 
+        start_date: Union[None, str]
+        if isinstance(self.start_date, datetime.datetime):
+            start_date = self.start_date.isoformat()
+        else:
+            start_date = self.start_date
+
         currency = self.currency
+
         payment_method = self.payment_method.value
 
-        changed_date: Union[Unset, str] = UNSET
-        if not isinstance(self.changed_date, Unset):
+        created_date: Union[None, Unset, str]
+        if isinstance(self.created_date, Unset):
+            created_date = UNSET
+        elif isinstance(self.created_date, datetime.datetime):
+            created_date = self.created_date.isoformat()
+        else:
+            created_date = self.created_date
+
+        changed_date: Union[None, Unset, str]
+        if isinstance(self.changed_date, Unset):
+            changed_date = UNSET
+        elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
+        else:
+            changed_date = self.changed_date
+
+        created_by = self.created_by
+
+        created_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.created_by_type, Unset):
+            created_by_type = self.created_by_type.value
+
+        changed_by = self.changed_by
+
+        changed_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.changed_by_type, Unset):
+            changed_by_type = self.changed_by_type.value
 
         analog_invoice = self.analog_invoice
+
         external_system_id = self.external_system_id
+
         chain_id = self.chain_id
+
         plenigo_offer_id = self.plenigo_offer_id
+
         invoice_address_id = self.invoice_address_id
+
         delivery_address_id = self.delivery_address_id
-        start_date = self.start_date.isoformat() if self.start_date else None
 
-        end_date: Union[Unset, None, str] = UNSET
-        if not isinstance(self.end_date, Unset):
-            end_date = self.end_date.isoformat() if self.end_date else None
+        cancellation_type: Union[Unset, str] = UNSET
+        if not isinstance(self.cancellation_type, Unset):
+            cancellation_type = self.cancellation_type.value
 
-        cancellation_date: Union[Unset, None, str] = UNSET
-        if not isinstance(self.cancellation_date, Unset):
-            cancellation_date = self.cancellation_date.isoformat() if self.cancellation_date else None
+        reference_start_date: Union[None, Unset, str]
+        if isinstance(self.reference_start_date, Unset):
+            reference_start_date = UNSET
+        elif isinstance(self.reference_start_date, datetime.datetime):
+            reference_start_date = self.reference_start_date.isoformat()
+        else:
+            reference_start_date = self.reference_start_date
+
+        end_date: Union[None, Unset, str]
+        if isinstance(self.end_date, Unset):
+            end_date = UNSET
+        elif isinstance(self.end_date, datetime.datetime):
+            end_date = self.end_date.isoformat()
+        else:
+            end_date = self.end_date
+
+        cancellation_date: Union[None, Unset, str]
+        if isinstance(self.cancellation_date, Unset):
+            cancellation_date = UNSET
+        elif isinstance(self.cancellation_date, datetime.datetime):
+            cancellation_date = self.cancellation_date.isoformat()
+        else:
+            cancellation_date = self.cancellation_date
 
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
 
         payment_method_id = self.payment_method_id
+
         payment_method_details: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.payment_method_details, Unset):
             payment_method_details = self.payment_method_details.to_dict()
 
         access_blocked = self.access_blocked
-        first_booking_date: Union[Unset, None, str] = UNSET
-        if not isinstance(self.first_booking_date, Unset):
-            first_booking_date = self.first_booking_date.isoformat() if self.first_booking_date else None
 
-        last_booking_date: Union[Unset, None, str] = UNSET
-        if not isinstance(self.last_booking_date, Unset):
-            last_booking_date = self.last_booking_date.isoformat() if self.last_booking_date else None
+        first_booking_date: Union[None, Unset, str]
+        if isinstance(self.first_booking_date, Unset):
+            first_booking_date = UNSET
+        elif isinstance(self.first_booking_date, datetime.date):
+            first_booking_date = self.first_booking_date.isoformat()
+        else:
+            first_booking_date = self.first_booking_date
 
-        next_booking_date: Union[Unset, None, str] = UNSET
-        if not isinstance(self.next_booking_date, Unset):
-            next_booking_date = self.next_booking_date.isoformat() if self.next_booking_date else None
+        last_booking_date: Union[None, Unset, str]
+        if isinstance(self.last_booking_date, Unset):
+            last_booking_date = UNSET
+        elif isinstance(self.last_booking_date, datetime.date):
+            last_booking_date = self.last_booking_date.isoformat()
+        else:
+            last_booking_date = self.last_booking_date
+
+        next_booking_date: Union[None, Unset, str]
+        if isinstance(self.next_booking_date, Unset):
+            next_booking_date = UNSET
+        elif isinstance(self.next_booking_date, datetime.date):
+            next_booking_date = self.next_booking_date.isoformat()
+        else:
+            next_booking_date = self.next_booking_date
 
         precursor_id = self.precursor_id
+
         precursor_reason: Union[Unset, str] = UNSET
         if not isinstance(self.precursor_reason, Unset):
             precursor_reason = self.precursor_reason.value
 
-        precursor_reason_detail: Union[Unset, str] = UNSET
-        if not isinstance(self.precursor_reason_detail, Unset):
-            precursor_reason_detail = self.precursor_reason_detail.value
+        precursor_reason_detail = self.precursor_reason_detail
 
         successor_id = self.successor_id
+
         successor_reason: Union[Unset, str] = UNSET
         if not isinstance(self.successor_reason, Unset):
             successor_reason = self.successor_reason.value
 
-        successor_reason_detail: Union[Unset, str] = UNSET
-        if not isinstance(self.successor_reason_detail, Unset):
-            successor_reason_detail = self.successor_reason_detail.value
+        successor_reason_detail = self.successor_reason_detail
 
         external_billing = self.external_billing
+
         customer_cancellation_blocked = self.customer_cancellation_blocked
+
         cancellation_reason_unique_id = self.cancellation_reason_unique_id
+
         customer_cancellation_reason_id = self.customer_cancellation_reason_id
+
         duration_period = self.duration_period
+
         duration_period_time_span: Union[Unset, str] = UNSET
         if not isinstance(self.duration_period_time_span, Unset):
             duration_period_time_span = self.duration_period_time_span.value
 
         managed_external = self.managed_external
+
+        managed_by: Union[Unset, str] = UNSET
+        if not isinstance(self.managed_by, Unset):
+            managed_by = self.managed_by.value
+
         payment_tries_done = self.payment_tries_done
+
         subscription_type: Union[Unset, str] = UNSET
         if not isinstance(self.subscription_type, Unset):
             subscription_type = self.subscription_type.value
 
         suppress_invoice_sending = self.suppress_invoice_sending
+
         purchase_order_indicator = self.purchase_order_indicator
+
+        connected_offer = self.connected_offer
+
+        connected_offer_info: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.connected_offer_info, Unset):
+            connected_offer_info = self.connected_offer_info.to_dict()
+
+        finished_deliveries = self.finished_deliveries
+
+        open_deliveries = self.open_deliveries
+
+        deliveries = self.deliveries
+
+        chargeable_deliveries = self.chargeable_deliveries
+
+        recurring_deliveries = self.recurring_deliveries
+
+        active_partners: Union[Unset, List[str]] = UNSET
+        if not isinstance(self.active_partners, Unset):
+            active_partners = self.active_partners
+
+        delivery_paused: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.delivery_paused, Unset):
+            delivery_paused = self.delivery_paused.to_dict()
+
+        paused: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.paused, Unset):
+            paused = self.paused.to_dict()
+
+        payment_paused: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.payment_paused, Unset):
+            payment_paused = self.payment_paused.to_dict()
+
         items: Union[Unset, List[Dict[str, Any]]] = UNSET
         if not isinstance(self.items, Unset):
             items = []
             for items_item_data in self.items:
                 items_item = items_item_data.to_dict()
-
                 items.append(items_item)
 
         field_dict: Dict[str, Any] = {}
@@ -273,13 +434,23 @@ class Subscription:
                 "accountingPeriodTimeSpan": accounting_period_time_span,
                 "cancellationPeriod": cancellation_period,
                 "cancellationPeriodTimeSpan": cancellation_period_time_span,
+                "startDate": start_date,
                 "currency": currency,
                 "paymentMethod": payment_method,
-                "startDate": start_date,
             }
         )
+        if created_date is not UNSET:
+            field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
             field_dict["changedDate"] = changed_date
+        if created_by is not UNSET:
+            field_dict["createdBy"] = created_by
+        if created_by_type is not UNSET:
+            field_dict["createdByType"] = created_by_type
+        if changed_by is not UNSET:
+            field_dict["changedBy"] = changed_by
+        if changed_by_type is not UNSET:
+            field_dict["changedByType"] = changed_by_type
         if analog_invoice is not UNSET:
             field_dict["analogInvoice"] = analog_invoice
         if external_system_id is not UNSET:
@@ -292,6 +463,10 @@ class Subscription:
             field_dict["invoiceAddressId"] = invoice_address_id
         if delivery_address_id is not UNSET:
             field_dict["deliveryAddressId"] = delivery_address_id
+        if cancellation_type is not UNSET:
+            field_dict["cancellationType"] = cancellation_type
+        if reference_start_date is not UNSET:
+            field_dict["referenceStartDate"] = reference_start_date
         if end_date is not UNSET:
             field_dict["endDate"] = end_date
         if cancellation_date is not UNSET:
@@ -336,6 +511,8 @@ class Subscription:
             field_dict["durationPeriodTimeSpan"] = duration_period_time_span
         if managed_external is not UNSET:
             field_dict["managedExternal"] = managed_external
+        if managed_by is not UNSET:
+            field_dict["managedBy"] = managed_by
         if payment_tries_done is not UNSET:
             field_dict["paymentTriesDone"] = payment_tries_done
         if subscription_type is not UNSET:
@@ -344,6 +521,28 @@ class Subscription:
             field_dict["suppressInvoiceSending"] = suppress_invoice_sending
         if purchase_order_indicator is not UNSET:
             field_dict["purchaseOrderIndicator"] = purchase_order_indicator
+        if connected_offer is not UNSET:
+            field_dict["connectedOffer"] = connected_offer
+        if connected_offer_info is not UNSET:
+            field_dict["connectedOfferInfo"] = connected_offer_info
+        if finished_deliveries is not UNSET:
+            field_dict["finishedDeliveries"] = finished_deliveries
+        if open_deliveries is not UNSET:
+            field_dict["openDeliveries"] = open_deliveries
+        if deliveries is not UNSET:
+            field_dict["deliveries"] = deliveries
+        if chargeable_deliveries is not UNSET:
+            field_dict["chargeableDeliveries"] = chargeable_deliveries
+        if recurring_deliveries is not UNSET:
+            field_dict["recurringDeliveries"] = recurring_deliveries
+        if active_partners is not UNSET:
+            field_dict["activePartners"] = active_partners
+        if delivery_paused is not UNSET:
+            field_dict["deliveryPaused"] = delivery_paused
+        if paused is not UNSET:
+            field_dict["paused"] = paused
+        if payment_paused is not UNSET:
+            field_dict["paymentPaused"] = payment_paused
         if items is not UNSET:
             field_dict["items"] = items
 
@@ -352,7 +551,9 @@ class Subscription:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         from ..models.payment_method_details import PaymentMethodDetails
+        from ..models.subscription_connected_offer_info import SubscriptionConnectedOfferInfo
         from ..models.subscription_item import SubscriptionItem
+        from ..models.subscription_pause_at import SubscriptionPauseAt
 
         d = src_dict.copy()
         subscription_id = d.pop("subscriptionId")
@@ -373,16 +574,76 @@ class Subscription:
 
         cancellation_period_time_span = SubscriptionCancellationPeriodTimeSpan(d.pop("cancellationPeriodTimeSpan"))
 
+        def _parse_start_date(data: object) -> Union[None, datetime.datetime]:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                start_date_type_0 = isoparse(data)
+
+                return start_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, datetime.datetime], data)
+
+        start_date = _parse_start_date(d.pop("startDate"))
+
         currency = d.pop("currency")
 
         payment_method = SubscriptionPaymentMethod(d.pop("paymentMethod"))
 
-        _changed_date = d.pop("changedDate", UNSET)
-        changed_date: Union[Unset, datetime.datetime]
-        if isinstance(_changed_date, Unset):
-            changed_date = UNSET
+        def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                created_date_type_0 = isoparse(data)
+
+                return created_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        created_date = _parse_created_date(d.pop("createdDate", UNSET))
+
+        def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                changed_date_type_0 = isoparse(data)
+
+                return changed_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
+
+        created_by = d.pop("createdBy", UNSET)
+
+        _created_by_type = d.pop("createdByType", UNSET)
+        created_by_type: Union[Unset, ApiBaseCreatedByType]
+        if isinstance(_created_by_type, Unset) or not _created_by_type:
+            created_by_type = UNSET
         else:
-            changed_date = isoparse(_changed_date)
+            created_by_type = ApiBaseCreatedByType(_created_by_type)
+
+        changed_by = d.pop("changedBy", UNSET)
+
+        _changed_by_type = d.pop("changedByType", UNSET)
+        changed_by_type: Union[Unset, ApiBaseChangedByType]
+        if isinstance(_changed_by_type, Unset) or not _changed_by_type:
+            changed_by_type = UNSET
+        else:
+            changed_by_type = ApiBaseChangedByType(_changed_by_type)
 
         analog_invoice = d.pop("analogInvoice", UNSET)
 
@@ -396,34 +657,67 @@ class Subscription:
 
         delivery_address_id = d.pop("deliveryAddressId", UNSET)
 
-        _start_date = d.pop("startDate")
-        start_date: Optional[datetime.datetime]
-        if _start_date is None:
-            start_date = None
+        _cancellation_type = d.pop("cancellationType", UNSET)
+        cancellation_type: Union[Unset, SubscriptionCancellationType]
+        if isinstance(_cancellation_type, Unset) or not _cancellation_type:
+            cancellation_type = UNSET
         else:
-            start_date = isoparse(_start_date)
+            cancellation_type = SubscriptionCancellationType(_cancellation_type)
 
-        _end_date = d.pop("endDate", UNSET)
-        end_date: Union[Unset, None, datetime.datetime]
-        if _end_date is None:
-            end_date = None
-        elif isinstance(_end_date, Unset):
-            end_date = UNSET
-        else:
-            end_date = isoparse(_end_date)
+        def _parse_reference_start_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                reference_start_date_type_0 = isoparse(data)
 
-        _cancellation_date = d.pop("cancellationDate", UNSET)
-        cancellation_date: Union[Unset, None, datetime.datetime]
-        if _cancellation_date is None:
-            cancellation_date = None
-        elif isinstance(_cancellation_date, Unset):
-            cancellation_date = UNSET
-        else:
-            cancellation_date = isoparse(_cancellation_date)
+                return reference_start_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        reference_start_date = _parse_reference_start_date(d.pop("referenceStartDate", UNSET))
+
+        def _parse_end_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                end_date_type_0 = isoparse(data)
+
+                return end_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        end_date = _parse_end_date(d.pop("endDate", UNSET))
+
+        def _parse_cancellation_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                cancellation_date_type_0 = isoparse(data)
+
+                return cancellation_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        cancellation_date = _parse_cancellation_date(d.pop("cancellationDate", UNSET))
 
         _status = d.pop("status", UNSET)
         status: Union[Unset, SubscriptionStatus]
-        if isinstance(_status, Unset):
+        if isinstance(_status, Unset) or not _status:
             status = UNSET
         else:
             status = SubscriptionStatus(_status)
@@ -432,71 +726,85 @@ class Subscription:
 
         _payment_method_details = d.pop("paymentMethodDetails", UNSET)
         payment_method_details: Union[Unset, PaymentMethodDetails]
-        if isinstance(_payment_method_details, Unset):
+        if isinstance(_payment_method_details, Unset) or not _payment_method_details:
             payment_method_details = UNSET
         else:
             payment_method_details = PaymentMethodDetails.from_dict(_payment_method_details)
 
         access_blocked = d.pop("accessBlocked", UNSET)
 
-        _first_booking_date = d.pop("firstBookingDate", UNSET)
-        first_booking_date: Union[Unset, None, datetime.date]
-        if _first_booking_date is None:
-            first_booking_date = None
-        elif isinstance(_first_booking_date, Unset):
-            first_booking_date = UNSET
-        else:
-            first_booking_date = isoparse(_first_booking_date).date()
+        def _parse_first_booking_date(data: object) -> Union[None, Unset, datetime.date]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                first_booking_date_type_0 = isoparse(data).date()
 
-        _last_booking_date = d.pop("lastBookingDate", UNSET)
-        last_booking_date: Union[Unset, None, datetime.date]
-        if _last_booking_date is None:
-            last_booking_date = None
-        elif isinstance(_last_booking_date, Unset):
-            last_booking_date = UNSET
-        else:
-            last_booking_date = isoparse(_last_booking_date).date()
+                return first_booking_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.date], data)
 
-        _next_booking_date = d.pop("nextBookingDate", UNSET)
-        next_booking_date: Union[Unset, None, datetime.date]
-        if _next_booking_date is None:
-            next_booking_date = None
-        elif isinstance(_next_booking_date, Unset):
-            next_booking_date = UNSET
-        else:
-            next_booking_date = isoparse(_next_booking_date).date()
+        first_booking_date = _parse_first_booking_date(d.pop("firstBookingDate", UNSET))
+
+        def _parse_last_booking_date(data: object) -> Union[None, Unset, datetime.date]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                last_booking_date_type_0 = isoparse(data).date()
+
+                return last_booking_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.date], data)
+
+        last_booking_date = _parse_last_booking_date(d.pop("lastBookingDate", UNSET))
+
+        def _parse_next_booking_date(data: object) -> Union[None, Unset, datetime.date]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                next_booking_date_type_0 = isoparse(data).date()
+
+                return next_booking_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.date], data)
+
+        next_booking_date = _parse_next_booking_date(d.pop("nextBookingDate", UNSET))
 
         precursor_id = d.pop("precursorId", UNSET)
 
         _precursor_reason = d.pop("precursorReason", UNSET)
         precursor_reason: Union[Unset, SubscriptionPrecursorReason]
-        if isinstance(_precursor_reason, Unset):
+        if isinstance(_precursor_reason, Unset) or not _precursor_reason:
             precursor_reason = UNSET
         else:
             precursor_reason = SubscriptionPrecursorReason(_precursor_reason)
 
-        _precursor_reason_detail = d.pop("precursorReasonDetail", UNSET)
-        precursor_reason_detail: Union[Unset, SubscriptionPrecursorReasonDetail]
-        if isinstance(_precursor_reason_detail, Unset):
-            precursor_reason_detail = UNSET
-        else:
-            precursor_reason_detail = SubscriptionPrecursorReasonDetail(_precursor_reason_detail)
+        precursor_reason_detail = d.pop("precursorReasonDetail", UNSET)
 
         successor_id = d.pop("successorId", UNSET)
 
         _successor_reason = d.pop("successorReason", UNSET)
         successor_reason: Union[Unset, SubscriptionSuccessorReason]
-        if isinstance(_successor_reason, Unset):
+        if isinstance(_successor_reason, Unset) or not _successor_reason:
             successor_reason = UNSET
         else:
             successor_reason = SubscriptionSuccessorReason(_successor_reason)
 
-        _successor_reason_detail = d.pop("successorReasonDetail", UNSET)
-        successor_reason_detail: Union[Unset, SubscriptionSuccessorReasonDetail]
-        if isinstance(_successor_reason_detail, Unset):
-            successor_reason_detail = UNSET
-        else:
-            successor_reason_detail = SubscriptionSuccessorReasonDetail(_successor_reason_detail)
+        successor_reason_detail = d.pop("successorReasonDetail", UNSET)
 
         external_billing = d.pop("externalBilling", UNSET)
 
@@ -510,18 +818,25 @@ class Subscription:
 
         _duration_period_time_span = d.pop("durationPeriodTimeSpan", UNSET)
         duration_period_time_span: Union[Unset, SubscriptionDurationPeriodTimeSpan]
-        if isinstance(_duration_period_time_span, Unset):
+        if isinstance(_duration_period_time_span, Unset) or not _duration_period_time_span:
             duration_period_time_span = UNSET
         else:
             duration_period_time_span = SubscriptionDurationPeriodTimeSpan(_duration_period_time_span)
 
         managed_external = d.pop("managedExternal", UNSET)
 
+        _managed_by = d.pop("managedBy", UNSET)
+        managed_by: Union[Unset, SubscriptionManagedBy]
+        if isinstance(_managed_by, Unset) or not _managed_by:
+            managed_by = UNSET
+        else:
+            managed_by = SubscriptionManagedBy(_managed_by)
+
         payment_tries_done = d.pop("paymentTriesDone", UNSET)
 
         _subscription_type = d.pop("subscriptionType", UNSET)
         subscription_type: Union[Unset, SubscriptionSubscriptionType]
-        if isinstance(_subscription_type, Unset):
+        if isinstance(_subscription_type, Unset) or not _subscription_type:
             subscription_type = UNSET
         else:
             subscription_type = SubscriptionSubscriptionType(_subscription_type)
@@ -529,6 +844,48 @@ class Subscription:
         suppress_invoice_sending = d.pop("suppressInvoiceSending", UNSET)
 
         purchase_order_indicator = d.pop("purchaseOrderIndicator", UNSET)
+
+        connected_offer = d.pop("connectedOffer", UNSET)
+
+        _connected_offer_info = d.pop("connectedOfferInfo", UNSET)
+        connected_offer_info: Union[Unset, SubscriptionConnectedOfferInfo]
+        if isinstance(_connected_offer_info, Unset) or not _connected_offer_info:
+            connected_offer_info = UNSET
+        else:
+            connected_offer_info = SubscriptionConnectedOfferInfo.from_dict(_connected_offer_info)
+
+        finished_deliveries = d.pop("finishedDeliveries", UNSET)
+
+        open_deliveries = d.pop("openDeliveries", UNSET)
+
+        deliveries = d.pop("deliveries", UNSET)
+
+        chargeable_deliveries = d.pop("chargeableDeliveries", UNSET)
+
+        recurring_deliveries = d.pop("recurringDeliveries", UNSET)
+
+        active_partners = cast(List[str], d.pop("activePartners", UNSET))
+
+        _delivery_paused = d.pop("deliveryPaused", UNSET)
+        delivery_paused: Union[Unset, SubscriptionPauseAt]
+        if isinstance(_delivery_paused, Unset) or not _delivery_paused:
+            delivery_paused = UNSET
+        else:
+            delivery_paused = SubscriptionPauseAt.from_dict(_delivery_paused)
+
+        _paused = d.pop("paused", UNSET)
+        paused: Union[Unset, SubscriptionPauseAt]
+        if isinstance(_paused, Unset) or not _paused:
+            paused = UNSET
+        else:
+            paused = SubscriptionPauseAt.from_dict(_paused)
+
+        _payment_paused = d.pop("paymentPaused", UNSET)
+        payment_paused: Union[Unset, SubscriptionPauseAt]
+        if isinstance(_payment_paused, Unset) or not _payment_paused:
+            payment_paused = UNSET
+        else:
+            payment_paused = SubscriptionPauseAt.from_dict(_payment_paused)
 
         items = []
         _items = d.pop("items", UNSET)
@@ -547,16 +904,23 @@ class Subscription:
             accounting_period_time_span=accounting_period_time_span,
             cancellation_period=cancellation_period,
             cancellation_period_time_span=cancellation_period_time_span,
+            start_date=start_date,
             currency=currency,
             payment_method=payment_method,
+            created_date=created_date,
             changed_date=changed_date,
+            created_by=created_by,
+            created_by_type=created_by_type,
+            changed_by=changed_by,
+            changed_by_type=changed_by_type,
             analog_invoice=analog_invoice,
             external_system_id=external_system_id,
             chain_id=chain_id,
             plenigo_offer_id=plenigo_offer_id,
             invoice_address_id=invoice_address_id,
             delivery_address_id=delivery_address_id,
-            start_date=start_date,
+            cancellation_type=cancellation_type,
+            reference_start_date=reference_start_date,
             end_date=end_date,
             cancellation_date=cancellation_date,
             status=status,
@@ -579,10 +943,22 @@ class Subscription:
             duration_period=duration_period,
             duration_period_time_span=duration_period_time_span,
             managed_external=managed_external,
+            managed_by=managed_by,
             payment_tries_done=payment_tries_done,
             subscription_type=subscription_type,
             suppress_invoice_sending=suppress_invoice_sending,
             purchase_order_indicator=purchase_order_indicator,
+            connected_offer=connected_offer,
+            connected_offer_info=connected_offer_info,
+            finished_deliveries=finished_deliveries,
+            open_deliveries=open_deliveries,
+            deliveries=deliveries,
+            chargeable_deliveries=chargeable_deliveries,
+            recurring_deliveries=recurring_deliveries,
+            active_partners=active_partners,
+            delivery_paused=delivery_paused,
+            paused=paused,
+            payment_paused=payment_paused,
             items=items,
         )
 

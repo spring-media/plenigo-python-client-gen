@@ -1,25 +1,26 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.delivery_list_dates_creation import DeliveryListDatesCreation
+    from ..models.delivery_list_dates_change import DeliveryListDatesChange
 
 
 T = TypeVar("T", bound="DeliveryListDates")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class DeliveryListDates:
     """
     Attributes:
-        items (Union[Unset, List['DeliveryListDatesCreation']]): delivery dates
+        items (Union[Unset, List['DeliveryListDatesChange']]): delivery dates
     """
 
-    items: Union[Unset, List["DeliveryListDatesCreation"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    items: Union[Unset, List["DeliveryListDatesChange"]] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         items: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -27,7 +28,6 @@ class DeliveryListDates:
             items = []
             for items_item_data in self.items:
                 items_item = items_item_data.to_dict()
-
                 items.append(items_item)
 
         field_dict: Dict[str, Any] = {}
@@ -40,13 +40,13 @@ class DeliveryListDates:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.delivery_list_dates_creation import DeliveryListDatesCreation
+        from ..models.delivery_list_dates_change import DeliveryListDatesChange
 
         d = src_dict.copy()
         items = []
         _items = d.pop("items", UNSET)
         for items_item_data in _items or []:
-            items_item = DeliveryListDatesCreation.from_dict(items_item_data)
+            items_item = DeliveryListDatesChange.from_dict(items_item_data)
 
             items.append(items_item)
 

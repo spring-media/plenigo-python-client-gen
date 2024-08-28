@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="ProductAccessRightCreation")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class ProductAccessRightCreation:
     """
     Attributes:
@@ -25,12 +26,15 @@ class ProductAccessRightCreation:
     unique_id: str
     description: Union[Unset, str] = UNSET
     additional_data: Union[Unset, "ProductAccessRightCreationAdditionalData"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         title = self.title
+
         unique_id = self.unique_id
+
         description = self.description
+
         additional_data: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.additional_data, Unset):
             additional_data = self.additional_data.to_dict()
@@ -63,7 +67,7 @@ class ProductAccessRightCreation:
 
         _additional_data = d.pop("additionalData", UNSET)
         additional_data: Union[Unset, ProductAccessRightCreationAdditionalData]
-        if isinstance(_additional_data, Unset):
+        if isinstance(_additional_data, Unset) or not _additional_data:
             additional_data = UNSET
         else:
             additional_data = ProductAccessRightCreationAdditionalData.from_dict(_additional_data)

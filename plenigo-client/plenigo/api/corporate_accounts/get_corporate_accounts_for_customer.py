@@ -1,3 +1,4 @@
+import datetime
 import logging
 from http import HTTPStatus
 from typing import Any, Dict, Optional, Union
@@ -7,46 +8,35 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import UNSET, Response
+from ...models.corporate_accounts import CorporateAccounts
+from ...models.error_result import ErrorResult
+from ...models.error_result_base import ErrorResultBase
+from ...types import UNSET, Response, Unset
 
 log = logging.getLogger(__name__)
-
-import datetime
-from typing import Dict, Optional, Union
-
-from ...models.corporate_accounts import CorporateAccounts
-from ...models.error_result_base import ErrorResultBase
-from ...types import UNSET, Unset
 
 
 def _get_kwargs(
     customer_id: str,
     *,
-    client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/corporateAccounts/{customerId}".format(client.api.value, customerId=customer_id)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["size"] = size
 
-    json_start_time: Union[Unset, None, str] = UNSET
+    json_start_time: Union[Unset, str] = UNSET
     if not isinstance(start_time, Unset):
-        json_start_time = start_time.isoformat() if start_time else None
-
+        json_start_time = start_time.isoformat()
     params["startTime"] = json_start_time
 
-    json_end_time: Union[Unset, None, str] = UNSET
+    json_end_time: Union[Unset, str] = UNSET
     if not isinstance(end_time, Unset):
-        json_end_time = end_time.isoformat() if end_time else None
-
+        json_end_time = end_time.isoformat()
     params["endTime"] = json_end_time
 
     params["startingAfter"] = starting_after
@@ -55,32 +45,30 @@ def _get_kwargs(
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/corporateAccounts/{customer_id}",
         "params": params,
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[CorporateAccounts, ErrorResultBase]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = CorporateAccounts.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
-        response_401 = ErrorResultBase.from_dict(response.json())
+        response_401 = ErrorResult.from_dict(response.json())
 
         return response_401
     if response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
@@ -101,13 +89,15 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[CorporateAccounts, ErrorResultBase]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -119,35 +109,34 @@ def sync_detailed(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-) -> Response[Union[CorporateAccounts, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+) -> Response[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]:
     """Get
 
      Search all corporate accounts of the customer that correspond to the given search conditions.
 
     Args:
         customer_id (str):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CorporateAccounts, ErrorResultBase]]
+        Response[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
         size=size,
         start_time=start_time,
         end_time=end_time,
@@ -155,8 +144,7 @@ def sync_detailed(
         ending_before=ending_before,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -167,30 +155,30 @@ def sync(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[CorporateAccounts, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+) -> Optional[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]:
     """Get
 
      Search all corporate accounts of the customer that correspond to the given search conditions.
 
     Args:
         customer_id (str):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CorporateAccounts, ErrorResultBase]
+        Union[CorporateAccounts, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -213,35 +201,34 @@ async def asyncio_detailed(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-) -> Response[Union[CorporateAccounts, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+) -> Response[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]:
     """Get
 
      Search all corporate accounts of the customer that correspond to the given search conditions.
 
     Args:
         customer_id (str):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CorporateAccounts, ErrorResultBase]]
+        Response[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
-        client=client,
         size=size,
         start_time=start_time,
         end_time=end_time,
@@ -249,8 +236,7 @@ async def asyncio_detailed(
         ending_before=ending_before,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -259,30 +245,30 @@ async def asyncio(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[CorporateAccounts, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+) -> Optional[Union[CorporateAccounts, ErrorResult, ErrorResultBase]]:
     """Get
 
      Search all corporate accounts of the customer that correspond to the given search conditions.
 
     Args:
         customer_id (str):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CorporateAccounts, ErrorResultBase]
+        Union[CorporateAccounts, ErrorResult, ErrorResultBase]
     """
 
     return (

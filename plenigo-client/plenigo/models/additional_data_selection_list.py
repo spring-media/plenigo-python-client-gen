@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="AdditionalDataSelectionList")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AdditionalDataSelectionList:
     """
     Attributes:
@@ -19,7 +20,7 @@ class AdditionalDataSelectionList:
     """
 
     additions: Union[Unset, List["AdditionalDataSelection"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         additions: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -27,7 +28,6 @@ class AdditionalDataSelectionList:
             additions = []
             for additions_item_data in self.additions:
                 additions_item = additions_item_data.to_dict()
-
                 additions.append(additions_item)
 
         field_dict: Dict[str, Any] = {}

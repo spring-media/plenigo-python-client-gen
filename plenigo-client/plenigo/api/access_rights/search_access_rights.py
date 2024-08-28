@@ -1,3 +1,4 @@
+import datetime
 import logging
 from http import HTTPStatus
 from typing import Any, Dict, Optional, Union
@@ -7,68 +8,70 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import UNSET, Response
-
-log = logging.getLogger(__name__)
-
-from typing import Dict, Optional, Union
-
 from ...models.access_rights_data import AccessRightsData
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.search_access_rights_sort import SearchAccessRightsSort
-from ...types import UNSET, Unset
+from ...types import UNSET, Response, Unset
+
+log = logging.getLogger(__name__)
 
 
 def _get_kwargs(
     *,
-    client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchAccessRightsSort] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/accessRights".format(client.api.value)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["size"] = size
+
+    json_start_time: Union[Unset, str] = UNSET
+    if not isinstance(start_time, Unset):
+        json_start_time = start_time.isoformat()
+    params["startTime"] = json_start_time
+
+    json_end_time: Union[Unset, str] = UNSET
+    if not isinstance(end_time, Unset):
+        json_end_time = end_time.isoformat()
+    params["endTime"] = json_end_time
 
     params["startingAfter"] = starting_after
 
     params["endingBefore"] = ending_before
 
-    json_sort: Union[Unset, None, str] = UNSET
+    json_sort: Union[Unset, str] = UNSET
     if not isinstance(sort, Unset):
-        json_sort = sort.value if sort else None
+        json_sort = sort.value
 
     params["sort"] = json_sort
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": "/accessRights",
         "params": params,
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[AccessRightsData, ErrorResultBase]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = AccessRightsData.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -93,30 +96,37 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[AccessRightsData, ErrorResultBase]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 def sync_all(
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchAccessRightsSort] = UNSET,
-) -> Optional[Union[AccessRightsData, ErrorResultBase]]:
-    all_results = AccessRightsData(items=[])  # type: ignore
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
+) -> Optional[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
+    all_results = AccessRightsData(items=[])
+    # type: ignore
 
     while True:
         try:
             results = sync_detailed(
                 client=client,
                 size=size,
+                start_time=start_time,
+                end_time=end_time,
                 starting_after=starting_after,
                 ending_before=ending_before,
                 sort=sort,
@@ -130,7 +140,7 @@ def sync_all(
                 if not cursor:
                     break
 
-                starting_after = cursor
+                starting_after = cursor  # noqa
             else:
                 break
         except RetryError:
@@ -147,39 +157,43 @@ def sync_all(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchAccessRightsSort] = UNSET,
-) -> Response[Union[AccessRightsData, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
+) -> Response[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
     """Search access rights
 
      Search all access rights that correspond to the given search conditions.
 
     Args:
-        size (Union[Unset, None, int]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        sort (Union[Unset, None, SearchAccessRightsSort]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        sort (Union[Unset, SearchAccessRightsSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AccessRightsData, ErrorResultBase]]
+        Response[Union[AccessRightsData, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
         size=size,
+        start_time=start_time,
+        end_time=end_time,
         starting_after=starting_after,
         ending_before=ending_before,
         sort=sort,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -189,32 +203,38 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchAccessRightsSort] = UNSET,
-) -> Optional[Union[AccessRightsData, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
+) -> Optional[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
     """Search access rights
 
      Search all access rights that correspond to the given search conditions.
 
     Args:
-        size (Union[Unset, None, int]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        sort (Union[Unset, None, SearchAccessRightsSort]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        sort (Union[Unset, SearchAccessRightsSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AccessRightsData, ErrorResultBase]
+        Union[AccessRightsData, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
         client=client,
         size=size,
+        start_time=start_time,
+        end_time=end_time,
         starting_after=starting_after,
         ending_before=ending_before,
         sort=sort,
@@ -229,39 +249,43 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchAccessRightsSort] = UNSET,
-) -> Response[Union[AccessRightsData, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
+) -> Response[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
     """Search access rights
 
      Search all access rights that correspond to the given search conditions.
 
     Args:
-        size (Union[Unset, None, int]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        sort (Union[Unset, None, SearchAccessRightsSort]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        sort (Union[Unset, SearchAccessRightsSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AccessRightsData, ErrorResultBase]]
+        Response[Union[AccessRightsData, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
         size=size,
+        start_time=start_time,
+        end_time=end_time,
         starting_after=starting_after,
         ending_before=ending_before,
         sort=sort,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -269,12 +293,15 @@ async def asyncio_detailed(
 async def asyncio_all(
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchAccessRightsSort] = UNSET,
-) -> Response[Union[AccessRightsData, ErrorResultBase]]:
-    all_results = []
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
+) -> Response[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
+    all_results = AccessRightsData(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -282,6 +309,8 @@ async def asyncio_all(
                 await asyncio_detailed(
                     client=client,
                     size=size,
+                    start_time=start_time,
+                    end_time=end_time,
                     starting_after=starting_after,
                     ending_before=ending_before,
                     sort=sort,
@@ -296,7 +325,7 @@ async def asyncio_all(
                 if not cursor:
                     break
 
-                starting_after = cursor
+                starting_after = cursor  # noqa
             else:
                 break
         except RetryError:
@@ -308,33 +337,39 @@ async def asyncio_all(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, SearchAccessRightsSort] = UNSET,
-) -> Optional[Union[AccessRightsData, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
+) -> Optional[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
     """Search access rights
 
      Search all access rights that correspond to the given search conditions.
 
     Args:
-        size (Union[Unset, None, int]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        sort (Union[Unset, None, SearchAccessRightsSort]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        sort (Union[Unset, SearchAccessRightsSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AccessRightsData, ErrorResultBase]
+        Union[AccessRightsData, ErrorResult, ErrorResultBase]
     """
 
     return (
         await asyncio_detailed(
             client=client,
             size=size,
+            start_time=start_time,
+            end_time=end_time,
             starting_after=starting_after,
             ending_before=ending_before,
             sort=sort,

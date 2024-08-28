@@ -1,7 +1,9 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
+from ..models.relation_rule_base_identity_check_type import RelationRuleBaseIdentityCheckType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -11,7 +13,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="RelationRuleBase")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class RelationRuleBase:
     """
     Attributes:
@@ -22,6 +24,7 @@ class RelationRuleBase:
         cancel_unrelated (Union[Unset, bool]): offer is cancelled if relation rule is not matched
         send_customer_email (Union[Unset, bool]): flag indicating if customer email should be sent in case of a
             cancellation
+        identity_check_type (Union[Unset, RelationRuleBaseIdentityCheckType]): identity check type to use
         translations (Union[Unset, List['RuleTranslation']]): translations for customer texts
     """
 
@@ -31,22 +34,32 @@ class RelationRuleBase:
     unrelated_plenigo_offer_id: Union[Unset, str] = UNSET
     cancel_unrelated: Union[Unset, bool] = UNSET
     send_customer_email: Union[Unset, bool] = UNSET
+    identity_check_type: Union[Unset, RelationRuleBaseIdentityCheckType] = UNSET
     translations: Union[Unset, List["RuleTranslation"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         internal_title = self.internal_title
+
         description = self.description
+
         related_plenigo_offer_id = self.related_plenigo_offer_id
+
         unrelated_plenigo_offer_id = self.unrelated_plenigo_offer_id
+
         cancel_unrelated = self.cancel_unrelated
+
         send_customer_email = self.send_customer_email
+
+        identity_check_type: Union[Unset, str] = UNSET
+        if not isinstance(self.identity_check_type, Unset):
+            identity_check_type = self.identity_check_type.value
+
         translations: Union[Unset, List[Dict[str, Any]]] = UNSET
         if not isinstance(self.translations, Unset):
             translations = []
             for translations_item_data in self.translations:
                 translations_item = translations_item_data.to_dict()
-
                 translations.append(translations_item)
 
         field_dict: Dict[str, Any] = {}
@@ -64,6 +77,8 @@ class RelationRuleBase:
             field_dict["cancelUnrelated"] = cancel_unrelated
         if send_customer_email is not UNSET:
             field_dict["sendCustomerEmail"] = send_customer_email
+        if identity_check_type is not UNSET:
+            field_dict["identityCheckType"] = identity_check_type
         if translations is not UNSET:
             field_dict["translations"] = translations
 
@@ -86,6 +101,13 @@ class RelationRuleBase:
 
         send_customer_email = d.pop("sendCustomerEmail", UNSET)
 
+        _identity_check_type = d.pop("identityCheckType", UNSET)
+        identity_check_type: Union[Unset, RelationRuleBaseIdentityCheckType]
+        if isinstance(_identity_check_type, Unset) or not _identity_check_type:
+            identity_check_type = UNSET
+        else:
+            identity_check_type = RelationRuleBaseIdentityCheckType(_identity_check_type)
+
         translations = []
         _translations = d.pop("translations", UNSET)
         for translations_item_data in _translations or []:
@@ -100,6 +122,7 @@ class RelationRuleBase:
             unrelated_plenigo_offer_id=unrelated_plenigo_offer_id,
             cancel_unrelated=cancel_unrelated,
             send_customer_email=send_customer_email,
+            identity_check_type=identity_check_type,
             translations=translations,
         )
 

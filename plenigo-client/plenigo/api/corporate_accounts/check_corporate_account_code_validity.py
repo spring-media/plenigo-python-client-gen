@@ -7,61 +7,55 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.corporate_account_user_code import CorporateAccountUserCode
+from ...models.corporate_account_user_code_status import CorporateAccountUserCodeStatus
+from ...models.error_result import ErrorResult
+from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
 log = logging.getLogger(__name__)
 
-from typing import Dict
-
-from ...models.corporate_account_user_code import CorporateAccountUserCode
-from ...models.corporate_account_user_status import CorporateAccountUserStatus
-from ...models.error_result_base import ErrorResultBase
-
 
 def _get_kwargs(
     *,
-    client: AuthenticatedClient,
-    json_body: CorporateAccountUserCode,
+    body: CorporateAccountUserCode,
 ) -> Dict[str, Any]:
-    url = "{}/corporateAccounts/code/validate".format(client.api.value)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": "/corporateAccounts/code/validate",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+
+    log.debug(_kwargs)
+
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[CorporateAccountUserStatus, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[CorporateAccountUserCodeStatus, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = CorporateAccountUserStatus.from_dict(response.json())
+        response_200 = CorporateAccountUserCodeStatus.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
-        response_401 = ErrorResultBase.from_dict(response.json())
+        response_401 = ErrorResult.from_dict(response.json())
 
         return response_401
     if response.status_code == HTTPStatus.FORBIDDEN:
-        response_403 = CorporateAccountUserStatus.from_dict(response.json())
+        response_403 = CorporateAccountUserCodeStatus.from_dict(response.json())
 
         return response_403
     if response.status_code == HTTPStatus.NOT_FOUND:
@@ -87,14 +81,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[CorporateAccountUserStatus, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[CorporateAccountUserCodeStatus, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -105,30 +99,28 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    json_body: CorporateAccountUserCode,
-) -> Response[Union[CorporateAccountUserStatus, ErrorResultBase]]:
+    body: CorporateAccountUserCode,
+) -> Response[Union[CorporateAccountUserCodeStatus, ErrorResult, ErrorResultBase]]:
     """Validate
 
      Check if a corporate account user code is valid.
 
     Args:
-        json_body (CorporateAccountUserCode):
+        body (CorporateAccountUserCode):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CorporateAccountUserStatus, ErrorResultBase]]
+        Response[Union[CorporateAccountUserCodeStatus, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -138,26 +130,26 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    json_body: CorporateAccountUserCode,
-) -> Optional[Union[CorporateAccountUserStatus, ErrorResultBase]]:
+    body: CorporateAccountUserCode,
+) -> Optional[Union[CorporateAccountUserCodeStatus, ErrorResult, ErrorResultBase]]:
     """Validate
 
      Check if a corporate account user code is valid.
 
     Args:
-        json_body (CorporateAccountUserCode):
+        body (CorporateAccountUserCode):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CorporateAccountUserStatus, ErrorResultBase]
+        Union[CorporateAccountUserCodeStatus, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -169,30 +161,28 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    json_body: CorporateAccountUserCode,
-) -> Response[Union[CorporateAccountUserStatus, ErrorResultBase]]:
+    body: CorporateAccountUserCode,
+) -> Response[Union[CorporateAccountUserCodeStatus, ErrorResult, ErrorResultBase]]:
     """Validate
 
      Check if a corporate account user code is valid.
 
     Args:
-        json_body (CorporateAccountUserCode):
+        body (CorporateAccountUserCode):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CorporateAccountUserStatus, ErrorResultBase]]
+        Response[Union[CorporateAccountUserCodeStatus, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -200,26 +190,26 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    json_body: CorporateAccountUserCode,
-) -> Optional[Union[CorporateAccountUserStatus, ErrorResultBase]]:
+    body: CorporateAccountUserCode,
+) -> Optional[Union[CorporateAccountUserCodeStatus, ErrorResult, ErrorResultBase]]:
     """Validate
 
      Check if a corporate account user code is valid.
 
     Args:
-        json_body (CorporateAccountUserCode):
+        body (CorporateAccountUserCode):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CorporateAccountUserStatus, ErrorResultBase]
+        Union[CorporateAccountUserCodeStatus, ErrorResult, ErrorResultBase]
     """
 
     return (
         await asyncio_detailed(
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

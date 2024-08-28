@@ -1,13 +1,14 @@
 from typing import Any, Dict, List, Type, TypeVar
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..models.invoice_payment_status_change_status import InvoicePaymentStatusChangeStatus
 
 T = TypeVar("T", bound="InvoicePaymentStatusChange")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class InvoicePaymentStatusChange:
     """
     Attributes:
@@ -15,7 +16,7 @@ class InvoicePaymentStatusChange:
     """
 
     status: InvoicePaymentStatusChangeStatus
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         status = self.status.value

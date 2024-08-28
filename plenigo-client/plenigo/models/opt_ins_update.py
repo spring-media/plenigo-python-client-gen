@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="OptInsUpdate")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class OptInsUpdate:
     """
     Attributes:
@@ -19,7 +20,7 @@ class OptInsUpdate:
     """
 
     opt_ins: Union[Unset, "OptInsUpdateOptIns"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         opt_ins: Union[Unset, Dict[str, Any]] = UNSET
@@ -41,7 +42,7 @@ class OptInsUpdate:
         d = src_dict.copy()
         _opt_ins = d.pop("optIns", UNSET)
         opt_ins: Union[Unset, OptInsUpdateOptIns]
-        if isinstance(_opt_ins, Unset):
+        if isinstance(_opt_ins, Unset) or not _opt_ins:
             opt_ins = UNSET
         else:
             opt_ins = OptInsUpdateOptIns.from_dict(_opt_ins)

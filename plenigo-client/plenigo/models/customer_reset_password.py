@@ -1,13 +1,14 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="CustomerResetPassword")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CustomerResetPassword:
     """
     Attributes:
@@ -30,16 +31,23 @@ class CustomerResetPassword:
     source_url: Union[Unset, str] = UNSET
     ip_address: Union[Unset, str] = UNSET
     country: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         token = self.token
+
         password = self.password
+
         os = self.os
+
         browser = self.browser
+
         source = self.source
+
         source_url = self.source_url
+
         ip_address = self.ip_address
+
         country = self.country
 
         field_dict: Dict[str, Any] = {}

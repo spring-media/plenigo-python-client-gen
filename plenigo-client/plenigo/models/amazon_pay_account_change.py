@@ -1,30 +1,33 @@
 from typing import Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="AmazonPayAccountChange")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class AmazonPayAccountChange:
     """
     Attributes:
         charge_permission_id (str): the amazon pay charge permission id
         preferred (Union[Unset, bool]): flag indicating if amazon pay account is the preferred amazon pay account - only
-            one amazon pay account can be preferred
+            one amazon pay account can be preferred.
         invalid (Union[Unset, bool]): flag indicating if payment method should be handled as invalid
     """
 
     charge_permission_id: str
     preferred: Union[Unset, bool] = UNSET
     invalid: Union[Unset, bool] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         charge_permission_id = self.charge_permission_id
+
         preferred = self.preferred
+
         invalid = self.invalid
 
         field_dict: Dict[str, Any] = {}

@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -15,7 +16,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="PaymentMethods")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class PaymentMethods:
     """
     Attributes:
@@ -31,7 +32,7 @@ class PaymentMethods:
     credit_cards: Union[Unset, List["CreditCards"]] = UNSET
     pay_pal_accounts: Union[Unset, List["PayPalAccounts"]] = UNSET
     i_deal_accounts: Union[Unset, List["IDealAccounts"]] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         amazon_pay_accounts: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -39,7 +40,6 @@ class PaymentMethods:
             amazon_pay_accounts = []
             for amazon_pay_accounts_item_data in self.amazon_pay_accounts:
                 amazon_pay_accounts_item = amazon_pay_accounts_item_data.to_dict()
-
                 amazon_pay_accounts.append(amazon_pay_accounts_item)
 
         bank_accounts: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -47,7 +47,6 @@ class PaymentMethods:
             bank_accounts = []
             for bank_accounts_item_data in self.bank_accounts:
                 bank_accounts_item = bank_accounts_item_data.to_dict()
-
                 bank_accounts.append(bank_accounts_item)
 
         credit_cards: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -55,7 +54,6 @@ class PaymentMethods:
             credit_cards = []
             for credit_cards_item_data in self.credit_cards:
                 credit_cards_item = credit_cards_item_data.to_dict()
-
                 credit_cards.append(credit_cards_item)
 
         pay_pal_accounts: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -63,7 +61,6 @@ class PaymentMethods:
             pay_pal_accounts = []
             for pay_pal_accounts_item_data in self.pay_pal_accounts:
                 pay_pal_accounts_item = pay_pal_accounts_item_data.to_dict()
-
                 pay_pal_accounts.append(pay_pal_accounts_item)
 
         i_deal_accounts: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -71,7 +68,6 @@ class PaymentMethods:
             i_deal_accounts = []
             for i_deal_accounts_item_data in self.i_deal_accounts:
                 i_deal_accounts_item = i_deal_accounts_item_data.to_dict()
-
                 i_deal_accounts.append(i_deal_accounts_item)
 
         field_dict: Dict[str, Any] = {}

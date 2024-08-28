@@ -6,49 +6,43 @@ import httpx
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from ... import errors
-from ...client import Client
+from ...client import AuthenticatedClient, Client
+from ...models.customer_data import CustomerData
+from ...models.customer_session_token import CustomerSessionToken
+from ...models.error_result import ErrorResult
+from ...models.error_result_base import ErrorResultBase
+from ...models.session_limit_reached import SessionLimitReached
 from ...types import Response
 
 log = logging.getLogger(__name__)
 
-from typing import Dict
-
-from ...models.customer_data import CustomerData
-from ...models.customer_session_token import CustomerSessionToken
-from ...models.error_result_base import ErrorResultBase
-from ...models.session_limit_reached import SessionLimitReached
-
 
 def _get_kwargs(
     *,
-    client: Client,
-    json_body: CustomerData,
+    body: CustomerData,
 ) -> Dict[str, Any]:
-    url = "{}/processes/passwordForgotten/updateAdditionalData".format(client.api.value)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": "/processes/passwordForgotten/updateAdditionalData",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+
+    log.debug(_kwargs)
+
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = SessionLimitReached.from_dict(response.json())
 
@@ -58,7 +52,7 @@ def _parse_response(
 
         return response_202
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.NOT_FOUND:
@@ -66,15 +60,15 @@ def _parse_response(
 
         return response_404
     if response.status_code == HTTPStatus.REQUEST_TIMEOUT:
-        response_408 = ErrorResultBase.from_dict(response.json())
+        response_408 = ErrorResult.from_dict(response.json())
 
         return response_408
     if response.status_code == HTTPStatus.PRECONDITION_FAILED:
-        response_412 = ErrorResultBase.from_dict(response.json())
+        response_412 = ErrorResult.from_dict(response.json())
 
         return response_412
     if response.status_code == HTTPStatus.PRECONDITION_REQUIRED:
-        response_428 = ErrorResultBase.from_dict(response.json())
+        response_428 = ErrorResult.from_dict(response.json())
 
         return response_428
     if response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
@@ -96,14 +90,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -113,32 +107,30 @@ def _build_response(
 )
 def sync_detailed(
     *,
-    client: Client,
-    json_body: CustomerData,
-) -> Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]:
+    client: Union[AuthenticatedClient, Client],
+    body: CustomerData,
+) -> Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]:
     """Update additional data
 
      Add missing customer data like username, first name and last name to the customer if requested by
     process. Only data that are actively requested can be set here.
 
     Args:
-        json_body (CustomerData):
+        body (CustomerData):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]
+        Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -147,28 +139,28 @@ def sync_detailed(
 
 def sync(
     *,
-    client: Client,
-    json_body: CustomerData,
-) -> Optional[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]:
+    client: Union[AuthenticatedClient, Client],
+    body: CustomerData,
+) -> Optional[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]:
     """Update additional data
 
      Add missing customer data like username, first name and last name to the customer if requested by
     process. Only data that are actively requested can be set here.
 
     Args:
-        json_body (CustomerData):
+        body (CustomerData):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]
+        Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]
     """
 
     return sync_detailed(
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -179,60 +171,58 @@ def sync(
 )
 async def asyncio_detailed(
     *,
-    client: Client,
-    json_body: CustomerData,
-) -> Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]:
+    client: Union[AuthenticatedClient, Client],
+    body: CustomerData,
+) -> Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]:
     """Update additional data
 
      Add missing customer data like username, first name and last name to the customer if requested by
     process. Only data that are actively requested can be set here.
 
     Args:
-        json_body (CustomerData):
+        body (CustomerData):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]
+        Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
 
 async def asyncio(
     *,
-    client: Client,
-    json_body: CustomerData,
-) -> Optional[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]:
+    client: Union[AuthenticatedClient, Client],
+    body: CustomerData,
+) -> Optional[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]:
     """Update additional data
 
      Add missing customer data like username, first name and last name to the customer if requested by
     process. Only data that are actively requested can be set here.
 
     Args:
-        json_body (CustomerData):
+        body (CustomerData):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]
+        Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]
     """
 
     return (
         await asyncio_detailed(
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

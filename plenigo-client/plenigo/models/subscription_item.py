@@ -1,7 +1,12 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+import datetime
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
+from ..models.api_base_changed_by_type import ApiBaseChangedByType
+from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..models.subscription_item_status import SubscriptionItemStatus
 from ..models.subscription_item_tax_type import SubscriptionItemTaxType
 from ..types import UNSET, Unset
@@ -9,7 +14,7 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="SubscriptionItem")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class SubscriptionItem:
     """
     Attributes:
@@ -19,6 +24,14 @@ class SubscriptionItem:
         price (float): price of the subscription
         discount_percentage (int): discount offered to the subscription
         quantity (int): quantity of purchased entities
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        created_by (Union[Unset, str]): ID of who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
+        changed_by (Union[Unset, str]): ID of who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
         plenigo_product_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo product id is
             provided here - can be identically to the productId
         plenigo_step_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo step id is provided
@@ -40,7 +53,7 @@ class SubscriptionItem:
         credit_count (Union[Unset, int]): available credit count to use
         credit_wallet_unique_id (Union[Unset, str]): the credit wallet unique id
         status (Union[Unset, SubscriptionItemStatus]): current status of the subscription item
-        cost_center (Union[Unset, str]): cost center associated with this subscriptino item
+        cost_center (Union[Unset, str]): cost center associated with this subscription item
     """
 
     subscription_item_id: int
@@ -49,6 +62,12 @@ class SubscriptionItem:
     price: float
     discount_percentage: int
     quantity: int
+    created_date: Union[None, Unset, datetime.datetime] = UNSET
+    changed_date: Union[None, Unset, datetime.datetime] = UNSET
+    created_by: Union[Unset, str] = UNSET
+    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
+    changed_by: Union[Unset, str] = UNSET
+    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
     plenigo_product_id: Union[Unset, str] = UNSET
     plenigo_step_id: Union[Unset, str] = UNSET
     access_right_unique_id: Union[Unset, str] = UNSET
@@ -62,29 +81,73 @@ class SubscriptionItem:
     credit_wallet_unique_id: Union[Unset, str] = UNSET
     status: Union[Unset, SubscriptionItemStatus] = UNSET
     cost_center: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         subscription_item_id = self.subscription_item_id
+
         product_id = self.product_id
+
         title = self.title
+
         price = self.price
+
         discount_percentage = self.discount_percentage
+
         quantity = self.quantity
+
+        created_date: Union[None, Unset, str]
+        if isinstance(self.created_date, Unset):
+            created_date = UNSET
+        elif isinstance(self.created_date, datetime.datetime):
+            created_date = self.created_date.isoformat()
+        else:
+            created_date = self.created_date
+
+        changed_date: Union[None, Unset, str]
+        if isinstance(self.changed_date, Unset):
+            changed_date = UNSET
+        elif isinstance(self.changed_date, datetime.datetime):
+            changed_date = self.changed_date.isoformat()
+        else:
+            changed_date = self.changed_date
+
+        created_by = self.created_by
+
+        created_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.created_by_type, Unset):
+            created_by_type = self.created_by_type.value
+
+        changed_by = self.changed_by
+
+        changed_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.changed_by_type, Unset):
+            changed_by_type = self.changed_by_type.value
+
         plenigo_product_id = self.plenigo_product_id
+
         plenigo_step_id = self.plenigo_step_id
+
         access_right_unique_id = self.access_right_unique_id
+
         internal_title = self.internal_title
+
         tax_type: Union[Unset, str] = UNSET
         if not isinstance(self.tax_type, Unset):
             tax_type = self.tax_type.value
 
         package_title = self.package_title
+
         package_id = self.package_id
+
         package_cancellation_locked = self.package_cancellation_locked
+
         price_issue_id = self.price_issue_id
+
         credit_count = self.credit_count
+
         credit_wallet_unique_id = self.credit_wallet_unique_id
+
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
@@ -103,6 +166,18 @@ class SubscriptionItem:
                 "quantity": quantity,
             }
         )
+        if created_date is not UNSET:
+            field_dict["createdDate"] = created_date
+        if changed_date is not UNSET:
+            field_dict["changedDate"] = changed_date
+        if created_by is not UNSET:
+            field_dict["createdBy"] = created_by
+        if created_by_type is not UNSET:
+            field_dict["createdByType"] = created_by_type
+        if changed_by is not UNSET:
+            field_dict["changedBy"] = changed_by
+        if changed_by_type is not UNSET:
+            field_dict["changedByType"] = changed_by_type
         if plenigo_product_id is not UNSET:
             field_dict["plenigoProductId"] = plenigo_product_id
         if plenigo_step_id is not UNSET:
@@ -147,6 +222,58 @@ class SubscriptionItem:
 
         quantity = d.pop("quantity")
 
+        def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                created_date_type_0 = isoparse(data)
+
+                return created_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        created_date = _parse_created_date(d.pop("createdDate", UNSET))
+
+        def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                changed_date_type_0 = isoparse(data)
+
+                return changed_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
+
+        created_by = d.pop("createdBy", UNSET)
+
+        _created_by_type = d.pop("createdByType", UNSET)
+        created_by_type: Union[Unset, ApiBaseCreatedByType]
+        if isinstance(_created_by_type, Unset) or not _created_by_type:
+            created_by_type = UNSET
+        else:
+            created_by_type = ApiBaseCreatedByType(_created_by_type)
+
+        changed_by = d.pop("changedBy", UNSET)
+
+        _changed_by_type = d.pop("changedByType", UNSET)
+        changed_by_type: Union[Unset, ApiBaseChangedByType]
+        if isinstance(_changed_by_type, Unset) or not _changed_by_type:
+            changed_by_type = UNSET
+        else:
+            changed_by_type = ApiBaseChangedByType(_changed_by_type)
+
         plenigo_product_id = d.pop("plenigoProductId", UNSET)
 
         plenigo_step_id = d.pop("plenigoStepId", UNSET)
@@ -157,7 +284,7 @@ class SubscriptionItem:
 
         _tax_type = d.pop("taxType", UNSET)
         tax_type: Union[Unset, SubscriptionItemTaxType]
-        if isinstance(_tax_type, Unset):
+        if isinstance(_tax_type, Unset) or not _tax_type:
             tax_type = UNSET
         else:
             tax_type = SubscriptionItemTaxType(_tax_type)
@@ -176,7 +303,7 @@ class SubscriptionItem:
 
         _status = d.pop("status", UNSET)
         status: Union[Unset, SubscriptionItemStatus]
-        if isinstance(_status, Unset):
+        if isinstance(_status, Unset) or not _status:
             status = UNSET
         else:
             status = SubscriptionItemStatus(_status)
@@ -190,6 +317,12 @@ class SubscriptionItem:
             price=price,
             discount_percentage=discount_percentage,
             quantity=quantity,
+            created_date=created_date,
+            changed_date=changed_date,
+            created_by=created_by,
+            created_by_type=created_by_type,
+            changed_by=changed_by,
+            changed_by_type=changed_by_type,
             plenigo_product_id=plenigo_product_id,
             plenigo_step_id=plenigo_step_id,
             access_right_unique_id=access_right_unique_id,

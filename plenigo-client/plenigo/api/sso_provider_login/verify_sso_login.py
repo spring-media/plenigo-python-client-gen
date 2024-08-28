@@ -6,57 +6,51 @@ import httpx
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from ... import errors
-from ...client import Client
+from ...client import AuthenticatedClient, Client
+from ...models.customer_google_sso_authentication import CustomerGoogleSsoAuthentication
+from ...models.customer_session_token import CustomerSessionToken
+from ...models.error_result import ErrorResult
+from ...models.error_result_base import ErrorResultBase
+from ...models.next_step import NextStep
+from ...models.session_limit_reached import SessionLimitReached
 from ...types import Response
 
 log = logging.getLogger(__name__)
 
-from typing import Dict, Union
-
-from ...models.customer_session_token import CustomerSessionToken
-from ...models.error_result_base import ErrorResultBase
-from ...models.logging_data import LoggingData
-from ...models.session_limit_reached import SessionLimitReached
-from ...models.step_token import StepToken
-
 
 def _get_kwargs(
     *,
-    client: Client,
-    json_body: LoggingData,
+    body: CustomerGoogleSsoAuthentication,
 ) -> Dict[str, Any]:
-    url = "{}/processes/ssoProvider/verify".format(client.api.value)
+    headers: Dict[str, Any] = {}
 
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": "/processes/ssoProvider/verify",
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+
+    log.debug(_kwargs)
+
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[CustomerSessionToken, ErrorResultBase, Union["SessionLimitReached", "StepToken"]]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, Union["NextStep", "SessionLimitReached"]]]:
     if response.status_code == HTTPStatus.OK:
 
-        def _parse_response_200(data: object) -> Union["SessionLimitReached", "StepToken"]:
+        def _parse_response_200(data: object) -> Union["NextStep", "SessionLimitReached"]:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                response_200_type_0 = StepToken.from_dict(data)
+                response_200_type_0 = NextStep.from_dict(data)
 
                 return response_200_type_0
             except:  # noqa: E722
@@ -75,11 +69,11 @@ def _parse_response(
 
         return response_202
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.FORBIDDEN:
-        response_403 = ErrorResultBase.from_dict(response.json())
+        response_403 = ErrorResult.from_dict(response.json())
 
         return response_403
     if response.status_code == HTTPStatus.NOT_FOUND:
@@ -87,7 +81,7 @@ def _parse_response(
 
         return response_404
     if response.status_code == HTTPStatus.PRECONDITION_FAILED:
-        response_412 = ErrorResultBase.from_dict(response.json())
+        response_412 = ErrorResult.from_dict(response.json())
 
         return response_412
     if response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
@@ -109,14 +103,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[CustomerSessionToken, ErrorResultBase, Union["SessionLimitReached", "StepToken"]]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, Union["NextStep", "SessionLimitReached"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -126,9 +120,9 @@ def _build_response(
 )
 def sync_detailed(
     *,
-    client: Client,
-    json_body: LoggingData,
-) -> Response[Union[CustomerSessionToken, ErrorResultBase, Union["SessionLimitReached", "StepToken"]]]:
+    client: Union[AuthenticatedClient, Client],
+    body: CustomerGoogleSsoAuthentication,
+) -> Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, Union["NextStep", "SessionLimitReached"]]]:
     """Verify sso login
 
      This functionality verifies the log in data of a customer over a sso provider and executes the log
@@ -137,23 +131,21 @@ def sync_detailed(
     will be used.
 
     Args:
-        json_body (LoggingData):
+        body (CustomerGoogleSsoAuthentication):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CustomerSessionToken, ErrorResultBase, Union['SessionLimitReached', 'StepToken']]]
+        Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, Union['NextStep', 'SessionLimitReached']]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -162,9 +154,9 @@ def sync_detailed(
 
 def sync(
     *,
-    client: Client,
-    json_body: LoggingData,
-) -> Optional[Union[CustomerSessionToken, ErrorResultBase, Union["SessionLimitReached", "StepToken"]]]:
+    client: Union[AuthenticatedClient, Client],
+    body: CustomerGoogleSsoAuthentication,
+) -> Optional[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, Union["NextStep", "SessionLimitReached"]]]:
     """Verify sso login
 
      This functionality verifies the log in data of a customer over a sso provider and executes the log
@@ -173,19 +165,19 @@ def sync(
     will be used.
 
     Args:
-        json_body (LoggingData):
+        body (CustomerGoogleSsoAuthentication):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CustomerSessionToken, ErrorResultBase, Union['SessionLimitReached', 'StepToken']]
+        Union[CustomerSessionToken, ErrorResult, ErrorResultBase, Union['NextStep', 'SessionLimitReached']]
     """
 
     return sync_detailed(
         client=client,
-        json_body=json_body,
+        body=body,
     ).parsed
 
 
@@ -196,9 +188,9 @@ def sync(
 )
 async def asyncio_detailed(
     *,
-    client: Client,
-    json_body: LoggingData,
-) -> Response[Union[CustomerSessionToken, ErrorResultBase, Union["SessionLimitReached", "StepToken"]]]:
+    client: Union[AuthenticatedClient, Client],
+    body: CustomerGoogleSsoAuthentication,
+) -> Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, Union["NextStep", "SessionLimitReached"]]]:
     """Verify sso login
 
      This functionality verifies the log in data of a customer over a sso provider and executes the log
@@ -207,32 +199,30 @@ async def asyncio_detailed(
     will be used.
 
     Args:
-        json_body (LoggingData):
+        body (CustomerGoogleSsoAuthentication):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CustomerSessionToken, ErrorResultBase, Union['SessionLimitReached', 'StepToken']]]
+        Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, Union['NextStep', 'SessionLimitReached']]]
     """
 
     kwargs = _get_kwargs(
-        client=client,
-        json_body=json_body,
+        body=body,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
 
 async def asyncio(
     *,
-    client: Client,
-    json_body: LoggingData,
-) -> Optional[Union[CustomerSessionToken, ErrorResultBase, Union["SessionLimitReached", "StepToken"]]]:
+    client: Union[AuthenticatedClient, Client],
+    body: CustomerGoogleSsoAuthentication,
+) -> Optional[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, Union["NextStep", "SessionLimitReached"]]]:
     """Verify sso login
 
      This functionality verifies the log in data of a customer over a sso provider and executes the log
@@ -241,19 +231,19 @@ async def asyncio(
     will be used.
 
     Args:
-        json_body (LoggingData):
+        body (CustomerGoogleSsoAuthentication):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CustomerSessionToken, ErrorResultBase, Union['SessionLimitReached', 'StepToken']]
+        Union[CustomerSessionToken, ErrorResult, ErrorResultBase, Union['NextStep', 'SessionLimitReached']]
     """
 
     return (
         await asyncio_detailed(
             client=client,
-            json_body=json_body,
+            body=body,
         )
     ).parsed

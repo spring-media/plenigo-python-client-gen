@@ -7,48 +7,34 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import Response
+from ...models.customer_credit_wallet_list import CustomerCreditWalletList
+from ...models.error_result import ErrorResult
+from ...models.error_result_base import ErrorResultBase
+from ...types import Response, Unset
 
 log = logging.getLogger(__name__)
 
-from typing import Dict
 
-from ...models.customer_credit_wallet_list import CustomerCreditWalletList
-from ...models.error_result_base import ErrorResultBase
-
-
-def _get_kwargs(
-    *,
-    client: AuthenticatedClient,
-) -> Dict[str, Any]:
-    url = "{}/wallets".format(client.api.value)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
-    kwargs = {
+def _get_kwargs() -> Dict[str, Any]:
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": "/wallets",
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[CustomerCreditWalletList, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[CustomerCreditWalletList, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = CustomerCreditWalletList.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -74,21 +60,22 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[CustomerCreditWalletList, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[CustomerCreditWalletList, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 def sync_all(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[CustomerCreditWalletList, ErrorResultBase]]:
-    all_results = CustomerCreditWalletList(items=[])  # type: ignore
+) -> Optional[Union[CustomerCreditWalletList, ErrorResult, ErrorResultBase]]:
+    all_results = CustomerCreditWalletList(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -104,6 +91,7 @@ def sync_all(
                 if not cursor:
                     break
 
+                starting_after = cursor  # noqa
             else:
                 break
         except RetryError:
@@ -120,7 +108,7 @@ def sync_all(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[CustomerCreditWalletList, ErrorResultBase]]:
+) -> Response[Union[CustomerCreditWalletList, ErrorResult, ErrorResultBase]]:
     """Search
 
      Search credit wallets.
@@ -130,15 +118,12 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CustomerCreditWalletList, ErrorResultBase]]
+        Response[Union[CustomerCreditWalletList, ErrorResult, ErrorResultBase]]
     """
 
-    kwargs = _get_kwargs(
-        client=client,
-    )
+    kwargs = _get_kwargs()
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -148,7 +133,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[CustomerCreditWalletList, ErrorResultBase]]:
+) -> Optional[Union[CustomerCreditWalletList, ErrorResult, ErrorResultBase]]:
     """Search
 
      Search credit wallets.
@@ -158,7 +143,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CustomerCreditWalletList, ErrorResultBase]
+        Union[CustomerCreditWalletList, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -174,7 +159,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[CustomerCreditWalletList, ErrorResultBase]]:
+) -> Response[Union[CustomerCreditWalletList, ErrorResult, ErrorResultBase]]:
     """Search
 
      Search credit wallets.
@@ -184,15 +169,12 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CustomerCreditWalletList, ErrorResultBase]]
+        Response[Union[CustomerCreditWalletList, ErrorResult, ErrorResultBase]]
     """
 
-    kwargs = _get_kwargs(
-        client=client,
-    )
+    kwargs = _get_kwargs()
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -200,8 +182,9 @@ async def asyncio_detailed(
 async def asyncio_all(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[CustomerCreditWalletList, ErrorResultBase]]:
-    all_results = []
+) -> Response[Union[CustomerCreditWalletList, ErrorResult, ErrorResultBase]]:
+    all_results = CustomerCreditWalletList(items=[])
+    # type: ignore
 
     while True:
         try:
@@ -219,6 +202,7 @@ async def asyncio_all(
                 if not cursor:
                     break
 
+                starting_after = cursor  # noqa
             else:
                 break
         except RetryError:
@@ -230,7 +214,7 @@ async def asyncio_all(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[CustomerCreditWalletList, ErrorResultBase]]:
+) -> Optional[Union[CustomerCreditWalletList, ErrorResult, ErrorResultBase]]:
     """Search
 
      Search credit wallets.
@@ -240,7 +224,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CustomerCreditWalletList, ErrorResultBase]
+        Union[CustomerCreditWalletList, ErrorResult, ErrorResultBase]
     """
 
     return (

@@ -1,3 +1,4 @@
+import datetime
 import logging
 from http import HTTPStatus
 from typing import Any, Dict, Optional, Union
@@ -7,90 +8,75 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import UNSET, Response
-
-log = logging.getLogger(__name__)
-
-import datetime
-from typing import Dict, Optional, Union
-
-from ...models.delivery_list_change import DeliveryListChange
+from ...models.delivery_list import DeliveryList
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.get_delivery_list_sort import GetDeliveryListSort
-from ...types import UNSET, Unset
+from ...types import UNSET, Response, Unset
+
+log = logging.getLogger(__name__)
 
 
 def _get_kwargs(
     delivery_list_id: int,
     *,
-    client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, GetDeliveryListSort] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, GetDeliveryListSort] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/products/deliveryLists/{deliveryListId}".format(client.api.value, deliveryListId=delivery_list_id)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["size"] = size
 
-    json_start_time: Union[Unset, None, str] = UNSET
+    json_start_time: Union[Unset, str] = UNSET
     if not isinstance(start_time, Unset):
-        json_start_time = start_time.isoformat() if start_time else None
-
+        json_start_time = start_time.isoformat()
     params["startTime"] = json_start_time
 
-    json_end_time: Union[Unset, None, str] = UNSET
+    json_end_time: Union[Unset, str] = UNSET
     if not isinstance(end_time, Unset):
-        json_end_time = end_time.isoformat() if end_time else None
-
+        json_end_time = end_time.isoformat()
     params["endTime"] = json_end_time
 
     params["startingAfter"] = starting_after
 
     params["endingBefore"] = ending_before
 
-    json_sort: Union[Unset, None, str] = UNSET
+    json_sort: Union[Unset, str] = UNSET
     if not isinstance(sort, Unset):
-        json_sort = sort.value if sort else None
+        json_sort = sort.value
 
     params["sort"] = json_sort
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/products/deliveryLists/{delivery_list_id}",
         "params": params,
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
-) -> Optional[Union[DeliveryListChange, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[DeliveryList, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = DeliveryListChange.from_dict(response.json())
+        response_200 = DeliveryList.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
-        response_401 = ErrorResultBase.from_dict(response.json())
+        response_401 = ErrorResult.from_dict(response.json())
 
         return response_401
     if response.status_code == HTTPStatus.NOT_FOUND:
@@ -116,14 +102,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
-) -> Response[Union[DeliveryListChange, ErrorResultBase]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[DeliveryList, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -135,37 +121,36 @@ def sync_detailed(
     delivery_list_id: int,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, GetDeliveryListSort] = UNSET,
-) -> Response[Union[DeliveryListChange, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, GetDeliveryListSort] = UNSET,
+) -> Response[Union[DeliveryList, ErrorResult, ErrorResultBase]]:
     """Get
 
      Get delivery list that is identified by the passed delivery list id.
 
     Args:
         delivery_list_id (int):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        sort (Union[Unset, None, GetDeliveryListSort]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        sort (Union[Unset, GetDeliveryListSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[DeliveryListChange, ErrorResultBase]]
+        Response[Union[DeliveryList, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         delivery_list_id=delivery_list_id,
-        client=client,
         size=size,
         start_time=start_time,
         end_time=end_time,
@@ -174,8 +159,7 @@ def sync_detailed(
         sort=sort,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -186,32 +170,32 @@ def sync(
     delivery_list_id: int,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, GetDeliveryListSort] = UNSET,
-) -> Optional[Union[DeliveryListChange, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, GetDeliveryListSort] = UNSET,
+) -> Optional[Union[DeliveryList, ErrorResult, ErrorResultBase]]:
     """Get
 
      Get delivery list that is identified by the passed delivery list id.
 
     Args:
         delivery_list_id (int):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        sort (Union[Unset, None, GetDeliveryListSort]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        sort (Union[Unset, GetDeliveryListSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[DeliveryListChange, ErrorResultBase]
+        Union[DeliveryList, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -235,37 +219,36 @@ async def asyncio_detailed(
     delivery_list_id: int,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, GetDeliveryListSort] = UNSET,
-) -> Response[Union[DeliveryListChange, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, GetDeliveryListSort] = UNSET,
+) -> Response[Union[DeliveryList, ErrorResult, ErrorResultBase]]:
     """Get
 
      Get delivery list that is identified by the passed delivery list id.
 
     Args:
         delivery_list_id (int):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        sort (Union[Unset, None, GetDeliveryListSort]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        sort (Union[Unset, GetDeliveryListSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[DeliveryListChange, ErrorResultBase]]
+        Response[Union[DeliveryList, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         delivery_list_id=delivery_list_id,
-        client=client,
         size=size,
         start_time=start_time,
         end_time=end_time,
@@ -274,8 +257,7 @@ async def asyncio_detailed(
         sort=sort,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -284,32 +266,32 @@ async def asyncio(
     delivery_list_id: int,
     *,
     client: AuthenticatedClient,
-    size: Union[Unset, None, int] = UNSET,
-    start_time: Union[Unset, None, datetime.datetime] = UNSET,
-    end_time: Union[Unset, None, datetime.datetime] = UNSET,
-    starting_after: Union[Unset, None, str] = UNSET,
-    ending_before: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, GetDeliveryListSort] = UNSET,
-) -> Optional[Union[DeliveryListChange, ErrorResultBase]]:
+    size: Union[Unset, int] = UNSET,
+    start_time: Union[Unset, datetime.datetime] = UNSET,
+    end_time: Union[Unset, datetime.datetime] = UNSET,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    sort: Union[Unset, GetDeliveryListSort] = UNSET,
+) -> Optional[Union[DeliveryList, ErrorResult, ErrorResultBase]]:
     """Get
 
      Get delivery list that is identified by the passed delivery list id.
 
     Args:
         delivery_list_id (int):
-        size (Union[Unset, None, int]):
-        start_time (Union[Unset, None, datetime.datetime]):
-        end_time (Union[Unset, None, datetime.datetime]):
-        starting_after (Union[Unset, None, str]):
-        ending_before (Union[Unset, None, str]):
-        sort (Union[Unset, None, GetDeliveryListSort]):
+        size (Union[Unset, int]):
+        start_time (Union[Unset, datetime.datetime]):
+        end_time (Union[Unset, datetime.datetime]):
+        starting_after (Union[Unset, str]):
+        ending_before (Union[Unset, str]):
+        sort (Union[Unset, GetDeliveryListSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[DeliveryListChange, ErrorResultBase]
+        Union[DeliveryList, ErrorResult, ErrorResultBase]
     """
 
     return (

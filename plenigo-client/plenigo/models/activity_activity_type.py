@@ -15,6 +15,7 @@ class ActivityActivityType(str, Enum):
     SYSTEM_API = "SYSTEM_API"
     SYSTEM_CUSTOMER = "SYSTEM_CUSTOMER"
     SYSTEM_EMAIL = "SYSTEM_EMAIL"
+    SYSTEM_MIGRATION = "SYSTEM_MIGRATION"
     SYSTEM_SUPPORTER = "SYSTEM_SUPPORTER"
 
     def __str__(self) -> str:

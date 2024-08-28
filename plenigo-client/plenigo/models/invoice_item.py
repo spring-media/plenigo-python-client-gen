@@ -1,7 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
@@ -13,7 +14,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="InvoiceItem")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class InvoiceItem:
     """
     Attributes:
@@ -26,6 +27,10 @@ class InvoiceItem:
             href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank">ISO 3166-1 alpha-2</a>
         quantity (int): purchase amount
         delivery_customer_id (str): id of the customer the delivery belongs to (also includes digital products)
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
         product_id (Union[Unset, str]): product id - will be identical with the plenigo product id if not overwritten
             during checkout
         plenigo_offer_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo offer id is
@@ -38,10 +43,10 @@ class InvoiceItem:
         delivery_address (Union[Unset, InvoiceAddress]):
         subscription_item_id (Union[Unset, int]): if invoice item represents a subscription the id of the subscription
             item is provided here
-        period_start_date (Union[Unset, datetime.datetime]): if invoice item represents a subscription the period start
-            date is the start date of the invoice period
-        period_end_date (Union[Unset, datetime.datetime]): if invoice item represents a subscription the period end date
-            is the end date of the invoice period
+        period_start_date (Union[None, Unset, datetime.datetime]): if invoice item represents a subscription the period
+            start date is the start date of the invoice period
+        period_end_date (Union[None, Unset, datetime.datetime]): if invoice item represents a subscription the period
+            end date is the end date of the invoice period
         order_item_id (Union[Unset, int]): if invoice item represents an order the id of the order item is provided here
         discount_percentage (Union[Unset, int]): discount offered to the invoice item
     """
@@ -53,6 +58,8 @@ class InvoiceItem:
     tax_country: str
     quantity: int
     delivery_customer_id: str
+    created_date: Union[None, Unset, datetime.datetime] = UNSET
+    changed_date: Union[None, Unset, datetime.datetime] = UNSET
     product_id: Union[Unset, str] = UNSET
     plenigo_offer_id: Union[Unset, str] = UNSET
     plenigo_product_id: Union[Unset, str] = UNSET
@@ -60,39 +67,77 @@ class InvoiceItem:
     cost_center: Union[Unset, str] = UNSET
     delivery_address: Union[Unset, "InvoiceAddress"] = UNSET
     subscription_item_id: Union[Unset, int] = UNSET
-    period_start_date: Union[Unset, datetime.datetime] = UNSET
-    period_end_date: Union[Unset, datetime.datetime] = UNSET
+    period_start_date: Union[None, Unset, datetime.datetime] = UNSET
+    period_end_date: Union[None, Unset, datetime.datetime] = UNSET
     order_item_id: Union[Unset, int] = UNSET
     discount_percentage: Union[Unset, int] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         position = self.position
+
         title = self.title
+
         price = self.price
+
         tax = self.tax
+
         tax_country = self.tax_country
+
         quantity = self.quantity
+
         delivery_customer_id = self.delivery_customer_id
+
+        created_date: Union[None, Unset, str]
+        if isinstance(self.created_date, Unset):
+            created_date = UNSET
+        elif isinstance(self.created_date, datetime.datetime):
+            created_date = self.created_date.isoformat()
+        else:
+            created_date = self.created_date
+
+        changed_date: Union[None, Unset, str]
+        if isinstance(self.changed_date, Unset):
+            changed_date = UNSET
+        elif isinstance(self.changed_date, datetime.datetime):
+            changed_date = self.changed_date.isoformat()
+        else:
+            changed_date = self.changed_date
+
         product_id = self.product_id
+
         plenigo_offer_id = self.plenigo_offer_id
+
         plenigo_product_id = self.plenigo_product_id
+
         plenigo_step_id = self.plenigo_step_id
+
         cost_center = self.cost_center
+
         delivery_address: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.delivery_address, Unset):
             delivery_address = self.delivery_address.to_dict()
 
         subscription_item_id = self.subscription_item_id
-        period_start_date: Union[Unset, str] = UNSET
-        if not isinstance(self.period_start_date, Unset):
-            period_start_date = self.period_start_date.isoformat()
 
-        period_end_date: Union[Unset, str] = UNSET
-        if not isinstance(self.period_end_date, Unset):
+        period_start_date: Union[None, Unset, str]
+        if isinstance(self.period_start_date, Unset):
+            period_start_date = UNSET
+        elif isinstance(self.period_start_date, datetime.datetime):
+            period_start_date = self.period_start_date.isoformat()
+        else:
+            period_start_date = self.period_start_date
+
+        period_end_date: Union[None, Unset, str]
+        if isinstance(self.period_end_date, Unset):
+            period_end_date = UNSET
+        elif isinstance(self.period_end_date, datetime.datetime):
             period_end_date = self.period_end_date.isoformat()
+        else:
+            period_end_date = self.period_end_date
 
         order_item_id = self.order_item_id
+
         discount_percentage = self.discount_percentage
 
         field_dict: Dict[str, Any] = {}
@@ -108,6 +153,10 @@ class InvoiceItem:
                 "deliveryCustomerId": delivery_customer_id,
             }
         )
+        if created_date is not UNSET:
+            field_dict["createdDate"] = created_date
+        if changed_date is not UNSET:
+            field_dict["changedDate"] = changed_date
         if product_id is not UNSET:
             field_dict["productId"] = product_id
         if plenigo_offer_id is not UNSET:
@@ -152,6 +201,40 @@ class InvoiceItem:
 
         delivery_customer_id = d.pop("deliveryCustomerId")
 
+        def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                created_date_type_0 = isoparse(data)
+
+                return created_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        created_date = _parse_created_date(d.pop("createdDate", UNSET))
+
+        def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                changed_date_type_0 = isoparse(data)
+
+                return changed_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
+
         product_id = d.pop("productId", UNSET)
 
         plenigo_offer_id = d.pop("plenigoOfferId", UNSET)
@@ -164,26 +247,46 @@ class InvoiceItem:
 
         _delivery_address = d.pop("deliveryAddress", UNSET)
         delivery_address: Union[Unset, InvoiceAddress]
-        if isinstance(_delivery_address, Unset):
+        if isinstance(_delivery_address, Unset) or not _delivery_address:
             delivery_address = UNSET
         else:
             delivery_address = InvoiceAddress.from_dict(_delivery_address)
 
         subscription_item_id = d.pop("subscriptionItemId", UNSET)
 
-        _period_start_date = d.pop("periodStartDate", UNSET)
-        period_start_date: Union[Unset, datetime.datetime]
-        if isinstance(_period_start_date, Unset):
-            period_start_date = UNSET
-        else:
-            period_start_date = isoparse(_period_start_date)
+        def _parse_period_start_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                period_start_date_type_0 = isoparse(data)
 
-        _period_end_date = d.pop("periodEndDate", UNSET)
-        period_end_date: Union[Unset, datetime.datetime]
-        if isinstance(_period_end_date, Unset):
-            period_end_date = UNSET
-        else:
-            period_end_date = isoparse(_period_end_date)
+                return period_start_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        period_start_date = _parse_period_start_date(d.pop("periodStartDate", UNSET))
+
+        def _parse_period_end_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                period_end_date_type_0 = isoparse(data)
+
+                return period_end_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        period_end_date = _parse_period_end_date(d.pop("periodEndDate", UNSET))
 
         order_item_id = d.pop("orderItemId", UNSET)
 
@@ -197,6 +300,8 @@ class InvoiceItem:
             tax_country=tax_country,
             quantity=quantity,
             delivery_customer_id=delivery_customer_id,
+            created_date=created_date,
+            changed_date=changed_date,
             product_id=product_id,
             plenigo_offer_id=plenigo_offer_id,
             plenigo_product_id=plenigo_product_id,

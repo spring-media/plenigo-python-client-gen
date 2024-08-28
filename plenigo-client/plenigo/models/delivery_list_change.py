@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="DeliveryListChange")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class DeliveryListChange:
     """
     Attributes:
@@ -24,6 +25,8 @@ class DeliveryListChange:
             delivery dates
         export_configuration_id (Union[Unset, int]): id of the export configuration that should be used with the
             delivery list
+        goodwill_offer_id (Union[Unset, int]): id of the goodwill offer that should be used with the delivery list. The
+            offer must be a single product with a zero price issue.
         enabled (Union[Unset, bool]): flag indicating if delivery list is enabled
         additional_data (Union[Unset, DeliveryListChangeAdditionalData]):
     """
@@ -34,18 +37,28 @@ class DeliveryListChange:
     check_reminder_receivers: Union[Unset, str] = UNSET
     check_date_interval_weeks: Union[Unset, int] = UNSET
     export_configuration_id: Union[Unset, int] = UNSET
+    goodwill_offer_id: Union[Unset, int] = UNSET
     enabled: Union[Unset, bool] = UNSET
     additional_data: Union[Unset, "DeliveryListChangeAdditionalData"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         title = self.title
+
         file_name_part = self.file_name_part
+
         description = self.description
+
         check_reminder_receivers = self.check_reminder_receivers
+
         check_date_interval_weeks = self.check_date_interval_weeks
+
         export_configuration_id = self.export_configuration_id
+
+        goodwill_offer_id = self.goodwill_offer_id
+
         enabled = self.enabled
+
         additional_data: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.additional_data, Unset):
             additional_data = self.additional_data.to_dict()
@@ -66,6 +79,8 @@ class DeliveryListChange:
             field_dict["checkDateIntervalWeeks"] = check_date_interval_weeks
         if export_configuration_id is not UNSET:
             field_dict["exportConfigurationId"] = export_configuration_id
+        if goodwill_offer_id is not UNSET:
+            field_dict["goodwillOfferId"] = goodwill_offer_id
         if enabled is not UNSET:
             field_dict["enabled"] = enabled
         if additional_data is not UNSET:
@@ -90,11 +105,13 @@ class DeliveryListChange:
 
         export_configuration_id = d.pop("exportConfigurationId", UNSET)
 
+        goodwill_offer_id = d.pop("goodwillOfferId", UNSET)
+
         enabled = d.pop("enabled", UNSET)
 
         _additional_data = d.pop("additionalData", UNSET)
         additional_data: Union[Unset, DeliveryListChangeAdditionalData]
-        if isinstance(_additional_data, Unset):
+        if isinstance(_additional_data, Unset) or not _additional_data:
             additional_data = UNSET
         else:
             additional_data = DeliveryListChangeAdditionalData.from_dict(_additional_data)
@@ -106,6 +123,7 @@ class DeliveryListChange:
             check_reminder_receivers=check_reminder_receivers,
             check_date_interval_weeks=check_date_interval_weeks,
             export_configuration_id=export_configuration_id,
+            goodwill_offer_id=goodwill_offer_id,
             enabled=enabled,
             additional_data=additional_data,
         )

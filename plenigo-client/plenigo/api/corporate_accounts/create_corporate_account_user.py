@@ -7,67 +7,61 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import UNSET, Response
-
-log = logging.getLogger(__name__)
-
-from typing import Dict, Optional, Union
-
 from ...models.corporate_account import CorporateAccount
 from ...models.corporate_account_user_creation import CorporateAccountUserCreation
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
-from ...types import UNSET, Unset
+from ...types import UNSET, Response, Unset
+
+log = logging.getLogger(__name__)
 
 
 def _get_kwargs(
     customer_id: str,
     corporate_account_id: int,
     *,
-    client: AuthenticatedClient,
-    json_body: CorporateAccountUserCreation,
-    send_mail: Union[Unset, None, bool] = UNSET,
+    body: CorporateAccountUserCreation,
+    send_mail: Union[Unset, bool] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/corporateAccounts/{customerId}/{corporateAccountId}/users".format(
-        client.api.value, customerId=customer_id, corporateAccountId=corporate_account_id
-    )
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
+    headers: Dict[str, Any] = {}
 
     params: Dict[str, Any] = {}
+
     params["sendMail"] = send_mail
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    json_json_body = json_body.to_dict()
-
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
-        "json": json_json_body,
+        "url": f"/corporateAccounts/{customer_id}/{corporate_account_id}/users",
         "params": params,
     }
 
-    log.debug(kwargs)
+    _body = body.to_dict()
 
-    return kwargs
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+
+    log.debug(_kwargs)
+
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[CorporateAccount, ErrorResultBase]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[CorporateAccount, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.CREATED:
         response_201 = CorporateAccount.from_dict(response.json())
 
         return response_201
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
-        response_401 = ErrorResultBase.from_dict(response.json())
+        response_401 = ErrorResult.from_dict(response.json())
 
         return response_401
     if response.status_code == HTTPStatus.NOT_FOUND:
@@ -75,7 +69,7 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
 
         return response_404
     if response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY:
-        response_422 = ErrorResultBase.from_dict(response.json())
+        response_422 = ErrorResult.from_dict(response.json())
 
         return response_422
     if response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
@@ -96,13 +90,15 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[CorporateAccount, ErrorResultBase]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[CorporateAccount, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -115,9 +111,9 @@ def sync_detailed(
     corporate_account_id: int,
     *,
     client: AuthenticatedClient,
-    json_body: CorporateAccountUserCreation,
-    send_mail: Union[Unset, None, bool] = UNSET,
-) -> Response[Union[CorporateAccount, ErrorResultBase]]:
+    body: CorporateAccountUserCreation,
+    send_mail: Union[Unset, bool] = UNSET,
+) -> Response[Union[CorporateAccount, ErrorResult, ErrorResultBase]]:
     """Create
 
      Create a corporate account user for the given corporate account.
@@ -125,27 +121,25 @@ def sync_detailed(
     Args:
         customer_id (str):
         corporate_account_id (int):
-        send_mail (Union[Unset, None, bool]):
-        json_body (CorporateAccountUserCreation):
+        send_mail (Union[Unset, bool]):
+        body (CorporateAccountUserCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CorporateAccount, ErrorResultBase]]
+        Response[Union[CorporateAccount, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
         corporate_account_id=corporate_account_id,
-        client=client,
-        json_body=json_body,
+        body=body,
         send_mail=send_mail,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -157,9 +151,9 @@ def sync(
     corporate_account_id: int,
     *,
     client: AuthenticatedClient,
-    json_body: CorporateAccountUserCreation,
-    send_mail: Union[Unset, None, bool] = UNSET,
-) -> Optional[Union[CorporateAccount, ErrorResultBase]]:
+    body: CorporateAccountUserCreation,
+    send_mail: Union[Unset, bool] = UNSET,
+) -> Optional[Union[CorporateAccount, ErrorResult, ErrorResultBase]]:
     """Create
 
      Create a corporate account user for the given corporate account.
@@ -167,22 +161,22 @@ def sync(
     Args:
         customer_id (str):
         corporate_account_id (int):
-        send_mail (Union[Unset, None, bool]):
-        json_body (CorporateAccountUserCreation):
+        send_mail (Union[Unset, bool]):
+        body (CorporateAccountUserCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CorporateAccount, ErrorResultBase]
+        Union[CorporateAccount, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
         customer_id=customer_id,
         corporate_account_id=corporate_account_id,
         client=client,
-        json_body=json_body,
+        body=body,
         send_mail=send_mail,
     ).parsed
 
@@ -197,9 +191,9 @@ async def asyncio_detailed(
     corporate_account_id: int,
     *,
     client: AuthenticatedClient,
-    json_body: CorporateAccountUserCreation,
-    send_mail: Union[Unset, None, bool] = UNSET,
-) -> Response[Union[CorporateAccount, ErrorResultBase]]:
+    body: CorporateAccountUserCreation,
+    send_mail: Union[Unset, bool] = UNSET,
+) -> Response[Union[CorporateAccount, ErrorResult, ErrorResultBase]]:
     """Create
 
      Create a corporate account user for the given corporate account.
@@ -207,27 +201,25 @@ async def asyncio_detailed(
     Args:
         customer_id (str):
         corporate_account_id (int):
-        send_mail (Union[Unset, None, bool]):
-        json_body (CorporateAccountUserCreation):
+        send_mail (Union[Unset, bool]):
+        body (CorporateAccountUserCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CorporateAccount, ErrorResultBase]]
+        Response[Union[CorporateAccount, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
         customer_id=customer_id,
         corporate_account_id=corporate_account_id,
-        client=client,
-        json_body=json_body,
+        body=body,
         send_mail=send_mail,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -237,9 +229,9 @@ async def asyncio(
     corporate_account_id: int,
     *,
     client: AuthenticatedClient,
-    json_body: CorporateAccountUserCreation,
-    send_mail: Union[Unset, None, bool] = UNSET,
-) -> Optional[Union[CorporateAccount, ErrorResultBase]]:
+    body: CorporateAccountUserCreation,
+    send_mail: Union[Unset, bool] = UNSET,
+) -> Optional[Union[CorporateAccount, ErrorResult, ErrorResultBase]]:
     """Create
 
      Create a corporate account user for the given corporate account.
@@ -247,15 +239,15 @@ async def asyncio(
     Args:
         customer_id (str):
         corporate_account_id (int):
-        send_mail (Union[Unset, None, bool]):
-        json_body (CorporateAccountUserCreation):
+        send_mail (Union[Unset, bool]):
+        body (CorporateAccountUserCreation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CorporateAccount, ErrorResultBase]
+        Union[CorporateAccount, ErrorResult, ErrorResultBase]
     """
 
     return (
@@ -263,7 +255,7 @@ async def asyncio(
             customer_id=customer_id,
             corporate_account_id=corporate_account_id,
             client=client,
-            json_body=json_body,
+            body=body,
             send_mail=send_mail,
         )
     ).parsed

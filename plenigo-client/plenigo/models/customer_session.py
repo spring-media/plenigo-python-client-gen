@@ -1,7 +1,8 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..models.customer_session_type import CustomerSessionType
@@ -10,7 +11,7 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="CustomerSession")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class CustomerSession:
     """
     Attributes:
@@ -18,9 +19,9 @@ class CustomerSession:
         customer_id (Union[Unset, str]): unique id of the customer within a contract company
         contract_company_id (Union[Unset, str]): id of the contract company the customer belongs to
         company_id (Union[Unset, str]): id of the company the customer belongs to
-        created (Union[Unset, datetime.datetime]): time the session was createdwith date-time notation as defined by <a
-            href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
-            2017-07-21T17:32:28Z
+        created (Union[None, Unset, datetime.datetime]): time the session was created with date-time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 2017-07-21T17:32:28Z
         type (Union[Unset, CustomerSessionType]): type of the session
     """
 
@@ -28,18 +29,26 @@ class CustomerSession:
     customer_id: Union[Unset, str] = UNSET
     contract_company_id: Union[Unset, str] = UNSET
     company_id: Union[Unset, str] = UNSET
-    created: Union[Unset, datetime.datetime] = UNSET
+    created: Union[None, Unset, datetime.datetime] = UNSET
     type: Union[Unset, CustomerSessionType] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         id = self.id
+
         customer_id = self.customer_id
+
         contract_company_id = self.contract_company_id
+
         company_id = self.company_id
-        created: Union[Unset, str] = UNSET
-        if not isinstance(self.created, Unset):
+
+        created: Union[None, Unset, str]
+        if isinstance(self.created, Unset):
+            created = UNSET
+        elif isinstance(self.created, datetime.datetime):
             created = self.created.isoformat()
+        else:
+            created = self.created
 
         type: Union[Unset, str] = UNSET
         if not isinstance(self.type, Unset):
@@ -74,16 +83,26 @@ class CustomerSession:
 
         company_id = d.pop("companyId", UNSET)
 
-        _created = d.pop("created", UNSET)
-        created: Union[Unset, datetime.datetime]
-        if isinstance(_created, Unset):
-            created = UNSET
-        else:
-            created = isoparse(_created)
+        def _parse_created(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                created_type_0 = isoparse(data)
+
+                return created_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        created = _parse_created(d.pop("created", UNSET))
 
         _type = d.pop("type", UNSET)
         type: Union[Unset, CustomerSessionType]
-        if isinstance(_type, Unset):
+        if isinstance(_type, Unset) or not _type:
             type = UNSET
         else:
             type = CustomerSessionType(_type)

@@ -1,9 +1,12 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
+from ..models.api_base_changed_by_type import ApiBaseChangedByType
+from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..models.order_payment_method import OrderPaymentMethod
 from ..models.order_status import OrderStatus
 from ..models.order_type import OrderType
@@ -19,14 +22,14 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound="Order")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class Order:
     """
     Attributes:
         order_id (int): unique id of the order in the context of a company
-        order_date (datetime.datetime): order date time of the order with date-time notation as defined by <a
-            href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
-            2017-07-21T17:32:28Z
+        order_date (Union[None, datetime.datetime]): order date time of the order with date-time notation as defined by
+            <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 2017-07-21T17:32:28Z
         accumulated_price (float): accumulated price of the order
         currency (str): currency of the order formatted as <a href="https://en.wikipedia.org/wiki/ISO_4217"
             target="_blank">ISO 4217, alphabetic code</a>
@@ -34,9 +37,14 @@ class Order:
             subscription)
         invoice_customer_id (str): id of the customer the invoice belongs to
         items (List['OrderItem']):
-        changed_date (Union[Unset, datetime.datetime]): date the order entity was changed with date-time notation as
-            defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
-            for example, 2017-07-21T17:32:28Z
+        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
+            2021-08-30T17:32:28Z
+        created_by (Union[Unset, str]): ID of who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
+        changed_by (Union[Unset, str]): ID of who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
         external_system_id (Union[Unset, str]): if order was imported from another system this field contains the unique
             id of the other system
         status (Union[Unset, OrderStatus]): current status of the order
@@ -48,17 +56,22 @@ class Order:
         managed_external (Union[Unset, bool]): flag indicates if a subscription is not managed by plenigo
         suppress_invoice_sending (Union[Unset, bool]): flag indicating if the subscription invoice sending is suppressed
         gift_info (Union[Unset, GiftInfo]):
-        invoice_address (Union[Unset, None, OrderAddress]):
+        invoice_address (Union[Unset, OrderAddress]):
     """
 
     order_id: int
-    order_date: datetime.datetime
+    order_date: Union[None, datetime.datetime]
     accumulated_price: float
     currency: str
     payment_method: OrderPaymentMethod
     invoice_customer_id: str
     items: List["OrderItem"]
-    changed_date: Union[Unset, datetime.datetime] = UNSET
+    created_date: Union[None, Unset, datetime.datetime] = UNSET
+    changed_date: Union[None, Unset, datetime.datetime] = UNSET
+    created_by: Union[Unset, str] = UNSET
+    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
+    changed_by: Union[Unset, str] = UNSET
+    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
     external_system_id: Union[Unset, str] = UNSET
     status: Union[Unset, OrderStatus] = UNSET
     type: Union[Unset, OrderType] = UNSET
@@ -69,29 +82,61 @@ class Order:
     managed_external: Union[Unset, bool] = UNSET
     suppress_invoice_sending: Union[Unset, bool] = UNSET
     gift_info: Union[Unset, "GiftInfo"] = UNSET
-    invoice_address: Union[Unset, None, "OrderAddress"] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    invoice_address: Union[Unset, "OrderAddress"] = UNSET
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         order_id = self.order_id
-        order_date = self.order_date.isoformat()
+
+        order_date: Union[None, str]
+        if isinstance(self.order_date, datetime.datetime):
+            order_date = self.order_date.isoformat()
+        else:
+            order_date = self.order_date
 
         accumulated_price = self.accumulated_price
+
         currency = self.currency
+
         payment_method = self.payment_method.value
 
         invoice_customer_id = self.invoice_customer_id
+
         items = []
         for items_item_data in self.items:
             items_item = items_item_data.to_dict()
-
             items.append(items_item)
 
-        changed_date: Union[Unset, str] = UNSET
-        if not isinstance(self.changed_date, Unset):
+        created_date: Union[None, Unset, str]
+        if isinstance(self.created_date, Unset):
+            created_date = UNSET
+        elif isinstance(self.created_date, datetime.datetime):
+            created_date = self.created_date.isoformat()
+        else:
+            created_date = self.created_date
+
+        changed_date: Union[None, Unset, str]
+        if isinstance(self.changed_date, Unset):
+            changed_date = UNSET
+        elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
+        else:
+            changed_date = self.changed_date
+
+        created_by = self.created_by
+
+        created_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.created_by_type, Unset):
+            created_by_type = self.created_by_type.value
+
+        changed_by = self.changed_by
+
+        changed_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.changed_by_type, Unset):
+            changed_by_type = self.changed_by_type.value
 
         external_system_id = self.external_system_id
+
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
@@ -101,21 +146,26 @@ class Order:
             type = self.type.value
 
         payment_method_id = self.payment_method_id
+
         payment_method_details: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.payment_method_details, Unset):
             payment_method_details = self.payment_method_details.to_dict()
 
         purchase_order_indicator = self.purchase_order_indicator
+
         analog_invoice = self.analog_invoice
+
         managed_external = self.managed_external
+
         suppress_invoice_sending = self.suppress_invoice_sending
+
         gift_info: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.gift_info, Unset):
             gift_info = self.gift_info.to_dict()
 
-        invoice_address: Union[Unset, None, Dict[str, Any]] = UNSET
+        invoice_address: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.invoice_address, Unset):
-            invoice_address = self.invoice_address.to_dict() if self.invoice_address else None
+            invoice_address = self.invoice_address.to_dict()
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -130,8 +180,18 @@ class Order:
                 "items": items,
             }
         )
+        if created_date is not UNSET:
+            field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
             field_dict["changedDate"] = changed_date
+        if created_by is not UNSET:
+            field_dict["createdBy"] = created_by
+        if created_by_type is not UNSET:
+            field_dict["createdByType"] = created_by_type
+        if changed_by is not UNSET:
+            field_dict["changedBy"] = changed_by
+        if changed_by_type is not UNSET:
+            field_dict["changedByType"] = changed_by_type
         if external_system_id is not UNSET:
             field_dict["externalSystemId"] = external_system_id
         if status is not UNSET:
@@ -167,7 +227,20 @@ class Order:
         d = src_dict.copy()
         order_id = d.pop("orderId")
 
-        order_date = isoparse(d.pop("orderDate"))
+        def _parse_order_date(data: object) -> Union[None, datetime.datetime]:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                order_date_type_0 = isoparse(data)
+
+                return order_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, datetime.datetime], data)
+
+        order_date = _parse_order_date(d.pop("orderDate"))
 
         accumulated_price = d.pop("accumulatedPrice")
 
@@ -184,25 +257,70 @@ class Order:
 
             items.append(items_item)
 
-        _changed_date = d.pop("changedDate", UNSET)
-        changed_date: Union[Unset, datetime.datetime]
-        if isinstance(_changed_date, Unset):
-            changed_date = UNSET
+        def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                created_date_type_0 = isoparse(data)
+
+                return created_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        created_date = _parse_created_date(d.pop("createdDate", UNSET))
+
+        def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                changed_date_type_0 = isoparse(data)
+
+                return changed_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
+
+        created_by = d.pop("createdBy", UNSET)
+
+        _created_by_type = d.pop("createdByType", UNSET)
+        created_by_type: Union[Unset, ApiBaseCreatedByType]
+        if isinstance(_created_by_type, Unset) or not _created_by_type:
+            created_by_type = UNSET
         else:
-            changed_date = isoparse(_changed_date)
+            created_by_type = ApiBaseCreatedByType(_created_by_type)
+
+        changed_by = d.pop("changedBy", UNSET)
+
+        _changed_by_type = d.pop("changedByType", UNSET)
+        changed_by_type: Union[Unset, ApiBaseChangedByType]
+        if isinstance(_changed_by_type, Unset) or not _changed_by_type:
+            changed_by_type = UNSET
+        else:
+            changed_by_type = ApiBaseChangedByType(_changed_by_type)
 
         external_system_id = d.pop("externalSystemId", UNSET)
 
         _status = d.pop("status", UNSET)
         status: Union[Unset, OrderStatus]
-        if isinstance(_status, Unset):
+        if isinstance(_status, Unset) or not _status:
             status = UNSET
         else:
             status = OrderStatus(_status)
 
         _type = d.pop("type", UNSET)
         type: Union[Unset, OrderType]
-        if isinstance(_type, Unset):
+        if isinstance(_type, Unset) or not _type:
             type = UNSET
         else:
             type = OrderType(_type)
@@ -211,7 +329,7 @@ class Order:
 
         _payment_method_details = d.pop("paymentMethodDetails", UNSET)
         payment_method_details: Union[Unset, PaymentMethodDetails]
-        if isinstance(_payment_method_details, Unset):
+        if isinstance(_payment_method_details, Unset) or not _payment_method_details:
             payment_method_details = UNSET
         else:
             payment_method_details = PaymentMethodDetails.from_dict(_payment_method_details)
@@ -226,16 +344,14 @@ class Order:
 
         _gift_info = d.pop("giftInfo", UNSET)
         gift_info: Union[Unset, GiftInfo]
-        if isinstance(_gift_info, Unset):
+        if isinstance(_gift_info, Unset) or not _gift_info:
             gift_info = UNSET
         else:
             gift_info = GiftInfo.from_dict(_gift_info)
 
         _invoice_address = d.pop("invoiceAddress", UNSET)
-        invoice_address: Union[Unset, None, OrderAddress]
-        if _invoice_address is None:
-            invoice_address = None
-        elif isinstance(_invoice_address, Unset):
+        invoice_address: Union[Unset, OrderAddress]
+        if isinstance(_invoice_address, Unset) or not _invoice_address:
             invoice_address = UNSET
         else:
             invoice_address = OrderAddress.from_dict(_invoice_address)
@@ -248,7 +364,12 @@ class Order:
             payment_method=payment_method,
             invoice_customer_id=invoice_customer_id,
             items=items,
+            created_date=created_date,
             changed_date=changed_date,
+            created_by=created_by,
+            created_by_type=created_by_type,
+            changed_by=changed_by,
+            changed_by_type=changed_by_type,
             external_system_id=external_system_id,
             status=status,
             type=type,

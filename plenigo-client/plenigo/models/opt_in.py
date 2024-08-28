@@ -1,7 +1,8 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..models.opt_in_status import OptInStatus
@@ -10,30 +11,36 @@ from ..types import UNSET, Unset
 T = TypeVar("T", bound="OptIn")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class OptIn:
     """
     Attributes:
         opt_in_id (Union[Unset, int]): technical id of the opt in for relation to the merchant backend opt in id
         unique_id (Union[Unset, str]): unique id of the last active opt in
-        changed_date (Union[Unset, datetime.datetime]): date time the opt in was changed with date-time notation as
-            defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>,
-            for example, 2017-07-21T17:32:28Z
+        changed_date (Union[None, Unset, datetime.datetime]): date time the opt in was changed with date-time notation
+            as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section
+            5.6</a>, for example, 2017-07-21T17:32:28Z
         status (Union[Unset, OptInStatus]): status of the opt in
     """
 
     opt_in_id: Union[Unset, int] = UNSET
     unique_id: Union[Unset, str] = UNSET
-    changed_date: Union[Unset, datetime.datetime] = UNSET
+    changed_date: Union[None, Unset, datetime.datetime] = UNSET
     status: Union[Unset, OptInStatus] = UNSET
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         opt_in_id = self.opt_in_id
+
         unique_id = self.unique_id
-        changed_date: Union[Unset, str] = UNSET
-        if not isinstance(self.changed_date, Unset):
+
+        changed_date: Union[None, Unset, str]
+        if isinstance(self.changed_date, Unset):
+            changed_date = UNSET
+        elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
+        else:
+            changed_date = self.changed_date
 
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
@@ -60,16 +67,26 @@ class OptIn:
 
         unique_id = d.pop("uniqueId", UNSET)
 
-        _changed_date = d.pop("changedDate", UNSET)
-        changed_date: Union[Unset, datetime.datetime]
-        if isinstance(_changed_date, Unset):
-            changed_date = UNSET
-        else:
-            changed_date = isoparse(_changed_date)
+        def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                changed_date_type_0 = isoparse(data)
+
+                return changed_date_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
 
         _status = d.pop("status", UNSET)
         status: Union[Unset, OptInStatus]
-        if isinstance(_status, Unset):
+        if isinstance(_status, Unset) or not _status:
             status = UNSET
         else:
             status = OptInStatus(_status)

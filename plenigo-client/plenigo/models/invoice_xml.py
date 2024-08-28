@@ -1,19 +1,20 @@
 from typing import Any, Dict, List, Type, TypeVar
 
-import attr
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 T = TypeVar("T", bound="InvoiceXml")
 
 
-@attr.s(auto_attribs=True)
+@_attrs_define
 class InvoiceXml:
     """
     Attributes:
-        xml (str): xml formated invoice file
+        xml (str): xml formatted invoice file
     """
 
     xml: str
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         xml = self.xml

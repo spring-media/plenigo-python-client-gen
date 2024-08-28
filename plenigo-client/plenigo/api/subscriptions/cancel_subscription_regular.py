@@ -7,58 +7,48 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...types import UNSET, Response
-
-log = logging.getLogger(__name__)
-
-from typing import Dict, Optional, Union
-
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.subscription import Subscription
-from ...types import UNSET, Unset
+from ...types import UNSET, Response, Unset
+
+log = logging.getLogger(__name__)
 
 
 def _get_kwargs(
     subscription_id: int,
     *,
-    client: AuthenticatedClient,
-    send_mail: Union[Unset, None, bool] = UNSET,
-    cancellation_reason_unique_id: Union[Unset, None, str] = UNSET,
+    send_mail: Union[Unset, bool] = UNSET,
+    cancellation_reason_unique_id: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/subscriptions/{subscriptionId}/cancel/regular".format(client.api.value, subscriptionId=subscription_id)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
-
     params: Dict[str, Any] = {}
+
     params["sendMail"] = send_mail
 
     params["cancellationReasonUniqueId"] = cancellation_reason_unique_id
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    kwargs = {
+    _kwargs: Dict[str, Any] = {
         "method": "put",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": f"/subscriptions/{subscription_id}/cancel/regular",
         "params": params,
     }
 
-    log.debug(kwargs)
+    log.debug(_kwargs)
 
-    return kwargs
+    return _kwargs
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[ErrorResultBase, Subscription]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResult, ErrorResultBase, Subscription]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = Subscription.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -87,13 +77,15 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[ErrorResultBase, Subscription]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResult, ErrorResultBase, Subscription]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=_parse_response(client=client, response=response),
-    )  # type: ignore
+    )
 
 
 @retry(
@@ -105,35 +97,33 @@ def sync_detailed(
     subscription_id: int,
     *,
     client: AuthenticatedClient,
-    send_mail: Union[Unset, None, bool] = UNSET,
-    cancellation_reason_unique_id: Union[Unset, None, str] = UNSET,
-) -> Response[Union[ErrorResultBase, Subscription]]:
+    send_mail: Union[Unset, bool] = UNSET,
+    cancellation_reason_unique_id: Union[Unset, str] = UNSET,
+) -> Response[Union[ErrorResult, ErrorResultBase, Subscription]]:
     """Cancel regular
 
      Cancel a subscription to the next regular end date.
 
     Args:
         subscription_id (int):
-        send_mail (Union[Unset, None, bool]):
-        cancellation_reason_unique_id (Union[Unset, None, str]):
+        send_mail (Union[Unset, bool]):
+        cancellation_reason_unique_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, Subscription]]
+        Response[Union[ErrorResult, ErrorResultBase, Subscription]]
     """
 
     kwargs = _get_kwargs(
         subscription_id=subscription_id,
-        client=client,
         send_mail=send_mail,
         cancellation_reason_unique_id=cancellation_reason_unique_id,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -144,24 +134,24 @@ def sync(
     subscription_id: int,
     *,
     client: AuthenticatedClient,
-    send_mail: Union[Unset, None, bool] = UNSET,
-    cancellation_reason_unique_id: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[ErrorResultBase, Subscription]]:
+    send_mail: Union[Unset, bool] = UNSET,
+    cancellation_reason_unique_id: Union[Unset, str] = UNSET,
+) -> Optional[Union[ErrorResult, ErrorResultBase, Subscription]]:
     """Cancel regular
 
      Cancel a subscription to the next regular end date.
 
     Args:
         subscription_id (int):
-        send_mail (Union[Unset, None, bool]):
-        cancellation_reason_unique_id (Union[Unset, None, str]):
+        send_mail (Union[Unset, bool]):
+        cancellation_reason_unique_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, Subscription]
+        Union[ErrorResult, ErrorResultBase, Subscription]
     """
 
     return sync_detailed(
@@ -181,35 +171,33 @@ async def asyncio_detailed(
     subscription_id: int,
     *,
     client: AuthenticatedClient,
-    send_mail: Union[Unset, None, bool] = UNSET,
-    cancellation_reason_unique_id: Union[Unset, None, str] = UNSET,
-) -> Response[Union[ErrorResultBase, Subscription]]:
+    send_mail: Union[Unset, bool] = UNSET,
+    cancellation_reason_unique_id: Union[Unset, str] = UNSET,
+) -> Response[Union[ErrorResult, ErrorResultBase, Subscription]]:
     """Cancel regular
 
      Cancel a subscription to the next regular end date.
 
     Args:
         subscription_id (int):
-        send_mail (Union[Unset, None, bool]):
-        cancellation_reason_unique_id (Union[Unset, None, str]):
+        send_mail (Union[Unset, bool]):
+        cancellation_reason_unique_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResultBase, Subscription]]
+        Response[Union[ErrorResult, ErrorResultBase, Subscription]]
     """
 
     kwargs = _get_kwargs(
         subscription_id=subscription_id,
-        client=client,
         send_mail=send_mail,
         cancellation_reason_unique_id=cancellation_reason_unique_id,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
@@ -218,24 +206,24 @@ async def asyncio(
     subscription_id: int,
     *,
     client: AuthenticatedClient,
-    send_mail: Union[Unset, None, bool] = UNSET,
-    cancellation_reason_unique_id: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[ErrorResultBase, Subscription]]:
+    send_mail: Union[Unset, bool] = UNSET,
+    cancellation_reason_unique_id: Union[Unset, str] = UNSET,
+) -> Optional[Union[ErrorResult, ErrorResultBase, Subscription]]:
     """Cancel regular
 
      Cancel a subscription to the next regular end date.
 
     Args:
         subscription_id (int):
-        send_mail (Union[Unset, None, bool]):
-        cancellation_reason_unique_id (Union[Unset, None, str]):
+        send_mail (Union[Unset, bool]):
+        cancellation_reason_unique_id (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResultBase, Subscription]
+        Union[ErrorResult, ErrorResultBase, Subscription]
     """
 
     return (
