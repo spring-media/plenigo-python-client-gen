@@ -58,6 +58,8 @@ class VoucherPurchaseData:
         def _parse_voucher_end_date(data: object) -> Union[None, datetime.datetime]:
             if data is None:
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -66,6 +68,7 @@ class VoucherPurchaseData:
                 return voucher_end_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, datetime.datetime], data)
 
         voucher_end_date = _parse_voucher_end_date(d.pop("voucherEndDate"))

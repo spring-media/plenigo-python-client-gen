@@ -55,7 +55,7 @@ class CreditUpload:
 
     def to_dict(self) -> Dict[str, Any]:
         created_date: Union[None, Unset, str]
-        if isinstance(self.created_date, Unset):
+        if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
         elif isinstance(self.created_date, datetime.datetime):
             created_date = self.created_date.isoformat()
@@ -63,7 +63,7 @@ class CreditUpload:
             created_date = self.created_date
 
         changed_date: Union[None, Unset, str]
-        if isinstance(self.changed_date, Unset):
+        if isinstance(self.changed_date, Unset) or self.changed_date is None:
             changed_date = UNSET
         elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
@@ -87,7 +87,7 @@ class CreditUpload:
         unique_id = self.unique_id
 
         upload_date: Union[None, Unset, str]
-        if isinstance(self.upload_date, Unset):
+        if isinstance(self.upload_date, Unset) or self.upload_date is None:
             upload_date = UNSET
         elif isinstance(self.upload_date, datetime.datetime):
             upload_date = self.upload_date.isoformat()
@@ -147,8 +147,14 @@ class CreditUpload:
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -157,6 +163,7 @@ class CreditUpload:
                 return created_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_date = _parse_created_date(d.pop("createdDate", UNSET))
@@ -164,8 +171,14 @@ class CreditUpload:
         def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -174,6 +187,7 @@ class CreditUpload:
                 return changed_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
@@ -203,8 +217,14 @@ class CreditUpload:
         def _parse_upload_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -213,6 +233,7 @@ class CreditUpload:
                 return upload_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         upload_date = _parse_upload_date(d.pop("uploadDate", UNSET))

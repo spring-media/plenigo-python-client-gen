@@ -100,7 +100,7 @@ class OfferBase:
         misuse_rule_id = self.misuse_rule_id
 
         fixed_start_date: Union[None, Unset, str]
-        if isinstance(self.fixed_start_date, Unset):
+        if isinstance(self.fixed_start_date, Unset) or self.fixed_start_date is None:
             fixed_start_date = UNSET
         elif isinstance(self.fixed_start_date, datetime.date):
             fixed_start_date = self.fixed_start_date.isoformat()
@@ -232,8 +232,14 @@ class OfferBase:
         def _parse_fixed_start_date(data: object) -> Union[None, Unset, datetime.date]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.date
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -242,6 +248,7 @@ class OfferBase:
                 return fixed_start_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.date], data)
 
         fixed_start_date = _parse_fixed_start_date(d.pop("fixedStartDate", UNSET))

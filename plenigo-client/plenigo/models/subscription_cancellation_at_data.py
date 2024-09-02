@@ -24,7 +24,7 @@ class SubscriptionCancellationAtData:
 
     def to_dict(self) -> Dict[str, Any]:
         cancellation_date: Union[None, Unset, str]
-        if isinstance(self.cancellation_date, Unset):
+        if isinstance(self.cancellation_date, Unset) or self.cancellation_date is None:
             cancellation_date = UNSET
         elif isinstance(self.cancellation_date, datetime.date):
             cancellation_date = self.cancellation_date.isoformat()
@@ -46,8 +46,14 @@ class SubscriptionCancellationAtData:
         def _parse_cancellation_date(data: object) -> Union[None, Unset, datetime.date]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.date
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -56,6 +62,7 @@ class SubscriptionCancellationAtData:
                 return cancellation_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.date], data)
 
         cancellation_date = _parse_cancellation_date(d.pop("cancellationDate", UNSET))

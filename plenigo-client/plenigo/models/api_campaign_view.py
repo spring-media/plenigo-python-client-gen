@@ -81,7 +81,7 @@ class ApiCampaignView:
             channels.append(channels_item)
 
         created_date: Union[None, Unset, str]
-        if isinstance(self.created_date, Unset):
+        if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
         elif isinstance(self.created_date, datetime.datetime):
             created_date = self.created_date.isoformat()
@@ -89,7 +89,7 @@ class ApiCampaignView:
             created_date = self.created_date
 
         changed_date: Union[None, Unset, str]
-        if isinstance(self.changed_date, Unset):
+        if isinstance(self.changed_date, Unset) or self.changed_date is None:
             changed_date = UNSET
         elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
@@ -111,7 +111,7 @@ class ApiCampaignView:
         plenigo_offer_id = self.plenigo_offer_id
 
         end_date: Union[None, Unset, str]
-        if isinstance(self.end_date, Unset):
+        if isinstance(self.end_date, Unset) or self.end_date is None:
             end_date = UNSET
         elif isinstance(self.end_date, datetime.date):
             end_date = self.end_date.isoformat()
@@ -165,6 +165,8 @@ class ApiCampaignView:
         def _parse_start_date(data: object) -> Union[None, datetime.date]:
             if data is None:
                 return data
+
+            # Try to parse the data as datetime.date
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -173,6 +175,7 @@ class ApiCampaignView:
                 return start_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, datetime.date], data)
 
         start_date = _parse_start_date(d.pop("startDate"))
@@ -187,8 +190,14 @@ class ApiCampaignView:
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -197,6 +206,7 @@ class ApiCampaignView:
                 return created_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_date = _parse_created_date(d.pop("createdDate", UNSET))
@@ -204,8 +214,14 @@ class ApiCampaignView:
         def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -214,6 +230,7 @@ class ApiCampaignView:
                 return changed_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
@@ -241,8 +258,14 @@ class ApiCampaignView:
         def _parse_end_date(data: object) -> Union[None, Unset, datetime.date]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.date
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -251,6 +274,7 @@ class ApiCampaignView:
                 return end_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.date], data)
 
         end_date = _parse_end_date(d.pop("endDate", UNSET))

@@ -32,7 +32,7 @@ class SessionLimitReached:
             active_sessions = self.active_sessions.to_dict()
 
         removal_token: Union[None, Unset, str]
-        if isinstance(self.removal_token, Unset):
+        if isinstance(self.removal_token, Unset) or self.removal_token is None:
             removal_token = UNSET
         elif isinstance(self.removal_token, datetime.datetime):
             removal_token = self.removal_token.isoformat()
@@ -64,8 +64,14 @@ class SessionLimitReached:
         def _parse_removal_token(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -74,6 +80,7 @@ class SessionLimitReached:
                 return removal_token_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         removal_token = _parse_removal_token(d.pop("removalToken", UNSET))

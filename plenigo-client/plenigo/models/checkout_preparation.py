@@ -125,7 +125,7 @@ class CheckoutPreparation:
         debug_mode = self.debug_mode
 
         subscription_start_date: Union[None, Unset, str]
-        if isinstance(self.subscription_start_date, Unset):
+        if isinstance(self.subscription_start_date, Unset) or self.subscription_start_date is None:
             subscription_start_date = UNSET
         elif isinstance(self.subscription_start_date, datetime.datetime):
             subscription_start_date = self.subscription_start_date.isoformat()
@@ -265,8 +265,14 @@ class CheckoutPreparation:
         def _parse_subscription_start_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -275,6 +281,7 @@ class CheckoutPreparation:
                 return subscription_start_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         subscription_start_date = _parse_subscription_start_date(d.pop("subscriptionStartDate", UNSET))

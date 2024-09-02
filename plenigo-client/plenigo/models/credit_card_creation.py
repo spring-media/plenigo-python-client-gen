@@ -94,6 +94,8 @@ class CreditCardCreation:
         def _parse_valid_to(data: object) -> Union[None, datetime.date]:
             if data is None:
                 return data
+
+            # Try to parse the data as datetime.date
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -102,6 +104,7 @@ class CreditCardCreation:
                 return valid_to_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, datetime.date], data)
 
         valid_to = _parse_valid_to(d.pop("validTo"))

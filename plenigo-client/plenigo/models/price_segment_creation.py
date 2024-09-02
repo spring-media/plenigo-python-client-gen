@@ -49,7 +49,7 @@ class PriceSegmentCreation:
             valid_from = self.valid_from
 
         valid_from_existing_subscription: Union[None, Unset, str]
-        if isinstance(self.valid_from_existing_subscription, Unset):
+        if isinstance(self.valid_from_existing_subscription, Unset) or self.valid_from_existing_subscription is None:
             valid_from_existing_subscription = UNSET
         elif isinstance(self.valid_from_existing_subscription, datetime.date):
             valid_from_existing_subscription = self.valid_from_existing_subscription.isoformat()
@@ -88,6 +88,8 @@ class PriceSegmentCreation:
         def _parse_valid_from(data: object) -> Union[None, datetime.date]:
             if data is None:
                 return data
+
+            # Try to parse the data as datetime.date
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -96,6 +98,7 @@ class PriceSegmentCreation:
                 return valid_from_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, datetime.date], data)
 
         valid_from = _parse_valid_from(d.pop("validFrom"))
@@ -103,8 +106,14 @@ class PriceSegmentCreation:
         def _parse_valid_from_existing_subscription(data: object) -> Union[None, Unset, datetime.date]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.date
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -113,6 +122,7 @@ class PriceSegmentCreation:
                 return valid_from_existing_subscription_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.date], data)
 
         valid_from_existing_subscription = _parse_valid_from_existing_subscription(

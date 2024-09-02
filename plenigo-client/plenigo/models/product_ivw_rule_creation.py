@@ -127,6 +127,7 @@ class ProductIvwRuleCreation:
         type = ProductIvwRuleCreationType(d.pop("type"))
 
         def _parse_rule(data: object) -> Union["ProductAnalogIvwRule", "ProductDigitalIvwRule"]:
+            # Try to parse the data as ProductAnalogIvwRule
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
@@ -135,8 +136,13 @@ class ProductIvwRuleCreation:
                 return rule_type_0
             except:  # noqa: E722
                 pass
+
+            # In order to parse the one remaining property in the union,
+            # data must be a dict
             if not isinstance(data, dict):
                 raise TypeError()
+
+            # Finally, parse the data as ProductDigitalIvwRule
             rule_type_1 = ProductDigitalIvwRule.from_dict(data)
 
             return rule_type_1

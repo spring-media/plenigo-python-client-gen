@@ -33,7 +33,7 @@ class StatusHistory:
         reason = self.reason
 
         change_date: Union[None, Unset, str]
-        if isinstance(self.change_date, Unset):
+        if isinstance(self.change_date, Unset) or self.change_date is None:
             change_date = UNSET
         elif isinstance(self.change_date, datetime.datetime):
             change_date = self.change_date.isoformat()
@@ -64,8 +64,14 @@ class StatusHistory:
         def _parse_change_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -74,6 +80,7 @@ class StatusHistory:
                 return change_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         change_date = _parse_change_date(d.pop("changeDate", UNSET))

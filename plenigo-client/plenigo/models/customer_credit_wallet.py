@@ -59,7 +59,7 @@ class CustomerCreditWallet:
 
     def to_dict(self) -> Dict[str, Any]:
         created_date: Union[None, Unset, str]
-        if isinstance(self.created_date, Unset):
+        if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
         elif isinstance(self.created_date, datetime.datetime):
             created_date = self.created_date.isoformat()
@@ -67,7 +67,7 @@ class CustomerCreditWallet:
             created_date = self.created_date
 
         changed_date: Union[None, Unset, str]
-        if isinstance(self.changed_date, Unset):
+        if isinstance(self.changed_date, Unset) or self.changed_date is None:
             changed_date = UNSET
         elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
@@ -101,7 +101,7 @@ class CustomerCreditWallet:
             credit_validity_timespan = self.credit_validity_timespan.value
 
         credit_validity_time_start: Union[None, Unset, str]
-        if isinstance(self.credit_validity_time_start, Unset):
+        if isinstance(self.credit_validity_time_start, Unset) or self.credit_validity_time_start is None:
             credit_validity_time_start = UNSET
         elif isinstance(self.credit_validity_time_start, datetime.datetime):
             credit_validity_time_start = self.credit_validity_time_start.isoformat()
@@ -155,8 +155,14 @@ class CustomerCreditWallet:
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -165,6 +171,7 @@ class CustomerCreditWallet:
                 return created_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_date = _parse_created_date(d.pop("createdDate", UNSET))
@@ -172,8 +179,14 @@ class CustomerCreditWallet:
         def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -182,6 +195,7 @@ class CustomerCreditWallet:
                 return changed_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
@@ -224,8 +238,14 @@ class CustomerCreditWallet:
         def _parse_credit_validity_time_start(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -234,6 +254,7 @@ class CustomerCreditWallet:
                 return credit_validity_time_start_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         credit_validity_time_start = _parse_credit_validity_time_start(d.pop("creditValidityTimeStart", UNSET))

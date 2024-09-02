@@ -83,7 +83,7 @@ class Transaction:
         customer_id = self.customer_id
 
         created_date: Union[None, Unset, str]
-        if isinstance(self.created_date, Unset):
+        if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
         elif isinstance(self.created_date, datetime.datetime):
             created_date = self.created_date.isoformat()
@@ -91,7 +91,7 @@ class Transaction:
             created_date = self.created_date
 
         changed_date: Union[None, Unset, str]
-        if isinstance(self.changed_date, Unset):
+        if isinstance(self.changed_date, Unset) or self.changed_date is None:
             changed_date = UNSET
         elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
@@ -99,7 +99,7 @@ class Transaction:
             changed_date = self.changed_date
 
         transaction_date: Union[None, Unset, str]
-        if isinstance(self.transaction_date, Unset):
+        if isinstance(self.transaction_date, Unset) or self.transaction_date is None:
             transaction_date = UNSET
         elif isinstance(self.transaction_date, datetime.datetime):
             transaction_date = self.transaction_date.isoformat()
@@ -107,7 +107,7 @@ class Transaction:
             transaction_date = self.transaction_date
 
         fulfillment_date: Union[None, Unset, str]
-        if isinstance(self.fulfillment_date, Unset):
+        if isinstance(self.fulfillment_date, Unset) or self.fulfillment_date is None:
             fulfillment_date = UNSET
         elif isinstance(self.fulfillment_date, datetime.datetime):
             fulfillment_date = self.fulfillment_date.isoformat()
@@ -180,8 +180,14 @@ class Transaction:
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -190,6 +196,7 @@ class Transaction:
                 return created_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_date = _parse_created_date(d.pop("createdDate", UNSET))
@@ -197,8 +204,14 @@ class Transaction:
         def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -207,6 +220,7 @@ class Transaction:
                 return changed_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
@@ -214,8 +228,14 @@ class Transaction:
         def _parse_transaction_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -224,6 +244,7 @@ class Transaction:
                 return transaction_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         transaction_date = _parse_transaction_date(d.pop("transactionDate", UNSET))
@@ -231,8 +252,14 @@ class Transaction:
         def _parse_fulfillment_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -241,6 +268,7 @@ class Transaction:
                 return fulfillment_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         fulfillment_date = _parse_fulfillment_date(d.pop("fulfillmentDate", UNSET))

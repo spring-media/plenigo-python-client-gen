@@ -52,7 +52,7 @@ If you need to make any changes, then update only the templates in the `template
 ```sh
 openapi-python-client generate \
   --overwrite \
-  --path openapi.json \
+  --path openapi-<version>.json \
   --config config.yml \
   --custom-template-path templates \
   --output-path=plenigo-client

@@ -84,7 +84,7 @@ class AppleAppStoreReceiptItem:
         is_upgraded = self.is_upgraded
 
         expires_date: Union[None, Unset, str]
-        if isinstance(self.expires_date, Unset):
+        if isinstance(self.expires_date, Unset) or self.expires_date is None:
             expires_date = UNSET
         elif isinstance(self.expires_date, datetime.datetime):
             expires_date = self.expires_date.isoformat()
@@ -92,7 +92,7 @@ class AppleAppStoreReceiptItem:
             expires_date = self.expires_date
 
         purchase_date: Union[None, Unset, str]
-        if isinstance(self.purchase_date, Unset):
+        if isinstance(self.purchase_date, Unset) or self.purchase_date is None:
             purchase_date = UNSET
         elif isinstance(self.purchase_date, datetime.datetime):
             purchase_date = self.purchase_date.isoformat()
@@ -100,7 +100,7 @@ class AppleAppStoreReceiptItem:
             purchase_date = self.purchase_date
 
         original_purchase_date: Union[None, Unset, str]
-        if isinstance(self.original_purchase_date, Unset):
+        if isinstance(self.original_purchase_date, Unset) or self.original_purchase_date is None:
             original_purchase_date = UNSET
         elif isinstance(self.original_purchase_date, datetime.datetime):
             original_purchase_date = self.original_purchase_date.isoformat()
@@ -108,7 +108,7 @@ class AppleAppStoreReceiptItem:
             original_purchase_date = self.original_purchase_date
 
         cancellation_date: Union[None, Unset, str]
-        if isinstance(self.cancellation_date, Unset):
+        if isinstance(self.cancellation_date, Unset) or self.cancellation_date is None:
             cancellation_date = UNSET
         elif isinstance(self.cancellation_date, datetime.datetime):
             cancellation_date = self.cancellation_date.isoformat()
@@ -179,8 +179,14 @@ class AppleAppStoreReceiptItem:
         def _parse_expires_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -189,6 +195,7 @@ class AppleAppStoreReceiptItem:
                 return expires_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         expires_date = _parse_expires_date(d.pop("expiresDate", UNSET))
@@ -196,8 +203,14 @@ class AppleAppStoreReceiptItem:
         def _parse_purchase_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -206,6 +219,7 @@ class AppleAppStoreReceiptItem:
                 return purchase_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         purchase_date = _parse_purchase_date(d.pop("purchaseDate", UNSET))
@@ -213,8 +227,14 @@ class AppleAppStoreReceiptItem:
         def _parse_original_purchase_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -223,6 +243,7 @@ class AppleAppStoreReceiptItem:
                 return original_purchase_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         original_purchase_date = _parse_original_purchase_date(d.pop("originalPurchaseDate", UNSET))
@@ -230,8 +251,14 @@ class AppleAppStoreReceiptItem:
         def _parse_cancellation_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -240,6 +267,7 @@ class AppleAppStoreReceiptItem:
                 return cancellation_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         cancellation_date = _parse_cancellation_date(d.pop("cancellationDate", UNSET))

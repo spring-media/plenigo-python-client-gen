@@ -64,7 +64,7 @@ class AppStoreOrder:
         from ..models.google_play_subscription_purchase import GooglePlaySubscriptionPurchase
 
         created_date: Union[None, Unset, str]
-        if isinstance(self.created_date, Unset):
+        if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
         elif isinstance(self.created_date, datetime.datetime):
             created_date = self.created_date.isoformat()
@@ -72,7 +72,7 @@ class AppStoreOrder:
             created_date = self.created_date
 
         changed_date: Union[None, Unset, str]
-        if isinstance(self.changed_date, Unset):
+        if isinstance(self.changed_date, Unset) or self.changed_date is None:
             changed_date = UNSET
         elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
@@ -94,7 +94,7 @@ class AppStoreOrder:
         app_store_order_id = self.app_store_order_id
 
         order_date: Union[None, Unset, str]
-        if isinstance(self.order_date, Unset):
+        if isinstance(self.order_date, Unset) or self.order_date is None:
             order_date = UNSET
         elif isinstance(self.order_date, datetime.datetime):
             order_date = self.order_date.isoformat()
@@ -108,7 +108,7 @@ class AppStoreOrder:
             store_type = self.store_type.value
 
         additional_store_data: Union[Dict[str, Any], Unset]
-        if isinstance(self.additional_store_data, Unset):
+        if isinstance(self.additional_store_data, Unset) or self.additional_store_data is None:
             additional_store_data = UNSET
         elif isinstance(self.additional_store_data, AppleAppStoreReceipt):
             additional_store_data = self.additional_store_data.to_dict()
@@ -166,8 +166,14 @@ class AppStoreOrder:
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -176,6 +182,7 @@ class AppStoreOrder:
                 return created_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_date = _parse_created_date(d.pop("createdDate", UNSET))
@@ -183,8 +190,14 @@ class AppStoreOrder:
         def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -193,6 +206,7 @@ class AppStoreOrder:
                 return changed_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
@@ -220,8 +234,14 @@ class AppStoreOrder:
         def _parse_order_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -230,6 +250,7 @@ class AppStoreOrder:
                 return order_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         order_date = _parse_order_date(d.pop("orderDate", UNSET))
@@ -246,8 +267,13 @@ class AppStoreOrder:
         def _parse_additional_store_data(
             data: object,
         ) -> Union["AppleAppStoreReceipt", "GooglePlayProductPurchase", "GooglePlaySubscriptionPurchase", Unset]:
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as AppleAppStoreReceipt
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
@@ -256,6 +282,8 @@ class AppStoreOrder:
                 return additional_store_data_type_0
             except:  # noqa: E722
                 pass
+
+            # Try to parse the data as GooglePlaySubscriptionPurchase
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
@@ -264,8 +292,13 @@ class AppStoreOrder:
                 return additional_store_data_type_1
             except:  # noqa: E722
                 pass
+
+            # In order to parse the one remaining property in the union,
+            # data must be a dict
             if not isinstance(data, dict):
                 raise TypeError()
+
+            # Finally, parse the data as GooglePlayProductPurchase
             additional_store_data_type_2 = GooglePlayProductPurchase.from_dict(data)
 
             return additional_store_data_type_2

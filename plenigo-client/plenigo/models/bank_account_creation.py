@@ -57,7 +57,7 @@ class BankAccountCreation:
         mandate_id = self.mandate_id
 
         mandate_date: Union[None, Unset, str]
-        if isinstance(self.mandate_date, Unset):
+        if isinstance(self.mandate_date, Unset) or self.mandate_date is None:
             mandate_date = UNSET
         elif isinstance(self.mandate_date, datetime.datetime):
             mandate_date = self.mandate_date.isoformat()
@@ -110,8 +110,14 @@ class BankAccountCreation:
         def _parse_mandate_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -120,6 +126,7 @@ class BankAccountCreation:
                 return mandate_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         mandate_date = _parse_mandate_date(d.pop("mandateDate", UNSET))
