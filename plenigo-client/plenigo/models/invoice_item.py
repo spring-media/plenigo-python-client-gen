@@ -89,7 +89,7 @@ class InvoiceItem:
         delivery_customer_id = self.delivery_customer_id
 
         created_date: Union[None, Unset, str]
-        if isinstance(self.created_date, Unset):
+        if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
         elif isinstance(self.created_date, datetime.datetime):
             created_date = self.created_date.isoformat()
@@ -97,7 +97,7 @@ class InvoiceItem:
             created_date = self.created_date
 
         changed_date: Union[None, Unset, str]
-        if isinstance(self.changed_date, Unset):
+        if isinstance(self.changed_date, Unset) or self.changed_date is None:
             changed_date = UNSET
         elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
@@ -121,7 +121,7 @@ class InvoiceItem:
         subscription_item_id = self.subscription_item_id
 
         period_start_date: Union[None, Unset, str]
-        if isinstance(self.period_start_date, Unset):
+        if isinstance(self.period_start_date, Unset) or self.period_start_date is None:
             period_start_date = UNSET
         elif isinstance(self.period_start_date, datetime.datetime):
             period_start_date = self.period_start_date.isoformat()
@@ -129,7 +129,7 @@ class InvoiceItem:
             period_start_date = self.period_start_date
 
         period_end_date: Union[None, Unset, str]
-        if isinstance(self.period_end_date, Unset):
+        if isinstance(self.period_end_date, Unset) or self.period_end_date is None:
             period_end_date = UNSET
         elif isinstance(self.period_end_date, datetime.datetime):
             period_end_date = self.period_end_date.isoformat()
@@ -204,8 +204,14 @@ class InvoiceItem:
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -214,6 +220,7 @@ class InvoiceItem:
                 return created_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_date = _parse_created_date(d.pop("createdDate", UNSET))
@@ -221,8 +228,14 @@ class InvoiceItem:
         def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -231,6 +244,7 @@ class InvoiceItem:
                 return changed_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
@@ -257,8 +271,14 @@ class InvoiceItem:
         def _parse_period_start_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -267,6 +287,7 @@ class InvoiceItem:
                 return period_start_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         period_start_date = _parse_period_start_date(d.pop("periodStartDate", UNSET))
@@ -274,8 +295,14 @@ class InvoiceItem:
         def _parse_period_end_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -284,6 +311,7 @@ class InvoiceItem:
                 return period_end_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         period_end_date = _parse_period_end_date(d.pop("periodEndDate", UNSET))

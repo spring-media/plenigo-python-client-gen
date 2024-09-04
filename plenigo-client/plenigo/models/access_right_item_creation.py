@@ -48,7 +48,7 @@ class AccessRightItemCreation:
 
     def to_dict(self) -> Dict[str, Any]:
         life_time_start: Union[None, Unset, str]
-        if isinstance(self.life_time_start, Unset):
+        if isinstance(self.life_time_start, Unset) or self.life_time_start is None:
             life_time_start = UNSET
         elif isinstance(self.life_time_start, datetime.datetime):
             life_time_start = self.life_time_start.isoformat()
@@ -56,7 +56,7 @@ class AccessRightItemCreation:
             life_time_start = self.life_time_start
 
         life_time_end: Union[None, Unset, str]
-        if isinstance(self.life_time_end, Unset):
+        if isinstance(self.life_time_end, Unset) or self.life_time_end is None:
             life_time_end = UNSET
         elif isinstance(self.life_time_end, datetime.datetime):
             life_time_end = self.life_time_end.isoformat()
@@ -64,7 +64,7 @@ class AccessRightItemCreation:
             life_time_end = self.life_time_end
 
         access_time_start: Union[None, Unset, str]
-        if isinstance(self.access_time_start, Unset):
+        if isinstance(self.access_time_start, Unset) or self.access_time_start is None:
             access_time_start = UNSET
         elif isinstance(self.access_time_start, datetime.datetime):
             access_time_start = self.access_time_start.isoformat()
@@ -72,7 +72,7 @@ class AccessRightItemCreation:
             access_time_start = self.access_time_start
 
         access_time_end: Union[None, Unset, str]
-        if isinstance(self.access_time_end, Unset):
+        if isinstance(self.access_time_end, Unset) or self.access_time_end is None:
             access_time_end = UNSET
         elif isinstance(self.access_time_end, datetime.datetime):
             access_time_end = self.access_time_end.isoformat()
@@ -80,7 +80,7 @@ class AccessRightItemCreation:
             access_time_end = self.access_time_end
 
         max_cache_date: Union[None, Unset, str]
-        if isinstance(self.max_cache_date, Unset):
+        if isinstance(self.max_cache_date, Unset) or self.max_cache_date is None:
             max_cache_date = UNSET
         elif isinstance(self.max_cache_date, datetime.datetime):
             max_cache_date = self.max_cache_date.isoformat()
@@ -122,8 +122,14 @@ class AccessRightItemCreation:
         def _parse_life_time_start(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -132,6 +138,7 @@ class AccessRightItemCreation:
                 return life_time_start_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         life_time_start = _parse_life_time_start(d.pop("lifeTimeStart", UNSET))
@@ -139,8 +146,14 @@ class AccessRightItemCreation:
         def _parse_life_time_end(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -149,6 +162,7 @@ class AccessRightItemCreation:
                 return life_time_end_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         life_time_end = _parse_life_time_end(d.pop("lifeTimeEnd", UNSET))
@@ -156,8 +170,14 @@ class AccessRightItemCreation:
         def _parse_access_time_start(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -166,6 +186,7 @@ class AccessRightItemCreation:
                 return access_time_start_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         access_time_start = _parse_access_time_start(d.pop("accessTimeStart", UNSET))
@@ -173,8 +194,14 @@ class AccessRightItemCreation:
         def _parse_access_time_end(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -183,6 +210,7 @@ class AccessRightItemCreation:
                 return access_time_end_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         access_time_end = _parse_access_time_end(d.pop("accessTimeEnd", UNSET))
@@ -190,8 +218,14 @@ class AccessRightItemCreation:
         def _parse_max_cache_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -200,6 +234,7 @@ class AccessRightItemCreation:
                 return max_cache_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         max_cache_date = _parse_max_cache_date(d.pop("maxCacheDate", UNSET))

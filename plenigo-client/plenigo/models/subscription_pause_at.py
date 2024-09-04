@@ -66,6 +66,8 @@ class SubscriptionPauseAt:
         def _parse_start_pause_date(data: object) -> Union[None, datetime.date]:
             if data is None:
                 return data
+
+            # Try to parse the data as datetime.date
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -74,6 +76,7 @@ class SubscriptionPauseAt:
                 return start_pause_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, datetime.date], data)
 
         start_pause_date = _parse_start_pause_date(d.pop("startPauseDate"))
@@ -81,6 +84,8 @@ class SubscriptionPauseAt:
         def _parse_end_pause_date(data: object) -> Union[None, datetime.date]:
             if data is None:
                 return data
+
+            # Try to parse the data as datetime.date
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -89,6 +94,7 @@ class SubscriptionPauseAt:
                 return end_pause_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, datetime.date], data)
 
         end_pause_date = _parse_end_pause_date(d.pop("endPauseDate"))

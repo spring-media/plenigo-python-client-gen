@@ -63,7 +63,7 @@ class Download:
 
     def to_dict(self) -> Dict[str, Any]:
         created_date: Union[None, Unset, str]
-        if isinstance(self.created_date, Unset):
+        if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
         elif isinstance(self.created_date, datetime.datetime):
             created_date = self.created_date.isoformat()
@@ -71,7 +71,7 @@ class Download:
             created_date = self.created_date
 
         changed_date: Union[None, Unset, str]
-        if isinstance(self.changed_date, Unset):
+        if isinstance(self.changed_date, Unset) or self.changed_date is None:
             changed_date = UNSET
         elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
@@ -93,7 +93,7 @@ class Download:
         download_id = self.download_id
 
         uploaded_date: Union[None, Unset, str]
-        if isinstance(self.uploaded_date, Unset):
+        if isinstance(self.uploaded_date, Unset) or self.uploaded_date is None:
             uploaded_date = UNSET
         elif isinstance(self.uploaded_date, datetime.datetime):
             uploaded_date = self.uploaded_date.isoformat()
@@ -115,7 +115,7 @@ class Download:
         published_token = self.published_token
 
         published_end_date: Union[None, Unset, str]
-        if isinstance(self.published_end_date, Unset):
+        if isinstance(self.published_end_date, Unset) or self.published_end_date is None:
             published_end_date = UNSET
         elif isinstance(self.published_end_date, datetime.datetime):
             published_end_date = self.published_end_date.isoformat()
@@ -173,8 +173,14 @@ class Download:
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -183,6 +189,7 @@ class Download:
                 return created_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_date = _parse_created_date(d.pop("createdDate", UNSET))
@@ -190,8 +197,14 @@ class Download:
         def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -200,6 +213,7 @@ class Download:
                 return changed_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
@@ -227,8 +241,14 @@ class Download:
         def _parse_uploaded_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -237,6 +257,7 @@ class Download:
                 return uploaded_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         uploaded_date = _parse_uploaded_date(d.pop("uploadedDate", UNSET))
@@ -264,8 +285,14 @@ class Download:
         def _parse_published_end_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -274,6 +301,7 @@ class Download:
                 return published_end_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         published_end_date = _parse_published_end_date(d.pop("publishedEndDate", UNSET))

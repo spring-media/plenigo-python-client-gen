@@ -26,7 +26,7 @@ class AnalyticsCount:
 
     def to_dict(self) -> Dict[str, Any]:
         time: Union[None, Unset, str]
-        if isinstance(self.time, Unset):
+        if isinstance(self.time, Unset) or self.time is None:
             time = UNSET
         elif isinstance(self.time, datetime.datetime):
             time = self.time.isoformat()
@@ -52,8 +52,14 @@ class AnalyticsCount:
         def _parse_time(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -62,6 +68,7 @@ class AnalyticsCount:
                 return time_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         time = _parse_time(d.pop("time", UNSET))

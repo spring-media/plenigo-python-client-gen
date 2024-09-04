@@ -46,7 +46,7 @@ class SubscriptionStatusHistory:
         customer_id = self.customer_id
 
         start_time: Union[None, Unset, str]
-        if isinstance(self.start_time, Unset):
+        if isinstance(self.start_time, Unset) or self.start_time is None:
             start_time = UNSET
         elif isinstance(self.start_time, datetime.datetime):
             start_time = self.start_time.isoformat()
@@ -54,7 +54,7 @@ class SubscriptionStatusHistory:
             start_time = self.start_time
 
         end_time: Union[None, Unset, str]
-        if isinstance(self.end_time, Unset):
+        if isinstance(self.end_time, Unset) or self.end_time is None:
             end_time = UNSET
         elif isinstance(self.end_time, datetime.datetime):
             end_time = self.end_time.isoformat()
@@ -101,8 +101,14 @@ class SubscriptionStatusHistory:
         def _parse_start_time(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -111,6 +117,7 @@ class SubscriptionStatusHistory:
                 return start_time_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         start_time = _parse_start_time(d.pop("startTime", UNSET))
@@ -118,8 +125,14 @@ class SubscriptionStatusHistory:
         def _parse_end_time(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -128,6 +141,7 @@ class SubscriptionStatusHistory:
                 return end_time_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         end_time = _parse_end_time(d.pop("endTime", UNSET))

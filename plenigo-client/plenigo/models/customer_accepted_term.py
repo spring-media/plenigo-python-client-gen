@@ -32,7 +32,7 @@ class CustomerAcceptedTerm:
         unique_id = self.unique_id
 
         acceptance_date: Union[None, Unset, str]
-        if isinstance(self.acceptance_date, Unset):
+        if isinstance(self.acceptance_date, Unset) or self.acceptance_date is None:
             acceptance_date = UNSET
         elif isinstance(self.acceptance_date, datetime.datetime):
             acceptance_date = self.acceptance_date.isoformat()
@@ -61,8 +61,14 @@ class CustomerAcceptedTerm:
         def _parse_acceptance_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -71,6 +77,7 @@ class CustomerAcceptedTerm:
                 return acceptance_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         acceptance_date = _parse_acceptance_date(d.pop("acceptanceDate", UNSET))

@@ -97,7 +97,7 @@ class OrderImport:
         discount_percentage = self.discount_percentage
 
         order_date: Union[None, Unset, str]
-        if isinstance(self.order_date, Unset):
+        if isinstance(self.order_date, Unset) or self.order_date is None:
             order_date = UNSET
         elif isinstance(self.order_date, datetime.datetime):
             order_date = self.order_date.isoformat()
@@ -105,7 +105,7 @@ class OrderImport:
             order_date = self.order_date
 
         end_date: Union[None, Unset, str]
-        if isinstance(self.end_date, Unset):
+        if isinstance(self.end_date, Unset) or self.end_date is None:
             end_date = UNSET
         elif isinstance(self.end_date, datetime.datetime):
             end_date = self.end_date.isoformat()
@@ -113,7 +113,7 @@ class OrderImport:
             end_date = self.end_date
 
         reference_start_date: Union[None, Unset, str]
-        if isinstance(self.reference_start_date, Unset):
+        if isinstance(self.reference_start_date, Unset) or self.reference_start_date is None:
             reference_start_date = UNSET
         elif isinstance(self.reference_start_date, datetime.datetime):
             reference_start_date = self.reference_start_date.isoformat()
@@ -121,7 +121,7 @@ class OrderImport:
             reference_start_date = self.reference_start_date
 
         next_booking_date: Union[None, Unset, str]
-        if isinstance(self.next_booking_date, Unset):
+        if isinstance(self.next_booking_date, Unset) or self.next_booking_date is None:
             next_booking_date = UNSET
         elif isinstance(self.next_booking_date, datetime.datetime):
             next_booking_date = self.next_booking_date.isoformat()
@@ -191,6 +191,8 @@ class OrderImport:
         def _parse_start_date(data: object) -> Union[None, datetime.datetime]:
             if data is None:
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -199,6 +201,7 @@ class OrderImport:
                 return start_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, datetime.datetime], data)
 
         start_date = _parse_start_date(d.pop("startDate"))
@@ -218,8 +221,14 @@ class OrderImport:
         def _parse_order_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -228,6 +237,7 @@ class OrderImport:
                 return order_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         order_date = _parse_order_date(d.pop("orderDate", UNSET))
@@ -235,8 +245,14 @@ class OrderImport:
         def _parse_end_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -245,6 +261,7 @@ class OrderImport:
                 return end_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         end_date = _parse_end_date(d.pop("endDate", UNSET))
@@ -252,8 +269,14 @@ class OrderImport:
         def _parse_reference_start_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -262,6 +285,7 @@ class OrderImport:
                 return reference_start_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         reference_start_date = _parse_reference_start_date(d.pop("referenceStartDate", UNSET))
@@ -269,8 +293,14 @@ class OrderImport:
         def _parse_next_booking_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -279,6 +309,7 @@ class OrderImport:
                 return next_booking_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         next_booking_date = _parse_next_booking_date(d.pop("nextBookingDate", UNSET))

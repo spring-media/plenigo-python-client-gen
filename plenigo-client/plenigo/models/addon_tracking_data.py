@@ -46,7 +46,7 @@ class AddonTrackingData:
         service_provider = self.service_provider
 
         sending_date: Union[None, Unset, str]
-        if isinstance(self.sending_date, Unset):
+        if isinstance(self.sending_date, Unset) or self.sending_date is None:
             sending_date = UNSET
         elif isinstance(self.sending_date, datetime.datetime):
             sending_date = self.sending_date.isoformat()
@@ -54,7 +54,7 @@ class AddonTrackingData:
             sending_date = self.sending_date
 
         arrival_date: Union[None, Unset, str]
-        if isinstance(self.arrival_date, Unset):
+        if isinstance(self.arrival_date, Unset) or self.arrival_date is None:
             arrival_date = UNSET
         elif isinstance(self.arrival_date, datetime.datetime):
             arrival_date = self.arrival_date.isoformat()
@@ -97,8 +97,14 @@ class AddonTrackingData:
         def _parse_sending_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -107,6 +113,7 @@ class AddonTrackingData:
                 return sending_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         sending_date = _parse_sending_date(d.pop("sendingDate", UNSET))
@@ -114,8 +121,14 @@ class AddonTrackingData:
         def _parse_arrival_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -124,6 +137,7 @@ class AddonTrackingData:
                 return arrival_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         arrival_date = _parse_arrival_date(d.pop("arrivalDate", UNSET))

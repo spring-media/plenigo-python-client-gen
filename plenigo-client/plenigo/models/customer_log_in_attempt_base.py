@@ -52,7 +52,7 @@ class CustomerLogInAttemptBase:
 
     def to_dict(self) -> Dict[str, Any]:
         created_date: Union[None, Unset, str]
-        if isinstance(self.created_date, Unset):
+        if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
         elif isinstance(self.created_date, datetime.datetime):
             created_date = self.created_date.isoformat()
@@ -60,7 +60,7 @@ class CustomerLogInAttemptBase:
             created_date = self.created_date
 
         changed_date: Union[None, Unset, str]
-        if isinstance(self.changed_date, Unset):
+        if isinstance(self.changed_date, Unset) or self.changed_date is None:
             changed_date = UNSET
         elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
@@ -82,7 +82,7 @@ class CustomerLogInAttemptBase:
         customer_id = self.customer_id
 
         login_date: Union[None, Unset, str]
-        if isinstance(self.login_date, Unset):
+        if isinstance(self.login_date, Unset) or self.login_date is None:
             login_date = UNSET
         elif isinstance(self.login_date, datetime.datetime):
             login_date = self.login_date.isoformat()
@@ -138,8 +138,14 @@ class CustomerLogInAttemptBase:
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -148,6 +154,7 @@ class CustomerLogInAttemptBase:
                 return created_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_date = _parse_created_date(d.pop("createdDate", UNSET))
@@ -155,8 +162,14 @@ class CustomerLogInAttemptBase:
         def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -165,6 +178,7 @@ class CustomerLogInAttemptBase:
                 return changed_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
@@ -192,8 +206,14 @@ class CustomerLogInAttemptBase:
         def _parse_login_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -202,6 +222,7 @@ class CustomerLogInAttemptBase:
                 return login_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         login_date = _parse_login_date(d.pop("loginDate", UNSET))

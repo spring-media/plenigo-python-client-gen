@@ -108,7 +108,7 @@ class ProductIvwRule:
         other_sale_price_issue_id = self.other_sale_price_issue_id
 
         created_date: Union[None, Unset, str]
-        if isinstance(self.created_date, Unset):
+        if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
         elif isinstance(self.created_date, datetime.datetime):
             created_date = self.created_date.isoformat()
@@ -116,7 +116,7 @@ class ProductIvwRule:
             created_date = self.created_date
 
         changed_date: Union[None, Unset, str]
-        if isinstance(self.changed_date, Unset):
+        if isinstance(self.changed_date, Unset) or self.changed_date is None:
             changed_date = UNSET
         elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
@@ -190,6 +190,7 @@ class ProductIvwRule:
         type = ProductIvwRuleCreationType(d.pop("type"))
 
         def _parse_rule(data: object) -> Union["ProductAnalogIvwRule", "ProductDigitalIvwRule"]:
+            # Try to parse the data as ProductAnalogIvwRule
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
@@ -198,8 +199,13 @@ class ProductIvwRule:
                 return rule_type_0
             except:  # noqa: E722
                 pass
+
+            # In order to parse the one remaining property in the union,
+            # data must be a dict
             if not isinstance(data, dict):
                 raise TypeError()
+
+            # Finally, parse the data as ProductDigitalIvwRule
             rule_type_1 = ProductDigitalIvwRule.from_dict(data)
 
             return rule_type_1
@@ -237,8 +243,14 @@ class ProductIvwRule:
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -247,6 +259,7 @@ class ProductIvwRule:
                 return created_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_date = _parse_created_date(d.pop("createdDate", UNSET))
@@ -254,8 +267,14 @@ class ProductIvwRule:
         def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -264,6 +283,7 @@ class ProductIvwRule:
                 return changed_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))

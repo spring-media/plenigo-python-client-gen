@@ -75,7 +75,7 @@ class CustomerOptIn:
         active = self.active
 
         created_date: Union[None, Unset, str]
-        if isinstance(self.created_date, Unset):
+        if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
         elif isinstance(self.created_date, datetime.datetime):
             created_date = self.created_date.isoformat()
@@ -83,7 +83,7 @@ class CustomerOptIn:
             created_date = self.created_date
 
         changed_date: Union[None, Unset, str]
-        if isinstance(self.changed_date, Unset):
+        if isinstance(self.changed_date, Unset) or self.changed_date is None:
             changed_date = UNSET
         elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
@@ -103,7 +103,7 @@ class CustomerOptIn:
             changed_by_type = self.changed_by_type.value
 
         activation_time: Union[None, Unset, str]
-        if isinstance(self.activation_time, Unset):
+        if isinstance(self.activation_time, Unset) or self.activation_time is None:
             activation_time = UNSET
         elif isinstance(self.activation_time, datetime.datetime):
             activation_time = self.activation_time.isoformat()
@@ -170,8 +170,14 @@ class CustomerOptIn:
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -180,6 +186,7 @@ class CustomerOptIn:
                 return created_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_date = _parse_created_date(d.pop("createdDate", UNSET))
@@ -187,8 +194,14 @@ class CustomerOptIn:
         def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -197,6 +210,7 @@ class CustomerOptIn:
                 return changed_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
@@ -222,8 +236,14 @@ class CustomerOptIn:
         def _parse_activation_time(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -232,6 +252,7 @@ class CustomerOptIn:
                 return activation_time_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         activation_time = _parse_activation_time(d.pop("activationTime", UNSET))

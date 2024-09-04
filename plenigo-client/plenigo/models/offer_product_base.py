@@ -107,7 +107,7 @@ class OfferProductBase:
         validity_time = self.validity_time
 
         validity_end_time: Union[None, Unset, str]
-        if isinstance(self.validity_end_time, Unset):
+        if isinstance(self.validity_end_time, Unset) or self.validity_end_time is None:
             validity_end_time = UNSET
         elif isinstance(self.validity_end_time, datetime.datetime):
             validity_end_time = self.validity_end_time.isoformat()
@@ -236,8 +236,14 @@ class OfferProductBase:
         def _parse_validity_end_time(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -246,6 +252,7 @@ class OfferProductBase:
                 return validity_end_time_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         validity_end_time = _parse_validity_end_time(d.pop("validityEndTime", UNSET))

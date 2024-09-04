@@ -131,7 +131,7 @@ class Offer:
         misuse_rule_id = self.misuse_rule_id
 
         fixed_start_date: Union[None, Unset, str]
-        if isinstance(self.fixed_start_date, Unset):
+        if isinstance(self.fixed_start_date, Unset) or self.fixed_start_date is None:
             fixed_start_date = UNSET
         elif isinstance(self.fixed_start_date, datetime.date):
             fixed_start_date = self.fixed_start_date.isoformat()
@@ -182,7 +182,7 @@ class Offer:
             partner_settings = self.partner_settings.to_dict()
 
         created_date: Union[None, Unset, str]
-        if isinstance(self.created_date, Unset):
+        if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
         elif isinstance(self.created_date, datetime.datetime):
             created_date = self.created_date.isoformat()
@@ -190,7 +190,7 @@ class Offer:
             created_date = self.created_date
 
         changed_date: Union[None, Unset, str]
-        if isinstance(self.changed_date, Unset):
+        if isinstance(self.changed_date, Unset) or self.changed_date is None:
             changed_date = UNSET
         elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
@@ -340,8 +340,14 @@ class Offer:
         def _parse_fixed_start_date(data: object) -> Union[None, Unset, datetime.date]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.date
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -350,6 +356,7 @@ class Offer:
                 return fixed_start_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.date], data)
 
         fixed_start_date = _parse_fixed_start_date(d.pop("fixedStartDate", UNSET))
@@ -412,8 +419,14 @@ class Offer:
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -422,6 +435,7 @@ class Offer:
                 return created_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_date = _parse_created_date(d.pop("createdDate", UNSET))
@@ -429,8 +443,14 @@ class Offer:
         def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -439,6 +459,7 @@ class Offer:
                 return changed_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))

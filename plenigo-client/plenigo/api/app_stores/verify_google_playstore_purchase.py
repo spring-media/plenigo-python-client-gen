@@ -35,6 +35,7 @@ def _parse_response(
     if response.status_code == HTTPStatus.OK:
 
         def _parse_response_200(data: object) -> Union["AppStorePurchase", "AppStorePurchaseList"]:
+            # Try to parse the data as AppStorePurchase
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
@@ -43,8 +44,13 @@ def _parse_response(
                 return response_200_type_0
             except:  # noqa: E722
                 pass
+
+            # In order to parse the one remaining property in the union,
+            # data must be a dict
             if not isinstance(data, dict):
                 raise TypeError()
+
+            # Finally, parse the data as AppStorePurchaseList
             response_200_type_1 = AppStorePurchaseList.from_dict(data)
 
             return response_200_type_1

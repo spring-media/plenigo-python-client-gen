@@ -37,7 +37,7 @@ class AppStorePurchaseDetail:
 
     def to_dict(self) -> Dict[str, Any]:
         purchase_date: Union[None, Unset, str]
-        if isinstance(self.purchase_date, Unset):
+        if isinstance(self.purchase_date, Unset) or self.purchase_date is None:
             purchase_date = UNSET
         elif isinstance(self.purchase_date, datetime.datetime):
             purchase_date = self.purchase_date.isoformat()
@@ -79,8 +79,14 @@ class AppStorePurchaseDetail:
         def _parse_purchase_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -89,6 +95,7 @@ class AppStorePurchaseDetail:
                 return purchase_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         purchase_date = _parse_purchase_date(d.pop("purchaseDate", UNSET))

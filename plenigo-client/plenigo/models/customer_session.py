@@ -43,7 +43,7 @@ class CustomerSession:
         company_id = self.company_id
 
         created: Union[None, Unset, str]
-        if isinstance(self.created, Unset):
+        if isinstance(self.created, Unset) or self.created is None:
             created = UNSET
         elif isinstance(self.created, datetime.datetime):
             created = self.created.isoformat()
@@ -86,8 +86,14 @@ class CustomerSession:
         def _parse_created(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -96,6 +102,7 @@ class CustomerSession:
                 return created_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created = _parse_created(d.pop("created", UNSET))

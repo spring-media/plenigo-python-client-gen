@@ -58,7 +58,7 @@ class DeliveryListDatesChange:
         purchase_number = self.purchase_number
 
         delivery_date: Union[None, Unset, str]
-        if isinstance(self.delivery_date, Unset):
+        if isinstance(self.delivery_date, Unset) or self.delivery_date is None:
             delivery_date = UNSET
         elif isinstance(self.delivery_date, datetime.datetime):
             delivery_date = self.delivery_date.isoformat()
@@ -66,7 +66,7 @@ class DeliveryListDatesChange:
             delivery_date = self.delivery_date
 
         redelivery_date: Union[None, Unset, str]
-        if isinstance(self.redelivery_date, Unset):
+        if isinstance(self.redelivery_date, Unset) or self.redelivery_date is None:
             redelivery_date = UNSET
         elif isinstance(self.redelivery_date, datetime.datetime):
             redelivery_date = self.redelivery_date.isoformat()
@@ -116,6 +116,8 @@ class DeliveryListDatesChange:
         def _parse_publishing_date(data: object) -> Union[None, datetime.datetime]:
             if data is None:
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -124,6 +126,7 @@ class DeliveryListDatesChange:
                 return publishing_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, datetime.datetime], data)
 
         publishing_date = _parse_publishing_date(d.pop("publishingDate"))
@@ -135,8 +138,14 @@ class DeliveryListDatesChange:
         def _parse_delivery_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -145,6 +154,7 @@ class DeliveryListDatesChange:
                 return delivery_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         delivery_date = _parse_delivery_date(d.pop("deliveryDate", UNSET))
@@ -152,8 +162,14 @@ class DeliveryListDatesChange:
         def _parse_redelivery_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -162,6 +178,7 @@ class DeliveryListDatesChange:
                 return redelivery_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         redelivery_date = _parse_redelivery_date(d.pop("redeliveryDate", UNSET))

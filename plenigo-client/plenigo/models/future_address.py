@@ -120,7 +120,7 @@ class FutureAddress:
         validation_hash = self.validation_hash
 
         activation_date: Union[None, Unset, str]
-        if isinstance(self.activation_date, Unset):
+        if isinstance(self.activation_date, Unset) or self.activation_date is None:
             activation_date = UNSET
         elif isinstance(self.activation_date, datetime.datetime):
             activation_date = self.activation_date.isoformat()
@@ -239,8 +239,14 @@ class FutureAddress:
         def _parse_activation_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -249,6 +255,7 @@ class FutureAddress:
                 return activation_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         activation_date = _parse_activation_date(d.pop("activationDate", UNSET))

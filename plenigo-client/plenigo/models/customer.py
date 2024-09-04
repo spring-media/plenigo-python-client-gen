@@ -125,7 +125,7 @@ class Customer:
         mobile_number = self.mobile_number
 
         birthday: Union[None, Unset, str]
-        if isinstance(self.birthday, Unset):
+        if isinstance(self.birthday, Unset) or self.birthday is None:
             birthday = UNSET
         elif isinstance(self.birthday, datetime.datetime):
             birthday = self.birthday.isoformat()
@@ -137,7 +137,7 @@ class Customer:
             miscellaneous_data = self.miscellaneous_data.to_dict()
 
         created_date: Union[None, Unset, str]
-        if isinstance(self.created_date, Unset):
+        if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
         elif isinstance(self.created_date, datetime.datetime):
             created_date = self.created_date.isoformat()
@@ -145,7 +145,7 @@ class Customer:
             created_date = self.created_date
 
         changed_date: Union[None, Unset, str]
-        if isinstance(self.changed_date, Unset):
+        if isinstance(self.changed_date, Unset) or self.changed_date is None:
             changed_date = UNSET
         elif isinstance(self.changed_date, datetime.datetime):
             changed_date = self.changed_date.isoformat()
@@ -167,7 +167,7 @@ class Customer:
         registration_source = self.registration_source
 
         registration_date: Union[None, Unset, str]
-        if isinstance(self.registration_date, Unset):
+        if isinstance(self.registration_date, Unset) or self.registration_date is None:
             registration_date = UNSET
         elif isinstance(self.registration_date, datetime.datetime):
             registration_date = self.registration_date.isoformat()
@@ -290,8 +290,14 @@ class Customer:
         def _parse_birthday(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -300,6 +306,7 @@ class Customer:
                 return birthday_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         birthday = _parse_birthday(d.pop("birthday", UNSET))
@@ -314,8 +321,14 @@ class Customer:
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -324,6 +337,7 @@ class Customer:
                 return created_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_date = _parse_created_date(d.pop("createdDate", UNSET))
@@ -331,8 +345,14 @@ class Customer:
         def _parse_changed_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -341,6 +361,7 @@ class Customer:
                 return changed_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
@@ -368,8 +389,14 @@ class Customer:
         def _parse_registration_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -378,6 +405,7 @@ class Customer:
                 return registration_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         registration_date = _parse_registration_date(d.pop("registrationDate", UNSET))

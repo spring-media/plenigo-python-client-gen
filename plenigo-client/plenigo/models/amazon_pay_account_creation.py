@@ -45,7 +45,7 @@ class AmazonPayAccountCreation:
         invalid = self.invalid
 
         created_at: Union[None, Unset, str]
-        if isinstance(self.created_at, Unset):
+        if isinstance(self.created_at, Unset) or self.created_at is None:
             created_at = UNSET
         elif isinstance(self.created_at, datetime.datetime):
             created_at = self.created_at.isoformat()
@@ -53,7 +53,7 @@ class AmazonPayAccountCreation:
             created_at = self.created_at
 
         updated_at: Union[None, Unset, str]
-        if isinstance(self.updated_at, Unset):
+        if isinstance(self.updated_at, Unset) or self.updated_at is None:
             updated_at = UNSET
         elif isinstance(self.updated_at, datetime.datetime):
             updated_at = self.updated_at.isoformat()
@@ -93,8 +93,14 @@ class AmazonPayAccountCreation:
         def _parse_created_at(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -103,6 +109,7 @@ class AmazonPayAccountCreation:
                 return created_at_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_at = _parse_created_at(d.pop("createdAt", UNSET))
@@ -110,8 +117,14 @@ class AmazonPayAccountCreation:
         def _parse_updated_at(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -120,6 +133,7 @@ class AmazonPayAccountCreation:
                 return updated_at_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         updated_at = _parse_updated_at(d.pop("updatedAt", UNSET))

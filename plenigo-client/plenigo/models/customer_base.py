@@ -72,7 +72,7 @@ class CustomerBase:
         mobile_number = self.mobile_number
 
         birthday: Union[None, Unset, str]
-        if isinstance(self.birthday, Unset):
+        if isinstance(self.birthday, Unset) or self.birthday is None:
             birthday = UNSET
         elif isinstance(self.birthday, datetime.datetime):
             birthday = self.birthday.isoformat()
@@ -142,8 +142,14 @@ class CustomerBase:
         def _parse_birthday(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -152,6 +158,7 @@ class CustomerBase:
                 return birthday_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         birthday = _parse_birthday(d.pop("birthday", UNSET))

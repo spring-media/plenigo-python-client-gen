@@ -70,7 +70,7 @@ class AppleAppStoreReceipt:
         original_application_version = self.original_application_version
 
         receipt_creation_date: Union[None, Unset, str]
-        if isinstance(self.receipt_creation_date, Unset):
+        if isinstance(self.receipt_creation_date, Unset) or self.receipt_creation_date is None:
             receipt_creation_date = UNSET
         elif isinstance(self.receipt_creation_date, datetime.datetime):
             receipt_creation_date = self.receipt_creation_date.isoformat()
@@ -78,7 +78,7 @@ class AppleAppStoreReceipt:
             receipt_creation_date = self.receipt_creation_date
 
         request_date: Union[None, Unset, str]
-        if isinstance(self.request_date, Unset):
+        if isinstance(self.request_date, Unset) or self.request_date is None:
             request_date = UNSET
         elif isinstance(self.request_date, datetime.datetime):
             request_date = self.request_date.isoformat()
@@ -86,7 +86,7 @@ class AppleAppStoreReceipt:
             request_date = self.request_date
 
         original_purchase_date: Union[None, Unset, str]
-        if isinstance(self.original_purchase_date, Unset):
+        if isinstance(self.original_purchase_date, Unset) or self.original_purchase_date is None:
             original_purchase_date = UNSET
         elif isinstance(self.original_purchase_date, datetime.datetime):
             original_purchase_date = self.original_purchase_date.isoformat()
@@ -154,8 +154,14 @@ class AppleAppStoreReceipt:
         def _parse_receipt_creation_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -164,6 +170,7 @@ class AppleAppStoreReceipt:
                 return receipt_creation_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         receipt_creation_date = _parse_receipt_creation_date(d.pop("receiptCreationDate", UNSET))
@@ -171,8 +178,14 @@ class AppleAppStoreReceipt:
         def _parse_request_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -181,6 +194,7 @@ class AppleAppStoreReceipt:
                 return request_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         request_date = _parse_request_date(d.pop("requestDate", UNSET))
@@ -188,8 +202,14 @@ class AppleAppStoreReceipt:
         def _parse_original_purchase_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -198,6 +218,7 @@ class AppleAppStoreReceipt:
                 return original_purchase_date_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         original_purchase_date = _parse_original_purchase_date(d.pop("originalPurchaseDate", UNSET))

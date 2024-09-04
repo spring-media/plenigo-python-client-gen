@@ -36,7 +36,7 @@ class SessionInformation:
         browser = self.browser
 
         created_at: Union[None, Unset, str]
-        if isinstance(self.created_at, Unset):
+        if isinstance(self.created_at, Unset) or self.created_at is None:
             created_at = UNSET
         elif isinstance(self.created_at, datetime.datetime):
             created_at = self.created_at.isoformat()
@@ -69,8 +69,14 @@ class SessionInformation:
         def _parse_created_at(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
+
+            if data is None:
+                return data
+
             if isinstance(data, Unset):
                 return data
+
+            # Try to parse the data as datetime.datetime
             try:
                 if not isinstance(data, str):
                     raise TypeError()
@@ -79,6 +85,7 @@ class SessionInformation:
                 return created_at_type_0
             except:  # noqa: E722
                 pass
+
             return cast(Union[None, Unset, datetime.datetime], data)
 
         created_at = _parse_created_at(d.pop("createdAt", UNSET))
