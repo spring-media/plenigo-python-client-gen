@@ -47600,7 +47600,10 @@
                 "type": "boolean"
               },
               "priceSegments": {
-                "$ref": "#/components/schemas/PriceSegment"
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PriceSegment"
+                }
               }
             }
           }
