@@ -17,14 +17,14 @@ class OfferProductStepCreation:
     """
     Attributes:
         position (int): position inside the product
-        product_contract_id (int): id of the product contract associated with this step
+        product_contract_id (Union[Unset, int]): id of the product contract associated with this step
         translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
         product_tag_ids (Union[Unset, List[int]]): tags associated with this product
         additional_product_contract_ids (Union[Unset, List[int]]): additioanl product contract ids with this product
     """
 
     position: int
-    product_contract_id: int
+    product_contract_id: Union[Unset, int] = UNSET
     translations: Union[Unset, List["OfferTranslation"]] = UNSET
     product_tag_ids: Union[Unset, List[int]] = UNSET
     additional_product_contract_ids: Union[Unset, List[int]] = UNSET
@@ -55,9 +55,10 @@ class OfferProductStepCreation:
         field_dict.update(
             {
                 "position": position,
-                "productContractId": product_contract_id,
             }
         )
+        if product_contract_id is not UNSET:
+            field_dict["productContractId"] = product_contract_id
         if translations is not UNSET:
             field_dict["translations"] = translations
         if product_tag_ids is not UNSET:
@@ -74,7 +75,7 @@ class OfferProductStepCreation:
         d = src_dict.copy()
         position = d.pop("position")
 
-        product_contract_id = d.pop("productContractId")
+        product_contract_id = d.pop("productContractId", UNSET)
 
         translations = []
         _translations = d.pop("translations", UNSET)

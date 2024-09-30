@@ -30,7 +30,6 @@ class OfferProduct:
         product_type (OfferProductBaseProductType): defines the type of product
         amount (int): amount of goods represented by this product
         access_right_id (int): id of the access right associated with this product
-        translations (List['OfferTranslation']): translations associated with this product
         plenigo_product_id (str): unique id of the product within the offer
         internal_title (Union[Unset, str]): internal title of the product
         subscription (Union[Unset, bool]): flag indicating if product represents a subscription
@@ -56,6 +55,7 @@ class OfferProduct:
             wallet
         credit_count (Union[Unset, int]): credit count added with this product
         option (Union[Unset, bool]): flag indicating if product is an option in a basket
+        translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
         created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
             2021-08-30T17:32:28Z
         changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
@@ -70,7 +70,6 @@ class OfferProduct:
     product_type: OfferProductBaseProductType
     amount: int
     access_right_id: int
-    translations: List["OfferTranslation"]
     plenigo_product_id: str
     internal_title: Union[Unset, str] = UNSET
     subscription: Union[Unset, bool] = UNSET
@@ -91,6 +90,7 @@ class OfferProduct:
     credit_count_walled_id: Union[Unset, int] = UNSET
     credit_count: Union[Unset, int] = UNSET
     option: Union[Unset, bool] = UNSET
+    translations: Union[Unset, List["OfferTranslation"]] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     steps: Union[Unset, List["OfferProductStep"]] = UNSET
@@ -107,11 +107,6 @@ class OfferProduct:
         amount = self.amount
 
         access_right_id = self.access_right_id
-
-        translations = []
-        for translations_item_data in self.translations:
-            translations_item = translations_item_data.to_dict()
-            translations.append(translations_item)
 
         plenigo_product_id = self.plenigo_product_id
 
@@ -165,6 +160,13 @@ class OfferProduct:
 
         option = self.option
 
+        translations: Union[Unset, List[Dict[str, Any]]] = UNSET
+        if not isinstance(self.translations, Unset):
+            translations = []
+            for translations_item_data in self.translations:
+                translations_item = translations_item_data.to_dict()
+                translations.append(translations_item)
+
         created_date: Union[None, Unset, str]
         if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
@@ -204,7 +206,6 @@ class OfferProduct:
                 "productType": product_type,
                 "amount": amount,
                 "accessRightId": access_right_id,
-                "translations": translations,
                 "plenigoProductId": plenigo_product_id,
             }
         )
@@ -246,6 +247,8 @@ class OfferProduct:
             field_dict["creditCount"] = credit_count
         if option is not UNSET:
             field_dict["option"] = option
+        if translations is not UNSET:
+            field_dict["translations"] = translations
         if created_date is not UNSET:
             field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
@@ -275,13 +278,6 @@ class OfferProduct:
         amount = d.pop("amount")
 
         access_right_id = d.pop("accessRightId")
-
-        translations = []
-        _translations = d.pop("translations")
-        for translations_item_data in _translations:
-            translations_item = OfferTranslation.from_dict(translations_item_data)
-
-            translations.append(translations_item)
 
         plenigo_product_id = d.pop("plenigoProductId")
 
@@ -360,6 +356,13 @@ class OfferProduct:
 
         option = d.pop("option", UNSET)
 
+        translations = []
+        _translations = d.pop("translations", UNSET)
+        for translations_item_data in _translations or []:
+            translations_item = OfferTranslation.from_dict(translations_item_data)
+
+            translations.append(translations_item)
+
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
@@ -428,7 +431,6 @@ class OfferProduct:
             product_type=product_type,
             amount=amount,
             access_right_id=access_right_id,
-            translations=translations,
             plenigo_product_id=plenigo_product_id,
             internal_title=internal_title,
             subscription=subscription,
@@ -449,6 +451,7 @@ class OfferProduct:
             credit_count_walled_id=credit_count_walled_id,
             credit_count=credit_count,
             option=option,
+            translations=translations,
             created_date=created_date,
             changed_date=changed_date,
             steps=steps,

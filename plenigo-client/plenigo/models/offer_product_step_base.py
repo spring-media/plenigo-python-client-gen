@@ -1,7 +1,9 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="OfferProductStepBase")
 
@@ -11,11 +13,11 @@ class OfferProductStepBase:
     """
     Attributes:
         position (int): position inside the product
-        product_contract_id (int): id of the product contract associated with this step
+        product_contract_id (Union[Unset, int]): id of the product contract associated with this step
     """
 
     position: int
-    product_contract_id: int
+    product_contract_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -28,9 +30,10 @@ class OfferProductStepBase:
         field_dict.update(
             {
                 "position": position,
-                "productContractId": product_contract_id,
             }
         )
+        if product_contract_id is not UNSET:
+            field_dict["productContractId"] = product_contract_id
 
         return field_dict
 
@@ -39,7 +42,7 @@ class OfferProductStepBase:
         d = src_dict.copy()
         position = d.pop("position")
 
-        product_contract_id = d.pop("productContractId")
+        product_contract_id = d.pop("productContractId", UNSET)
 
         offer_product_step_base = cls(
             position=position,

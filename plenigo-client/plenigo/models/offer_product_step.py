@@ -29,8 +29,8 @@ class OfferProductStep:
     """
     Attributes:
         position (int): position inside the product
-        product_contract_id (int): id of the product contract associated with this step
         price_issue_id (int): id of the price issue associated with this step
+        product_contract_id (Union[Unset, int]): id of the product contract associated with this step
         translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
         product_tag_ids (Union[Unset, List[int]]): tags associated with this product
         additional_product_contract_ids (Union[Unset, List[int]]): additioanl product contract ids with this product
@@ -63,8 +63,8 @@ class OfferProductStep:
     """
 
     position: int
-    product_contract_id: int
     price_issue_id: int
+    product_contract_id: Union[Unset, int] = UNSET
     translations: Union[Unset, List["OfferTranslation"]] = UNSET
     product_tag_ids: Union[Unset, List[int]] = UNSET
     additional_product_contract_ids: Union[Unset, List[int]] = UNSET
@@ -94,9 +94,9 @@ class OfferProductStep:
     def to_dict(self) -> Dict[str, Any]:
         position = self.position
 
-        product_contract_id = self.product_contract_id
-
         price_issue_id = self.price_issue_id
+
+        product_contract_id = self.product_contract_id
 
         translations: Union[Unset, List[Dict[str, Any]]] = UNSET
         if not isinstance(self.translations, Unset):
@@ -194,10 +194,11 @@ class OfferProductStep:
         field_dict.update(
             {
                 "position": position,
-                "productContractId": product_contract_id,
                 "priceIssueId": price_issue_id,
             }
         )
+        if product_contract_id is not UNSET:
+            field_dict["productContractId"] = product_contract_id
         if translations is not UNSET:
             field_dict["translations"] = translations
         if product_tag_ids is not UNSET:
@@ -258,9 +259,9 @@ class OfferProductStep:
         d = src_dict.copy()
         position = d.pop("position")
 
-        product_contract_id = d.pop("productContractId")
-
         price_issue_id = d.pop("priceIssueId")
+
+        product_contract_id = d.pop("productContractId", UNSET)
 
         translations = []
         _translations = d.pop("translations", UNSET)
@@ -405,8 +406,8 @@ class OfferProductStep:
 
         offer_product_step = cls(
             position=position,
-            product_contract_id=product_contract_id,
             price_issue_id=price_issue_id,
+            product_contract_id=product_contract_id,
             translations=translations,
             product_tag_ids=product_tag_ids,
             additional_product_contract_ids=additional_product_contract_ids,

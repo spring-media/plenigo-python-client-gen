@@ -46705,7 +46705,6 @@
           "taxType",
           "amount",
           "accessRightId",
-          "translations",
           "productType"
         ]
       },
@@ -46726,8 +46725,7 @@
           }
         },
         "required": [
-          "position",
-          "productContractId"
+          "position"
         ]
       },
       "OfferProductStepCreation": {
@@ -47262,7 +47260,6 @@
           }
         ],
         "required": [
-          "productContractId",
           "priceIssueId"
         ]
       },

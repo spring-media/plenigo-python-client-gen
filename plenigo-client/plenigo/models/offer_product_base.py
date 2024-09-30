@@ -28,7 +28,6 @@ class OfferProductBase:
         product_type (OfferProductBaseProductType): defines the type of product
         amount (int): amount of goods represented by this product
         access_right_id (int): id of the access right associated with this product
-        translations (List['OfferTranslation']): translations associated with this product
         internal_title (Union[Unset, str]): internal title of the product
         subscription (Union[Unset, bool]): flag indicating if product represents a subscription
         delivery_list_id (Union[Unset, int]): id of the delivery list to use
@@ -53,6 +52,7 @@ class OfferProductBase:
             wallet
         credit_count (Union[Unset, int]): credit count added with this product
         option (Union[Unset, bool]): flag indicating if product is an option in a basket
+        translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
     """
 
     position: int
@@ -60,7 +60,6 @@ class OfferProductBase:
     product_type: OfferProductBaseProductType
     amount: int
     access_right_id: int
-    translations: List["OfferTranslation"]
     internal_title: Union[Unset, str] = UNSET
     subscription: Union[Unset, bool] = UNSET
     delivery_list_id: Union[Unset, int] = UNSET
@@ -80,6 +79,7 @@ class OfferProductBase:
     credit_count_walled_id: Union[Unset, int] = UNSET
     credit_count: Union[Unset, int] = UNSET
     option: Union[Unset, bool] = UNSET
+    translations: Union[Unset, List["OfferTranslation"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -92,11 +92,6 @@ class OfferProductBase:
         amount = self.amount
 
         access_right_id = self.access_right_id
-
-        translations = []
-        for translations_item_data in self.translations:
-            translations_item = translations_item_data.to_dict()
-            translations.append(translations_item)
 
         internal_title = self.internal_title
 
@@ -148,6 +143,13 @@ class OfferProductBase:
 
         option = self.option
 
+        translations: Union[Unset, List[Dict[str, Any]]] = UNSET
+        if not isinstance(self.translations, Unset):
+            translations = []
+            for translations_item_data in self.translations:
+                translations_item = translations_item_data.to_dict()
+                translations.append(translations_item)
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -157,7 +159,6 @@ class OfferProductBase:
                 "productType": product_type,
                 "amount": amount,
                 "accessRightId": access_right_id,
-                "translations": translations,
             }
         )
         if internal_title is not UNSET:
@@ -198,6 +199,8 @@ class OfferProductBase:
             field_dict["creditCount"] = credit_count
         if option is not UNSET:
             field_dict["option"] = option
+        if translations is not UNSET:
+            field_dict["translations"] = translations
 
         return field_dict
 
@@ -217,13 +220,6 @@ class OfferProductBase:
         amount = d.pop("amount")
 
         access_right_id = d.pop("accessRightId")
-
-        translations = []
-        _translations = d.pop("translations")
-        for translations_item_data in _translations:
-            translations_item = OfferTranslation.from_dict(translations_item_data)
-
-            translations.append(translations_item)
 
         internal_title = d.pop("internalTitle", UNSET)
 
@@ -300,13 +296,19 @@ class OfferProductBase:
 
         option = d.pop("option", UNSET)
 
+        translations = []
+        _translations = d.pop("translations", UNSET)
+        for translations_item_data in _translations or []:
+            translations_item = OfferTranslation.from_dict(translations_item_data)
+
+            translations.append(translations_item)
+
         offer_product_base = cls(
             position=position,
             tax_type=tax_type,
             product_type=product_type,
             amount=amount,
             access_right_id=access_right_id,
-            translations=translations,
             internal_title=internal_title,
             subscription=subscription,
             delivery_list_id=delivery_list_id,
@@ -326,6 +328,7 @@ class OfferProductBase:
             credit_count_walled_id=credit_count_walled_id,
             credit_count=credit_count,
             option=option,
+            translations=translations,
         )
 
         offer_product_base.additional_properties = d

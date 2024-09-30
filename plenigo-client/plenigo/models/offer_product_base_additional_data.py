@@ -37,7 +37,15 @@ class OfferProductBaseAdditionalData:
         offer_product_base_additional_data = cls()
 
         additional_properties = {}
-        for prop_name, prop_dict in d.items():
+        # for prop_name, prop_dict in d.items():
+        #     additional_property = OfferProductBaseAdditionalDataAdditionalProperty.from_dict(prop_dict)
+        #
+        #     additional_properties[prop_name] = additional_property
+
+        for item in d.items():
+            prop_name = "additionalProperty"
+            prop_dict = { "key": item[0], "value": item[1] }
+
             additional_property = OfferProductBaseAdditionalDataAdditionalProperty.from_dict(prop_dict)
 
             additional_properties[prop_name] = additional_property
