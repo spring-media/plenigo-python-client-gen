@@ -46645,17 +46645,8 @@
           "additionalData": {
             "type": "object",
             "additionalProperties": {
-              "type": "object",
-              "properties": {
-                "key": {
-                  "type": "string",
-                  "maxLength": 30
-                },
-                "value": {
-                  "type": "string",
-                  "maxLength": 200
-                }
-              }
+              "type": "string",
+              "maxLength": 200
             }
           },
           "data": {
@@ -46705,7 +46696,6 @@
           "taxType",
           "amount",
           "accessRightId",
-          "translations",
           "productType"
         ]
       },
@@ -46726,8 +46716,7 @@
           }
         },
         "required": [
-          "position",
-          "productContractId"
+          "position"
         ]
       },
       "OfferProductStepCreation": {
@@ -47262,7 +47251,6 @@
           }
         ],
         "required": [
-          "productContractId",
           "priceIssueId"
         ]
       },
@@ -47612,7 +47600,10 @@
                 "type": "boolean"
               },
               "priceSegments": {
-                "$ref": "#/components/schemas/PriceSegment"
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PriceSegment"
+                }
               }
             }
           }

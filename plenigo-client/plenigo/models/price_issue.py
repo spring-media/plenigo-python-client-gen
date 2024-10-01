@@ -30,7 +30,7 @@ class PriceIssue:
         created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
         changed_by (Union[Unset, str]): ID of who changed the object
         changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
-        price_segments (Union[Unset, PriceSegment]):
+        price_segments (Union[Unset, List['PriceSegment']]):
     """
 
     price_issue_id: int
@@ -41,7 +41,7 @@ class PriceIssue:
     created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
     changed_by: Union[Unset, str] = UNSET
     changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
-    price_segments: Union[Unset, "PriceSegment"] = UNSET
+    price_segments: Union[Unset, List["PriceSegment"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,9 +77,12 @@ class PriceIssue:
         if not isinstance(self.changed_by_type, Unset):
             changed_by_type = self.changed_by_type.value
 
-        price_segments: Union[Unset, Dict[str, Any]] = UNSET
+        price_segments: Union[Unset, List[Dict[str, Any]]] = UNSET
         if not isinstance(self.price_segments, Unset):
-            price_segments = self.price_segments.to_dict()
+            price_segments = []
+            for price_segments_item_data in self.price_segments:
+                price_segments_item = price_segments_item_data.to_dict()
+                price_segments.append(price_segments_item)
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -181,12 +184,12 @@ class PriceIssue:
         else:
             changed_by_type = ApiBaseChangedByType(_changed_by_type)
 
+        price_segments = []
         _price_segments = d.pop("priceSegments", UNSET)
-        price_segments: Union[Unset, PriceSegment]
-        if isinstance(_price_segments, Unset) or not _price_segments:
-            price_segments = UNSET
-        else:
-            price_segments = PriceSegment.from_dict(_price_segments)
+        for price_segments_item_data in _price_segments or []:
+            price_segments_item = PriceSegment.from_dict(price_segments_item_data)
+
+            price_segments.append(price_segments_item)
 
         price_issue = cls(
             price_issue_id=price_issue_id,
