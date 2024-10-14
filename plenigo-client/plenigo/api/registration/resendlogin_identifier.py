@@ -7,9 +7,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
-from ...models.next_step import NextStep
 from ...models.step_token import StepToken
 from ...types import Response
 
@@ -41,29 +39,29 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResult, ErrorResultBase, NextStep]]:
+) -> Optional[Union[ErrorResultBase, StepToken]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = NextStep.from_dict(response.json())
+        response_200 = StepToken.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.FORBIDDEN:
-        response_403 = ErrorResult.from_dict(response.json())
+        response_403 = ErrorResultBase.from_dict(response.json())
 
         return response_403
     if response.status_code == HTTPStatus.REQUEST_TIMEOUT:
-        response_408 = ErrorResult.from_dict(response.json())
+        response_408 = ErrorResultBase.from_dict(response.json())
 
         return response_408
     if response.status_code == HTTPStatus.PRECONDITION_FAILED:
-        response_412 = ErrorResult.from_dict(response.json())
+        response_412 = ErrorResultBase.from_dict(response.json())
 
         return response_412
     if response.status_code == HTTPStatus.PRECONDITION_REQUIRED:
-        response_428 = ErrorResult.from_dict(response.json())
+        response_428 = ErrorResultBase.from_dict(response.json())
 
         return response_428
     if response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
@@ -86,7 +84,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResult, ErrorResultBase, NextStep]]:
+) -> Response[Union[ErrorResultBase, StepToken]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -104,7 +102,7 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: StepToken,
-) -> Response[Union[ErrorResult, ErrorResultBase, NextStep]]:
+) -> Response[Union[ErrorResultBase, StepToken]]:
     """Resend registration identifier token
 
      This functionality resend the registration process registration identifier token.
@@ -117,7 +115,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, NextStep]]
+        Response[Union[ErrorResultBase, StepToken]]
     """
 
     kwargs = _get_kwargs(
@@ -135,7 +133,7 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     body: StepToken,
-) -> Optional[Union[ErrorResult, ErrorResultBase, NextStep]]:
+) -> Optional[Union[ErrorResultBase, StepToken]]:
     """Resend registration identifier token
 
      This functionality resend the registration process registration identifier token.
@@ -148,7 +146,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, NextStep]
+        Union[ErrorResultBase, StepToken]
     """
 
     return sync_detailed(
@@ -166,7 +164,7 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: StepToken,
-) -> Response[Union[ErrorResult, ErrorResultBase, NextStep]]:
+) -> Response[Union[ErrorResultBase, StepToken]]:
     """Resend registration identifier token
 
      This functionality resend the registration process registration identifier token.
@@ -179,7 +177,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, NextStep]]
+        Response[Union[ErrorResultBase, StepToken]]
     """
 
     kwargs = _get_kwargs(
@@ -195,7 +193,7 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     body: StepToken,
-) -> Optional[Union[ErrorResult, ErrorResultBase, NextStep]]:
+) -> Optional[Union[ErrorResultBase, StepToken]]:
     """Resend registration identifier token
 
      This functionality resend the registration process registration identifier token.
@@ -208,7 +206,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, NextStep]
+        Union[ErrorResultBase, StepToken]
     """
 
     return (

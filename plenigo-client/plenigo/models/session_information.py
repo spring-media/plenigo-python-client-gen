@@ -80,9 +80,9 @@ class SessionInformation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_at_type_0 = isoparse(data)
+                created_at_type_1 = isoparse(data)
 
-                return created_at_type_0
+                return created_at_type_1
             except:  # noqa: E722
                 pass
 

@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.address_change import AddressChange
+    from ..models.address_base import AddressBase
 
 
 T = TypeVar("T", bound="CustomerLoginIdentifierRegistration")
@@ -25,8 +25,8 @@ class CustomerLoginIdentifierRegistration:
         customer_notification (Union[Unset, bool]): flag indicating if a mail or SMS should be send to the customer
         first_name (Union[Unset, str]): first name of the new customer
         last_name (Union[Unset, str]): last name of the new customer
-        invoice_address (Union[Unset, AddressChange]):
-        delivery_address (Union[Unset, AddressChange]):
+        invoice_address (Union[Unset, AddressBase]):
+        delivery_address (Union[Unset, AddressBase]):
         customer_id (Union[Unset, str]): customer id of the existing customer
         subscription_id (Union[Unset, int]): subscription id of the existing subscription - if also a customer id is
             provided the customer id must match the invoice customer
@@ -50,8 +50,8 @@ class CustomerLoginIdentifierRegistration:
     customer_notification: Union[Unset, bool] = UNSET
     first_name: Union[Unset, str] = UNSET
     last_name: Union[Unset, str] = UNSET
-    invoice_address: Union[Unset, "AddressChange"] = UNSET
-    delivery_address: Union[Unset, "AddressChange"] = UNSET
+    invoice_address: Union[Unset, "AddressBase"] = UNSET
+    delivery_address: Union[Unset, "AddressBase"] = UNSET
     customer_id: Union[Unset, str] = UNSET
     subscription_id: Union[Unset, int] = UNSET
     postcode: Union[Unset, str] = UNSET
@@ -141,7 +141,7 @@ class CustomerLoginIdentifierRegistration:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.address_change import AddressChange
+        from ..models.address_base import AddressBase
 
         d = src_dict.copy()
         username = d.pop("username", UNSET)
@@ -163,18 +163,18 @@ class CustomerLoginIdentifierRegistration:
         last_name = d.pop("lastName", UNSET)
 
         _invoice_address = d.pop("invoiceAddress", UNSET)
-        invoice_address: Union[Unset, AddressChange]
+        invoice_address: Union[Unset, AddressBase]
         if isinstance(_invoice_address, Unset) or not _invoice_address:
             invoice_address = UNSET
         else:
-            invoice_address = AddressChange.from_dict(_invoice_address)
+            invoice_address = AddressBase.from_dict(_invoice_address)
 
         _delivery_address = d.pop("deliveryAddress", UNSET)
-        delivery_address: Union[Unset, AddressChange]
+        delivery_address: Union[Unset, AddressBase]
         if isinstance(_delivery_address, Unset) or not _delivery_address:
             delivery_address = UNSET
         else:
-            delivery_address = AddressChange.from_dict(_delivery_address)
+            delivery_address = AddressBase.from_dict(_delivery_address)
 
         customer_id = d.pop("customerId", UNSET)
 

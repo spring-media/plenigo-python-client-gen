@@ -7,7 +7,6 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.stripe_customer import StripeCustomer
 from ...models.stripe_customer_creation import StripeCustomerCreation
@@ -42,13 +41,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResult, ErrorResultBase, StripeCustomer]]:
+) -> Optional[Union[ErrorResultBase, StripeCustomer]]:
     if response.status_code == HTTPStatus.CREATED:
         response_201 = StripeCustomer.from_dict(response.json())
 
         return response_201
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -79,7 +78,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResult, ErrorResultBase, StripeCustomer]]:
+) -> Response[Union[ErrorResultBase, StripeCustomer]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -98,7 +97,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: StripeCustomerCreation,
-) -> Response[Union[ErrorResult, ErrorResultBase, StripeCustomer]]:
+) -> Response[Union[ErrorResultBase, StripeCustomer]]:
     """Create Stripe customer
 
      Create a stripe customer association for a customer
@@ -112,7 +111,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, StripeCustomer]]
+        Response[Union[ErrorResultBase, StripeCustomer]]
     """
 
     kwargs = _get_kwargs(
@@ -132,7 +131,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: StripeCustomerCreation,
-) -> Optional[Union[ErrorResult, ErrorResultBase, StripeCustomer]]:
+) -> Optional[Union[ErrorResultBase, StripeCustomer]]:
     """Create Stripe customer
 
      Create a stripe customer association for a customer
@@ -146,7 +145,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, StripeCustomer]
+        Union[ErrorResultBase, StripeCustomer]
     """
 
     return sync_detailed(
@@ -166,7 +165,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: StripeCustomerCreation,
-) -> Response[Union[ErrorResult, ErrorResultBase, StripeCustomer]]:
+) -> Response[Union[ErrorResultBase, StripeCustomer]]:
     """Create Stripe customer
 
      Create a stripe customer association for a customer
@@ -180,7 +179,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, StripeCustomer]]
+        Response[Union[ErrorResultBase, StripeCustomer]]
     """
 
     kwargs = _get_kwargs(
@@ -198,7 +197,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: StripeCustomerCreation,
-) -> Optional[Union[ErrorResult, ErrorResultBase, StripeCustomer]]:
+) -> Optional[Union[ErrorResultBase, StripeCustomer]]:
     """Create Stripe customer
 
      Create a stripe customer association for a customer
@@ -212,7 +211,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, StripeCustomer]
+        Union[ErrorResultBase, StripeCustomer]
     """
 
     return (

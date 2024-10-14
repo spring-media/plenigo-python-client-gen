@@ -3,10 +3,11 @@ from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.payment_methods_blocked_payment_methods_item import PaymentMethodsBlockedPaymentMethodsItem
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.amazon_pay_account import AmazonPayAccount
+    from ..models.api_base_date import ApiBaseDate
     from ..models.bank_accounts import BankAccounts
     from ..models.credit_cards import CreditCards
     from ..models.i_deal_accounts import IDealAccounts
@@ -20,14 +21,16 @@ T = TypeVar("T", bound="PaymentMethods")
 class PaymentMethods:
     """
     Attributes:
-        amazon_pay_accounts (Union[Unset, List['AmazonPayAccount']]):
+        blocked_payment_methods (Union[Unset, List[PaymentMethodsBlockedPaymentMethodsItem]]):
+        amazon_pay_accounts (Union[Unset, List['ApiBaseDate']]):
         bank_accounts (Union[Unset, List['BankAccounts']]):
         credit_cards (Union[Unset, List['CreditCards']]):
         pay_pal_accounts (Union[Unset, List['PayPalAccounts']]):
         i_deal_accounts (Union[Unset, List['IDealAccounts']]):
     """
 
-    amazon_pay_accounts: Union[Unset, List["AmazonPayAccount"]] = UNSET
+    blocked_payment_methods: Union[Unset, List[PaymentMethodsBlockedPaymentMethodsItem]] = UNSET
+    amazon_pay_accounts: Union[Unset, List["ApiBaseDate"]] = UNSET
     bank_accounts: Union[Unset, List["BankAccounts"]] = UNSET
     credit_cards: Union[Unset, List["CreditCards"]] = UNSET
     pay_pal_accounts: Union[Unset, List["PayPalAccounts"]] = UNSET
@@ -35,6 +38,13 @@ class PaymentMethods:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        blocked_payment_methods: Union[Unset, List[str]] = UNSET
+        if not isinstance(self.blocked_payment_methods, Unset):
+            blocked_payment_methods = []
+            for blocked_payment_methods_item_data in self.blocked_payment_methods:
+                blocked_payment_methods_item = blocked_payment_methods_item_data.value
+                blocked_payment_methods.append(blocked_payment_methods_item)
+
         amazon_pay_accounts: Union[Unset, List[Dict[str, Any]]] = UNSET
         if not isinstance(self.amazon_pay_accounts, Unset):
             amazon_pay_accounts = []
@@ -73,6 +83,8 @@ class PaymentMethods:
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if blocked_payment_methods is not UNSET:
+            field_dict["blockedPaymentMethods"] = blocked_payment_methods
         if amazon_pay_accounts is not UNSET:
             field_dict["amazonPayAccounts"] = amazon_pay_accounts
         if bank_accounts is not UNSET:
@@ -88,17 +100,24 @@ class PaymentMethods:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.amazon_pay_account import AmazonPayAccount
+        from ..models.api_base_date import ApiBaseDate
         from ..models.bank_accounts import BankAccounts
         from ..models.credit_cards import CreditCards
         from ..models.i_deal_accounts import IDealAccounts
         from ..models.pay_pal_accounts import PayPalAccounts
 
         d = src_dict.copy()
+        blocked_payment_methods = []
+        _blocked_payment_methods = d.pop("blockedPaymentMethods", UNSET)
+        for blocked_payment_methods_item_data in _blocked_payment_methods or []:
+            blocked_payment_methods_item = PaymentMethodsBlockedPaymentMethodsItem(blocked_payment_methods_item_data)
+
+            blocked_payment_methods.append(blocked_payment_methods_item)
+
         amazon_pay_accounts = []
         _amazon_pay_accounts = d.pop("amazonPayAccounts", UNSET)
         for amazon_pay_accounts_item_data in _amazon_pay_accounts or []:
-            amazon_pay_accounts_item = AmazonPayAccount.from_dict(amazon_pay_accounts_item_data)
+            amazon_pay_accounts_item = ApiBaseDate.from_dict(amazon_pay_accounts_item_data)
 
             amazon_pay_accounts.append(amazon_pay_accounts_item)
 
@@ -131,6 +150,7 @@ class PaymentMethods:
             i_deal_accounts.append(i_deal_accounts_item)
 
         payment_methods = cls(
+            blocked_payment_methods=blocked_payment_methods,
             amazon_pay_accounts=amazon_pay_accounts,
             bank_accounts=bank_accounts,
             credit_cards=credit_cards,

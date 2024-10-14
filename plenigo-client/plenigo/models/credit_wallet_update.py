@@ -7,7 +7,7 @@ from ..models.credit_wallet_update_credit_validity_timespan import CreditWalletU
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.credit_wallet_translation import CreditWalletTranslation
+    from ..models.api_base_date import ApiBaseDate
 
 
 T = TypeVar("T", bound="CreditWalletUpdate")
@@ -23,7 +23,7 @@ class CreditWalletUpdate:
         credit_validity_time (Union[Unset, int]): time credits are invalidated if credit count invalidation is active
         credit_validity_timespan (Union[Unset, CreditWalletUpdateCreditValidityTimespan]): time credit validity timespan
         event_list_id (Union[Unset, int]): id of the associated event list
-        translations (Union[Unset, List['CreditWalletTranslation']]): translations associated with this customer wallet
+        translations (Union[Unset, List['ApiBaseDate']]): translations associated with this customer wallet
     """
 
     internal_title: Union[Unset, str] = UNSET
@@ -31,7 +31,7 @@ class CreditWalletUpdate:
     credit_validity_time: Union[Unset, int] = UNSET
     credit_validity_timespan: Union[Unset, CreditWalletUpdateCreditValidityTimespan] = UNSET
     event_list_id: Union[Unset, int] = UNSET
-    translations: Union[Unset, List["CreditWalletTranslation"]] = UNSET
+    translations: Union[Unset, List["ApiBaseDate"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,7 +74,7 @@ class CreditWalletUpdate:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.credit_wallet_translation import CreditWalletTranslation
+        from ..models.api_base_date import ApiBaseDate
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle", UNSET)
@@ -95,7 +95,7 @@ class CreditWalletUpdate:
         translations = []
         _translations = d.pop("translations", UNSET)
         for translations_item_data in _translations or []:
-            translations_item = CreditWalletTranslation.from_dict(translations_item_data)
+            translations_item = ApiBaseDate.from_dict(translations_item_data)
 
             translations.append(translations_item)
 

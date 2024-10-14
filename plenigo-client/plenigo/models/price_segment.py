@@ -29,10 +29,12 @@ class PriceSegment:
             target="_blank">RFC 3339, section 5.6</a>, for example, 2017-07-21
         world_segment (Union[Unset, bool]): flag indicating if price is valid for the complete world if no other price
             segments are provided - must be set if price country segment id is not provided
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
         price_segment_id (Union[Unset, int]): unique id of the price segment within a contract company
         country_segments (Union[Unset, PriceCountrySegment]):
     """
@@ -132,9 +134,9 @@ class PriceSegment:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_from_type_0 = isoparse(data).date()
+                valid_from_type_1 = isoparse(data).date()
 
-                return valid_from_type_0
+                return valid_from_type_1
             except:  # noqa: E722
                 pass
 
@@ -156,9 +158,9 @@ class PriceSegment:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_from_existing_subscription_type_0 = isoparse(data).date()
+                valid_from_existing_subscription_type_1 = isoparse(data).date()
 
-                return valid_from_existing_subscription_type_0
+                return valid_from_existing_subscription_type_1
             except:  # noqa: E722
                 pass
 
@@ -184,9 +186,9 @@ class PriceSegment:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -208,9 +210,9 @@ class PriceSegment:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 

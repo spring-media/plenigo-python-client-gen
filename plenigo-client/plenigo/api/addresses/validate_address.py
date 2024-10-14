@@ -8,8 +8,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.address import Address
-from ...models.address_creation import AddressCreation
-from ...models.error_result import ErrorResult
+from ...models.address_base import AddressBase
 from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
@@ -18,7 +17,7 @@ log = logging.getLogger(__name__)
 
 def _get_kwargs(
     *,
-    body: AddressCreation,
+    body: AddressBase,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
 
@@ -41,13 +40,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Address, Any, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[Address, Any, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = Address.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -81,7 +80,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Address, Any, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[Address, Any, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -98,8 +97,8 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: AddressCreation,
-) -> Response[Union[Address, Any, ErrorResult, ErrorResultBase]]:
+    body: AddressBase,
+) -> Response[Union[Address, Any, ErrorResultBase]]:
     r"""Validate address data
 
      <span style=\"color:red\">**Important note: The use of these API endpoints is a chargeable service
@@ -109,14 +108,14 @@ def sync_detailed(
     Validates the address with the data provided.
 
     Args:
-        body (AddressCreation):
+        body (AddressBase):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Address, Any, ErrorResult, ErrorResultBase]]
+        Response[Union[Address, Any, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -133,8 +132,8 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: AddressCreation,
-) -> Optional[Union[Address, Any, ErrorResult, ErrorResultBase]]:
+    body: AddressBase,
+) -> Optional[Union[Address, Any, ErrorResultBase]]:
     r"""Validate address data
 
      <span style=\"color:red\">**Important note: The use of these API endpoints is a chargeable service
@@ -144,14 +143,14 @@ def sync(
     Validates the address with the data provided.
 
     Args:
-        body (AddressCreation):
+        body (AddressBase):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Address, Any, ErrorResult, ErrorResultBase]
+        Union[Address, Any, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -168,8 +167,8 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: AddressCreation,
-) -> Response[Union[Address, Any, ErrorResult, ErrorResultBase]]:
+    body: AddressBase,
+) -> Response[Union[Address, Any, ErrorResultBase]]:
     r"""Validate address data
 
      <span style=\"color:red\">**Important note: The use of these API endpoints is a chargeable service
@@ -179,14 +178,14 @@ async def asyncio_detailed(
     Validates the address with the data provided.
 
     Args:
-        body (AddressCreation):
+        body (AddressBase):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Address, Any, ErrorResult, ErrorResultBase]]
+        Response[Union[Address, Any, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -201,8 +200,8 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: AddressCreation,
-) -> Optional[Union[Address, Any, ErrorResult, ErrorResultBase]]:
+    body: AddressBase,
+) -> Optional[Union[Address, Any, ErrorResultBase]]:
     r"""Validate address data
 
      <span style=\"color:red\">**Important note: The use of these API endpoints is a chargeable service
@@ -212,14 +211,14 @@ async def asyncio(
     Validates the address with the data provided.
 
     Args:
-        body (AddressCreation):
+        body (AddressBase):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Address, Any, ErrorResult, ErrorResultBase]
+        Union[Address, Any, ErrorResultBase]
     """
 
     return (

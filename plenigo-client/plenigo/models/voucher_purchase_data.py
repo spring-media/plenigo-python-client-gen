@@ -63,9 +63,9 @@ class VoucherPurchaseData:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                voucher_end_date_type_0 = isoparse(data)
+                voucher_end_date_type_1 = isoparse(data)
 
-                return voucher_end_date_type_0
+                return voucher_end_date_type_1
             except:  # noqa: E722
                 pass
 

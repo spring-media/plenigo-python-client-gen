@@ -16,7 +16,6 @@ from ..models.offer_product_step_term_timespan import OfferProductStepTermTimesp
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.offer_translation import OfferTranslation
     from ..models.product_contract import ProductContract
     from ..models.product_tag import ProductTag
 
@@ -29,15 +28,13 @@ class OfferProductStep:
     """
     Attributes:
         position (int): position inside the product
-        price_issue_id (int): id of the price issue associated with this step
         product_contract_id (Union[Unset, int]): id of the product contract associated with this step
-        translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
-        product_tag_ids (Union[Unset, List[int]]): tags associated with this product
-        additional_product_contract_ids (Union[Unset, List[int]]): additioanl product contract ids with this product
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
         plenigo_step_id (Union[Unset, str]): unique id of the step within the product
         amount (Union[Unset, int]): amount of issues
         chargeable_amount (Union[Unset, int]): amount of paid issues
@@ -55,6 +52,7 @@ class OfferProductStep:
         accounting_timespan (Union[Unset, OfferProductStepAccountingTimespan]): accounting timespan
         cancellation_period (Union[Unset, int]): cancellation period of the product step
         cancellation_timespan (Union[Unset, OfferProductStepCancellationTimespan]): cancellation timespan
+        price_issue_id (Union[Unset, int]): id of the price issue associated with this step
         ivw_rule_id (Union[Unset, int]): id of the ivw rule associated with this product step
         credit_count (Union[Unset, int]): credit count added with this step
         product_tags (Union[Unset, List['ProductTag']]): tags associated with this product
@@ -63,11 +61,7 @@ class OfferProductStep:
     """
 
     position: int
-    price_issue_id: int
     product_contract_id: Union[Unset, int] = UNSET
-    translations: Union[Unset, List["OfferTranslation"]] = UNSET
-    product_tag_ids: Union[Unset, List[int]] = UNSET
-    additional_product_contract_ids: Union[Unset, List[int]] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     plenigo_step_id: Union[Unset, str] = UNSET
@@ -85,6 +79,7 @@ class OfferProductStep:
     accounting_timespan: Union[Unset, OfferProductStepAccountingTimespan] = UNSET
     cancellation_period: Union[Unset, int] = UNSET
     cancellation_timespan: Union[Unset, OfferProductStepCancellationTimespan] = UNSET
+    price_issue_id: Union[Unset, int] = UNSET
     ivw_rule_id: Union[Unset, int] = UNSET
     credit_count: Union[Unset, int] = UNSET
     product_tags: Union[Unset, List["ProductTag"]] = UNSET
@@ -94,24 +89,7 @@ class OfferProductStep:
     def to_dict(self) -> Dict[str, Any]:
         position = self.position
 
-        price_issue_id = self.price_issue_id
-
         product_contract_id = self.product_contract_id
-
-        translations: Union[Unset, List[Dict[str, Any]]] = UNSET
-        if not isinstance(self.translations, Unset):
-            translations = []
-            for translations_item_data in self.translations:
-                translations_item = translations_item_data.to_dict()
-                translations.append(translations_item)
-
-        product_tag_ids: Union[Unset, List[int]] = UNSET
-        if not isinstance(self.product_tag_ids, Unset):
-            product_tag_ids = self.product_tag_ids
-
-        additional_product_contract_ids: Union[Unset, List[int]] = UNSET
-        if not isinstance(self.additional_product_contract_ids, Unset):
-            additional_product_contract_ids = self.additional_product_contract_ids
 
         created_date: Union[None, Unset, str]
         if isinstance(self.created_date, Unset) or self.created_date is None:
@@ -171,6 +149,8 @@ class OfferProductStep:
         if not isinstance(self.cancellation_timespan, Unset):
             cancellation_timespan = self.cancellation_timespan.value
 
+        price_issue_id = self.price_issue_id
+
         ivw_rule_id = self.ivw_rule_id
 
         credit_count = self.credit_count
@@ -194,17 +174,10 @@ class OfferProductStep:
         field_dict.update(
             {
                 "position": position,
-                "priceIssueId": price_issue_id,
             }
         )
         if product_contract_id is not UNSET:
             field_dict["productContractId"] = product_contract_id
-        if translations is not UNSET:
-            field_dict["translations"] = translations
-        if product_tag_ids is not UNSET:
-            field_dict["productTagIds"] = product_tag_ids
-        if additional_product_contract_ids is not UNSET:
-            field_dict["additionalProductContractIds"] = additional_product_contract_ids
         if created_date is not UNSET:
             field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
@@ -239,6 +212,8 @@ class OfferProductStep:
             field_dict["cancellationPeriod"] = cancellation_period
         if cancellation_timespan is not UNSET:
             field_dict["cancellationTimespan"] = cancellation_timespan
+        if price_issue_id is not UNSET:
+            field_dict["priceIssueId"] = price_issue_id
         if ivw_rule_id is not UNSET:
             field_dict["ivwRuleId"] = ivw_rule_id
         if credit_count is not UNSET:
@@ -252,27 +227,13 @@ class OfferProductStep:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.offer_translation import OfferTranslation
         from ..models.product_contract import ProductContract
         from ..models.product_tag import ProductTag
 
         d = src_dict.copy()
         position = d.pop("position")
 
-        price_issue_id = d.pop("priceIssueId")
-
         product_contract_id = d.pop("productContractId", UNSET)
-
-        translations = []
-        _translations = d.pop("translations", UNSET)
-        for translations_item_data in _translations or []:
-            translations_item = OfferTranslation.from_dict(translations_item_data)
-
-            translations.append(translations_item)
-
-        product_tag_ids = cast(List[int], d.pop("productTagIds", UNSET))
-
-        additional_product_contract_ids = cast(List[int], d.pop("additionalProductContractIds", UNSET))
 
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
@@ -288,9 +249,9 @@ class OfferProductStep:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -312,9 +273,9 @@ class OfferProductStep:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -386,6 +347,8 @@ class OfferProductStep:
         else:
             cancellation_timespan = OfferProductStepCancellationTimespan(_cancellation_timespan)
 
+        price_issue_id = d.pop("priceIssueId", UNSET)
+
         ivw_rule_id = d.pop("ivwRuleId", UNSET)
 
         credit_count = d.pop("creditCount", UNSET)
@@ -406,11 +369,7 @@ class OfferProductStep:
 
         offer_product_step = cls(
             position=position,
-            price_issue_id=price_issue_id,
             product_contract_id=product_contract_id,
-            translations=translations,
-            product_tag_ids=product_tag_ids,
-            additional_product_contract_ids=additional_product_contract_ids,
             created_date=created_date,
             changed_date=changed_date,
             plenigo_step_id=plenigo_step_id,
@@ -428,6 +387,7 @@ class OfferProductStep:
             accounting_timespan=accounting_timespan,
             cancellation_period=cancellation_period,
             cancellation_timespan=cancellation_timespan,
+            price_issue_id=price_issue_id,
             ivw_rule_id=ivw_rule_id,
             credit_count=credit_count,
             product_tags=product_tags,

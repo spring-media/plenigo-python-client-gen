@@ -9,7 +9,6 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.app_store_purchase import AppStorePurchase
 from ...models.app_store_purchase_list import AppStorePurchaseList
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
@@ -31,7 +30,7 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResult, ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
+) -> Optional[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     if response.status_code == HTTPStatus.OK:
 
         def _parse_response_200(data: object) -> Union["AppStorePurchase", "AppStorePurchaseList"]:
@@ -59,7 +58,7 @@ def _parse_response(
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -90,7 +89,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResult, ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
+) -> Response[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -108,7 +107,7 @@ def sync_detailed(
     token: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResult, ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
+) -> Response[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     """Verify Google purchase
 
      Verify validity of Google Playstore purchase.
@@ -121,7 +120,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]]
+        Response[Union[ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]]
     """
 
     kwargs = _get_kwargs(
@@ -139,7 +138,7 @@ def sync(
     token: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResult, ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
+) -> Optional[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     """Verify Google purchase
 
      Verify validity of Google Playstore purchase.
@@ -152,7 +151,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]
+        Union[ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]
     """
 
     return sync_detailed(
@@ -170,7 +169,7 @@ async def asyncio_detailed(
     token: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResult, ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
+) -> Response[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     """Verify Google purchase
 
      Verify validity of Google Playstore purchase.
@@ -183,7 +182,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]]
+        Response[Union[ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]]
     """
 
     kwargs = _get_kwargs(
@@ -199,7 +198,7 @@ async def asyncio(
     token: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResult, ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
+) -> Optional[Union[ErrorResultBase, Union["AppStorePurchase", "AppStorePurchaseList"]]]:
     """Verify Google purchase
 
      Verify validity of Google Playstore purchase.
@@ -212,7 +211,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]
+        Union[ErrorResultBase, Union['AppStorePurchase', 'AppStorePurchaseList']]
     """
 
     return (

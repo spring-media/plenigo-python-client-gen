@@ -7,9 +7,8 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.api_campaign_creation_result import ApiCampaignCreationResult
+from ...models.api_base_date import ApiBaseDate
 from ...models.campaign_creation import CampaignCreation
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.success_status import SuccessStatus
 from ...types import UNSET, Response, Unset
@@ -50,9 +49,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]:
     if response.status_code == HTTPStatus.CREATED:
-        response_201 = ApiCampaignCreationResult.from_dict(response.json())
+        response_201 = ApiBaseDate.from_dict(response.json())
 
         return response_201
     if response.status_code == HTTPStatus.ACCEPTED:
@@ -60,7 +59,7 @@ def _parse_response(
 
         return response_202
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -87,7 +86,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -106,7 +105,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: CampaignCreation,
     callback: Union[Unset, bool] = UNSET,
-) -> Response[Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]:
     """Create
 
      *ASYNC* Creates a new voucher campaign with the data provided. ATTENTION - this process is async.
@@ -120,7 +119,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]]
+        Response[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]
     """
 
     kwargs = _get_kwargs(
@@ -140,7 +139,7 @@ def sync(
     client: AuthenticatedClient,
     body: CampaignCreation,
     callback: Union[Unset, bool] = UNSET,
-) -> Optional[Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]:
     """Create
 
      *ASYNC* Creates a new voucher campaign with the data provided. ATTENTION - this process is async.
@@ -154,7 +153,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]
+        Union[ApiBaseDate, ErrorResultBase, SuccessStatus]
     """
 
     return sync_detailed(
@@ -174,7 +173,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: CampaignCreation,
     callback: Union[Unset, bool] = UNSET,
-) -> Response[Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]:
     """Create
 
      *ASYNC* Creates a new voucher campaign with the data provided. ATTENTION - this process is async.
@@ -188,7 +187,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]]
+        Response[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]
     """
 
     kwargs = _get_kwargs(
@@ -206,7 +205,7 @@ async def asyncio(
     client: AuthenticatedClient,
     body: CampaignCreation,
     callback: Union[Unset, bool] = UNSET,
-) -> Optional[Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]:
     """Create
 
      *ASYNC* Creates a new voucher campaign with the data provided. ATTENTION - this process is async.
@@ -220,7 +219,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]
+        Union[ApiBaseDate, ErrorResultBase, SuccessStatus]
     """
 
     return (

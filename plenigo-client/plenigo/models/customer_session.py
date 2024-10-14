@@ -97,9 +97,9 @@ class CustomerSession:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_type_0 = isoparse(data)
+                created_type_1 = isoparse(data)
 
-                return created_type_0
+                return created_type_1
             except:  # noqa: E722
                 pass
 

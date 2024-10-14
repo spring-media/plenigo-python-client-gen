@@ -8,7 +8,6 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.api_voucher_page import ApiVoucherPage
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.get_vouchers_channels_channel_id_vouchers_voucher_status import (
     GetVouchersChannelsChannelIdVouchersVoucherStatus,
@@ -55,13 +54,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[ApiVoucherPage, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = ApiVoucherPage.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -84,7 +83,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[ApiVoucherPage, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -106,8 +105,8 @@ def sync_detailed(
     ending_before: Union[Unset, str] = UNSET,
     size: Union[Unset, int] = UNSET,
     voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
-) -> Response[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
-    """Returns vouchers
+) -> Response[Union[ApiVoucherPage, ErrorResultBase]]:
+    """Returns channel vouchers
 
      Returns all vouchers of the selected channel page, depending on query parameters
 
@@ -123,7 +122,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]
+        Response[Union[ApiVoucherPage, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -149,8 +148,8 @@ def sync(
     ending_before: Union[Unset, str] = UNSET,
     size: Union[Unset, int] = UNSET,
     voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
-) -> Optional[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
-    """Returns vouchers
+) -> Optional[Union[ApiVoucherPage, ErrorResultBase]]:
+    """Returns channel vouchers
 
      Returns all vouchers of the selected channel page, depending on query parameters
 
@@ -166,7 +165,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiVoucherPage, ErrorResult, ErrorResultBase]
+        Union[ApiVoucherPage, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -192,8 +191,8 @@ async def asyncio_detailed(
     ending_before: Union[Unset, str] = UNSET,
     size: Union[Unset, int] = UNSET,
     voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
-) -> Response[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
-    """Returns vouchers
+) -> Response[Union[ApiVoucherPage, ErrorResultBase]]:
+    """Returns channel vouchers
 
      Returns all vouchers of the selected channel page, depending on query parameters
 
@@ -209,7 +208,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]
+        Response[Union[ApiVoucherPage, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -233,8 +232,8 @@ async def asyncio(
     ending_before: Union[Unset, str] = UNSET,
     size: Union[Unset, int] = UNSET,
     voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
-) -> Optional[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
-    """Returns vouchers
+) -> Optional[Union[ApiVoucherPage, ErrorResultBase]]:
+    """Returns channel vouchers
 
      Returns all vouchers of the selected channel page, depending on query parameters
 
@@ -250,7 +249,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiVoucherPage, ErrorResult, ErrorResultBase]
+        Union[ApiVoucherPage, ErrorResultBase]
     """
 
     return (

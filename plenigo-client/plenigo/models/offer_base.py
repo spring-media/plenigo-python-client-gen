@@ -11,9 +11,10 @@ from ..models.offer_base_pdf_template_usage import OfferBasePdfTemplateUsage
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.api_base_date import ApiBaseDate
+    from ..models.archive_settings import ArchiveSettings
     from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
     from ..models.offer_partner_settings import OfferPartnerSettings
-    from ..models.offer_translation import OfferTranslation
 
 
 T = TypeVar("T", bound="OfferBase")
@@ -24,7 +25,7 @@ class OfferBase:
     """
     Attributes:
         internal_title (str): internal title of the product group
-        translations (List['OfferTranslation']): translations associated with this product
+        translations (List['ApiBaseDate']): translations associated with this product
         pause_able (Union[Unset, bool]): flag indicating if subscription is pause able
         invoice_address_mandatory (Union[Unset, bool]): flag indicating if invoice address must be provided by the
             customer
@@ -39,6 +40,7 @@ class OfferBase:
         issues_in_future (Union[Unset, int]): amount of issues that the user can select in the future - cannot be
             selected with fixed start date
         archived (Union[Unset, bool]): flag indicating if offer is archived
+        archive_settings (Union[Unset, ArchiveSettings]):
         allowed_payment_methods (Union[Unset, List[OfferBaseAllowedPaymentMethodsItem]]): additional constraints to the
             payment methods if some of the selected payment methods cannot be used for this offer - there can be no more
             payment methods than selected in the global payment settings section
@@ -57,7 +59,7 @@ class OfferBase:
     """
 
     internal_title: str
-    translations: List["OfferTranslation"]
+    translations: List["ApiBaseDate"]
     pause_able: Union[Unset, bool] = UNSET
     invoice_address_mandatory: Union[Unset, bool] = UNSET
     delivery_address_mandatory: Union[Unset, bool] = UNSET
@@ -67,6 +69,7 @@ class OfferBase:
     issues_in_past: Union[Unset, int] = UNSET
     issues_in_future: Union[Unset, int] = UNSET
     archived: Union[Unset, bool] = UNSET
+    archive_settings: Union[Unset, "ArchiveSettings"] = UNSET
     allowed_payment_methods: Union[Unset, List[OfferBaseAllowedPaymentMethodsItem]] = UNSET
     connected_company_settings: Union[Unset, "OfferConnectedCompanySettings"] = UNSET
     leaf_id: Union[Unset, int] = UNSET
@@ -112,6 +115,10 @@ class OfferBase:
         issues_in_future = self.issues_in_future
 
         archived = self.archived
+
+        archive_settings: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.archive_settings, Unset):
+            archive_settings = self.archive_settings.to_dict()
 
         allowed_payment_methods: Union[Unset, List[str]] = UNSET
         if not isinstance(self.allowed_payment_methods, Unset):
@@ -176,6 +183,8 @@ class OfferBase:
             field_dict["issuesInFuture"] = issues_in_future
         if archived is not UNSET:
             field_dict["archived"] = archived
+        if archive_settings is not UNSET:
+            field_dict["archiveSettings"] = archive_settings
         if allowed_payment_methods is not UNSET:
             field_dict["allowedPaymentMethods"] = allowed_payment_methods
         if connected_company_settings is not UNSET:
@@ -205,9 +214,10 @@ class OfferBase:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.api_base_date import ApiBaseDate
+        from ..models.archive_settings import ArchiveSettings
         from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
         from ..models.offer_partner_settings import OfferPartnerSettings
-        from ..models.offer_translation import OfferTranslation
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -215,7 +225,7 @@ class OfferBase:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = OfferTranslation.from_dict(translations_item_data)
+            translations_item = ApiBaseDate.from_dict(translations_item_data)
 
             translations.append(translations_item)
 
@@ -243,9 +253,9 @@ class OfferBase:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                fixed_start_date_type_0 = isoparse(data).date()
+                fixed_start_date_type_1 = isoparse(data).date()
 
-                return fixed_start_date_type_0
+                return fixed_start_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -258,6 +268,13 @@ class OfferBase:
         issues_in_future = d.pop("issuesInFuture", UNSET)
 
         archived = d.pop("archived", UNSET)
+
+        _archive_settings = d.pop("archiveSettings", UNSET)
+        archive_settings: Union[Unset, ArchiveSettings]
+        if isinstance(_archive_settings, Unset) or not _archive_settings:
+            archive_settings = UNSET
+        else:
+            archive_settings = ArchiveSettings.from_dict(_archive_settings)
 
         allowed_payment_methods = []
         _allowed_payment_methods = d.pop("allowedPaymentMethods", UNSET)
@@ -320,6 +337,7 @@ class OfferBase:
             issues_in_past=issues_in_past,
             issues_in_future=issues_in_future,
             archived=archived,
+            archive_settings=archive_settings,
             allowed_payment_methods=allowed_payment_methods,
             connected_company_settings=connected_company_settings,
             leaf_id=leaf_id,

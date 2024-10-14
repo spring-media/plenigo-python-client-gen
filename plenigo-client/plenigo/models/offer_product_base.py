@@ -11,9 +11,9 @@ from ..models.offer_product_base_voucher_validity_timespan import OfferProductBa
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.api_base_date import ApiBaseDate
     from ..models.offer_product_base_additional_data import OfferProductBaseAdditionalData
     from ..models.offer_product_base_data import OfferProductBaseData
-    from ..models.offer_translation import OfferTranslation
 
 
 T = TypeVar("T", bound="OfferProductBase")
@@ -52,7 +52,7 @@ class OfferProductBase:
             wallet
         credit_count (Union[Unset, int]): credit count added with this product
         option (Union[Unset, bool]): flag indicating if product is an option in a basket
-        translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
+        translations (Union[Unset, List['ApiBaseDate']]): translations associated with this product
     """
 
     position: int
@@ -79,7 +79,7 @@ class OfferProductBase:
     credit_count_walled_id: Union[Unset, int] = UNSET
     credit_count: Union[Unset, int] = UNSET
     option: Union[Unset, bool] = UNSET
-    translations: Union[Unset, List["OfferTranslation"]] = UNSET
+    translations: Union[Unset, List["ApiBaseDate"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -206,9 +206,9 @@ class OfferProductBase:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.api_base_date import ApiBaseDate
         from ..models.offer_product_base_additional_data import OfferProductBaseAdditionalData
         from ..models.offer_product_base_data import OfferProductBaseData
-        from ..models.offer_translation import OfferTranslation
 
         d = src_dict.copy()
         position = d.pop("position")
@@ -243,9 +243,9 @@ class OfferProductBase:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                validity_end_time_type_0 = isoparse(data)
+                validity_end_time_type_1 = isoparse(data)
 
-                return validity_end_time_type_0
+                return validity_end_time_type_1
             except:  # noqa: E722
                 pass
 
@@ -299,7 +299,7 @@ class OfferProductBase:
         translations = []
         _translations = d.pop("translations", UNSET)
         for translations_item_data in _translations or []:
-            translations_item = OfferTranslation.from_dict(translations_item_data)
+            translations_item = ApiBaseDate.from_dict(translations_item_data)
 
             translations.append(translations_item)
 

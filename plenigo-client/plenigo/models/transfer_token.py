@@ -12,7 +12,7 @@ T = TypeVar("T", bound="TransferToken")
 class TransferToken:
     """
     Attributes:
-        transfer_token (Union[Unset, str]): transfer token to get the the saved customer session for
+        transfer_token (Union[Unset, str]): one time transfer token - valid for 30 seconds
     """
 
     transfer_token: Union[Unset, str] = UNSET

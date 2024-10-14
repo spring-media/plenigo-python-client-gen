@@ -8,7 +8,6 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.search_text_modules_type import SearchTextModulesType
 from ...models.text_modules import TextModules
@@ -65,13 +64,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResult, ErrorResultBase, TextModules]]:
+) -> Optional[Union[ErrorResultBase, TextModules]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = TextModules.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -94,7 +93,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResult, ErrorResultBase, TextModules]]:
+) -> Response[Union[ErrorResultBase, TextModules]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -113,7 +112,7 @@ def sync_all(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     leaf_id: Union[Unset, int] = UNSET,
-) -> Optional[Union[ErrorResult, ErrorResultBase, TextModules]]:
+) -> Optional[Union[ErrorResultBase, TextModules]]:
     all_results = TextModules(items=[])
     # type: ignore
 
@@ -162,7 +161,7 @@ def sync_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     leaf_id: Union[Unset, int] = UNSET,
-) -> Response[Union[ErrorResult, ErrorResultBase, TextModules]]:
+) -> Response[Union[ErrorResultBase, TextModules]]:
     """Search text modules
 
      Search all text modules that correspond to the given search conditions.
@@ -181,7 +180,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, TextModules]]
+        Response[Union[ErrorResultBase, TextModules]]
     """
 
     kwargs = _get_kwargs(
@@ -211,7 +210,7 @@ def sync(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     leaf_id: Union[Unset, int] = UNSET,
-) -> Optional[Union[ErrorResult, ErrorResultBase, TextModules]]:
+) -> Optional[Union[ErrorResultBase, TextModules]]:
     """Search text modules
 
      Search all text modules that correspond to the given search conditions.
@@ -230,7 +229,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, TextModules]
+        Union[ErrorResultBase, TextModules]
     """
 
     return sync_detailed(
@@ -260,7 +259,7 @@ async def asyncio_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     leaf_id: Union[Unset, int] = UNSET,
-) -> Response[Union[ErrorResult, ErrorResultBase, TextModules]]:
+) -> Response[Union[ErrorResultBase, TextModules]]:
     """Search text modules
 
      Search all text modules that correspond to the given search conditions.
@@ -279,7 +278,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, TextModules]]
+        Response[Union[ErrorResultBase, TextModules]]
     """
 
     kwargs = _get_kwargs(
@@ -307,7 +306,7 @@ async def asyncio_all(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     leaf_id: Union[Unset, int] = UNSET,
-) -> Response[Union[ErrorResult, ErrorResultBase, TextModules]]:
+) -> Response[Union[ErrorResultBase, TextModules]]:
     all_results = TextModules(items=[])
     # type: ignore
 
@@ -353,7 +352,7 @@ async def asyncio(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     leaf_id: Union[Unset, int] = UNSET,
-) -> Optional[Union[ErrorResult, ErrorResultBase, TextModules]]:
+) -> Optional[Union[ErrorResultBase, TextModules]]:
     """Search text modules
 
      Search all text modules that correspond to the given search conditions.
@@ -372,7 +371,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, TextModules]
+        Union[ErrorResultBase, TextModules]
     """
 
     return (

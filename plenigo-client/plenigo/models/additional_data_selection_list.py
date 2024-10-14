@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.additional_data_selection import AdditionalDataSelection
+    from ..models.api_base_date import ApiBaseDate
 
 
 T = TypeVar("T", bound="AdditionalDataSelectionList")
@@ -16,10 +16,10 @@ T = TypeVar("T", bound="AdditionalDataSelectionList")
 class AdditionalDataSelectionList:
     """
     Attributes:
-        additions (Union[Unset, List['AdditionalDataSelection']]):
+        additions (Union[Unset, List['ApiBaseDate']]):
     """
 
-    additions: Union[Unset, List["AdditionalDataSelection"]] = UNSET
+    additions: Union[Unset, List["ApiBaseDate"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -40,13 +40,13 @@ class AdditionalDataSelectionList:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.additional_data_selection import AdditionalDataSelection
+        from ..models.api_base_date import ApiBaseDate
 
         d = src_dict.copy()
         additions = []
         _additions = d.pop("additions", UNSET)
         for additions_item_data in _additions or []:
-            additions_item = AdditionalDataSelection.from_dict(additions_item_data)
+            additions_item = ApiBaseDate.from_dict(additions_item_data)
 
             additions.append(additions_item)
 

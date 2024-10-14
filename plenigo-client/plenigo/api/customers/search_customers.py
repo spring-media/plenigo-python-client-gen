@@ -9,7 +9,6 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.customers import Customers
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.search_customers_sort import SearchCustomersSort
 from ...types import UNSET, Response, Unset
@@ -74,13 +73,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Customers, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[Customers, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = Customers.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -107,7 +106,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Customers, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[Customers, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -128,7 +127,7 @@ def sync_all(
     external_system_id: Union[Unset, str] = UNSET,
     email: Union[Unset, str] = UNSET,
     username: Union[Unset, str] = UNSET,
-) -> Optional[Union[Customers, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[Customers, ErrorResultBase]]:
     all_results = Customers(items=[])
     # type: ignore
 
@@ -181,7 +180,7 @@ def sync_detailed(
     external_system_id: Union[Unset, str] = UNSET,
     email: Union[Unset, str] = UNSET,
     username: Union[Unset, str] = UNSET,
-) -> Response[Union[Customers, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[Customers, ErrorResultBase]]:
     """Search
 
      Search all customers that correspond to the given search conditions. It is important to note that
@@ -205,7 +204,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Customers, ErrorResult, ErrorResultBase]]
+        Response[Union[Customers, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -239,7 +238,7 @@ def sync(
     external_system_id: Union[Unset, str] = UNSET,
     email: Union[Unset, str] = UNSET,
     username: Union[Unset, str] = UNSET,
-) -> Optional[Union[Customers, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[Customers, ErrorResultBase]]:
     """Search
 
      Search all customers that correspond to the given search conditions. It is important to note that
@@ -263,7 +262,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Customers, ErrorResult, ErrorResultBase]
+        Union[Customers, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -297,7 +296,7 @@ async def asyncio_detailed(
     external_system_id: Union[Unset, str] = UNSET,
     email: Union[Unset, str] = UNSET,
     username: Union[Unset, str] = UNSET,
-) -> Response[Union[Customers, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[Customers, ErrorResultBase]]:
     """Search
 
      Search all customers that correspond to the given search conditions. It is important to note that
@@ -321,7 +320,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Customers, ErrorResult, ErrorResultBase]]
+        Response[Union[Customers, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -353,7 +352,7 @@ async def asyncio_all(
     external_system_id: Union[Unset, str] = UNSET,
     email: Union[Unset, str] = UNSET,
     username: Union[Unset, str] = UNSET,
-) -> Response[Union[Customers, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[Customers, ErrorResultBase]]:
     all_results = Customers(items=[])
     # type: ignore
 
@@ -403,7 +402,7 @@ async def asyncio(
     external_system_id: Union[Unset, str] = UNSET,
     email: Union[Unset, str] = UNSET,
     username: Union[Unset, str] = UNSET,
-) -> Optional[Union[Customers, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[Customers, ErrorResultBase]]:
     """Search
 
      Search all customers that correspond to the given search conditions. It is important to note that
@@ -427,7 +426,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Customers, ErrorResult, ErrorResultBase]
+        Union[Customers, ErrorResultBase]
     """
 
     return (

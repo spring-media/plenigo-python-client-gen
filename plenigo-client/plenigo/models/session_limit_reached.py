@@ -75,9 +75,9 @@ class SessionLimitReached:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                removal_token_type_0 = isoparse(data)
+                removal_token_type_1 = isoparse(data)
 
-                return removal_token_type_0
+                return removal_token_type_1
             except:  # noqa: E722
                 pass
 

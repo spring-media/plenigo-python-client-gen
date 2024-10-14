@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.cross_offer import CrossOffer
+    from ..models.api_base_date import ApiBaseDate
 
 
 T = TypeVar("T", bound="ConnectedCompanyOffers")
@@ -18,12 +18,12 @@ class ConnectedCompanyOffers:
     Attributes:
         company_id (str): unique id of the source company
         company_name (str): name of the source company id
-        offers (Union[Unset, List['CrossOffer']]): offers that are shared by the company
+        offers (Union[Unset, List['ApiBaseDate']]): offers that are shared by the company
     """
 
     company_id: str
     company_name: str
-    offers: Union[Unset, List["CrossOffer"]] = UNSET
+    offers: Union[Unset, List["ApiBaseDate"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -53,7 +53,7 @@ class ConnectedCompanyOffers:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.cross_offer import CrossOffer
+        from ..models.api_base_date import ApiBaseDate
 
         d = src_dict.copy()
         company_id = d.pop("companyId")
@@ -63,7 +63,7 @@ class ConnectedCompanyOffers:
         offers = []
         _offers = d.pop("offers", UNSET)
         for offers_item_data in _offers or []:
-            offers_item = CrossOffer.from_dict(offers_item_data)
+            offers_item = ApiBaseDate.from_dict(offers_item_data)
 
             offers.append(offers_item)
 

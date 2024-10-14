@@ -5,14 +5,12 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.api_base_changed_by_type import ApiBaseChangedByType
-from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..models.relation_rule_base_identity_check_type import RelationRuleBaseIdentityCheckType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.api_base_date import ApiBaseDate
     from ..models.product_tag import ProductTag
-    from ..models.rule_translation import RuleTranslation
 
 
 T = TypeVar("T", bound="RelationRule")
@@ -30,16 +28,13 @@ class RelationRule:
         send_customer_email (Union[Unset, bool]): flag indicating if customer email should be sent in case of a
             cancellation
         identity_check_type (Union[Unset, RelationRuleBaseIdentityCheckType]): identity check type to use
-        translations (Union[Unset, List['RuleTranslation']]): translations for customer texts
-        qualifying_product_tag_ids (Union[Unset, List[int]]): tags that qualifies for a product relation
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        created_by (Union[Unset, str]): ID of who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
-        changed_by (Union[Unset, str]): ID of who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
+        translations (Union[Unset, List['ApiBaseDate']]): translations for customer texts
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
         relation_rule_id (Union[Unset, int]): unique id of the relation rule within a contract company
         product_tags (Union[Unset, List['ProductTag']]): tags associated with this product
     """
@@ -51,14 +46,9 @@ class RelationRule:
     cancel_unrelated: Union[Unset, bool] = UNSET
     send_customer_email: Union[Unset, bool] = UNSET
     identity_check_type: Union[Unset, RelationRuleBaseIdentityCheckType] = UNSET
-    translations: Union[Unset, List["RuleTranslation"]] = UNSET
-    qualifying_product_tag_ids: Union[Unset, List[int]] = UNSET
+    translations: Union[Unset, List["ApiBaseDate"]] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
-    created_by: Union[Unset, str] = UNSET
-    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
-    changed_by: Union[Unset, str] = UNSET
-    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
     relation_rule_id: Union[Unset, int] = UNSET
     product_tags: Union[Unset, List["ProductTag"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -87,10 +77,6 @@ class RelationRule:
                 translations_item = translations_item_data.to_dict()
                 translations.append(translations_item)
 
-        qualifying_product_tag_ids: Union[Unset, List[int]] = UNSET
-        if not isinstance(self.qualifying_product_tag_ids, Unset):
-            qualifying_product_tag_ids = self.qualifying_product_tag_ids
-
         created_date: Union[None, Unset, str]
         if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
@@ -106,18 +92,6 @@ class RelationRule:
             changed_date = self.changed_date.isoformat()
         else:
             changed_date = self.changed_date
-
-        created_by = self.created_by
-
-        created_by_type: Union[Unset, str] = UNSET
-        if not isinstance(self.created_by_type, Unset):
-            created_by_type = self.created_by_type.value
-
-        changed_by = self.changed_by
-
-        changed_by_type: Union[Unset, str] = UNSET
-        if not isinstance(self.changed_by_type, Unset):
-            changed_by_type = self.changed_by_type.value
 
         relation_rule_id = self.relation_rule_id
 
@@ -147,20 +121,10 @@ class RelationRule:
             field_dict["identityCheckType"] = identity_check_type
         if translations is not UNSET:
             field_dict["translations"] = translations
-        if qualifying_product_tag_ids is not UNSET:
-            field_dict["qualifyingProductTagIds"] = qualifying_product_tag_ids
         if created_date is not UNSET:
             field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
             field_dict["changedDate"] = changed_date
-        if created_by is not UNSET:
-            field_dict["createdBy"] = created_by
-        if created_by_type is not UNSET:
-            field_dict["createdByType"] = created_by_type
-        if changed_by is not UNSET:
-            field_dict["changedBy"] = changed_by
-        if changed_by_type is not UNSET:
-            field_dict["changedByType"] = changed_by_type
         if relation_rule_id is not UNSET:
             field_dict["relationRuleId"] = relation_rule_id
         if product_tags is not UNSET:
@@ -170,8 +134,8 @@ class RelationRule:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.api_base_date import ApiBaseDate
         from ..models.product_tag import ProductTag
-        from ..models.rule_translation import RuleTranslation
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle", UNSET)
@@ -196,11 +160,9 @@ class RelationRule:
         translations = []
         _translations = d.pop("translations", UNSET)
         for translations_item_data in _translations or []:
-            translations_item = RuleTranslation.from_dict(translations_item_data)
+            translations_item = ApiBaseDate.from_dict(translations_item_data)
 
             translations.append(translations_item)
-
-        qualifying_product_tag_ids = cast(List[int], d.pop("qualifyingProductTagIds", UNSET))
 
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
@@ -216,9 +178,9 @@ class RelationRule:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -240,33 +202,15 @@ class RelationRule:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
-
-        created_by = d.pop("createdBy", UNSET)
-
-        _created_by_type = d.pop("createdByType", UNSET)
-        created_by_type: Union[Unset, ApiBaseCreatedByType]
-        if isinstance(_created_by_type, Unset) or not _created_by_type:
-            created_by_type = UNSET
-        else:
-            created_by_type = ApiBaseCreatedByType(_created_by_type)
-
-        changed_by = d.pop("changedBy", UNSET)
-
-        _changed_by_type = d.pop("changedByType", UNSET)
-        changed_by_type: Union[Unset, ApiBaseChangedByType]
-        if isinstance(_changed_by_type, Unset) or not _changed_by_type:
-            changed_by_type = UNSET
-        else:
-            changed_by_type = ApiBaseChangedByType(_changed_by_type)
 
         relation_rule_id = d.pop("relationRuleId", UNSET)
 
@@ -286,13 +230,8 @@ class RelationRule:
             send_customer_email=send_customer_email,
             identity_check_type=identity_check_type,
             translations=translations,
-            qualifying_product_tag_ids=qualifying_product_tag_ids,
             created_date=created_date,
             changed_date=changed_date,
-            created_by=created_by,
-            created_by_type=created_by_type,
-            changed_by=changed_by,
-            changed_by_type=changed_by_type,
             relation_rule_id=relation_rule_id,
             product_tags=product_tags,
         )

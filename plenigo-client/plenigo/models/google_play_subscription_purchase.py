@@ -1,7 +1,9 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+import datetime
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
@@ -14,18 +16,21 @@ class GooglePlaySubscriptionPurchase:
     Attributes:
         auto_renewing (Union[Unset, bool]): whether the subscription will automatically be renewed when it reaches its
             current expiry time
-        auto_resume_time_millis (Union[Unset, int]): time at which the subscription will be automatically resumed, in
+        auto_resume_time_millis (Union[Unset, str]): time at which the subscription will be automatically resumed, in
             milliseconds since the Epoch - only present if the user has requested to pause the subscription
         cancel_reason (Union[Unset, int]): the reason why a subscription was canceled or is not auto-renewing
         cancel_survey_reason (Union[Unset, int]): information provided by the user when they complete the subscription
             cancellation flow (cancellation reason survey)
         user_input_cancel_reason (Union[Unset, str]): customized input cancel reason from the user. Only present when
             cancelReason is 0
+        subscription_end_date (Union[None, Unset, datetime.datetime]): date time the purchase was done with date-time
+            notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339,
+            section 5.6</a>, for example, 2017-07-21T17:32:28Z
         country_code (Union[Unset, str]): ISO 3166-1 alpha-2 billing country/region code of the user at the time the
             subscription was granted
         developer_payload (Union[Unset, str]): developer-specified string that contains supplemental information about
             an order
-        expiry_time_millis (Union[Unset, int]): time at which the subscription will expire, in milliseconds since the
+        expiry_time_millis (Union[Unset, str]): time at which the subscription will expire, in milliseconds since the
             Epoch
         kind (Union[Unset, str]): kind represents a subscriptionPurchase object in the androidpublisher service
         linked_purchase_token (Union[Unset, str]): purchase token of the originating purchase if this subscription is
@@ -34,37 +39,38 @@ class GooglePlaySubscriptionPurchase:
         order_id (Union[Unset, str]): order id of the latest recurring order associated with the purchase of the
             subscription
         payment_state (Union[Unset, int]): payment state of the subscription
-        price_amount_micros (Union[Unset, int]): price of the subscription, not including tax
+        price_amount_micros (Union[Unset, str]): price of the subscription, not including tax
         price_currency_code (Union[Unset, str]): ISO 4217 currency code for the subscription price
         profile_id (Union[Unset, str]): Google profile id of the user when the subscription was purchased
         profile_name (Union[Unset, str]): profile name of the user when the subscription was purchased
         purchase_type (Union[Unset, int]): type of purchase of the subscription - this field is only set if this
             purchase was not made using the standard in-app billing flow
-        start_time_millis (Union[Unset, int]): time at which the subscription was granted, in milliseconds since the
+        start_time_millis (Union[Unset, str]): time at which the subscription was granted, in milliseconds since the
             Epoch
-        user_cancellation_time_millis (Union[Unset, int]): time at which the subscription was canceled by the user, in
+        user_cancellation_time_millis (Union[Unset, str]): time at which the subscription was canceled by the user, in
             milliseconds since the epoch
     """
 
     auto_renewing: Union[Unset, bool] = UNSET
-    auto_resume_time_millis: Union[Unset, int] = UNSET
+    auto_resume_time_millis: Union[Unset, str] = UNSET
     cancel_reason: Union[Unset, int] = UNSET
     cancel_survey_reason: Union[Unset, int] = UNSET
     user_input_cancel_reason: Union[Unset, str] = UNSET
+    subscription_end_date: Union[None, Unset, datetime.datetime] = UNSET
     country_code: Union[Unset, str] = UNSET
     developer_payload: Union[Unset, str] = UNSET
-    expiry_time_millis: Union[Unset, int] = UNSET
+    expiry_time_millis: Union[Unset, str] = UNSET
     kind: Union[Unset, str] = UNSET
     linked_purchase_token: Union[Unset, str] = UNSET
     order_id: Union[Unset, str] = UNSET
     payment_state: Union[Unset, int] = UNSET
-    price_amount_micros: Union[Unset, int] = UNSET
+    price_amount_micros: Union[Unset, str] = UNSET
     price_currency_code: Union[Unset, str] = UNSET
     profile_id: Union[Unset, str] = UNSET
     profile_name: Union[Unset, str] = UNSET
     purchase_type: Union[Unset, int] = UNSET
-    start_time_millis: Union[Unset, int] = UNSET
-    user_cancellation_time_millis: Union[Unset, int] = UNSET
+    start_time_millis: Union[Unset, str] = UNSET
+    user_cancellation_time_millis: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,6 +83,14 @@ class GooglePlaySubscriptionPurchase:
         cancel_survey_reason = self.cancel_survey_reason
 
         user_input_cancel_reason = self.user_input_cancel_reason
+
+        subscription_end_date: Union[None, Unset, str]
+        if isinstance(self.subscription_end_date, Unset) or self.subscription_end_date is None:
+            subscription_end_date = UNSET
+        elif isinstance(self.subscription_end_date, datetime.datetime):
+            subscription_end_date = self.subscription_end_date.isoformat()
+        else:
+            subscription_end_date = self.subscription_end_date
 
         country_code = self.country_code
 
@@ -119,6 +133,8 @@ class GooglePlaySubscriptionPurchase:
             field_dict["cancelSurveyReason"] = cancel_survey_reason
         if user_input_cancel_reason is not UNSET:
             field_dict["userInputCancelReason"] = user_input_cancel_reason
+        if subscription_end_date is not UNSET:
+            field_dict["subscriptionEndDate"] = subscription_end_date
         if country_code is not UNSET:
             field_dict["countryCode"] = country_code
         if developer_payload is not UNSET:
@@ -163,6 +179,30 @@ class GooglePlaySubscriptionPurchase:
 
         user_input_cancel_reason = d.pop("userInputCancelReason", UNSET)
 
+        def _parse_subscription_end_date(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+
+            if data is None:
+                return data
+
+            if isinstance(data, Unset):
+                return data
+
+            # Try to parse the data as datetime.datetime
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                subscription_end_date_type_1 = isoparse(data)
+
+                return subscription_end_date_type_1
+            except:  # noqa: E722
+                pass
+
+            return cast(Union[None, Unset, datetime.datetime], data)
+
+        subscription_end_date = _parse_subscription_end_date(d.pop("subscriptionEndDate", UNSET))
+
         country_code = d.pop("countryCode", UNSET)
 
         developer_payload = d.pop("developerPayload", UNSET)
@@ -197,6 +237,7 @@ class GooglePlaySubscriptionPurchase:
             cancel_reason=cancel_reason,
             cancel_survey_reason=cancel_survey_reason,
             user_input_cancel_reason=user_input_cancel_reason,
+            subscription_end_date=subscription_end_date,
             country_code=country_code,
             developer_payload=developer_payload,
             expiry_time_millis=expiry_time_millis,

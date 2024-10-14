@@ -11,10 +11,10 @@ from ..models.offer_product_base_voucher_validity_timespan import OfferProductBa
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.api_base_date import ApiBaseDate
     from ..models.offer_product_base_additional_data import OfferProductBaseAdditionalData
     from ..models.offer_product_base_data import OfferProductBaseData
     from ..models.offer_product_step import OfferProductStep
-    from ..models.offer_translation import OfferTranslation
     from ..models.product_tag import ProductTag
 
 
@@ -55,11 +55,13 @@ class OfferProduct:
             wallet
         credit_count (Union[Unset, int]): credit count added with this product
         option (Union[Unset, bool]): flag indicating if product is an option in a basket
-        translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
+        translations (Union[Unset, List['ApiBaseDate']]): translations associated with this product
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
         steps (Union[Unset, List['OfferProductStep']]): steps associated with this product - mandatory field for
             subscriptions
         product_tags (Union[Unset, List['ProductTag']]): tags associated with this product
@@ -90,7 +92,7 @@ class OfferProduct:
     credit_count_walled_id: Union[Unset, int] = UNSET
     credit_count: Union[Unset, int] = UNSET
     option: Union[Unset, bool] = UNSET
-    translations: Union[Unset, List["OfferTranslation"]] = UNSET
+    translations: Union[Unset, List["ApiBaseDate"]] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     steps: Union[Unset, List["OfferProductStep"]] = UNSET
@@ -262,10 +264,10 @@ class OfferProduct:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.api_base_date import ApiBaseDate
         from ..models.offer_product_base_additional_data import OfferProductBaseAdditionalData
         from ..models.offer_product_base_data import OfferProductBaseData
         from ..models.offer_product_step import OfferProductStep
-        from ..models.offer_translation import OfferTranslation
         from ..models.product_tag import ProductTag
 
         d = src_dict.copy()
@@ -303,9 +305,9 @@ class OfferProduct:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                validity_end_time_type_0 = isoparse(data)
+                validity_end_time_type_1 = isoparse(data)
 
-                return validity_end_time_type_0
+                return validity_end_time_type_1
             except:  # noqa: E722
                 pass
 
@@ -359,7 +361,7 @@ class OfferProduct:
         translations = []
         _translations = d.pop("translations", UNSET)
         for translations_item_data in _translations or []:
-            translations_item = OfferTranslation.from_dict(translations_item_data)
+            translations_item = ApiBaseDate.from_dict(translations_item_data)
 
             translations.append(translations_item)
 
@@ -377,9 +379,9 @@ class OfferProduct:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -401,9 +403,9 @@ class OfferProduct:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 

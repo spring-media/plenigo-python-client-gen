@@ -7,8 +7,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.customer_credit_wallet import CustomerCreditWallet
-from ...models.error_result import ErrorResult
+from ...models.api_base_date import ApiBaseDate
 from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
@@ -30,13 +29,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[CustomerCreditWallet, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = CustomerCreditWallet.from_dict(response.json())
+        response_200 = ApiBaseDate.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -63,7 +62,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[CustomerCreditWallet, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -81,7 +80,7 @@ def sync_detailed(
     customer_credit_wallet_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[CustomerCreditWallet, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
     """Get credit wallet by id
 
      Get credit wallet by id.
@@ -94,7 +93,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CustomerCreditWallet, ErrorResult, ErrorResultBase]]
+        Response[Union[ApiBaseDate, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -112,7 +111,7 @@ def sync(
     customer_credit_wallet_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[CustomerCreditWallet, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
     """Get credit wallet by id
 
      Get credit wallet by id.
@@ -125,7 +124,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CustomerCreditWallet, ErrorResult, ErrorResultBase]
+        Union[ApiBaseDate, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -143,7 +142,7 @@ async def asyncio_detailed(
     customer_credit_wallet_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[CustomerCreditWallet, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
     """Get credit wallet by id
 
      Get credit wallet by id.
@@ -156,7 +155,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CustomerCreditWallet, ErrorResult, ErrorResultBase]]
+        Response[Union[ApiBaseDate, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -172,7 +171,7 @@ async def asyncio(
     customer_credit_wallet_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[CustomerCreditWallet, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
     """Get credit wallet by id
 
      Get credit wallet by id.
@@ -185,7 +184,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CustomerCreditWallet, ErrorResult, ErrorResultBase]
+        Union[ApiBaseDate, ErrorResultBase]
     """
 
     return (

@@ -196,9 +196,9 @@ class OrderImport:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                start_date_type_0 = isoparse(data)
+                start_date_type_1 = isoparse(data)
 
-                return start_date_type_0
+                return start_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -232,9 +232,9 @@ class OrderImport:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                order_date_type_0 = isoparse(data)
+                order_date_type_1 = isoparse(data)
 
-                return order_date_type_0
+                return order_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -256,9 +256,9 @@ class OrderImport:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                end_date_type_0 = isoparse(data)
+                end_date_type_1 = isoparse(data)
 
-                return end_date_type_0
+                return end_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -280,9 +280,9 @@ class OrderImport:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                reference_start_date_type_0 = isoparse(data)
+                reference_start_date_type_1 = isoparse(data)
 
-                return reference_start_date_type_0
+                return reference_start_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -304,9 +304,9 @@ class OrderImport:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                next_booking_date_type_0 = isoparse(data)
+                next_booking_date_type_1 = isoparse(data)
 
-                return next_booking_date_type_0
+                return next_booking_date_type_1
             except:  # noqa: E722
                 pass
 

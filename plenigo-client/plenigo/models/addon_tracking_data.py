@@ -108,9 +108,9 @@ class AddonTrackingData:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                sending_date_type_0 = isoparse(data)
+                sending_date_type_1 = isoparse(data)
 
-                return sending_date_type_0
+                return sending_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -132,9 +132,9 @@ class AddonTrackingData:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                arrival_date_type_0 = isoparse(data)
+                arrival_date_type_1 = isoparse(data)
 
-                return arrival_date_type_0
+                return arrival_date_type_1
             except:  # noqa: E722
                 pass
 

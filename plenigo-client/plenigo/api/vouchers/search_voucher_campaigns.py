@@ -8,7 +8,6 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.api_campaign_page import ApiCampaignPage
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...types import UNSET, Response, Unset
 
@@ -47,13 +46,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[ApiCampaignPage, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = ApiCampaignPage.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -61,7 +60,7 @@ def _parse_response(
 
         return response_401
     if response.status_code == HTTPStatus.PAYMENT_REQUIRED:
-        response_402 = ErrorResult.from_dict(response.json())
+        response_402 = ErrorResultBase.from_dict(response.json())
 
         return response_402
     if response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
@@ -84,7 +83,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[ApiCampaignPage, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -100,7 +99,7 @@ def sync_all(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     voucher_code: Union[Unset, str] = UNSET,
-) -> Optional[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[ApiCampaignPage, ErrorResultBase]]:
     all_results = ApiCampaignPage(items=[])
     # type: ignore
 
@@ -143,7 +142,7 @@ def sync_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     voucher_code: Union[Unset, str] = UNSET,
-) -> Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[ApiCampaignPage, ErrorResultBase]]:
     """Search
 
      Search all campaigns that correspond to the given search conditions.
@@ -159,7 +158,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]
+        Response[Union[ApiCampaignPage, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -183,7 +182,7 @@ def sync(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     voucher_code: Union[Unset, str] = UNSET,
-) -> Optional[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[ApiCampaignPage, ErrorResultBase]]:
     """Search
 
      Search all campaigns that correspond to the given search conditions.
@@ -199,7 +198,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiCampaignPage, ErrorResult, ErrorResultBase]
+        Union[ApiCampaignPage, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -223,7 +222,7 @@ async def asyncio_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     voucher_code: Union[Unset, str] = UNSET,
-) -> Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[ApiCampaignPage, ErrorResultBase]]:
     """Search
 
      Search all campaigns that correspond to the given search conditions.
@@ -239,7 +238,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]
+        Response[Union[ApiCampaignPage, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -261,7 +260,7 @@ async def asyncio_all(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     voucher_code: Union[Unset, str] = UNSET,
-) -> Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[ApiCampaignPage, ErrorResultBase]]:
     all_results = ApiCampaignPage(items=[])
     # type: ignore
 
@@ -301,7 +300,7 @@ async def asyncio(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     voucher_code: Union[Unset, str] = UNSET,
-) -> Optional[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[ApiCampaignPage, ErrorResultBase]]:
     """Search
 
      Search all campaigns that correspond to the given search conditions.
@@ -317,7 +316,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiCampaignPage, ErrorResult, ErrorResultBase]
+        Union[ApiCampaignPage, ErrorResultBase]
     """
 
     return (

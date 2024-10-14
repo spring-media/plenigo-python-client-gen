@@ -9,7 +9,6 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.checkout_preparation import CheckoutPreparation
 from ...models.checkout_preparation_result import CheckoutPreparationResult
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
@@ -41,13 +40,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[CheckoutPreparationResult, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[CheckoutPreparationResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.CREATED:
         response_201 = CheckoutPreparationResult.from_dict(response.json())
 
         return response_201
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -78,7 +77,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[CheckoutPreparationResult, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[CheckoutPreparationResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -96,7 +95,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: CheckoutPreparation,
-) -> Response[Union[CheckoutPreparationResult, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[CheckoutPreparationResult, ErrorResultBase]]:
     """Prepare purchase
 
      Prepares everything for a purchase that a customer is supposed to do. The purchase order id returned
@@ -111,7 +110,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CheckoutPreparationResult, ErrorResult, ErrorResultBase]]
+        Response[Union[CheckoutPreparationResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -129,7 +128,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: CheckoutPreparation,
-) -> Optional[Union[CheckoutPreparationResult, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[CheckoutPreparationResult, ErrorResultBase]]:
     """Prepare purchase
 
      Prepares everything for a purchase that a customer is supposed to do. The purchase order id returned
@@ -144,7 +143,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CheckoutPreparationResult, ErrorResult, ErrorResultBase]
+        Union[CheckoutPreparationResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -162,7 +161,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: CheckoutPreparation,
-) -> Response[Union[CheckoutPreparationResult, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[CheckoutPreparationResult, ErrorResultBase]]:
     """Prepare purchase
 
      Prepares everything for a purchase that a customer is supposed to do. The purchase order id returned
@@ -177,7 +176,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CheckoutPreparationResult, ErrorResult, ErrorResultBase]]
+        Response[Union[CheckoutPreparationResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -193,7 +192,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: CheckoutPreparation,
-) -> Optional[Union[CheckoutPreparationResult, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[CheckoutPreparationResult, ErrorResultBase]]:
     """Prepare purchase
 
      Prepares everything for a purchase that a customer is supposed to do. The purchase order id returned
@@ -208,7 +207,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CheckoutPreparationResult, ErrorResult, ErrorResultBase]
+        Union[CheckoutPreparationResult, ErrorResultBase]
     """
 
     return (

@@ -9,7 +9,6 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.callback_log_entries import CallbackLogEntries
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.search_callback_logs_callback_type import SearchCallbackLogsCallbackType
 from ...models.search_callback_logs_entity_type import SearchCallbackLogsEntityType
@@ -81,13 +80,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[CallbackLogEntries, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[CallbackLogEntries, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = CallbackLogEntries.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -114,7 +113,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[CallbackLogEntries, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[CallbackLogEntries, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -134,7 +133,7 @@ def sync_all(
     sort: Union[Unset, SearchCallbackLogsSort] = UNSET,
     entity_type: Union[Unset, SearchCallbackLogsEntityType] = UNSET,
     callback_type: Union[Unset, SearchCallbackLogsCallbackType] = UNSET,
-) -> Optional[Union[CallbackLogEntries, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[CallbackLogEntries, ErrorResultBase]]:
     all_results = CallbackLogEntries(items=[])
     # type: ignore
 
@@ -185,7 +184,7 @@ def sync_detailed(
     sort: Union[Unset, SearchCallbackLogsSort] = UNSET,
     entity_type: Union[Unset, SearchCallbackLogsEntityType] = UNSET,
     callback_type: Union[Unset, SearchCallbackLogsCallbackType] = UNSET,
-) -> Response[Union[CallbackLogEntries, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[CallbackLogEntries, ErrorResultBase]]:
     """Search
 
      Search all callback log entries that correspond to the given search conditions.
@@ -205,7 +204,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CallbackLogEntries, ErrorResult, ErrorResultBase]]
+        Response[Union[CallbackLogEntries, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -237,7 +236,7 @@ def sync(
     sort: Union[Unset, SearchCallbackLogsSort] = UNSET,
     entity_type: Union[Unset, SearchCallbackLogsEntityType] = UNSET,
     callback_type: Union[Unset, SearchCallbackLogsCallbackType] = UNSET,
-) -> Optional[Union[CallbackLogEntries, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[CallbackLogEntries, ErrorResultBase]]:
     """Search
 
      Search all callback log entries that correspond to the given search conditions.
@@ -257,7 +256,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CallbackLogEntries, ErrorResult, ErrorResultBase]
+        Union[CallbackLogEntries, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -289,7 +288,7 @@ async def asyncio_detailed(
     sort: Union[Unset, SearchCallbackLogsSort] = UNSET,
     entity_type: Union[Unset, SearchCallbackLogsEntityType] = UNSET,
     callback_type: Union[Unset, SearchCallbackLogsCallbackType] = UNSET,
-) -> Response[Union[CallbackLogEntries, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[CallbackLogEntries, ErrorResultBase]]:
     """Search
 
      Search all callback log entries that correspond to the given search conditions.
@@ -309,7 +308,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CallbackLogEntries, ErrorResult, ErrorResultBase]]
+        Response[Union[CallbackLogEntries, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -339,7 +338,7 @@ async def asyncio_all(
     sort: Union[Unset, SearchCallbackLogsSort] = UNSET,
     entity_type: Union[Unset, SearchCallbackLogsEntityType] = UNSET,
     callback_type: Union[Unset, SearchCallbackLogsCallbackType] = UNSET,
-) -> Response[Union[CallbackLogEntries, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[CallbackLogEntries, ErrorResultBase]]:
     all_results = CallbackLogEntries(items=[])
     # type: ignore
 
@@ -387,7 +386,7 @@ async def asyncio(
     sort: Union[Unset, SearchCallbackLogsSort] = UNSET,
     entity_type: Union[Unset, SearchCallbackLogsEntityType] = UNSET,
     callback_type: Union[Unset, SearchCallbackLogsCallbackType] = UNSET,
-) -> Optional[Union[CallbackLogEntries, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[CallbackLogEntries, ErrorResultBase]]:
     """Search
 
      Search all callback log entries that correspond to the given search conditions.
@@ -407,7 +406,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CallbackLogEntries, ErrorResult, ErrorResultBase]
+        Union[CallbackLogEntries, ErrorResultBase]
     """
 
     return (

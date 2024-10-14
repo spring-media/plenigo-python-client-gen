@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_campaign_view import ApiCampaignView
+    from ..models.api_base_date import ApiBaseDate
 
 
 T = TypeVar("T", bound="ApiCampaignPage")
@@ -19,13 +19,13 @@ class ApiCampaignPage:
         starting_after (Union[Unset, int]): starting after element id
         size (Union[Unset, int]): size of elements of the page
         total_size (Union[Unset, int]): total of elements
-        campaigns (Union[Unset, List['ApiCampaignView']]):
+        campaigns (Union[Unset, List['ApiBaseDate']]):
     """
 
     starting_after: Union[Unset, int] = UNSET
     size: Union[Unset, int] = UNSET
     total_size: Union[Unset, int] = UNSET
-    campaigns: Union[Unset, List["ApiCampaignView"]] = UNSET
+    campaigns: Union[Unset, List["ApiBaseDate"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -58,7 +58,7 @@ class ApiCampaignPage:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_campaign_view import ApiCampaignView
+        from ..models.api_base_date import ApiBaseDate
 
         d = src_dict.copy()
         starting_after = d.pop("startingAfter", UNSET)
@@ -70,7 +70,7 @@ class ApiCampaignPage:
         campaigns = []
         _campaigns = d.pop("campaigns", UNSET)
         for campaigns_item_data in _campaigns or []:
-            campaigns_item = ApiCampaignView.from_dict(campaigns_item_data)
+            campaigns_item = ApiBaseDate.from_dict(campaigns_item_data)
 
             campaigns.append(campaigns_item)
 

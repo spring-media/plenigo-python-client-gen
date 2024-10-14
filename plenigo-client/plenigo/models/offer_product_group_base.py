@@ -4,7 +4,7 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 if TYPE_CHECKING:
-    from ..models.offer_translation import OfferTranslation
+    from ..models.api_base_date import ApiBaseDate
 
 
 T = TypeVar("T", bound="OfferProductGroupBase")
@@ -15,11 +15,11 @@ class OfferProductGroupBase:
     """
     Attributes:
         internal_title (str): internal title of the product group
-        translations (List['OfferTranslation']): translations associated with this product
+        translations (List['ApiBaseDate']): translations associated with this product
     """
 
     internal_title: str
-    translations: List["OfferTranslation"]
+    translations: List["ApiBaseDate"]
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -43,7 +43,7 @@ class OfferProductGroupBase:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.offer_translation import OfferTranslation
+        from ..models.api_base_date import ApiBaseDate
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -51,7 +51,7 @@ class OfferProductGroupBase:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = OfferTranslation.from_dict(translations_item_data)
+            translations_item = ApiBaseDate.from_dict(translations_item_data)
 
             translations.append(translations_item)
 

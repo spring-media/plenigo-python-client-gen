@@ -11,7 +11,7 @@ from ..models.checkout_preparation_gift_option import CheckoutPreparationGiftOpt
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.additional_order_data import AdditionalOrderData
+    from ..models.api_base_date import ApiBaseDate
     from ..models.checkout_address_settings import CheckoutAddressSettings
     from ..models.checkout_offer import CheckoutOffer
     from ..models.connected_offer_request import ConnectedOfferRequest
@@ -55,7 +55,7 @@ class CheckoutPreparation:
         gift_option (Union[Unset, CheckoutPreparationGiftOption]): flag that controls if the checkout should be run as a
             gift checkout, should show a gift checkout box or hide it - the default value is
             HIDE_GIFT_OPTION
-        additional_data (Union[Unset, AdditionalOrderData]):
+        additional_data (Union[Unset, ApiBaseDate]):
         voucher_code (Union[Unset, str]): voucher code - if voucher code is provided no items must be provided
         items (Union[Unset, List['CheckoutOffer']]): offers that should be sold via checkout
         connected_offer_items (Union[Unset, List['ConnectedOfferRequest']]): connected offers that should be sold via
@@ -80,7 +80,7 @@ class CheckoutPreparation:
     subscription_start_date: Union[None, Unset, datetime.datetime] = UNSET
     address_settings: Union[Unset, "CheckoutAddressSettings"] = UNSET
     gift_option: Union[Unset, CheckoutPreparationGiftOption] = UNSET
-    additional_data: Union[Unset, "AdditionalOrderData"] = UNSET
+    additional_data: Union[Unset, "ApiBaseDate"] = UNSET
     voucher_code: Union[Unset, str] = UNSET
     items: Union[Unset, List["CheckoutOffer"]] = UNSET
     connected_offer_items: Union[Unset, List["ConnectedOfferRequest"]] = UNSET
@@ -214,7 +214,7 @@ class CheckoutPreparation:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.additional_order_data import AdditionalOrderData
+        from ..models.api_base_date import ApiBaseDate
         from ..models.checkout_address_settings import CheckoutAddressSettings
         from ..models.checkout_offer import CheckoutOffer
         from ..models.connected_offer_request import ConnectedOfferRequest
@@ -276,9 +276,9 @@ class CheckoutPreparation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                subscription_start_date_type_0 = isoparse(data)
+                subscription_start_date_type_1 = isoparse(data)
 
-                return subscription_start_date_type_0
+                return subscription_start_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -301,11 +301,11 @@ class CheckoutPreparation:
             gift_option = CheckoutPreparationGiftOption(_gift_option)
 
         _additional_data = d.pop("additionalData", UNSET)
-        additional_data: Union[Unset, AdditionalOrderData]
+        additional_data: Union[Unset, ApiBaseDate]
         if isinstance(_additional_data, Unset) or not _additional_data:
             additional_data = UNSET
         else:
-            additional_data = AdditionalOrderData.from_dict(_additional_data)
+            additional_data = ApiBaseDate.from_dict(_additional_data)
 
         voucher_code = d.pop("voucherCode", UNSET)
 

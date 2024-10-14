@@ -5,19 +5,18 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.api_base_changed_by_type import ApiBaseChangedByType
-from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..models.offer_base_allowed_payment_methods_item import OfferBaseAllowedPaymentMethodsItem
 from ..models.offer_base_managed_by import OfferBaseManagedBy
 from ..models.offer_base_pdf_template_usage import OfferBasePdfTemplateUsage
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.api_base_date import ApiBaseDate
+    from ..models.archive_settings import ArchiveSettings
     from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
     from ..models.offer_partner_settings import OfferPartnerSettings
     from ..models.offer_product import OfferProduct
     from ..models.offer_product_group import OfferProductGroup
-    from ..models.offer_translation import OfferTranslation
     from ..models.product_tag import ProductTag
 
 
@@ -29,7 +28,7 @@ class Offer:
     """
     Attributes:
         internal_title (str): internal title of the product group
-        translations (List['OfferTranslation']): translations associated with this product
+        translations (List['ApiBaseDate']): translations associated with this product
         plenigo_offer_id (str): unique id of the offer within a company
         pause_able (Union[Unset, bool]): flag indicating if subscription is pause able
         invoice_address_mandatory (Union[Unset, bool]): flag indicating if invoice address must be provided by the
@@ -45,6 +44,7 @@ class Offer:
         issues_in_future (Union[Unset, int]): amount of issues that the user can select in the future - cannot be
             selected with fixed start date
         archived (Union[Unset, bool]): flag indicating if offer is archived
+        archive_settings (Union[Unset, ArchiveSettings]):
         allowed_payment_methods (Union[Unset, List[OfferBaseAllowedPaymentMethodsItem]]): additional constraints to the
             payment methods if some of the selected payment methods cannot be used for this offer - there can be no more
             payment methods than selected in the global payment settings section
@@ -60,14 +60,12 @@ class Offer:
         managed_by (Union[Unset, OfferBaseManagedBy]): managed by of the given offer.
         pdf_template_usage (Union[Unset, OfferBasePdfTemplateUsage]): contains the pdf template to use with this offer
         partner_settings (Union[Unset, OfferPartnerSettings]):
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        created_by (Union[Unset, str]): ID of who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
-        changed_by (Union[Unset, str]): ID of who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
         managed_external (Union[Unset, bool]): flag indicating if offer is managed externally
         products (Union[Unset, List['OfferProduct']]): products associated with this offer
         product_groups (Union[Unset, List['OfferProductGroup']]): product groups associated with this offer
@@ -75,7 +73,7 @@ class Offer:
     """
 
     internal_title: str
-    translations: List["OfferTranslation"]
+    translations: List["ApiBaseDate"]
     plenigo_offer_id: str
     pause_able: Union[Unset, bool] = UNSET
     invoice_address_mandatory: Union[Unset, bool] = UNSET
@@ -86,6 +84,7 @@ class Offer:
     issues_in_past: Union[Unset, int] = UNSET
     issues_in_future: Union[Unset, int] = UNSET
     archived: Union[Unset, bool] = UNSET
+    archive_settings: Union[Unset, "ArchiveSettings"] = UNSET
     allowed_payment_methods: Union[Unset, List[OfferBaseAllowedPaymentMethodsItem]] = UNSET
     connected_company_settings: Union[Unset, "OfferConnectedCompanySettings"] = UNSET
     leaf_id: Union[Unset, int] = UNSET
@@ -100,10 +99,6 @@ class Offer:
     partner_settings: Union[Unset, "OfferPartnerSettings"] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
-    created_by: Union[Unset, str] = UNSET
-    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
-    changed_by: Union[Unset, str] = UNSET
-    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
     managed_external: Union[Unset, bool] = UNSET
     products: Union[Unset, List["OfferProduct"]] = UNSET
     product_groups: Union[Unset, List["OfferProductGroup"]] = UNSET
@@ -143,6 +138,10 @@ class Offer:
         issues_in_future = self.issues_in_future
 
         archived = self.archived
+
+        archive_settings: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.archive_settings, Unset):
+            archive_settings = self.archive_settings.to_dict()
 
         allowed_payment_methods: Union[Unset, List[str]] = UNSET
         if not isinstance(self.allowed_payment_methods, Unset):
@@ -197,18 +196,6 @@ class Offer:
         else:
             changed_date = self.changed_date
 
-        created_by = self.created_by
-
-        created_by_type: Union[Unset, str] = UNSET
-        if not isinstance(self.created_by_type, Unset):
-            created_by_type = self.created_by_type.value
-
-        changed_by = self.changed_by
-
-        changed_by_type: Union[Unset, str] = UNSET
-        if not isinstance(self.changed_by_type, Unset):
-            changed_by_type = self.changed_by_type.value
-
         managed_external = self.managed_external
 
         products: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -259,6 +246,8 @@ class Offer:
             field_dict["issuesInFuture"] = issues_in_future
         if archived is not UNSET:
             field_dict["archived"] = archived
+        if archive_settings is not UNSET:
+            field_dict["archiveSettings"] = archive_settings
         if allowed_payment_methods is not UNSET:
             field_dict["allowedPaymentMethods"] = allowed_payment_methods
         if connected_company_settings is not UNSET:
@@ -287,14 +276,6 @@ class Offer:
             field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
             field_dict["changedDate"] = changed_date
-        if created_by is not UNSET:
-            field_dict["createdBy"] = created_by
-        if created_by_type is not UNSET:
-            field_dict["createdByType"] = created_by_type
-        if changed_by is not UNSET:
-            field_dict["changedBy"] = changed_by
-        if changed_by_type is not UNSET:
-            field_dict["changedByType"] = changed_by_type
         if managed_external is not UNSET:
             field_dict["managedExternal"] = managed_external
         if products is not UNSET:
@@ -308,11 +289,12 @@ class Offer:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.api_base_date import ApiBaseDate
+        from ..models.archive_settings import ArchiveSettings
         from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
         from ..models.offer_partner_settings import OfferPartnerSettings
         from ..models.offer_product import OfferProduct
         from ..models.offer_product_group import OfferProductGroup
-        from ..models.offer_translation import OfferTranslation
         from ..models.product_tag import ProductTag
 
         d = src_dict.copy()
@@ -321,7 +303,7 @@ class Offer:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = OfferTranslation.from_dict(translations_item_data)
+            translations_item = ApiBaseDate.from_dict(translations_item_data)
 
             translations.append(translations_item)
 
@@ -351,9 +333,9 @@ class Offer:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                fixed_start_date_type_0 = isoparse(data).date()
+                fixed_start_date_type_1 = isoparse(data).date()
 
-                return fixed_start_date_type_0
+                return fixed_start_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -366,6 +348,13 @@ class Offer:
         issues_in_future = d.pop("issuesInFuture", UNSET)
 
         archived = d.pop("archived", UNSET)
+
+        _archive_settings = d.pop("archiveSettings", UNSET)
+        archive_settings: Union[Unset, ArchiveSettings]
+        if isinstance(_archive_settings, Unset) or not _archive_settings:
+            archive_settings = UNSET
+        else:
+            archive_settings = ArchiveSettings.from_dict(_archive_settings)
 
         allowed_payment_methods = []
         _allowed_payment_methods = d.pop("allowedPaymentMethods", UNSET)
@@ -430,9 +419,9 @@ class Offer:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -454,33 +443,15 @@ class Offer:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
             return cast(Union[None, Unset, datetime.datetime], data)
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
-
-        created_by = d.pop("createdBy", UNSET)
-
-        _created_by_type = d.pop("createdByType", UNSET)
-        created_by_type: Union[Unset, ApiBaseCreatedByType]
-        if isinstance(_created_by_type, Unset) or not _created_by_type:
-            created_by_type = UNSET
-        else:
-            created_by_type = ApiBaseCreatedByType(_created_by_type)
-
-        changed_by = d.pop("changedBy", UNSET)
-
-        _changed_by_type = d.pop("changedByType", UNSET)
-        changed_by_type: Union[Unset, ApiBaseChangedByType]
-        if isinstance(_changed_by_type, Unset) or not _changed_by_type:
-            changed_by_type = UNSET
-        else:
-            changed_by_type = ApiBaseChangedByType(_changed_by_type)
 
         managed_external = d.pop("managedExternal", UNSET)
 
@@ -518,6 +489,7 @@ class Offer:
             issues_in_past=issues_in_past,
             issues_in_future=issues_in_future,
             archived=archived,
+            archive_settings=archive_settings,
             allowed_payment_methods=allowed_payment_methods,
             connected_company_settings=connected_company_settings,
             leaf_id=leaf_id,
@@ -532,10 +504,6 @@ class Offer:
             partner_settings=partner_settings,
             created_date=created_date,
             changed_date=changed_date,
-            created_by=created_by,
-            created_by_type=created_by_type,
-            changed_by=changed_by,
-            changed_by_type=changed_by_type,
             managed_external=managed_external,
             products=products,
             product_groups=product_groups,

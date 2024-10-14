@@ -133,9 +133,9 @@ class AccessRightItemCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                life_time_start_type_0 = isoparse(data)
+                life_time_start_type_1 = isoparse(data)
 
-                return life_time_start_type_0
+                return life_time_start_type_1
             except:  # noqa: E722
                 pass
 
@@ -157,9 +157,9 @@ class AccessRightItemCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                life_time_end_type_0 = isoparse(data)
+                life_time_end_type_1 = isoparse(data)
 
-                return life_time_end_type_0
+                return life_time_end_type_1
             except:  # noqa: E722
                 pass
 
@@ -181,9 +181,9 @@ class AccessRightItemCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                access_time_start_type_0 = isoparse(data)
+                access_time_start_type_1 = isoparse(data)
 
-                return access_time_start_type_0
+                return access_time_start_type_1
             except:  # noqa: E722
                 pass
 
@@ -205,9 +205,9 @@ class AccessRightItemCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                access_time_end_type_0 = isoparse(data)
+                access_time_end_type_1 = isoparse(data)
 
-                return access_time_end_type_0
+                return access_time_end_type_1
             except:  # noqa: E722
                 pass
 
@@ -229,9 +229,9 @@ class AccessRightItemCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                max_cache_date_type_0 = isoparse(data)
+                max_cache_date_type_1 = isoparse(data)
 
-                return max_cache_date_type_0
+                return max_cache_date_type_1
             except:  # noqa: E722
                 pass
 

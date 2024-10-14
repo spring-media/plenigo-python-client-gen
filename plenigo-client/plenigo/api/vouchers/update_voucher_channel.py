@@ -7,9 +7,8 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.api_channel import ApiChannel
+from ...models.api_base_date import ApiBaseDate
 from ...models.channel_update import ChannelUpdate
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.success_status import SuccessStatus
 from ...types import UNSET, Response, Unset
@@ -51,9 +50,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = ApiChannel.from_dict(response.json())
+        response_200 = ApiBaseDate.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.ACCEPTED:
@@ -61,7 +60,7 @@ def _parse_response(
 
         return response_202
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -69,7 +68,7 @@ def _parse_response(
 
         return response_401
     if response.status_code == HTTPStatus.PAYMENT_REQUIRED:
-        response_402 = ErrorResult.from_dict(response.json())
+        response_402 = ErrorResultBase.from_dict(response.json())
 
         return response_402
     if response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
@@ -92,7 +91,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -112,7 +111,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: ChannelUpdate,
     callback: Union[Unset, bool] = UNSET,
-) -> Response[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]:
     """Update channel
 
      *ASYNC* Update channel that is identified by the passed channel id. ATTENTION - this process is
@@ -128,7 +127,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]
+        Response[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]
     """
 
     kwargs = _get_kwargs(
@@ -150,7 +149,7 @@ def sync(
     client: AuthenticatedClient,
     body: ChannelUpdate,
     callback: Union[Unset, bool] = UNSET,
-) -> Optional[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]:
     """Update channel
 
      *ASYNC* Update channel that is identified by the passed channel id. ATTENTION - this process is
@@ -166,7 +165,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]
+        Union[ApiBaseDate, ErrorResultBase, SuccessStatus]
     """
 
     return sync_detailed(
@@ -188,7 +187,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: ChannelUpdate,
     callback: Union[Unset, bool] = UNSET,
-) -> Response[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]:
     """Update channel
 
      *ASYNC* Update channel that is identified by the passed channel id. ATTENTION - this process is
@@ -204,7 +203,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]
+        Response[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]
     """
 
     kwargs = _get_kwargs(
@@ -224,7 +223,7 @@ async def asyncio(
     client: AuthenticatedClient,
     body: ChannelUpdate,
     callback: Union[Unset, bool] = UNSET,
-) -> Optional[Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase, SuccessStatus]]:
     """Update channel
 
      *ASYNC* Update channel that is identified by the passed channel id. ATTENTION - this process is
@@ -240,7 +239,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ApiChannel, ErrorResult, ErrorResultBase, SuccessStatus]
+        Union[ApiBaseDate, ErrorResultBase, SuccessStatus]
     """
 
     return (

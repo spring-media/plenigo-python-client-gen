@@ -7,7 +7,6 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.voucher_status import VoucherStatus
 from ...types import Response
@@ -30,13 +29,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResult, ErrorResultBase, VoucherStatus]]:
+) -> Optional[Union[ErrorResultBase, VoucherStatus]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = VoucherStatus.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -44,11 +43,11 @@ def _parse_response(
 
         return response_401
     if response.status_code == HTTPStatus.PAYMENT_REQUIRED:
-        response_402 = ErrorResult.from_dict(response.json())
+        response_402 = ErrorResultBase.from_dict(response.json())
 
         return response_402
     if response.status_code == HTTPStatus.FORBIDDEN:
-        response_403 = ErrorResult.from_dict(response.json())
+        response_403 = ErrorResultBase.from_dict(response.json())
 
         return response_403
     if response.status_code == HTTPStatus.NOT_FOUND:
@@ -75,7 +74,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResult, ErrorResultBase, VoucherStatus]]:
+) -> Response[Union[ErrorResultBase, VoucherStatus]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -93,7 +92,7 @@ def sync_detailed(
     voucher_code: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResult, ErrorResultBase, VoucherStatus]]:
+) -> Response[Union[ErrorResultBase, VoucherStatus]]:
     """Validate voucher code
 
      Validates the voucher code provided.
@@ -106,7 +105,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, VoucherStatus]]
+        Response[Union[ErrorResultBase, VoucherStatus]]
     """
 
     kwargs = _get_kwargs(
@@ -124,7 +123,7 @@ def sync(
     voucher_code: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResult, ErrorResultBase, VoucherStatus]]:
+) -> Optional[Union[ErrorResultBase, VoucherStatus]]:
     """Validate voucher code
 
      Validates the voucher code provided.
@@ -137,7 +136,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, VoucherStatus]
+        Union[ErrorResultBase, VoucherStatus]
     """
 
     return sync_detailed(
@@ -155,7 +154,7 @@ async def asyncio_detailed(
     voucher_code: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResult, ErrorResultBase, VoucherStatus]]:
+) -> Response[Union[ErrorResultBase, VoucherStatus]]:
     """Validate voucher code
 
      Validates the voucher code provided.
@@ -168,7 +167,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, VoucherStatus]]
+        Response[Union[ErrorResultBase, VoucherStatus]]
     """
 
     kwargs = _get_kwargs(
@@ -184,7 +183,7 @@ async def asyncio(
     voucher_code: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResult, ErrorResultBase, VoucherStatus]]:
+) -> Optional[Union[ErrorResultBase, VoucherStatus]]:
     """Validate voucher code
 
      Validates the voucher code provided.
@@ -197,7 +196,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, VoucherStatus]
+        Union[ErrorResultBase, VoucherStatus]
     """
 
     return (

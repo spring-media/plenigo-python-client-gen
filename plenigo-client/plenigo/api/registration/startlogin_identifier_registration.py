@@ -8,9 +8,8 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.customer_login_identifier_registration import CustomerLoginIdentifierRegistration
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
-from ...models.next_step import NextStep
+from ...models.step_token import StepToken
 from ...types import Response
 
 log = logging.getLogger(__name__)
@@ -41,16 +40,16 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, ErrorResult, ErrorResultBase, NextStep]]:
+) -> Optional[Union[Any, ErrorResultBase, StepToken]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = NextStep.from_dict(response.json())
+        response_200 = StepToken.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.ALREADY_REPORTED:
         response_208 = cast(Any, None)
         return response_208
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.NOT_FOUND:
@@ -77,7 +76,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, ErrorResult, ErrorResultBase, NextStep]]:
+) -> Response[Union[Any, ErrorResultBase, StepToken]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -95,7 +94,7 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: CustomerLoginIdentifierRegistration,
-) -> Response[Union[Any, ErrorResult, ErrorResultBase, NextStep]]:
+) -> Response[Union[Any, ErrorResultBase, StepToken]]:
     """Start registration identifier
 
      This functionality starts the registration process for an existing customer with registration
@@ -109,7 +108,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorResult, ErrorResultBase, NextStep]]
+        Response[Union[Any, ErrorResultBase, StepToken]]
     """
 
     kwargs = _get_kwargs(
@@ -127,7 +126,7 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     body: CustomerLoginIdentifierRegistration,
-) -> Optional[Union[Any, ErrorResult, ErrorResultBase, NextStep]]:
+) -> Optional[Union[Any, ErrorResultBase, StepToken]]:
     """Start registration identifier
 
      This functionality starts the registration process for an existing customer with registration
@@ -141,7 +140,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorResult, ErrorResultBase, NextStep]
+        Union[Any, ErrorResultBase, StepToken]
     """
 
     return sync_detailed(
@@ -159,7 +158,7 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: CustomerLoginIdentifierRegistration,
-) -> Response[Union[Any, ErrorResult, ErrorResultBase, NextStep]]:
+) -> Response[Union[Any, ErrorResultBase, StepToken]]:
     """Start registration identifier
 
      This functionality starts the registration process for an existing customer with registration
@@ -173,7 +172,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorResult, ErrorResultBase, NextStep]]
+        Response[Union[Any, ErrorResultBase, StepToken]]
     """
 
     kwargs = _get_kwargs(
@@ -189,7 +188,7 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     body: CustomerLoginIdentifierRegistration,
-) -> Optional[Union[Any, ErrorResult, ErrorResultBase, NextStep]]:
+) -> Optional[Union[Any, ErrorResultBase, StepToken]]:
     """Start registration identifier
 
      This functionality starts the registration process for an existing customer with registration
@@ -203,7 +202,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorResult, ErrorResultBase, NextStep]
+        Union[Any, ErrorResultBase, StepToken]
     """
 
     return (

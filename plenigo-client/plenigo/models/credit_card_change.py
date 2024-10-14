@@ -93,9 +93,9 @@ class CreditCardChange:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_to_type_0 = isoparse(data).date()
+                valid_to_type_1 = isoparse(data).date()
 
-                return valid_to_type_0
+                return valid_to_type_1
             except:  # noqa: E722
                 pass
 

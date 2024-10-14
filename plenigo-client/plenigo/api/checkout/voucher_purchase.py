@@ -8,7 +8,6 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.checkout_order_id_result import CheckoutOrderIdResult
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.voucher_purchase import VoucherPurchase
 from ...types import Response
@@ -41,13 +40,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[CheckoutOrderIdResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.CREATED:
         response_201 = CheckoutOrderIdResult.from_dict(response.json())
 
         return response_201
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -55,7 +54,7 @@ def _parse_response(
 
         return response_401
     if response.status_code == HTTPStatus.FORBIDDEN:
-        response_403 = ErrorResult.from_dict(response.json())
+        response_403 = ErrorResultBase.from_dict(response.json())
 
         return response_403
     if response.status_code == HTTPStatus.NOT_FOUND:
@@ -82,7 +81,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[CheckoutOrderIdResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -100,7 +99,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: VoucherPurchase,
-) -> Response[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[CheckoutOrderIdResult, ErrorResultBase]]:
     """Voucher purchase
 
      Executes a purchase for the product represented by the provided voucher code. Only products that are
@@ -115,7 +114,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]
+        Response[Union[CheckoutOrderIdResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -133,7 +132,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: VoucherPurchase,
-) -> Optional[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[CheckoutOrderIdResult, ErrorResultBase]]:
     """Voucher purchase
 
      Executes a purchase for the product represented by the provided voucher code. Only products that are
@@ -148,7 +147,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]
+        Union[CheckoutOrderIdResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -166,7 +165,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: VoucherPurchase,
-) -> Response[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[CheckoutOrderIdResult, ErrorResultBase]]:
     """Voucher purchase
 
      Executes a purchase for the product represented by the provided voucher code. Only products that are
@@ -181,7 +180,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]
+        Response[Union[CheckoutOrderIdResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -197,7 +196,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: VoucherPurchase,
-) -> Optional[Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[CheckoutOrderIdResult, ErrorResultBase]]:
     """Voucher purchase
 
      Executes a purchase for the product represented by the provided voucher code. Only products that are
@@ -212,7 +211,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CheckoutOrderIdResult, ErrorResult, ErrorResultBase]
+        Union[CheckoutOrderIdResult, ErrorResultBase]
     """
 
     return (

@@ -1,28 +1,11 @@
 """Contains all the data models used in inputs/outputs"""
 
-from .access_right_data import AccessRightData
 from .access_right_data_granted import AccessRightDataGranted
 from .access_right_item_creation import AccessRightItemCreation
 from .access_right_item_creation_data import AccessRightItemCreationData
 from .access_right_item_creation_data_additional_property import AccessRightItemCreationDataAdditionalProperty
-from .access_right_item_data import AccessRightItemData
-from .access_right_item_data_access_right_data import AccessRightItemDataAccessRightData
-from .access_right_item_data_access_right_data_additional_property import (
-    AccessRightItemDataAccessRightDataAdditionalProperty,
-)
-from .access_right_item_data_data import AccessRightItemDataData
-from .access_right_item_data_data_additional_property import AccessRightItemDataDataAdditionalProperty
-from .access_right_item_data_granted import AccessRightItemDataGranted
-from .access_right_item_data_item_type import AccessRightItemDataItemType
-from .access_rights_data import AccessRightsData
 from .active_sessions import ActiveSessions
 from .activities import Activities
-from .activity import Activity
-from .activity_activity_type import ActivityActivityType
-from .activity_json_object_type import ActivityJsonObjectType
-from .activity_new_object import ActivityNewObject
-from .activity_old_object import ActivityOldObject
-from .activity_reason import ActivityReason
 from .additional_chain_data import AdditionalChainData
 from .additional_chain_data_data import AdditionalChainDataData
 from .additional_chain_data_data_additional_property import AdditionalChainDataDataAdditionalProperty
@@ -30,77 +13,29 @@ from .additional_customer_data import AdditionalCustomerData
 from .additional_customer_data_data import AdditionalCustomerDataData
 from .additional_customer_data_data_additional_property import AdditionalCustomerDataDataAdditionalProperty
 from .additional_customer_data_list import AdditionalCustomerDataList
-from .additional_data_selection import AdditionalDataSelection
 from .additional_data_selection_list import AdditionalDataSelectionList
-from .additional_data_selection_values import AdditionalDataSelectionValues
-from .additional_data_selection_values_additional_property import AdditionalDataSelectionValuesAdditionalProperty
-from .additional_order_data import AdditionalOrderData
-from .additional_order_data_data import AdditionalOrderDataData
-from .additional_order_data_data_additional_property import AdditionalOrderDataDataAdditionalProperty
 from .additional_order_data_list import AdditionalOrderDataList
 from .addon_tracking_data import AddonTrackingData
 from .addon_tracking_data_additional_data import AddonTrackingDataAdditionalData
 from .addon_tracking_data_additional_data_additional_property import AddonTrackingDataAdditionalDataAdditionalProperty
-from .addon_translation import AddonTranslation
-from .addon_translation_image import AddonTranslationImage
 from .address import Address
 from .address_base import AddressBase
 from .address_base_salutation import AddressBaseSalutation
 from .address_base_validation_status import AddressBaseValidationStatus
-from .address_change import AddressChange
-from .address_creation import AddressCreation
-from .address_creation_type import AddressCreationType
 from .addresses import Addresses
 from .age_rule import AgeRule
 from .age_rule_creation import AgeRuleCreation
 from .age_rule_creation_relational_operator import AgeRuleCreationRelationalOperator
 from .age_rules import AgeRules
-from .amazon_pay_account import AmazonPayAccount
 from .amazon_pay_account_change import AmazonPayAccountChange
-from .amazon_pay_account_creation import AmazonPayAccountCreation
 from .amazon_pay_accounts import AmazonPayAccounts
-from .analytics_count import AnalyticsCount
-from .analytics_count_result import AnalyticsCountResult
-from .analytics_group_result import AnalyticsGroupResult
-from .analytics_group_result_types import AnalyticsGroupResultTypes
-from .analytics_group_result_types_additional_property import AnalyticsGroupResultTypesAdditionalProperty
-from .analytics_payment_method import AnalyticsPaymentMethod
-from .analytics_payment_method_payment_method import AnalyticsPaymentMethodPaymentMethod
-from .analytics_payment_method_result import AnalyticsPaymentMethodResult
-from .analytics_payment_periods import AnalyticsPaymentPeriods
-from .analytics_payment_periods_failure_reason import AnalyticsPaymentPeriodsFailureReason
-from .analytics_payment_periods_payment_method import AnalyticsPaymentPeriodsPaymentMethod
-from .analytics_payment_periods_result import AnalyticsPaymentPeriodsResult
-from .analytics_revenue import AnalyticsRevenue
-from .analytics_revenue_result import AnalyticsRevenueResult
-from .analytics_transactions import AnalyticsTransactions
-from .analytics_transactions_payment_action import AnalyticsTransactionsPaymentAction
-from .analytics_transactions_payment_method import AnalyticsTransactionsPaymentMethod
-from .analytics_transactions_payment_status import AnalyticsTransactionsPaymentStatus
-from .analytics_transactions_result import AnalyticsTransactionsResult
-from .api_base import ApiBase
-from .api_base_changed_by_type import ApiBaseChangedByType
-from .api_base_created_by_type import ApiBaseCreatedByType
 from .api_base_date import ApiBaseDate
-from .api_campaign import ApiCampaign
-from .api_campaign_base import ApiCampaignBase
-from .api_campaign_base_status import ApiCampaignBaseStatus
-from .api_campaign_base_voucher_type import ApiCampaignBaseVoucherType
-from .api_campaign_creation_result import ApiCampaignCreationResult
 from .api_campaign_page import ApiCampaignPage
-from .api_campaign_view import ApiCampaignView
-from .api_channel import ApiChannel
-from .api_channel_base import ApiChannelBase
-from .api_channel_base_status import ApiChannelBaseStatus
-from .api_multi_voucher import ApiMultiVoucher
-from .api_multi_voucher_status import ApiMultiVoucherStatus
 from .api_search_result_base import ApiSearchResultBase
 from .api_used_by import ApiUsedBy
 from .api_used_by_object import ApiUsedByObject
 from .api_used_by_offer import ApiUsedByOffer
-from .api_voucher import ApiVoucher
 from .api_voucher_page import ApiVoucherPage
-from .api_voucher_status import ApiVoucherStatus
 from .app_store_access_right import AppStoreAccessRight
 from .app_store_access_right_additional_data import AppStoreAccessRightAdditionalData
 from .app_store_access_right_additional_data_additional_property import (
@@ -108,41 +43,27 @@ from .app_store_access_right_additional_data_additional_property import (
 )
 from .app_store_access_rights import AppStoreAccessRights
 from .app_store_association import AppStoreAssociation
-from .app_store_offer import AppStoreOffer
-from .app_store_offer_update import AppStoreOfferUpdate
-from .app_store_offers import AppStoreOffers
-from .app_store_order import AppStoreOrder
-from .app_store_order_item import AppStoreOrderItem
-from .app_store_order_store_type import AppStoreOrderStoreType
 from .app_store_orders import AppStoreOrders
 from .app_store_purchase import AppStorePurchase
 from .app_store_purchase_detail import AppStorePurchaseDetail
 from .app_store_purchase_list import AppStorePurchaseList
-from .app_store_subscription import AppStoreSubscription
-from .app_store_subscription_status import AppStoreSubscriptionStatus
 from .app_store_subscriptions import AppStoreSubscriptions
-from .apple_app_store_purchase import AppleAppStorePurchase
 from .apple_app_store_purchase_addition import AppleAppStorePurchaseAddition
+from .apple_app_store_purchase_data import AppleAppStorePurchaseData
 from .apple_app_store_purchases import AppleAppStorePurchases
 from .apple_app_store_receipt import AppleAppStoreReceipt
 from .apple_app_store_receipt_item import AppleAppStoreReceiptItem
+from .apple_app_store_transaction import AppleAppStoreTransaction
+from .archive_settings import ArchiveSettings
+from .archive_settings_archive_type import ArchiveSettingsArchiveType
 from .bank_account import BankAccount
 from .bank_account_change import BankAccountChange
-from .bank_account_creation import BankAccountCreation
 from .bank_accounts import BankAccounts
 from .blocked_iban import BlockedIban
 from .blocked_iban_base import BlockedIbanBase
 from .blocked_ibans import BlockedIbans
-from .bonus import Bonus
-from .bonus_availability import BonusAvailability
-from .bonus_delivery_condition import BonusDeliveryCondition
-from .bonus_receiver import BonusReceiver
-from .bonus_tax_type import BonusTaxType
 from .bonuses import Bonuses
 from .callback_log_entries import CallbackLogEntries
-from .callback_log_entry import CallbackLogEntry
-from .callback_log_entry_callback_type import CallbackLogEntryCallbackType
-from .callback_log_entry_entity_type import CallbackLogEntryEntityType
 from .campaign_creation import CampaignCreation
 from .campaign_creation_voucher_type import CampaignCreationVoucherType
 from .channel_creation import ChannelCreation
@@ -161,18 +82,16 @@ from .checkout_preparation_result import CheckoutPreparationResult
 from .connected_company_offers import ConnectedCompanyOffers
 from .connected_offer_request import ConnectedOfferRequest
 from .connected_offers import ConnectedOffers
-from .corporate_account import CorporateAccount
-from .corporate_account_user import CorporateAccountUser
 from .corporate_account_user_code import CorporateAccountUserCode
-from .corporate_account_user_code_status import CorporateAccountUserCodeStatus
-from .corporate_account_user_code_status_status import CorporateAccountUserCodeStatusStatus
 from .corporate_account_user_creation import CorporateAccountUserCreation
 from .corporate_account_user_creation_salutation import CorporateAccountUserCreationSalutation
 from .corporate_account_user_status import CorporateAccountUserStatus
+from .corporate_account_user_status_status import CorporateAccountUserStatusStatus
 from .corporate_accounts import CorporateAccounts
 from .cost_center import CostCenter
 from .cost_center_creation import CostCenterCreation
 from .cost_centers import CostCenters
+from .create_transfer_token import CreateTransferToken
 from .credit_based_product_contract_condition import CreditBasedProductContractCondition
 from .credit_based_product_contract_condition_accounting_timespan import (
     CreditBasedProductContractConditionAccountingTimespan,
@@ -187,75 +106,35 @@ from .credit_based_product_contract_condition_term_timespan import CreditBasedPr
 from .credit_card import CreditCard
 from .credit_card_change import CreditCardChange
 from .credit_card_change_card_type import CreditCardChangeCardType
-from .credit_card_creation import CreditCardCreation
 from .credit_cards import CreditCards
-from .credit_upload import CreditUpload
-from .credit_upload_item_type import CreditUploadItemType
 from .credit_upload_list import CreditUploadList
 from .credit_usage import CreditUsage
 from .credit_usage_base import CreditUsageBase
 from .credit_usage_list import CreditUsageList
 from .credit_wallet import CreditWallet
-from .credit_wallet_creation import CreditWalletCreation
-from .credit_wallet_translation import CreditWalletTranslation
 from .credit_wallet_update import CreditWalletUpdate
 from .credit_wallet_update_credit_validity_timespan import CreditWalletUpdateCreditValidityTimespan
 from .credit_wallets import CreditWallets
-from .cross_client_transaction import CrossClientTransaction
-from .cross_client_transaction_paid_status import CrossClientTransactionPaidStatus
 from .cross_client_transaction_paid_status_update import CrossClientTransactionPaidStatusUpdate
 from .cross_client_transaction_paid_status_update_paid_status import CrossClientTransactionPaidStatusUpdatePaidStatus
-from .cross_client_transaction_payment_method import CrossClientTransactionPaymentMethod
-from .cross_client_transaction_type import CrossClientTransactionType
 from .cross_client_transactions import CrossClientTransactions
-from .cross_offer import CrossOffer
-from .cross_offer_allowed_payment_methods_item import CrossOfferAllowedPaymentMethodsItem
-from .cross_offer_managed_by import CrossOfferManagedBy
-from .cross_offer_pdf_template_usage import CrossOfferPdfTemplateUsage
-from .cross_offer_product import CrossOfferProduct
-from .cross_offer_product_additional_data import CrossOfferProductAdditionalData
-from .cross_offer_product_additional_data_additional_property import CrossOfferProductAdditionalDataAdditionalProperty
-from .cross_offer_product_data import CrossOfferProductData
-from .cross_offer_product_group import CrossOfferProductGroup
-from .cross_offer_product_product_type import CrossOfferProductProductType
-from .cross_offer_product_step import CrossOfferProductStep
-from .cross_offer_product_step_accounting_timespan import CrossOfferProductStepAccountingTimespan
-from .cross_offer_product_step_cancellation_timespan import CrossOfferProductStepCancellationTimespan
-from .cross_offer_product_step_duration_timespan import CrossOfferProductStepDurationTimespan
-from .cross_offer_product_step_term_timespan import CrossOfferProductStepTermTimespan
-from .cross_offer_product_tax_type import CrossOfferProductTaxType
-from .cross_offer_product_voucher_validity_timespan import CrossOfferProductVoucherValidityTimespan
-from .cross_selling import CrossSelling
-from .cross_selling_access_start import CrossSellingAccessStart
-from .cross_selling_translation import CrossSellingTranslation
+from .cross_client_voucher_request import CrossClientVoucherRequest
 from .cross_sellings import CrossSellings
 from .customer import Customer
 from .customer_accepted_term import CustomerAcceptedTerm
 from .customer_accepted_terms import CustomerAcceptedTerms
 from .customer_accepted_terms_additional_property import CustomerAcceptedTermsAdditionalProperty
-from .customer_address_creation import CustomerAddressCreation
-from .customer_address_creation_type import CustomerAddressCreationType
 from .customer_base import CustomerBase
 from .customer_base_salutation import CustomerBaseSalutation
 from .customer_cancellation_reason import CustomerCancellationReason
-from .customer_cancellation_reason_creation import CustomerCancellationReasonCreation
-from .customer_cancellation_reason_translation import CustomerCancellationReasonTranslation
 from .customer_cancellation_reason_update import CustomerCancellationReasonUpdate
 from .customer_cancellation_reasons import CustomerCancellationReasons
-from .customer_change import CustomerChange
-from .customer_creation import CustomerCreation
-from .customer_credit_wallet import CustomerCreditWallet
-from .customer_credit_wallet_credit_validity_timespan import CustomerCreditWalletCreditValidityTimespan
 from .customer_credit_wallet_list import CustomerCreditWalletList
 from .customer_customer_marks_item import CustomerCustomerMarksItem
 from .customer_data import CustomerData
 from .customer_email import CustomerEmail
-from .customer_google_sso_authentication import CustomerGoogleSsoAuthentication
-from .customer_google_sso_authentication_sso_provider import CustomerGoogleSsoAuthenticationSsoProvider
 from .customer_id import CustomerId
 from .customer_invoice_email import CustomerInvoiceEmail
-from .customer_log_in_attempt import CustomerLogInAttempt
-from .customer_log_in_attempt_base import CustomerLogInAttemptBase
 from .customer_login_identifier_registration import CustomerLoginIdentifierRegistration
 from .customer_marks_data import CustomerMarksData
 from .customer_marks_data_tags import CustomerMarksDataTags
@@ -266,12 +145,8 @@ from .customer_opt_in_creation import CustomerOptInCreation
 from .customer_opt_in_creation_included_types_item import CustomerOptInCreationIncludedTypesItem
 from .customer_opt_in_translation_base import CustomerOptInTranslationBase
 from .customer_opt_ins import CustomerOptIns
-from .customer_password_authentication import CustomerPasswordAuthentication
-from .customer_password_forgotten import CustomerPasswordForgotten
 from .customer_password_forgotten_resend import CustomerPasswordForgottenResend
 from .customer_password_forgotten_reset import CustomerPasswordForgottenReset
-from .customer_password_forgotten_token import CustomerPasswordForgottenToken
-from .customer_password_forgotten_two_factor import CustomerPasswordForgottenTwoFactor
 from .customer_registration_creation import CustomerRegistrationCreation
 from .customer_reset_password import CustomerResetPassword
 from .customer_session import CustomerSession
@@ -281,12 +156,8 @@ from .customer_sso_login_providers_item import CustomerSsoLoginProvidersItem
 from .customer_status import CustomerStatus
 from .customer_status_change import CustomerStatusChange
 from .customer_status_change_status import CustomerStatusChangeStatus
-from .customer_status_history import CustomerStatusHistory
-from .customer_status_history_new_status import CustomerStatusHistoryNewStatus
-from .customer_status_history_old_status import CustomerStatusHistoryOldStatus
 from .customer_term import CustomerTerm
 from .customer_term_creation import CustomerTermCreation
-from .customer_term_translation import CustomerTermTranslation
 from .customer_terms import CustomerTerms
 from .customer_two_factor_authentication import CustomerTwoFactorAuthentication
 from .customer_username import CustomerUsername
@@ -295,76 +166,35 @@ from .delivery_list import DeliveryList
 from .delivery_list_change import DeliveryListChange
 from .delivery_list_change_additional_data import DeliveryListChangeAdditionalData
 from .delivery_list_change_additional_data_additional_property import DeliveryListChangeAdditionalDataAdditionalProperty
-from .delivery_list_date import DeliveryListDate
 from .delivery_list_date_status_update import DeliveryListDateStatusUpdate
 from .delivery_list_date_status_update_status import DeliveryListDateStatusUpdateStatus
 from .delivery_list_date_translation import DeliveryListDateTranslation
-from .delivery_list_dates import DeliveryListDates
-from .delivery_list_dates_change import DeliveryListDatesChange
-from .delivery_list_dates_creation import DeliveryListDatesCreation
-from .delivery_list_dates_creation_additional_data import DeliveryListDatesCreationAdditionalData
-from .delivery_list_dates_creation_additional_data_additional_property import (
-    DeliveryListDatesCreationAdditionalDataAdditionalProperty,
-)
 from .delivery_list_type import DeliveryListType
 from .delivery_lists import DeliveryLists
-from .download import Download
-from .download_download_type import DownloadDownloadType
+from .dispute_status_change import DisputeStatusChange
+from .dispute_status_change_status import DisputeStatusChangeStatus
+from .disputes import Disputes
 from .download_file import DownloadFile
 from .download_file_file_type import DownloadFileFileType
-from .download_file_type import DownloadFileType
-from .download_published_by_type import DownloadPublishedByType
 from .downloads import Downloads
-from .enhanced_order import EnhancedOrder
-from .error_result import ErrorResult
 from .error_result_base import ErrorResultBase
 from .external_credit_upload import ExternalCreditUpload
-from .failed_customer_log_in_attempt import FailedCustomerLogInAttempt
 from .free_order import FreeOrder
-from .future_address import FutureAddress
 from .future_addresses import FutureAddresses
-from .get_active_subscriptions_interval import GetActiveSubscriptionsInterval
-from .get_active_subscriptions_sort import GetActiveSubscriptionsSort
-from .get_all_payment_periods_statistics_interval import GetAllPaymentPeriodsStatisticsInterval
-from .get_all_payment_periods_statistics_sort import GetAllPaymentPeriodsStatisticsSort
-from .get_cancelled_subscriptions_interval import GetCancelledSubscriptionsInterval
-from .get_cancelled_subscriptions_sort import GetCancelledSubscriptionsSort
 from .get_credit_wallet_by_unique_id_sort import GetCreditWalletByUniqueIdSort
 from .get_credit_wallet_uploads_by_customer_sort import GetCreditWalletUploadsByCustomerSort
 from .get_credit_wallet_uploads_sort import GetCreditWalletUploadsSort
 from .get_credit_wallet_usages_by_customer_sort import GetCreditWalletUsagesByCustomerSort
 from .get_credit_wallet_usages_sort import GetCreditWalletUsagesSort
 from .get_customer_mark_customer_mark import GetCustomerMarkCustomerMark
-from .get_customer_registration_statistics_interval import GetCustomerRegistrationStatisticsInterval
-from .get_customer_registration_statistics_sort import GetCustomerRegistrationStatisticsSort
-from .get_customer_return_transactions_statistics_interval import GetCustomerReturnTransactionsStatisticsInterval
-from .get_customer_return_transactions_statistics_sort import GetCustomerReturnTransactionsStatisticsSort
 from .get_delivery_list_dates_for_shared_offer_sort import GetDeliveryListDatesForSharedOfferSort
 from .get_delivery_list_dates_sort import GetDeliveryListDatesSort
 from .get_delivery_list_sort import GetDeliveryListSort
-from .get_ended_subscriptions_interval import GetEndedSubscriptionsInterval
-from .get_ended_subscriptions_sort import GetEndedSubscriptionsSort
-from .get_failed_payment_periods_statistics_interval import GetFailedPaymentPeriodsStatisticsInterval
-from .get_failed_payment_periods_statistics_sort import GetFailedPaymentPeriodsStatisticsSort
-from .get_invoice_payment_method_statistics_interval import GetInvoicePaymentMethodStatisticsInterval
-from .get_invoice_payment_method_statistics_sort import GetInvoicePaymentMethodStatisticsSort
-from .get_invoice_revenue_statistics_interval import GetInvoiceRevenueStatisticsInterval
-from .get_invoice_revenue_statistics_sort import GetInvoiceRevenueStatisticsSort
-from .get_new_subscriptions_statistics_interval import GetNewSubscriptionsStatisticsInterval
-from .get_new_subscriptions_statistics_sort import GetNewSubscriptionsStatisticsSort
-from .get_order_creation_statistics_interval import GetOrderCreationStatisticsInterval
-from .get_order_creation_statistics_sort import GetOrderCreationStatisticsSort
 from .get_sort_tree_leaf_by_type_type import GetSortTreeLeafByTypeType
-from .get_subscriptions_cancellation_reasons_interval import GetSubscriptionsCancellationReasonsInterval
-from .get_subscriptions_cancellation_reasons_sort import GetSubscriptionsCancellationReasonsSort
-from .get_succeeded_payment_periods_statistics_interval import GetSucceededPaymentPeriodsStatisticsInterval
-from .get_succeeded_payment_periods_statistics_sort import GetSucceededPaymentPeriodsStatisticsSort
-from .get_transactions_statistics_interval import GetTransactionsStatisticsInterval
-from .get_transactions_statistics_sort import GetTransactionsStatisticsSort
+from .get_subscription_payment_periods_sort import GetSubscriptionPaymentPeriodsSort
 from .get_vouchers_channels_channel_id_vouchers_voucher_status import GetVouchersChannelsChannelIdVouchersVoucherStatus
 from .gift_info import GiftInfo
 from .google_play_product_purchase import GooglePlayProductPurchase
-from .google_play_store_purchase import GooglePlayStorePurchase
 from .google_play_store_purchase_addition import GooglePlayStorePurchaseAddition
 from .google_play_store_purchase_addition_element import GooglePlayStorePurchaseAdditionElement
 from .google_play_store_purchases import GooglePlayStorePurchases
@@ -374,16 +204,9 @@ from .google_sso_settings import GoogleSsoSettings
 from .i_deal_account import IDealAccount
 from .i_deal_account_change import IDealAccountChange
 from .i_deal_accounts import IDealAccounts
-from .invoice import Invoice
-from .invoice_address import InvoiceAddress
-from .invoice_address_salutation import InvoiceAddressSalutation
 from .invoice_file import InvoiceFile
-from .invoice_item import InvoiceItem
-from .invoice_payment_method import InvoicePaymentMethod
 from .invoice_payment_status_change import InvoicePaymentStatusChange
 from .invoice_payment_status_change_status import InvoicePaymentStatusChangeStatus
-from .invoice_status import InvoiceStatus
-from .invoice_type import InvoiceType
 from .invoice_xml import InvoiceXml
 from .invoices import Invoices
 from .issue_based_product_contract_condition import IssueBasedProductContractCondition
@@ -398,14 +221,6 @@ from .ledger_creation_custom_accountings_additional_property import LedgerCreati
 from .ledgers import Ledgers
 from .logging_data import LoggingData
 from .mail_log_entries import MailLogEntries
-from .mail_log_entry import MailLogEntry
-from .mail_log_entry_error_detail import MailLogEntryErrorDetail
-from .mail_log_entry_mail_settings_type import MailLogEntryMailSettingsType
-from .mail_log_entry_mail_template_type import MailLogEntryMailTemplateType
-from .misuse_rule_translation import MisuseRuleTranslation
-from .next_step import NextStep
-from .next_step_additional_information import NextStepAdditionalInformation
-from .next_step_next_step import NextStepNextStep
 from .offer import Offer
 from .offer_base import OfferBase
 from .offer_base_allowed_payment_methods_item import OfferBaseAllowedPaymentMethodsItem
@@ -418,6 +233,7 @@ from .offer_partner_settings import OfferPartnerSettings
 from .offer_product import OfferProduct
 from .offer_product_base import OfferProductBase
 from .offer_product_base_additional_data import OfferProductBaseAdditionalData
+from .offer_product_base_additional_data_additional_property import OfferProductBaseAdditionalDataAdditionalProperty
 from .offer_product_base_data import OfferProductBaseData
 from .offer_product_base_product_type import OfferProductBaseProductType
 from .offer_product_base_tax_type import OfferProductBaseTaxType
@@ -428,69 +244,45 @@ from .offer_product_step import OfferProductStep
 from .offer_product_step_accounting_timespan import OfferProductStepAccountingTimespan
 from .offer_product_step_base import OfferProductStepBase
 from .offer_product_step_cancellation_timespan import OfferProductStepCancellationTimespan
-from .offer_product_step_creation import OfferProductStepCreation
 from .offer_product_step_duration_timespan import OfferProductStepDurationTimespan
 from .offer_product_step_issue_based_cancellation_timespan import OfferProductStepIssueBasedCancellationTimespan
 from .offer_product_step_regular_based_cancellation_timespan import OfferProductStepRegularBasedCancellationTimespan
 from .offer_product_step_term_timespan import OfferProductStepTermTimespan
-from .offer_translation import OfferTranslation
-from .offer_translation_image import OfferTranslationImage
-from .offer_translation_image_image_type import OfferTranslationImageImageType
 from .offers import Offers
 from .opt_in import OptIn
 from .opt_in_status import OptInStatus
 from .opt_in_update import OptInUpdate
 from .opt_in_update_status import OptInUpdateStatus
-from .opt_ins import OptIns
 from .opt_ins_list import OptInsList
-from .opt_ins_opt_ins import OptInsOptIns
-from .opt_ins_opt_ins_key import OptInsOptInsKey
 from .opt_ins_update import OptInsUpdate
 from .opt_ins_update_opt_ins import OptInsUpdateOptIns
 from .opt_ins_update_opt_ins_key import OptInsUpdateOptInsKey
-from .order import Order
-from .order_address import OrderAddress
-from .order_address_salutation import OrderAddressSalutation
 from .order_import import OrderImport
 from .order_import_log_entries import OrderImportLogEntries
-from .order_import_log_entry import OrderImportLogEntry
-from .order_import_log_entry_error_detail import OrderImportLogEntryErrorDetail
 from .order_import_managed_by import OrderImportManagedBy
 from .order_import_payment_method import OrderImportPaymentMethod
 from .order_imports import OrderImports
-from .order_item import OrderItem
-from .order_item_tax_type import OrderItemTaxType
-from .order_payment_method import OrderPaymentMethod
-from .order_status import OrderStatus
-from .order_type import OrderType
 from .orders import Orders
 from .pay_pal_account import PayPalAccount
 from .pay_pal_account_change import PayPalAccountChange
-from .pay_pal_account_creation import PayPalAccountCreation
 from .pay_pal_accounts import PayPalAccounts
 from .payment_method_details import PaymentMethodDetails
 from .payment_methods import PaymentMethods
+from .payment_methods_blocked_payment_methods_item import PaymentMethodsBlockedPaymentMethodsItem
 from .pdf_file import PdfFile
 from .post_finance_account import PostFinanceAccount
 from .post_finance_account_change import PostFinanceAccountChange
-from .post_finance_account_creation import PostFinanceAccountCreation
 from .post_finance_accounts import PostFinanceAccounts
 from .price_country_segment import PriceCountrySegment
 from .price_country_segment_creation import PriceCountrySegmentCreation
 from .price_country_segments import PriceCountrySegments
 from .price_issue import PriceIssue
 from .price_issue_base import PriceIssueBase
-from .price_issue_creation import PriceIssueCreation
 from .price_issues import PriceIssues
 from .price_segment import PriceSegment
 from .price_segment_base import PriceSegmentBase
-from .price_segment_creation import PriceSegmentCreation
 from .process_data import ProcessData
 from .process_designs import ProcessDesigns
-from .process_settings import ProcessSettings
-from .process_settings_emergency_mode import ProcessSettingsEmergencyMode
-from .process_settings_sso_name import ProcessSettingsSsoName
-from .process_settings_token_type import ProcessSettingsTokenType
 from .product_access_right import ProductAccessRight
 from .product_access_right_creation import ProductAccessRightCreation
 from .product_access_right_creation_additional_data import ProductAccessRightCreationAdditionalData
@@ -504,7 +296,6 @@ from .product_analog_ivw_rule_ivw_type import ProductAnalogIvwRuleIvwType
 from .product_contract import ProductContract
 from .product_contract_base import ProductContractBase
 from .product_contract_base_contract_type import ProductContractBaseContractType
-from .product_contract_creation import ProductContractCreation
 from .product_contracts import ProductContracts
 from .product_digital_ivw_rule import ProductDigitalIvwRule
 from .product_digital_ivw_rule_price_corridor import ProductDigitalIvwRulePriceCorridor
@@ -522,15 +313,7 @@ from .product_tag import ProductTag
 from .product_tag_creation import ProductTagCreation
 from .product_tag_creation_category import ProductTagCreationCategory
 from .product_tags import ProductTags
-from .purchased_addon import PurchasedAddon
-from .purchased_addon_addon_type import PurchasedAddonAddonType
-from .purchased_addon_delivery_condition import PurchasedAddonDeliveryCondition
-from .purchased_addon_status import PurchasedAddonStatus
 from .purchased_addons import PurchasedAddons
-from .refund import Refund
-from .refund_payment_method import RefundPaymentMethod
-from .refund_payment_provider import RefundPaymentProvider
-from .refund_status import RefundStatus
 from .refund_status_change import RefundStatusChange
 from .refund_status_change_status import RefundStatusChangeStatus
 from .refunds import Refunds
@@ -538,12 +321,11 @@ from .registration_verification import RegistrationVerification
 from .relation_rule import RelationRule
 from .relation_rule_base import RelationRuleBase
 from .relation_rule_base_identity_check_type import RelationRuleBaseIdentityCheckType
-from .relation_rule_creation import RelationRuleCreation
 from .relation_rules import RelationRules
 from .request_token_result import RequestTokenResult
-from .rule_translation import RuleTranslation
 from .schemas_amazon_pay_account import SchemasAmazonPayAccount
 from .schemas_credit_wallet_creation import SchemasCreditWalletCreation
+from .schemas_transfer_token import SchemasTransferToken
 from .search_access_rights_sort import SearchAccessRightsSort
 from .search_activities_json_object_type import SearchActivitiesJsonObjectType
 from .search_activities_sort import SearchActivitiesSort
@@ -578,6 +360,7 @@ from .search_customers_failed_login_attempts_sort import SearchCustomersFailedLo
 from .search_customers_login_attempts_sort import SearchCustomersLoginAttemptsSort
 from .search_customers_sort import SearchCustomersSort
 from .search_delivery_lists_sort import SearchDeliveryListsSort
+from .search_disputes_status import SearchDisputesStatus
 from .search_downloads_download_type import SearchDownloadsDownloadType
 from .search_downloads_file_type import SearchDownloadsFileType
 from .search_google_play_store_purchases_sort import SearchGooglePlayStorePurchasesSort
@@ -600,41 +383,29 @@ from .search_product_price_issues_sort import SearchProductPriceIssuesSort
 from .search_refunds_status import SearchRefundsStatus
 from .search_sftp_logs_sort import SearchSftpLogsSort
 from .search_sort_tree_leafs_by_type_type import SearchSortTreeLeafsByTypeType
-from .search_subscription_delivery_dates_sort import SearchSubscriptionDeliveryDatesSort
+from .search_subscription_delivery_list_delivery_dates_sort import SearchSubscriptionDeliveryListDeliveryDatesSort
 from .search_subscriptions_sort import SearchSubscriptionsSort
 from .search_tax_codes_sort import SearchTaxCodesSort
 from .search_text_modules_type import SearchTextModulesType
 from .search_transactions_sort import SearchTransactionsSort
 from .search_twint_accounts_sort import SearchTwintAccountsSort
+from .search_vouchers_voucher_status import SearchVouchersVoucherStatus
 from .session_information import SessionInformation
 from .session_limit_reached import SessionLimitReached
 from .sftp_log_entries import SftpLogEntries
-from .sftp_log_entry import SftpLogEntry
 from .shopping_cart import ShoppingCart
 from .shopping_cart_base import ShoppingCartBase
 from .shopping_cart_item import ShoppingCartItem
 from .shopping_cart_item_base import ShoppingCartItemBase
 from .shopping_cart_item_group import ShoppingCartItemGroup
 from .shopping_cart_item_group_base import ShoppingCartItemGroupBase
-from .shopping_cart_translation import ShoppingCartTranslation
-from .shopping_cart_translation_image import ShoppingCartTranslationImage
-from .shopping_cart_translation_image_image_type import ShoppingCartTranslationImageImageType
 from .shopping_carts import ShoppingCarts
-from .sort_tree_leaf import SortTreeLeaf
-from .sort_tree_leaf_type import SortTreeLeafType
 from .sort_tree_leafs import SortTreeLeafs
-from .sso_provider_settings import SsoProviderSettings
-from .sso_provider_settings_google_settings import SsoProviderSettingsGoogleSettings
-from .status_history import StatusHistory
 from .step_token import StepToken
 from .stripe_customer import StripeCustomer
 from .stripe_customer_creation import StripeCustomerCreation
-from .subscription import Subscription
-from .subscription_accounting_period_time_span import SubscriptionAccountingPeriodTimeSpan
 from .subscription_cancellation_at_data import SubscriptionCancellationAtData
 from .subscription_cancellation_dates import SubscriptionCancellationDates
-from .subscription_cancellation_period_time_span import SubscriptionCancellationPeriodTimeSpan
-from .subscription_cancellation_type import SubscriptionCancellationType
 from .subscription_change_access import SubscriptionChangeAccess
 from .subscription_change_address import SubscriptionChangeAddress
 from .subscription_change_address_address_type import SubscriptionChangeAddressAddressType
@@ -644,27 +415,19 @@ from .subscription_change_payment_payment_method import SubscriptionChangePaymen
 from .subscription_change_suppress_invoice_sending import SubscriptionChangeSuppressInvoiceSending
 from .subscription_connected_offer_info import SubscriptionConnectedOfferInfo
 from .subscription_delivery_addition import SubscriptionDeliveryAddition
-from .subscription_delivery_date import SubscriptionDeliveryDate
 from .subscription_delivery_dates import SubscriptionDeliveryDates
-from .subscription_duration_period_time_span import SubscriptionDurationPeriodTimeSpan
-from .subscription_item import SubscriptionItem
 from .subscription_item_change_discount import SubscriptionItemChangeDiscount
 from .subscription_item_change_quantity import SubscriptionItemChangeQuantity
-from .subscription_item_status import SubscriptionItemStatus
-from .subscription_item_tax_type import SubscriptionItemTaxType
-from .subscription_managed_by import SubscriptionManagedBy
 from .subscription_pause_at import SubscriptionPauseAt
 from .subscription_pause_at_pause_type import SubscriptionPauseAtPauseType
-from .subscription_payment_method import SubscriptionPaymentMethod
-from .subscription_precursor_reason import SubscriptionPrecursorReason
+from .subscription_payment_period import SubscriptionPaymentPeriod
+from .subscription_payment_period_failure_reason import SubscriptionPaymentPeriodFailureReason
+from .subscription_payment_period_payment_method import SubscriptionPaymentPeriodPaymentMethod
+from .subscription_payment_periods import SubscriptionPaymentPeriods
 from .subscription_purchase_order_indicator import SubscriptionPurchaseOrderIndicator
 from .subscription_status import SubscriptionStatus
-from .subscription_status_history import SubscriptionStatusHistory
-from .subscription_status_history_new_status import SubscriptionStatusHistoryNewStatus
-from .subscription_status_history_old_status import SubscriptionStatusHistoryOldStatus
-from .subscription_subscription_type import SubscriptionSubscriptionType
-from .subscription_successor_reason import SubscriptionSuccessorReason
-from .subscription_term_time_span import SubscriptionTermTimeSpan
+from .subscription_status_new_status import SubscriptionStatusNewStatus
+from .subscription_status_old_status import SubscriptionStatusOldStatus
 from .subscriptions import Subscriptions
 from .success_status import SuccessStatus
 from .tax_code import TaxCode
@@ -685,16 +448,10 @@ from .time_based_product_contract_condition_cancellation_timespan import (
 )
 from .time_based_product_contract_condition_duration_timespan import TimeBasedProductContractConditionDurationTimespan
 from .time_based_product_contract_condition_term_timespan import TimeBasedProductContractConditionTermTimespan
-from .transaction import Transaction
-from .transaction_payment_action import TransactionPaymentAction
-from .transaction_payment_method import TransactionPaymentMethod
-from .transaction_payment_provider import TransactionPaymentProvider
-from .transaction_payment_status import TransactionPaymentStatus
 from .transactions import Transactions
 from .transfer_token import TransferToken
 from .twint_account import TwintAccount
 from .twint_account_change import TwintAccountChange
-from .twint_account_creation import TwintAccountCreation
 from .twint_accounts import TwintAccounts
 from .update_addon_tracking_data import UpdateAddonTrackingData
 from .update_addon_tracking_data_status import UpdateAddonTrackingDataStatus
@@ -706,33 +463,17 @@ from .voucher_purchase_data import VoucherPurchaseData
 from .voucher_status import VoucherStatus
 from .voucher_status_status import VoucherStatusStatus
 from .voucher_usage_data import VoucherUsageData
-from .wbz_address_creation import WbzAddressCreation
 from .wbz_customer_mark import WbzCustomerMark
 from .wbz_customer_mark_base import WbzCustomerMarkBase
 from .wbz_customer_mark_base_data import WbzCustomerMarkBaseData
 
 __all__ = (
-    "AccessRightData",
     "AccessRightDataGranted",
     "AccessRightItemCreation",
     "AccessRightItemCreationData",
     "AccessRightItemCreationDataAdditionalProperty",
-    "AccessRightItemData",
-    "AccessRightItemDataAccessRightData",
-    "AccessRightItemDataAccessRightDataAdditionalProperty",
-    "AccessRightItemDataData",
-    "AccessRightItemDataDataAdditionalProperty",
-    "AccessRightItemDataGranted",
-    "AccessRightItemDataItemType",
-    "AccessRightsData",
     "ActiveSessions",
     "Activities",
-    "Activity",
-    "ActivityActivityType",
-    "ActivityJsonObjectType",
-    "ActivityNewObject",
-    "ActivityOldObject",
-    "ActivityReason",
     "AdditionalChainData",
     "AdditionalChainDataData",
     "AdditionalChainDataDataAdditionalProperty",
@@ -740,117 +481,55 @@ __all__ = (
     "AdditionalCustomerDataData",
     "AdditionalCustomerDataDataAdditionalProperty",
     "AdditionalCustomerDataList",
-    "AdditionalDataSelection",
     "AdditionalDataSelectionList",
-    "AdditionalDataSelectionValues",
-    "AdditionalDataSelectionValuesAdditionalProperty",
-    "AdditionalOrderData",
-    "AdditionalOrderDataData",
-    "AdditionalOrderDataDataAdditionalProperty",
     "AdditionalOrderDataList",
     "AddonTrackingData",
     "AddonTrackingDataAdditionalData",
     "AddonTrackingDataAdditionalDataAdditionalProperty",
-    "AddonTranslation",
-    "AddonTranslationImage",
     "Address",
     "AddressBase",
     "AddressBaseSalutation",
     "AddressBaseValidationStatus",
-    "AddressChange",
-    "AddressCreation",
-    "AddressCreationType",
     "Addresses",
     "AgeRule",
     "AgeRuleCreation",
     "AgeRuleCreationRelationalOperator",
     "AgeRules",
-    "AmazonPayAccount",
     "AmazonPayAccountChange",
-    "AmazonPayAccountCreation",
     "AmazonPayAccounts",
-    "AnalyticsCount",
-    "AnalyticsCountResult",
-    "AnalyticsGroupResult",
-    "AnalyticsGroupResultTypes",
-    "AnalyticsGroupResultTypesAdditionalProperty",
-    "AnalyticsPaymentMethod",
-    "AnalyticsPaymentMethodPaymentMethod",
-    "AnalyticsPaymentMethodResult",
-    "AnalyticsPaymentPeriods",
-    "AnalyticsPaymentPeriodsFailureReason",
-    "AnalyticsPaymentPeriodsPaymentMethod",
-    "AnalyticsPaymentPeriodsResult",
-    "AnalyticsRevenue",
-    "AnalyticsRevenueResult",
-    "AnalyticsTransactions",
-    "AnalyticsTransactionsPaymentAction",
-    "AnalyticsTransactionsPaymentMethod",
-    "AnalyticsTransactionsPaymentStatus",
-    "AnalyticsTransactionsResult",
-    "ApiBase",
-    "ApiBaseChangedByType",
-    "ApiBaseCreatedByType",
     "ApiBaseDate",
-    "ApiCampaign",
-    "ApiCampaignBase",
-    "ApiCampaignBaseStatus",
-    "ApiCampaignBaseVoucherType",
-    "ApiCampaignCreationResult",
     "ApiCampaignPage",
-    "ApiCampaignView",
-    "ApiChannel",
-    "ApiChannelBase",
-    "ApiChannelBaseStatus",
-    "ApiMultiVoucher",
-    "ApiMultiVoucherStatus",
     "ApiSearchResultBase",
     "ApiUsedBy",
     "ApiUsedByObject",
     "ApiUsedByOffer",
-    "ApiVoucher",
     "ApiVoucherPage",
-    "ApiVoucherStatus",
-    "AppleAppStorePurchase",
     "AppleAppStorePurchaseAddition",
+    "AppleAppStorePurchaseData",
     "AppleAppStorePurchases",
     "AppleAppStoreReceipt",
     "AppleAppStoreReceiptItem",
+    "AppleAppStoreTransaction",
     "AppStoreAccessRight",
     "AppStoreAccessRightAdditionalData",
     "AppStoreAccessRightAdditionalDataAdditionalProperty",
     "AppStoreAccessRights",
     "AppStoreAssociation",
-    "AppStoreOffer",
-    "AppStoreOffers",
-    "AppStoreOfferUpdate",
-    "AppStoreOrder",
-    "AppStoreOrderItem",
     "AppStoreOrders",
-    "AppStoreOrderStoreType",
     "AppStorePurchase",
     "AppStorePurchaseDetail",
     "AppStorePurchaseList",
-    "AppStoreSubscription",
     "AppStoreSubscriptions",
-    "AppStoreSubscriptionStatus",
+    "ArchiveSettings",
+    "ArchiveSettingsArchiveType",
     "BankAccount",
     "BankAccountChange",
-    "BankAccountCreation",
     "BankAccounts",
     "BlockedIban",
     "BlockedIbanBase",
     "BlockedIbans",
-    "Bonus",
-    "BonusAvailability",
-    "BonusDeliveryCondition",
     "Bonuses",
-    "BonusReceiver",
-    "BonusTaxType",
     "CallbackLogEntries",
-    "CallbackLogEntry",
-    "CallbackLogEntryCallbackType",
-    "CallbackLogEntryEntityType",
     "CampaignCreation",
     "CampaignCreationVoucherType",
     "ChannelCreation",
@@ -869,18 +548,16 @@ __all__ = (
     "ConnectedCompanyOffers",
     "ConnectedOfferRequest",
     "ConnectedOffers",
-    "CorporateAccount",
     "CorporateAccounts",
-    "CorporateAccountUser",
     "CorporateAccountUserCode",
-    "CorporateAccountUserCodeStatus",
-    "CorporateAccountUserCodeStatusStatus",
     "CorporateAccountUserCreation",
     "CorporateAccountUserCreationSalutation",
     "CorporateAccountUserStatus",
+    "CorporateAccountUserStatusStatus",
     "CostCenter",
     "CostCenterCreation",
     "CostCenters",
+    "CreateTransferToken",
     "CreditBasedProductContractCondition",
     "CreditBasedProductContractConditionAccountingTimespan",
     "CreditBasedProductContractConditionCancellationTimespan",
@@ -889,75 +566,35 @@ __all__ = (
     "CreditCard",
     "CreditCardChange",
     "CreditCardChangeCardType",
-    "CreditCardCreation",
     "CreditCards",
-    "CreditUpload",
-    "CreditUploadItemType",
     "CreditUploadList",
     "CreditUsage",
     "CreditUsageBase",
     "CreditUsageList",
     "CreditWallet",
-    "CreditWalletCreation",
     "CreditWallets",
-    "CreditWalletTranslation",
     "CreditWalletUpdate",
     "CreditWalletUpdateCreditValidityTimespan",
-    "CrossClientTransaction",
-    "CrossClientTransactionPaidStatus",
     "CrossClientTransactionPaidStatusUpdate",
     "CrossClientTransactionPaidStatusUpdatePaidStatus",
-    "CrossClientTransactionPaymentMethod",
     "CrossClientTransactions",
-    "CrossClientTransactionType",
-    "CrossOffer",
-    "CrossOfferAllowedPaymentMethodsItem",
-    "CrossOfferManagedBy",
-    "CrossOfferPdfTemplateUsage",
-    "CrossOfferProduct",
-    "CrossOfferProductAdditionalData",
-    "CrossOfferProductAdditionalDataAdditionalProperty",
-    "CrossOfferProductData",
-    "CrossOfferProductGroup",
-    "CrossOfferProductProductType",
-    "CrossOfferProductStep",
-    "CrossOfferProductStepAccountingTimespan",
-    "CrossOfferProductStepCancellationTimespan",
-    "CrossOfferProductStepDurationTimespan",
-    "CrossOfferProductStepTermTimespan",
-    "CrossOfferProductTaxType",
-    "CrossOfferProductVoucherValidityTimespan",
-    "CrossSelling",
-    "CrossSellingAccessStart",
+    "CrossClientVoucherRequest",
     "CrossSellings",
-    "CrossSellingTranslation",
     "Customer",
     "CustomerAcceptedTerm",
     "CustomerAcceptedTerms",
     "CustomerAcceptedTermsAdditionalProperty",
-    "CustomerAddressCreation",
-    "CustomerAddressCreationType",
     "CustomerBase",
     "CustomerBaseSalutation",
     "CustomerCancellationReason",
-    "CustomerCancellationReasonCreation",
     "CustomerCancellationReasons",
-    "CustomerCancellationReasonTranslation",
     "CustomerCancellationReasonUpdate",
-    "CustomerChange",
-    "CustomerCreation",
-    "CustomerCreditWallet",
-    "CustomerCreditWalletCreditValidityTimespan",
     "CustomerCreditWalletList",
     "CustomerCustomerMarksItem",
     "CustomerData",
     "CustomerEmail",
-    "CustomerGoogleSsoAuthentication",
-    "CustomerGoogleSsoAuthenticationSsoProvider",
     "CustomerId",
     "CustomerInvoiceEmail",
-    "CustomerLogInAttempt",
-    "CustomerLogInAttemptBase",
     "CustomerLoginIdentifierRegistration",
     "CustomerMarksData",
     "CustomerMarksDataTags",
@@ -968,12 +605,8 @@ __all__ = (
     "CustomerOptInCreationIncludedTypesItem",
     "CustomerOptIns",
     "CustomerOptInTranslationBase",
-    "CustomerPasswordAuthentication",
-    "CustomerPasswordForgotten",
     "CustomerPasswordForgottenResend",
     "CustomerPasswordForgottenReset",
-    "CustomerPasswordForgottenToken",
-    "CustomerPasswordForgottenTwoFactor",
     "CustomerRegistrationCreation",
     "CustomerResetPassword",
     "Customers",
@@ -984,87 +617,44 @@ __all__ = (
     "CustomerStatus",
     "CustomerStatusChange",
     "CustomerStatusChangeStatus",
-    "CustomerStatusHistory",
-    "CustomerStatusHistoryNewStatus",
-    "CustomerStatusHistoryOldStatus",
     "CustomerTerm",
     "CustomerTermCreation",
     "CustomerTerms",
-    "CustomerTermTranslation",
     "CustomerTwoFactorAuthentication",
     "CustomerUsername",
     "DeliveryList",
     "DeliveryListChange",
     "DeliveryListChangeAdditionalData",
     "DeliveryListChangeAdditionalDataAdditionalProperty",
-    "DeliveryListDate",
-    "DeliveryListDates",
-    "DeliveryListDatesChange",
-    "DeliveryListDatesCreation",
-    "DeliveryListDatesCreationAdditionalData",
-    "DeliveryListDatesCreationAdditionalDataAdditionalProperty",
     "DeliveryListDateStatusUpdate",
     "DeliveryListDateStatusUpdateStatus",
     "DeliveryListDateTranslation",
     "DeliveryLists",
     "DeliveryListType",
-    "Download",
-    "DownloadDownloadType",
+    "Disputes",
+    "DisputeStatusChange",
+    "DisputeStatusChangeStatus",
     "DownloadFile",
     "DownloadFileFileType",
-    "DownloadFileType",
-    "DownloadPublishedByType",
     "Downloads",
-    "EnhancedOrder",
-    "ErrorResult",
     "ErrorResultBase",
     "ExternalCreditUpload",
-    "FailedCustomerLogInAttempt",
     "FreeOrder",
-    "FutureAddress",
     "FutureAddresses",
-    "GetActiveSubscriptionsInterval",
-    "GetActiveSubscriptionsSort",
-    "GetAllPaymentPeriodsStatisticsInterval",
-    "GetAllPaymentPeriodsStatisticsSort",
-    "GetCancelledSubscriptionsInterval",
-    "GetCancelledSubscriptionsSort",
     "GetCreditWalletByUniqueIdSort",
     "GetCreditWalletUploadsByCustomerSort",
     "GetCreditWalletUploadsSort",
     "GetCreditWalletUsagesByCustomerSort",
     "GetCreditWalletUsagesSort",
     "GetCustomerMarkCustomerMark",
-    "GetCustomerRegistrationStatisticsInterval",
-    "GetCustomerRegistrationStatisticsSort",
-    "GetCustomerReturnTransactionsStatisticsInterval",
-    "GetCustomerReturnTransactionsStatisticsSort",
     "GetDeliveryListDatesForSharedOfferSort",
     "GetDeliveryListDatesSort",
     "GetDeliveryListSort",
-    "GetEndedSubscriptionsInterval",
-    "GetEndedSubscriptionsSort",
-    "GetFailedPaymentPeriodsStatisticsInterval",
-    "GetFailedPaymentPeriodsStatisticsSort",
-    "GetInvoicePaymentMethodStatisticsInterval",
-    "GetInvoicePaymentMethodStatisticsSort",
-    "GetInvoiceRevenueStatisticsInterval",
-    "GetInvoiceRevenueStatisticsSort",
-    "GetNewSubscriptionsStatisticsInterval",
-    "GetNewSubscriptionsStatisticsSort",
-    "GetOrderCreationStatisticsInterval",
-    "GetOrderCreationStatisticsSort",
     "GetSortTreeLeafByTypeType",
-    "GetSubscriptionsCancellationReasonsInterval",
-    "GetSubscriptionsCancellationReasonsSort",
-    "GetSucceededPaymentPeriodsStatisticsInterval",
-    "GetSucceededPaymentPeriodsStatisticsSort",
-    "GetTransactionsStatisticsInterval",
-    "GetTransactionsStatisticsSort",
+    "GetSubscriptionPaymentPeriodsSort",
     "GetVouchersChannelsChannelIdVouchersVoucherStatus",
     "GiftInfo",
     "GooglePlayProductPurchase",
-    "GooglePlayStorePurchase",
     "GooglePlayStorePurchaseAddition",
     "GooglePlayStorePurchaseAdditionElement",
     "GooglePlayStorePurchases",
@@ -1074,17 +664,10 @@ __all__ = (
     "IDealAccount",
     "IDealAccountChange",
     "IDealAccounts",
-    "Invoice",
-    "InvoiceAddress",
-    "InvoiceAddressSalutation",
     "InvoiceFile",
-    "InvoiceItem",
-    "InvoicePaymentMethod",
     "InvoicePaymentStatusChange",
     "InvoicePaymentStatusChangeStatus",
     "Invoices",
-    "InvoiceStatus",
-    "InvoiceType",
     "InvoiceXml",
     "IssueBasedProductContractCondition",
     "IssueBasedProductContractConditionCancellationPeriodTimespan",
@@ -1096,14 +679,6 @@ __all__ = (
     "Ledgers",
     "LoggingData",
     "MailLogEntries",
-    "MailLogEntry",
-    "MailLogEntryErrorDetail",
-    "MailLogEntryMailSettingsType",
-    "MailLogEntryMailTemplateType",
-    "MisuseRuleTranslation",
-    "NextStep",
-    "NextStepAdditionalInformation",
-    "NextStepNextStep",
     "Offer",
     "OfferBase",
     "OfferBaseAllowedPaymentMethodsItem",
@@ -1116,6 +691,7 @@ __all__ = (
     "OfferProduct",
     "OfferProductBase",
     "OfferProductBaseAdditionalData",
+    "OfferProductBaseAdditionalDataAdditionalProperty",
     "OfferProductBaseData",
     "OfferProductBaseProductType",
     "OfferProductBaseTaxType",
@@ -1126,69 +702,45 @@ __all__ = (
     "OfferProductStepAccountingTimespan",
     "OfferProductStepBase",
     "OfferProductStepCancellationTimespan",
-    "OfferProductStepCreation",
     "OfferProductStepDurationTimespan",
     "OfferProductStepIssueBasedCancellationTimespan",
     "OfferProductStepRegularBasedCancellationTimespan",
     "OfferProductStepTermTimespan",
     "Offers",
-    "OfferTranslation",
-    "OfferTranslationImage",
-    "OfferTranslationImageImageType",
     "OptIn",
-    "OptIns",
     "OptInsList",
-    "OptInsOptIns",
-    "OptInsOptInsKey",
     "OptInStatus",
     "OptInsUpdate",
     "OptInsUpdateOptIns",
     "OptInsUpdateOptInsKey",
     "OptInUpdate",
     "OptInUpdateStatus",
-    "Order",
-    "OrderAddress",
-    "OrderAddressSalutation",
     "OrderImport",
     "OrderImportLogEntries",
-    "OrderImportLogEntry",
-    "OrderImportLogEntryErrorDetail",
     "OrderImportManagedBy",
     "OrderImportPaymentMethod",
     "OrderImports",
-    "OrderItem",
-    "OrderItemTaxType",
-    "OrderPaymentMethod",
     "Orders",
-    "OrderStatus",
-    "OrderType",
     "PaymentMethodDetails",
     "PaymentMethods",
+    "PaymentMethodsBlockedPaymentMethodsItem",
     "PayPalAccount",
     "PayPalAccountChange",
-    "PayPalAccountCreation",
     "PayPalAccounts",
     "PdfFile",
     "PostFinanceAccount",
     "PostFinanceAccountChange",
-    "PostFinanceAccountCreation",
     "PostFinanceAccounts",
     "PriceCountrySegment",
     "PriceCountrySegmentCreation",
     "PriceCountrySegments",
     "PriceIssue",
     "PriceIssueBase",
-    "PriceIssueCreation",
     "PriceIssues",
     "PriceSegment",
     "PriceSegmentBase",
-    "PriceSegmentCreation",
     "ProcessData",
     "ProcessDesigns",
-    "ProcessSettings",
-    "ProcessSettingsEmergencyMode",
-    "ProcessSettingsSsoName",
-    "ProcessSettingsTokenType",
     "ProductAccessRight",
     "ProductAccessRightCreation",
     "ProductAccessRightCreationAdditionalData",
@@ -1200,7 +752,6 @@ __all__ = (
     "ProductContract",
     "ProductContractBase",
     "ProductContractBaseContractType",
-    "ProductContractCreation",
     "ProductContracts",
     "ProductDigitalIvwRule",
     "ProductDigitalIvwRulePriceCorridor",
@@ -1218,28 +769,19 @@ __all__ = (
     "ProductTagCreation",
     "ProductTagCreationCategory",
     "ProductTags",
-    "PurchasedAddon",
-    "PurchasedAddonAddonType",
-    "PurchasedAddonDeliveryCondition",
     "PurchasedAddons",
-    "PurchasedAddonStatus",
-    "Refund",
-    "RefundPaymentMethod",
-    "RefundPaymentProvider",
     "Refunds",
-    "RefundStatus",
     "RefundStatusChange",
     "RefundStatusChangeStatus",
     "RegistrationVerification",
     "RelationRule",
     "RelationRuleBase",
     "RelationRuleBaseIdentityCheckType",
-    "RelationRuleCreation",
     "RelationRules",
     "RequestTokenResult",
-    "RuleTranslation",
     "SchemasAmazonPayAccount",
     "SchemasCreditWalletCreation",
+    "SchemasTransferToken",
     "SearchAccessRightsSort",
     "SearchActivitiesJsonObjectType",
     "SearchActivitiesSort",
@@ -1274,6 +816,7 @@ __all__ = (
     "SearchCustomersSort",
     "SearchCustomerSubscriptionsSort",
     "SearchDeliveryListsSort",
+    "SearchDisputesStatus",
     "SearchDownloadsDownloadType",
     "SearchDownloadsFileType",
     "SearchGooglePlayStorePurchasesSort",
@@ -1296,16 +839,16 @@ __all__ = (
     "SearchRefundsStatus",
     "SearchSftpLogsSort",
     "SearchSortTreeLeafsByTypeType",
-    "SearchSubscriptionDeliveryDatesSort",
+    "SearchSubscriptionDeliveryListDeliveryDatesSort",
     "SearchSubscriptionsSort",
     "SearchTaxCodesSort",
     "SearchTextModulesType",
     "SearchTransactionsSort",
     "SearchTwintAccountsSort",
+    "SearchVouchersVoucherStatus",
     "SessionInformation",
     "SessionLimitReached",
     "SftpLogEntries",
-    "SftpLogEntry",
     "ShoppingCart",
     "ShoppingCartBase",
     "ShoppingCartItem",
@@ -1313,24 +856,12 @@ __all__ = (
     "ShoppingCartItemGroup",
     "ShoppingCartItemGroupBase",
     "ShoppingCarts",
-    "ShoppingCartTranslation",
-    "ShoppingCartTranslationImage",
-    "ShoppingCartTranslationImageImageType",
-    "SortTreeLeaf",
     "SortTreeLeafs",
-    "SortTreeLeafType",
-    "SsoProviderSettings",
-    "SsoProviderSettingsGoogleSettings",
-    "StatusHistory",
     "StepToken",
     "StripeCustomer",
     "StripeCustomerCreation",
-    "Subscription",
-    "SubscriptionAccountingPeriodTimeSpan",
     "SubscriptionCancellationAtData",
     "SubscriptionCancellationDates",
-    "SubscriptionCancellationPeriodTimeSpan",
-    "SubscriptionCancellationType",
     "SubscriptionChangeAccess",
     "SubscriptionChangeAddress",
     "SubscriptionChangeAddressAddressType",
@@ -1340,28 +871,20 @@ __all__ = (
     "SubscriptionChangeSuppressInvoiceSending",
     "SubscriptionConnectedOfferInfo",
     "SubscriptionDeliveryAddition",
-    "SubscriptionDeliveryDate",
     "SubscriptionDeliveryDates",
-    "SubscriptionDurationPeriodTimeSpan",
-    "SubscriptionItem",
     "SubscriptionItemChangeDiscount",
     "SubscriptionItemChangeQuantity",
-    "SubscriptionItemStatus",
-    "SubscriptionItemTaxType",
-    "SubscriptionManagedBy",
     "SubscriptionPauseAt",
     "SubscriptionPauseAtPauseType",
-    "SubscriptionPaymentMethod",
-    "SubscriptionPrecursorReason",
+    "SubscriptionPaymentPeriod",
+    "SubscriptionPaymentPeriodFailureReason",
+    "SubscriptionPaymentPeriodPaymentMethod",
+    "SubscriptionPaymentPeriods",
     "SubscriptionPurchaseOrderIndicator",
     "Subscriptions",
     "SubscriptionStatus",
-    "SubscriptionStatusHistory",
-    "SubscriptionStatusHistoryNewStatus",
-    "SubscriptionStatusHistoryOldStatus",
-    "SubscriptionSubscriptionType",
-    "SubscriptionSuccessorReason",
-    "SubscriptionTermTimeSpan",
+    "SubscriptionStatusNewStatus",
+    "SubscriptionStatusOldStatus",
     "SuccessStatus",
     "TaxCode",
     "TaxCodeCreation",
@@ -1377,16 +900,10 @@ __all__ = (
     "TimeBasedProductContractConditionCancellationTimespan",
     "TimeBasedProductContractConditionDurationTimespan",
     "TimeBasedProductContractConditionTermTimespan",
-    "Transaction",
-    "TransactionPaymentAction",
-    "TransactionPaymentMethod",
-    "TransactionPaymentProvider",
-    "TransactionPaymentStatus",
     "Transactions",
     "TransferToken",
     "TwintAccount",
     "TwintAccountChange",
-    "TwintAccountCreation",
     "TwintAccounts",
     "UpdateAddonTrackingData",
     "UpdateAddonTrackingDataStatus",
@@ -1398,7 +915,6 @@ __all__ = (
     "VoucherStatus",
     "VoucherStatusStatus",
     "VoucherUsageData",
-    "WbzAddressCreation",
     "WbzCustomerMark",
     "WbzCustomerMarkBase",
     "WbzCustomerMarkBaseData",

@@ -8,8 +8,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.customer import Customer
-from ...models.customer_change import CustomerChange
-from ...models.error_result import ErrorResult
+from ...models.customer_base import CustomerBase
 from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
@@ -19,7 +18,7 @@ log = logging.getLogger(__name__)
 def _get_kwargs(
     customer_id: str,
     *,
-    body: CustomerChange,
+    body: CustomerBase,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
 
@@ -42,13 +41,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Customer, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[Customer, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = Customer.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -79,7 +78,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Customer, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[Customer, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -97,22 +96,22 @@ def sync_detailed(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    body: CustomerChange,
-) -> Response[Union[Customer, ErrorResult, ErrorResultBase]]:
+    body: CustomerBase,
+) -> Response[Union[Customer, ErrorResultBase]]:
     """Update
 
      Update a customer that is identified by the passed customer id with the data provided.
 
     Args:
         customer_id (str):
-        body (CustomerChange):
+        body (CustomerBase):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Customer, ErrorResult, ErrorResultBase]]
+        Response[Union[Customer, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -131,22 +130,22 @@ def sync(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    body: CustomerChange,
-) -> Optional[Union[Customer, ErrorResult, ErrorResultBase]]:
+    body: CustomerBase,
+) -> Optional[Union[Customer, ErrorResultBase]]:
     """Update
 
      Update a customer that is identified by the passed customer id with the data provided.
 
     Args:
         customer_id (str):
-        body (CustomerChange):
+        body (CustomerBase):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Customer, ErrorResult, ErrorResultBase]
+        Union[Customer, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -165,22 +164,22 @@ async def asyncio_detailed(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    body: CustomerChange,
-) -> Response[Union[Customer, ErrorResult, ErrorResultBase]]:
+    body: CustomerBase,
+) -> Response[Union[Customer, ErrorResultBase]]:
     """Update
 
      Update a customer that is identified by the passed customer id with the data provided.
 
     Args:
         customer_id (str):
-        body (CustomerChange):
+        body (CustomerBase):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Customer, ErrorResult, ErrorResultBase]]
+        Response[Union[Customer, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -197,22 +196,22 @@ async def asyncio(
     customer_id: str,
     *,
     client: AuthenticatedClient,
-    body: CustomerChange,
-) -> Optional[Union[Customer, ErrorResult, ErrorResultBase]]:
+    body: CustomerBase,
+) -> Optional[Union[Customer, ErrorResultBase]]:
     """Update
 
      Update a customer that is identified by the passed customer id with the data provided.
 
     Args:
         customer_id (str):
-        body (CustomerChange):
+        body (CustomerBase):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Customer, ErrorResult, ErrorResultBase]
+        Union[Customer, ErrorResultBase]
     """
 
     return (

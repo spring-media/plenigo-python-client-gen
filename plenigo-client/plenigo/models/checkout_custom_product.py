@@ -28,6 +28,7 @@ class CheckoutCustomProduct:
         logo_url (Union[Unset, str]): url to get image from
         logo_alt_text (Union[Unset, str]): image alt text
         cost_center (Union[Unset, str]): cost center associated with this product at the time of checkout
+        purchase_number (Union[Unset, str]): purchase number associated with this product at the time of checkout
         discount_percentage (Union[Unset, int]): discount offered to the order
         shipping_costs (Union[Unset, float]): shipping costs of the product
     """
@@ -46,6 +47,7 @@ class CheckoutCustomProduct:
     logo_url: Union[Unset, str] = UNSET
     logo_alt_text: Union[Unset, str] = UNSET
     cost_center: Union[Unset, str] = UNSET
+    purchase_number: Union[Unset, str] = UNSET
     discount_percentage: Union[Unset, int] = UNSET
     shipping_costs: Union[Unset, float] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -78,6 +80,8 @@ class CheckoutCustomProduct:
         logo_alt_text = self.logo_alt_text
 
         cost_center = self.cost_center
+
+        purchase_number = self.purchase_number
 
         discount_percentage = self.discount_percentage
 
@@ -112,6 +116,8 @@ class CheckoutCustomProduct:
             field_dict["logoAltText"] = logo_alt_text
         if cost_center is not UNSET:
             field_dict["costCenter"] = cost_center
+        if purchase_number is not UNSET:
+            field_dict["purchaseNumber"] = purchase_number
         if discount_percentage is not UNSET:
             field_dict["discountPercentage"] = discount_percentage
         if shipping_costs is not UNSET:
@@ -150,6 +156,8 @@ class CheckoutCustomProduct:
 
         cost_center = d.pop("costCenter", UNSET)
 
+        purchase_number = d.pop("purchaseNumber", UNSET)
+
         discount_percentage = d.pop("discountPercentage", UNSET)
 
         shipping_costs = d.pop("shippingCosts", UNSET)
@@ -169,6 +177,7 @@ class CheckoutCustomProduct:
             logo_url=logo_url,
             logo_alt_text=logo_alt_text,
             cost_center=cost_center,
+            purchase_number=purchase_number,
             discount_percentage=discount_percentage,
             shipping_costs=shipping_costs,
         )

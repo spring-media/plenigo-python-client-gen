@@ -7,7 +7,6 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.success_status import SuccessStatus
 from ...types import Response
@@ -30,13 +29,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
     if response.status_code == HTTPStatus.ACCEPTED:
         response_202 = SuccessStatus.from_dict(response.json())
 
         return response_202
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -67,7 +66,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Response[Union[ErrorResultBase, SuccessStatus]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -85,7 +84,7 @@ def sync_detailed(
     bank_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Response[Union[ErrorResultBase, SuccessStatus]]:
     """Delete a bank account
 
      Delete a bank account. This is only possible if bank account is not associated with a subscription.
@@ -100,7 +99,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, SuccessStatus]]
+        Response[Union[ErrorResultBase, SuccessStatus]]
     """
 
     kwargs = _get_kwargs(
@@ -118,7 +117,7 @@ def sync(
     bank_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
     """Delete a bank account
 
      Delete a bank account. This is only possible if bank account is not associated with a subscription.
@@ -133,7 +132,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, SuccessStatus]
+        Union[ErrorResultBase, SuccessStatus]
     """
 
     return sync_detailed(
@@ -151,7 +150,7 @@ async def asyncio_detailed(
     bank_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Response[Union[ErrorResultBase, SuccessStatus]]:
     """Delete a bank account
 
      Delete a bank account. This is only possible if bank account is not associated with a subscription.
@@ -166,7 +165,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, SuccessStatus]]
+        Response[Union[ErrorResultBase, SuccessStatus]]
     """
 
     kwargs = _get_kwargs(
@@ -182,7 +181,7 @@ async def asyncio(
     bank_account_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorResult, ErrorResultBase, SuccessStatus]]:
+) -> Optional[Union[ErrorResultBase, SuccessStatus]]:
     """Delete a bank account
 
      Delete a bank account. This is only possible if bank account is not associated with a subscription.
@@ -197,7 +196,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, SuccessStatus]
+        Union[ErrorResultBase, SuccessStatus]
     """
 
     return (

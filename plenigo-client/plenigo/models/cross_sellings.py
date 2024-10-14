@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.cross_selling import CrossSelling
+    from ..models.api_base_date import ApiBaseDate
 
 
 T = TypeVar("T", bound="CrossSellings")
@@ -16,10 +16,10 @@ T = TypeVar("T", bound="CrossSellings")
 class CrossSellings:
     """
     Attributes:
-        items (Union[Unset, List['CrossSelling']]): cross sellings
+        items (Union[Unset, List['ApiBaseDate']]): cross sellings
     """
 
-    items: Union[Unset, List["CrossSelling"]] = UNSET
+    items: Union[Unset, List["ApiBaseDate"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -40,13 +40,13 @@ class CrossSellings:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.cross_selling import CrossSelling
+        from ..models.api_base_date import ApiBaseDate
 
         d = src_dict.copy()
         items = []
         _items = d.pop("items", UNSET)
         for items_item_data in _items or []:
-            items_item = CrossSelling.from_dict(items_item_data)
+            items_item = ApiBaseDate.from_dict(items_item_data)
 
             items.append(items_item)
 

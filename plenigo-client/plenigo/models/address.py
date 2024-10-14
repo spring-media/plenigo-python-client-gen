@@ -7,9 +7,6 @@ from dateutil.parser import isoparse
 
 from ..models.address_base_salutation import AddressBaseSalutation
 from ..models.address_base_validation_status import AddressBaseValidationStatus
-from ..models.address_creation_type import AddressCreationType
-from ..models.api_base_changed_by_type import ApiBaseChangedByType
-from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="Address")
@@ -19,8 +16,6 @@ T = TypeVar("T", bound="Address")
 class Address:
     """
     Attributes:
-        type (AddressCreationType): address type
-        customer_id (str): unique id of the customer the address belongs to
         business_address (Union[Unset, bool]): flag indicating if address represents a private or a business address
         salutation (Union[Unset, AddressBaseSalutation]): salutation to identify the correct designation of a customer
         title (Union[Unset, str]): title of the customer
@@ -46,20 +41,15 @@ class Address:
         job_position (Union[Unset, str]): job position
         validation_status (Union[Unset, AddressBaseValidationStatus]): validation status of the address
         validation_hash (Union[Unset, str]): validation hash of a valid address
-        preferred (Union[Unset, bool]): flag indicating if address is default selection for address type
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        created_by (Union[Unset, str]): ID of who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
-        changed_by (Union[Unset, str]): ID of who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
         address_id (Union[Unset, int]): unique id of the address in the context of a company
     """
 
-    type: AddressCreationType
-    customer_id: str
     business_address: Union[Unset, bool] = UNSET
     salutation: Union[Unset, AddressBaseSalutation] = UNSET
     title: Union[Unset, str] = UNSET
@@ -82,21 +72,12 @@ class Address:
     job_position: Union[Unset, str] = UNSET
     validation_status: Union[Unset, AddressBaseValidationStatus] = UNSET
     validation_hash: Union[Unset, str] = UNSET
-    preferred: Union[Unset, bool] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
-    created_by: Union[Unset, str] = UNSET
-    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
-    changed_by: Union[Unset, str] = UNSET
-    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
     address_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        type = self.type.value
-
-        customer_id = self.customer_id
-
         business_address = self.business_address
 
         salutation: Union[Unset, str] = UNSET
@@ -145,8 +126,6 @@ class Address:
 
         validation_hash = self.validation_hash
 
-        preferred = self.preferred
-
         created_date: Union[None, Unset, str]
         if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
@@ -163,28 +142,11 @@ class Address:
         else:
             changed_date = self.changed_date
 
-        created_by = self.created_by
-
-        created_by_type: Union[Unset, str] = UNSET
-        if not isinstance(self.created_by_type, Unset):
-            created_by_type = self.created_by_type.value
-
-        changed_by = self.changed_by
-
-        changed_by_type: Union[Unset, str] = UNSET
-        if not isinstance(self.changed_by_type, Unset):
-            changed_by_type = self.changed_by_type.value
-
         address_id = self.address_id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "type": type,
-                "customerId": customer_id,
-            }
-        )
+        field_dict.update({})
         if business_address is not UNSET:
             field_dict["businessAddress"] = business_address
         if salutation is not UNSET:
@@ -229,20 +191,10 @@ class Address:
             field_dict["validationStatus"] = validation_status
         if validation_hash is not UNSET:
             field_dict["validationHash"] = validation_hash
-        if preferred is not UNSET:
-            field_dict["preferred"] = preferred
         if created_date is not UNSET:
             field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
             field_dict["changedDate"] = changed_date
-        if created_by is not UNSET:
-            field_dict["createdBy"] = created_by
-        if created_by_type is not UNSET:
-            field_dict["createdByType"] = created_by_type
-        if changed_by is not UNSET:
-            field_dict["changedBy"] = changed_by
-        if changed_by_type is not UNSET:
-            field_dict["changedByType"] = changed_by_type
         if address_id is not UNSET:
             field_dict["addressId"] = address_id
 
@@ -251,10 +203,6 @@ class Address:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        type = AddressCreationType(d.pop("type"))
-
-        customer_id = d.pop("customerId")
-
         business_address = d.pop("businessAddress", UNSET)
 
         _salutation = d.pop("salutation", UNSET)
@@ -309,8 +257,6 @@ class Address:
 
         validation_hash = d.pop("validationHash", UNSET)
 
-        preferred = d.pop("preferred", UNSET)
-
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
                 return data
@@ -325,9 +271,9 @@ class Address:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -349,9 +295,9 @@ class Address:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -359,29 +305,9 @@ class Address:
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
 
-        created_by = d.pop("createdBy", UNSET)
-
-        _created_by_type = d.pop("createdByType", UNSET)
-        created_by_type: Union[Unset, ApiBaseCreatedByType]
-        if isinstance(_created_by_type, Unset) or not _created_by_type:
-            created_by_type = UNSET
-        else:
-            created_by_type = ApiBaseCreatedByType(_created_by_type)
-
-        changed_by = d.pop("changedBy", UNSET)
-
-        _changed_by_type = d.pop("changedByType", UNSET)
-        changed_by_type: Union[Unset, ApiBaseChangedByType]
-        if isinstance(_changed_by_type, Unset) or not _changed_by_type:
-            changed_by_type = UNSET
-        else:
-            changed_by_type = ApiBaseChangedByType(_changed_by_type)
-
         address_id = d.pop("addressId", UNSET)
 
         address = cls(
-            type=type,
-            customer_id=customer_id,
             business_address=business_address,
             salutation=salutation,
             title=title,
@@ -404,13 +330,8 @@ class Address:
             job_position=job_position,
             validation_status=validation_status,
             validation_hash=validation_hash,
-            preferred=preferred,
             created_date=created_date,
             changed_date=changed_date,
-            created_by=created_by,
-            created_by_type=created_by_type,
-            changed_by=changed_by,
-            changed_by_type=changed_by_type,
             address_id=address_id,
         )
 

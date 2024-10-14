@@ -7,9 +7,8 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.error_result import ErrorResult
+from ...models.api_base_date import ApiBaseDate
 from ...models.error_result_base import ErrorResultBase
-from ...models.refund import Refund
 from ...models.refund_status_change import RefundStatusChange
 from ...types import Response
 
@@ -42,13 +41,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResult, ErrorResultBase, Refund]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = Refund.from_dict(response.json())
+        response_200 = ApiBaseDate.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -79,7 +78,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResult, ErrorResultBase, Refund]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -98,7 +97,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: RefundStatusChange,
-) -> Response[Union[ErrorResult, ErrorResultBase, Refund]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
     """Update refund status
 
      Update the refund
@@ -112,7 +111,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, Refund]]
+        Response[Union[ApiBaseDate, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -132,7 +131,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: RefundStatusChange,
-) -> Optional[Union[ErrorResult, ErrorResultBase, Refund]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
     """Update refund status
 
      Update the refund
@@ -146,7 +145,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, Refund]
+        Union[ApiBaseDate, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -166,7 +165,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: RefundStatusChange,
-) -> Response[Union[ErrorResult, ErrorResultBase, Refund]]:
+) -> Response[Union[ApiBaseDate, ErrorResultBase]]:
     """Update refund status
 
      Update the refund
@@ -180,7 +179,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, Refund]]
+        Response[Union[ApiBaseDate, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -198,7 +197,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: RefundStatusChange,
-) -> Optional[Union[ErrorResult, ErrorResultBase, Refund]]:
+) -> Optional[Union[ApiBaseDate, ErrorResultBase]]:
     """Update refund status
 
      Update the refund
@@ -212,7 +211,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, Refund]
+        Union[ApiBaseDate, ErrorResultBase]
     """
 
     return (

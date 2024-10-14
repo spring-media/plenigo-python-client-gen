@@ -8,7 +8,6 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.customer_session_token import CustomerSessionToken
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.logging_data import LoggingData
 from ...models.session_limit_reached import SessionLimitReached
@@ -43,7 +42,7 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]:
+) -> Optional[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = SessionLimitReached.from_dict(response.json())
 
@@ -53,7 +52,7 @@ def _parse_response(
 
         return response_202
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -80,7 +79,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]:
+) -> Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -99,7 +98,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: LoggingData,
-) -> Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]:
+) -> Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]:
     """Create
 
      Creates a new customer session for the provided customer id. More information provided during the
@@ -117,7 +116,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]
+        Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]
     """
 
     kwargs = _get_kwargs(
@@ -137,7 +136,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: LoggingData,
-) -> Optional[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]:
+) -> Optional[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]:
     """Create
 
      Creates a new customer session for the provided customer id. More information provided during the
@@ -155,7 +154,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]
+        Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]
     """
 
     return sync_detailed(
@@ -175,7 +174,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: LoggingData,
-) -> Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]:
+) -> Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]:
     """Create
 
      Creates a new customer session for the provided customer id. More information provided during the
@@ -193,7 +192,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]
+        Response[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]
     """
 
     kwargs = _get_kwargs(
@@ -211,7 +210,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: LoggingData,
-) -> Optional[Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]]:
+) -> Optional[Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]]:
     """Create
 
      Creates a new customer session for the provided customer id. More information provided during the
@@ -229,7 +228,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[CustomerSessionToken, ErrorResult, ErrorResultBase, SessionLimitReached]
+        Union[CustomerSessionToken, ErrorResultBase, SessionLimitReached]
     """
 
     return (

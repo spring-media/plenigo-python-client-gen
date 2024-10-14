@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.additional_order_data import AdditionalOrderData
+    from ..models.api_base_date import ApiBaseDate
     from ..models.checkout_offer import CheckoutOffer
 
 
@@ -24,7 +24,7 @@ class FreeOrder:
             overrules the session
         invoice_address_id (Union[Unset, int]): unique id of the invoice address to use
         delivery_address_id (Union[Unset, int]): unique id of the delivery address to use
-        additional_data (Union[Unset, AdditionalOrderData]):
+        additional_data (Union[Unset, ApiBaseDate]):
     """
 
     customer_id: str
@@ -33,7 +33,7 @@ class FreeOrder:
     customer_session: Union[Unset, str] = UNSET
     invoice_address_id: Union[Unset, int] = UNSET
     delivery_address_id: Union[Unset, int] = UNSET
-    additional_data: Union[Unset, "AdditionalOrderData"] = UNSET
+    additional_data: Union[Unset, "ApiBaseDate"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -75,7 +75,7 @@ class FreeOrder:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.additional_order_data import AdditionalOrderData
+        from ..models.api_base_date import ApiBaseDate
         from ..models.checkout_offer import CheckoutOffer
 
         d = src_dict.copy()
@@ -92,11 +92,11 @@ class FreeOrder:
         delivery_address_id = d.pop("deliveryAddressId", UNSET)
 
         _additional_data = d.pop("additionalData", UNSET)
-        additional_data: Union[Unset, AdditionalOrderData]
+        additional_data: Union[Unset, ApiBaseDate]
         if isinstance(_additional_data, Unset) or not _additional_data:
             additional_data = UNSET
         else:
-            additional_data = AdditionalOrderData.from_dict(_additional_data)
+            additional_data = ApiBaseDate.from_dict(_additional_data)
 
         free_order = cls(
             customer_id=customer_id,

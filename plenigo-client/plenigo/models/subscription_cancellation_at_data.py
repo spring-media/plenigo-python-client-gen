@@ -57,9 +57,9 @@ class SubscriptionCancellationAtData:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                cancellation_date_type_0 = isoparse(data).date()
+                cancellation_date_type_1 = isoparse(data).date()
 
-                return cancellation_date_type_0
+                return cancellation_date_type_1
             except:  # noqa: E722
                 pass
 

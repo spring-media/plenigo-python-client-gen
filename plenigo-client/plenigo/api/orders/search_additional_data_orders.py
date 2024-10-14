@@ -9,7 +9,6 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.additional_order_data_list import AdditionalOrderDataList
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.search_additional_data_orders_sort import SearchAdditionalDataOrdersSort
 from ...types import UNSET, Response, Unset
@@ -65,13 +64,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[AdditionalOrderDataList, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[AdditionalOrderDataList, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = AdditionalOrderDataList.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -98,7 +97,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[AdditionalOrderDataList, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[AdditionalOrderDataList, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -116,7 +115,7 @@ def sync_all(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchAdditionalDataOrdersSort] = UNSET,
-) -> Optional[Union[AdditionalOrderDataList, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[AdditionalOrderDataList, ErrorResultBase]]:
     all_results = AdditionalOrderDataList(items=[])
     # type: ignore
 
@@ -163,7 +162,7 @@ def sync_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchAdditionalDataOrdersSort] = UNSET,
-) -> Response[Union[AdditionalOrderDataList, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[AdditionalOrderDataList, ErrorResultBase]]:
     """Search additional data
 
      Search all additional order data that correspond to the given search conditions.
@@ -181,7 +180,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AdditionalOrderDataList, ErrorResult, ErrorResultBase]]
+        Response[Union[AdditionalOrderDataList, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -209,7 +208,7 @@ def sync(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchAdditionalDataOrdersSort] = UNSET,
-) -> Optional[Union[AdditionalOrderDataList, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[AdditionalOrderDataList, ErrorResultBase]]:
     """Search additional data
 
      Search all additional order data that correspond to the given search conditions.
@@ -227,7 +226,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AdditionalOrderDataList, ErrorResult, ErrorResultBase]
+        Union[AdditionalOrderDataList, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -255,7 +254,7 @@ async def asyncio_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchAdditionalDataOrdersSort] = UNSET,
-) -> Response[Union[AdditionalOrderDataList, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[AdditionalOrderDataList, ErrorResultBase]]:
     """Search additional data
 
      Search all additional order data that correspond to the given search conditions.
@@ -273,7 +272,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AdditionalOrderDataList, ErrorResult, ErrorResultBase]]
+        Response[Union[AdditionalOrderDataList, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -299,7 +298,7 @@ async def asyncio_all(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchAdditionalDataOrdersSort] = UNSET,
-) -> Response[Union[AdditionalOrderDataList, ErrorResult, ErrorResultBase]]:
+) -> Response[Union[AdditionalOrderDataList, ErrorResultBase]]:
     all_results = AdditionalOrderDataList(items=[])
     # type: ignore
 
@@ -343,7 +342,7 @@ async def asyncio(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchAdditionalDataOrdersSort] = UNSET,
-) -> Optional[Union[AdditionalOrderDataList, ErrorResult, ErrorResultBase]]:
+) -> Optional[Union[AdditionalOrderDataList, ErrorResultBase]]:
     """Search additional data
 
      Search all additional order data that correspond to the given search conditions.
@@ -361,7 +360,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AdditionalOrderDataList, ErrorResult, ErrorResultBase]
+        Union[AdditionalOrderDataList, ErrorResultBase]
     """
 
     return (

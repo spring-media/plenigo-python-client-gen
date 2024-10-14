@@ -9,9 +9,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.address_base import AddressBase
-from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
-from ...models.future_address import FutureAddress
 from ...types import UNSET, Response, Unset
 
 log = logging.getLogger(__name__)
@@ -52,13 +50,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResult, ErrorResultBase, FutureAddress]]:
+) -> Optional[Union[AddressBase, ErrorResultBase]]:
     if response.status_code == HTTPStatus.CREATED:
-        response_201 = FutureAddress.from_dict(response.json())
+        response_201 = AddressBase.from_dict(response.json())
 
         return response_201
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResult.from_dict(response.json())
+        response_400 = ErrorResultBase.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -89,7 +87,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResult, ErrorResultBase, FutureAddress]]:
+) -> Response[Union[AddressBase, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -110,7 +108,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: AddressBase,
     override_validation: Union[Unset, bool] = UNSET,
-) -> Response[Union[ErrorResult, ErrorResultBase, FutureAddress]]:
+) -> Response[Union[AddressBase, ErrorResultBase]]:
     """Create future address
 
      Create a new future address with the data provided. A address can only have two future addresses
@@ -126,7 +124,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, FutureAddress]]
+        Response[Union[AddressBase, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -150,7 +148,7 @@ def sync(
     client: AuthenticatedClient,
     body: AddressBase,
     override_validation: Union[Unset, bool] = UNSET,
-) -> Optional[Union[ErrorResult, ErrorResultBase, FutureAddress]]:
+) -> Optional[Union[AddressBase, ErrorResultBase]]:
     """Create future address
 
      Create a new future address with the data provided. A address can only have two future addresses
@@ -166,7 +164,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, FutureAddress]
+        Union[AddressBase, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -190,7 +188,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: AddressBase,
     override_validation: Union[Unset, bool] = UNSET,
-) -> Response[Union[ErrorResult, ErrorResultBase, FutureAddress]]:
+) -> Response[Union[AddressBase, ErrorResultBase]]:
     """Create future address
 
      Create a new future address with the data provided. A address can only have two future addresses
@@ -206,7 +204,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, FutureAddress]]
+        Response[Union[AddressBase, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -228,7 +226,7 @@ async def asyncio(
     client: AuthenticatedClient,
     body: AddressBase,
     override_validation: Union[Unset, bool] = UNSET,
-) -> Optional[Union[ErrorResult, ErrorResultBase, FutureAddress]]:
+) -> Optional[Union[AddressBase, ErrorResultBase]]:
     """Create future address
 
      Create a new future address with the data provided. A address can only have two future addresses
@@ -244,7 +242,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, FutureAddress]
+        Union[AddressBase, ErrorResultBase]
     """
 
     return (
