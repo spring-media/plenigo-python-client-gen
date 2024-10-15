@@ -14,7 +14,18 @@ class CorporateAccountUserStatus:
     Attributes:
         corporate_account_id (int): unique id of the corporate account in the context of a company
         plenigo_offer_id (str): plenigo offer id of the corporate account
-        status (CorporateAccountUserStatusStatus):
+        status (CorporateAccountUserStatusStatus): status of the corporate account user
+
+            | Status    | Description
+            |
+            | --------- | --------------------------------------------------------------------------------------------------
+            ----------------------------------|
+            | ACTIVE    | customer is active and has access to the corporate account product
+            |
+            | INACTIVE  | customer is inactive and has no access to the corporate account product
+            |
+            | INVITED   | customer is invited to activate the corporate account user
+            |
     """
 
     corporate_account_id: int
