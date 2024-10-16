@@ -1,0 +1,15 @@
+[
+  "/customers",
+  "/vouchers",
+  "/subscriptions",
+  "/appStores/orders",
+  "/appStores/appleAppStore",
+  "/appStores/googlePlayStore",
+  "/settings/customerCancellationReasons",
+  "/invoices",
+  "/refunds",
+  "/transactions",
+  "/products/offers",
+  "/products/priceIssues",
+  "/orders"
+]
