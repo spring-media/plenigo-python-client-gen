@@ -23,12 +23,7 @@ def find_ref_values(data, ref_set=None):
     return ref_set
 
 # Function to load the OpenAPI specification JSON file
-def load_openapi_spec(file_path):
-    with open(file_path, 'r') as file:
-        return json.load(file)
-
-# Function to load the endpoints from a YAML file
-def load_endpoints(file_path):
+def load_json_file(file_path):
     with open(file_path, 'r') as file:
         return json.load(file)
 
@@ -86,8 +81,8 @@ def main():
     args = parser.parse_args()
 
     # Load the OpenAPI specification and endpoints
-    openapi_spec = load_openapi_spec(args.input_file)
-    endpoints = load_endpoints(args.endpoints_file)
+    openapi_spec = load_json_file(args.input_file)
+    endpoints = load_json_file(args.endpoints_file)
 
     # Gather and search references
     all_references = gather_references(openapi_spec, endpoints)
