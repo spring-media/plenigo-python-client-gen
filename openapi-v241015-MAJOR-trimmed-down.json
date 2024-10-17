@@ -1829,6 +1829,103 @@
         }
       }
     },
+    "/vouchers": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/startingAfterQuery"
+          },
+          {
+            "$ref": "#/components/parameters/endingBeforeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/startTimeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/endTimeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/sizeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/voucherStatusQuery"
+          }
+        ],
+        "summary": "Returns all vouchers",
+        "operationId": "searchVouchers",
+        "security": [
+          {
+            "plenigoToken": []
+          }
+        ],
+        "tags": [
+          "Vouchers"
+        ],
+        "description": "Returns all vouchers of the selected channel page, depending on query parameters",
+        "responses": {
+          "200": {
+            "description": "Vouchers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiVoucherPage"
+                },
+                "examples": {
+                  "orderExample": {
+                    "$ref": "#/components/examples/apiVoucherPageExample"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request is not formatted correctly or contains invalid data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                },
+                "examples": {
+                  "errorResultBadRequestExample": {
+                    "$ref": "#/components/examples/errorResultBadRequestExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo merchant user session provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/vouchers/campaigns": {
       "post": {
         "parameters": [
@@ -2267,6 +2364,21 @@
         "description": "PSP transaction id",
         "schema": {
           "type": "string"
+        }
+      },
+      "voucherStatusQuery": {
+        "name": "voucherStatus",
+        "in": "query",
+        "description": "status of the voucher",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "CANCELLED",
+            "INACTIVE",
+            "DELETED"
+          ]
         }
       },
       "voucherCodeQuery": {
@@ -7054,6 +7166,76 @@
           }
         }
       },
+      "ApiVoucher": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiBase"
+          }
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "unique id of the voucher in the context of a company",
+            "type": "integer",
+            "format": "int64"
+          },
+          "voucherCode": {
+            "description": "voucher code",
+            "type": "string"
+          },
+          "customData": {
+            "description": "free text field",
+            "type": "string",
+            "maxLength": 200
+          },
+          "status": {
+            "description": "status of the voucher",
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "DELETED"
+            ]
+          },
+          "orderId": {
+            "description": "order id this voucher was used",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "createdDate",
+          "changedDate",
+          "changedBy",
+          "changedByType",
+          "voucherCode",
+          "status",
+          "voucherAmount"
+        ]
+      },
+      "ApiVoucherPage": {
+        "type": "object",
+        "properties": {
+          "startingAfter": {
+            "description": "starting after element id",
+            "type": "integer"
+          },
+          "size": {
+            "description": "size of elements of the page",
+            "type": "integer"
+          },
+          "totalSize": {
+            "description": "total of elements",
+            "type": "integer"
+          },
+          "campaigns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiVoucher"
+            }
+          }
+        }
+      },
       "ApiCampaignBase": {
         "allOf": [
           {
@@ -7966,6 +8148,34 @@
             ]
           }
         }
+      },
+      "apiVoucherPageExample": {
+        "value": {
+          "items": [
+            {
+              "id": 100007,
+              "createdDate": "2019-08-13",
+              "changedDate": "2019-09-13",
+              "changedBy": "P_UZV4L63ZBT",
+              "changedByType": "MERCHANT",
+              "voucherCode": "HNWN-2ETP-FA97",
+              "customData": "Custom data",
+              "status": "ACTIVE"
+            },
+            {
+              "id": 100008,
+              "createdDate": "2019-08-13",
+              "changedDate": "2019-09-23",
+              "changedBy": "Z2sZV4H63IBT",
+              "changedByType": "CUSTOMER",
+              "voucherCode": "NVUU-UG7A-T3C3",
+              "customData": "Custom data",
+              "status": "INACTIVE",
+              "orderId": 100001
+            }
+          ]
+        },
+        "summary": "api voucher example"
       },
       "campaignPageExample": {
         "value": {

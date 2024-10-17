@@ -8,6 +8,7 @@ from .address_base_salutation import AddressBaseSalutation
 from .address_base_validation_status import AddressBaseValidationStatus
 from .api_base_date import ApiBaseDate
 from .api_campaign_page import ApiCampaignPage
+from .api_voucher_page import ApiVoucherPage
 from .app_store_access_right import AppStoreAccessRight
 from .app_store_access_right_additional_data import AppStoreAccessRightAdditionalData
 from .app_store_access_right_additional_data_additional_property import (
@@ -124,6 +125,7 @@ from .search_product_price_issues_sort import SearchProductPriceIssuesSort
 from .search_refunds_status import SearchRefundsStatus
 from .search_subscriptions_sort import SearchSubscriptionsSort
 from .search_transactions_sort import SearchTransactionsSort
+from .search_vouchers_voucher_status import SearchVouchersVoucherStatus
 from .subscription_connected_offer_info import SubscriptionConnectedOfferInfo
 from .subscription_pause_at import SubscriptionPauseAt
 from .subscription_pause_at_pause_type import SubscriptionPauseAtPauseType
@@ -152,6 +154,7 @@ __all__ = (
     "AddressBaseValidationStatus",
     "ApiBaseDate",
     "ApiCampaignPage",
+    "ApiVoucherPage",
     "AppleAppStorePurchaseAddition",
     "AppleAppStorePurchaseData",
     "AppleAppStorePurchases",
@@ -258,6 +261,7 @@ __all__ = (
     "SearchRefundsStatus",
     "SearchSubscriptionsSort",
     "SearchTransactionsSort",
+    "SearchVouchersVoucherStatus",
     "SubscriptionConnectedOfferInfo",
     "SubscriptionPauseAt",
     "SubscriptionPauseAtPauseType",
