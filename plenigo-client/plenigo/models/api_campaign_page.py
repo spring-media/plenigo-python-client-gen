@@ -9,11 +9,11 @@ if TYPE_CHECKING:
     from ..models.api_base_date import ApiBaseDate
 
 
-T = TypeVar("T", bound="ApiVoucherPage")
+T = TypeVar("T", bound="ApiCampaignPage")
 
 
 @_attrs_define
-class ApiVoucherPage:
+class ApiCampaignPage:
     """
     Attributes:
         starting_after (Union[Unset, int]): starting after element id
@@ -74,15 +74,15 @@ class ApiVoucherPage:
 
             campaigns.append(campaigns_item)
 
-        api_voucher_page = cls(
+        api_campaign_page = cls(
             starting_after=starting_after,
             size=size,
             total_size=total_size,
             campaigns=campaigns,
         )
 
-        api_voucher_page.additional_properties = d
-        return api_voucher_page
+        api_campaign_page.additional_properties = d
+        return api_campaign_page
 
     @property
     def additional_keys(self) -> List[str]:

@@ -7,7 +7,7 @@ from .address_base import AddressBase
 from .address_base_salutation import AddressBaseSalutation
 from .address_base_validation_status import AddressBaseValidationStatus
 from .api_base_date import ApiBaseDate
-from .api_voucher_page import ApiVoucherPage
+from .api_campaign_page import ApiCampaignPage
 from .app_store_access_right import AppStoreAccessRight
 from .app_store_access_right_additional_data import AppStoreAccessRightAdditionalData
 from .app_store_access_right_additional_data_additional_property import (
@@ -26,6 +26,9 @@ from .apple_app_store_receipt_item import AppleAppStoreReceiptItem
 from .apple_app_store_transaction import AppleAppStoreTransaction
 from .archive_settings import ArchiveSettings
 from .archive_settings_archive_type import ArchiveSettingsArchiveType
+from .campaign_creation import CampaignCreation
+from .campaign_creation_voucher_type import CampaignCreationVoucherType
+from .channel_creation import ChannelCreation
 from .credit_based_product_contract_condition import CreditBasedProductContractCondition
 from .credit_based_product_contract_condition_accounting_timespan import (
     CreditBasedProductContractConditionAccountingTimespan,
@@ -121,11 +124,11 @@ from .search_product_price_issues_sort import SearchProductPriceIssuesSort
 from .search_refunds_status import SearchRefundsStatus
 from .search_subscriptions_sort import SearchSubscriptionsSort
 from .search_transactions_sort import SearchTransactionsSort
-from .search_vouchers_voucher_status import SearchVouchersVoucherStatus
 from .subscription_connected_offer_info import SubscriptionConnectedOfferInfo
 from .subscription_pause_at import SubscriptionPauseAt
 from .subscription_pause_at_pause_type import SubscriptionPauseAtPauseType
 from .subscriptions import Subscriptions
+from .success_status import SuccessStatus
 from .time_based_product_contract_condition import TimeBasedProductContractCondition
 from .time_based_product_contract_condition_accounting_timespan import (
     TimeBasedProductContractConditionAccountingTimespan,
@@ -148,7 +151,7 @@ __all__ = (
     "AddressBaseSalutation",
     "AddressBaseValidationStatus",
     "ApiBaseDate",
-    "ApiVoucherPage",
+    "ApiCampaignPage",
     "AppleAppStorePurchaseAddition",
     "AppleAppStorePurchaseData",
     "AppleAppStorePurchases",
@@ -165,6 +168,9 @@ __all__ = (
     "AppStorePurchaseList",
     "ArchiveSettings",
     "ArchiveSettingsArchiveType",
+    "CampaignCreation",
+    "CampaignCreationVoucherType",
+    "ChannelCreation",
     "CreditBasedProductContractCondition",
     "CreditBasedProductContractConditionAccountingTimespan",
     "CreditBasedProductContractConditionCancellationTimespan",
@@ -252,11 +258,11 @@ __all__ = (
     "SearchRefundsStatus",
     "SearchSubscriptionsSort",
     "SearchTransactionsSort",
-    "SearchVouchersVoucherStatus",
     "SubscriptionConnectedOfferInfo",
     "SubscriptionPauseAt",
     "SubscriptionPauseAtPauseType",
     "Subscriptions",
+    "SuccessStatus",
     "TimeBasedProductContractCondition",
     "TimeBasedProductContractConditionAccountingTimespan",
     "TimeBasedProductContractConditionCancellationTimespan",

@@ -1829,30 +1829,15 @@
         }
       }
     },
-    "/vouchers": {
-      "get": {
+    "/vouchers/campaigns": {
+      "post": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/startingAfterQuery"
-          },
-          {
-            "$ref": "#/components/parameters/endingBeforeQuery"
-          },
-          {
-            "$ref": "#/components/parameters/startTimeQuery"
-          },
-          {
-            "$ref": "#/components/parameters/endTimeQuery"
-          },
-          {
-            "$ref": "#/components/parameters/sizeQuery"
-          },
-          {
-            "$ref": "#/components/parameters/voucherStatusQuery"
+            "$ref": "#/components/parameters/callbackQuery"
           }
         ],
-        "summary": "Returns all vouchers",
-        "operationId": "searchVouchers",
+        "summary": "Create",
+        "operationId": "createVoucherCampaign",
         "security": [
           {
             "plenigoToken": []
@@ -1861,18 +1846,48 @@
         "tags": [
           "Vouchers"
         ],
-        "description": "Returns all vouchers of the selected channel page, depending on query parameters",
+        "description": "*ASYNC* Creates a new voucher campaign with the data provided. ATTENTION - this process is async.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampaignCreation"
+              },
+              "examples": {
+                "campaignCreationExample": {
+                  "$ref": "#/components/examples/campaignCreationExample"
+                }
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
-            "description": "Vouchers",
+          "201": {
+            "description": "Campaign that will be created.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiVoucherPage"
+                  "$ref": "#/components/schemas/ApiCampaignCreationResult"
                 },
                 "examples": {
-                  "orderExample": {
-                    "$ref": "#/components/examples/apiVoucherPageExample"
+                  "campaignCreationResultExample": {
+                    "$ref": "#/components/examples/campaignCreationResultExample"
+                  }
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Success result with promise id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessStatus"
+                },
+                "examples": {
+                  "successStatusExample": {
+                    "$ref": "#/components/examples/successStatusWithPromiseIdExample"
                   }
                 }
               }
@@ -1894,7 +1909,7 @@
             }
           },
           "401": {
-            "description": "Plenigo merchant user session provided is not valid or doesn't have necessary rights to access this method.",
+            "description": "Plenigo api token provided is not valid or doesn't have necessary rights to access this method.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1903,6 +1918,140 @@
                 "examples": {
                   "errorResultUnauthorizedExample": {
                     "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The rate limit for this endpoint is reached. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultTooManyRequestsExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Search",
+        "operationId": "searchVoucherCampaigns",
+        "security": [
+          {
+            "plenigoToken": []
+          }
+        ],
+        "tags": [
+          "Vouchers"
+        ],
+        "description": "Search all campaigns that correspond to the given search conditions.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sizeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/startingAfterQuery"
+          },
+          {
+            "$ref": "#/components/parameters/endingBeforeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/voucherCodeQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns search result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiCampaignPage"
+                },
+                "examples": {
+                  "campaignPageExample": {
+                    "$ref": "#/components/examples/campaignPageExample"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request is not formatted correctly or contains invalid data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                },
+                "examples": {
+                  "errorResultBadRequestExample": {
+                    "$ref": "#/components/examples/errorResultBadRequestExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo api token provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "This API call is part of a paid feature. The according module must be purchased in the plenigo backend before the API call can be used.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                },
+                "examples": {
+                  "errorResultNotFoundExample": {
+                    "$ref": "#/components/examples/errorResultExample"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The rate limit for this endpoint is reached. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultTooManyRequestsExample"
                   }
                 }
               }
@@ -2120,19 +2269,22 @@
           "type": "string"
         }
       },
-      "voucherStatusQuery": {
-        "name": "voucherStatus",
+      "voucherCodeQuery": {
+        "name": "voucherCode",
         "in": "query",
-        "description": "status of the voucher",
+        "description": "voucher code to get",
         "required": false,
         "schema": {
-          "type": "string",
-          "enum": [
-            "ACTIVE",
-            "CANCELLED",
-            "INACTIVE",
-            "DELETED"
-          ]
+          "type": "string"
+        }
+      },
+      "callbackQuery": {
+        "name": "callback",
+        "in": "query",
+        "description": "if set to true the call to this endpoint will return a promise ID and creates a new voucher request callback that contains the data provided. The callback also returns the promise ID returned by this call to be identified.",
+        "required": false,
+        "schema": {
+          "type": "boolean"
         }
       }
     },
@@ -2257,6 +2409,19 @@
           "errorCode",
           "errorMessage"
         ]
+      },
+      "SuccessStatus": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "description": "success status",
+            "type": "boolean"
+          },
+          "promiseId": {
+            "description": "in case of long running calls it contains the id that identifies the corresponding callback that contains the result",
+            "type": "string"
+          }
+        }
       },
       "AddressBase": {
         "type": "object",
@@ -6889,7 +7054,7 @@
           }
         }
       },
-      "ApiVoucher": {
+      "ApiCampaignBase": {
         "allOf": [
           {
             "$ref": "#/components/schemas/ApiBase"
@@ -6897,46 +7062,140 @@
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "description": "unique id of the voucher in the context of a company",
+          "campaignId": {
+            "description": "unique id of the campaign in the context of a company",
+            "type": "string",
+            "maxLength": 100
+          },
+          "campaignName": {
+            "description": "name of the campaign",
+            "type": "string",
+            "maxLength": 200
+          },
+          "voucherType": {
+            "description": "represents the type of the vouchers of this campaign",
+            "type": "string",
+            "enum": [
+              "MULTI",
+              "SINGLE"
+            ]
+          },
+          "plenigoOfferId": {
+            "description": "offer id the vouchers are for",
+            "type": "string",
+            "maxLength": 100
+          },
+          "status": {
+            "description": "status of the campaign",
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "CREATING",
+              "INACTIVE",
+              "DELETED",
+              "UPDATING"
+            ]
+          },
+          "startDate": {
+            "description": "start date of the campaign with full-date notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21",
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date"
+          },
+          "endDate": {
+            "description": "end date of the campaign with full-date notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21",
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date"
+          }
+        },
+        "required": [
+          "campaignId",
+          "campaignName",
+          "voucherType",
+          "offerId",
+          "status",
+          "startDate",
+          "changedDate",
+          "changedBy",
+          "changedByType"
+        ]
+      },
+      "ApiChannelBase": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiBase"
+          }
+        ],
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "description": "unique id of the channel in the context of a company",
             "type": "integer",
             "format": "int64"
           },
-          "voucherCode": {
-            "description": "voucher code",
-            "type": "string"
+          "channelName": {
+            "description": "name of the channel",
+            "type": "string",
+            "maxLength": 200
           },
           "customData": {
             "description": "free text field",
             "type": "string",
             "maxLength": 200
           },
+          "voucherAmount": {
+            "description": "represents the amount of vouchers for this channel",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000000
+          },
           "status": {
-            "description": "status of the voucher",
+            "description": "status of the campaign",
             "type": "string",
             "enum": [
               "ACTIVE",
+              "CREATING",
               "INACTIVE",
-              "DELETED"
+              "DELETED",
+              "UPDATING"
             ]
-          },
-          "orderId": {
-            "description": "order id this voucher was used",
-            "type": "integer"
           }
         },
         "required": [
-          "id",
-          "createdDate",
+          "channelId",
           "changedDate",
           "changedBy",
           "changedByType",
-          "voucherCode",
+          "channelName",
           "status",
           "voucherAmount"
         ]
       },
-      "ApiVoucherPage": {
+      "ApiCampaignView": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiCampaignBase"
+          }
+        ],
+        "type": "object",
+        "properties": {
+          "channels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiChannelBase"
+            }
+          }
+        },
+        "required": [
+          "channels"
+        ]
+      },
+      "ApiCampaignPage": {
         "type": "object",
         "properties": {
           "startingAfter": {
@@ -6954,10 +7213,102 @@
           "campaigns": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ApiVoucher"
+              "$ref": "#/components/schemas/ApiCampaignView"
             }
           }
         }
+      },
+      "ChannelCreation": {
+        "type": "object",
+        "properties": {
+          "channelName": {
+            "description": "name of the channel",
+            "type": "string",
+            "maxLength": 200
+          },
+          "customData": {
+            "description": "free text field",
+            "type": "string",
+            "maxLength": 200
+          },
+          "voucherAmount": {
+            "description": "represents the amount of vouchers to create for this channel",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000000
+          }
+        }
+      },
+      "CampaignCreation": {
+        "type": "object",
+        "properties": {
+          "campaignName": {
+            "description": "name of the campaign",
+            "type": "string",
+            "maxLength": 200
+          },
+          "voucherType": {
+            "description": "represents the type of the vouchers of this campaign",
+            "type": "string",
+            "enum": [
+              "MULTI",
+              "SINGLE"
+            ]
+          },
+          "plenigoOfferId": {
+            "description": "plenigo offer id the vouchers are for",
+            "type": "string",
+            "maxLength": 20
+          },
+          "startDate": {
+            "description": "start date of the campaign with full-date notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21",
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date"
+          },
+          "endDate": {
+            "description": "end date of the campaign with full-date notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21",
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date"
+          },
+          "channels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChannelCreation"
+            }
+          }
+        },
+        "required": [
+          "campaignName",
+          "voucherType",
+          "plenigoOfferId",
+          "startDate",
+          "channels"
+        ]
+      },
+      "ApiCampaignCreationResult": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiCampaignBase"
+          }
+        ],
+        "type": "object",
+        "properties": {
+          "channels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiChannelBase"
+            }
+          }
+        },
+        "required": [
+          "channels"
+        ]
       }
     },
     "examples": {
@@ -7002,6 +7353,13 @@
           "errorMessage": "Entity for given id does not exist."
         },
         "summary": "not found"
+      },
+      "errorResultExample": {
+        "value": {
+          "errorCode": 99000,
+          "errorMessage": "Error message"
+        },
+        "summary": "generic error"
       },
       "customersExample": {
         "value": {
@@ -7102,6 +7460,13 @@
           }
         },
         "summary": "creation result"
+      },
+      "successStatusWithPromiseIdExample": {
+        "value": {
+          "success": true,
+          "promiseId": "0ujsszgFvbiEr7CDgE3z8MAUPFt"
+        },
+        "summary": "status"
       },
       "invoicesExample": {
         "value": {
@@ -7602,33 +7967,88 @@
           }
         }
       },
-      "apiVoucherPageExample": {
+      "campaignPageExample": {
         "value": {
           "items": [
             {
-              "id": 100007,
-              "createdDate": "2019-08-13",
-              "changedDate": "2019-09-13",
-              "changedBy": "P_UZV4L63ZBT",
-              "changedByType": "MERCHANT",
-              "voucherCode": "HNWN-2ETP-FA97",
-              "customData": "Custom data",
-              "status": "ACTIVE"
-            },
-            {
-              "id": 100008,
-              "createdDate": "2019-08-13",
-              "changedDate": "2019-09-23",
-              "changedBy": "Z2sZV4H63IBT",
-              "changedByType": "CUSTOMER",
-              "voucherCode": "NVUU-UG7A-T3C3",
-              "customData": "Custom data",
-              "status": "INACTIVE",
-              "orderId": 100001
+              "startingAfter": 0,
+              "size": 10,
+              "totalSize": 1,
+              "campaigns": [
+                {
+                  "campaignId": 100003,
+                  "changedDate": "2019-09-13",
+                  "changedBy": "P_UZV4L63ZBT",
+                  "changedByType": "MERCHANT",
+                  "campaignName": "Autumn 2019",
+                  "voucherType": "SINGLE",
+                  "plenigoOfferId": "O_TTA1E7173120881551",
+                  "status": "ACTIVE",
+                  "startDate": "2019-09-13",
+                  "channels": [
+                    {
+                      "channelId": 100002,
+                      "changedDate": "2019-09-13",
+                      "changedBy": "P_UZV4L63ZBT",
+                      "changedByType": "MERCHANT",
+                      "channelName": "Internet",
+                      "customData": "Custom data",
+                      "voucherAmount": 2,
+                      "status": "ACTIVE"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
-        "summary": "api voucher example"
+        "summary": "detail list"
+      },
+      "campaignCreationExample": {
+        "value": {
+          "campaignName": "API Campaign Creation",
+          "voucherType": "SINGLE",
+          "plenigoOfferId": "O_TTA1E7173120881551",
+          "startDate": "2019-12-16",
+          "endDate": "2099-12-16",
+          "channels": [
+            {
+              "channelName": "API Channel",
+              "customData": "Custom data",
+              "voucherAmount": 2
+            }
+          ]
+        }
+      },
+      "campaignCreationResultExample": {
+        "value": {
+          "items": [
+            {
+              "campaignId": 100003,
+              "changedDate": "2019-09-13",
+              "changedBy": "P_UZV4L63ZBT",
+              "changedByType": "MERCHANT",
+              "campaignName": "Autumn 2019",
+              "voucherType": "SINGLE",
+              "plenigoOfferId": "O_TTA1E7173120881551",
+              "status": "CREATING",
+              "startDate": "2019-09-13",
+              "channels": [
+                {
+                  "channelId": 100002,
+                  "changedDate": "2019-09-13",
+                  "changedBy": "P_UZV4L63ZBT",
+                  "changedByType": "MERCHANT",
+                  "channelName": "Internet",
+                  "customData": "Custom data",
+                  "voucherAmount": 2,
+                  "status": "CREATING"
+                }
+              ]
+            }
+          ]
+        },
+        "summary": "detail"
       }
     }
   }

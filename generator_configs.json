@@ -1,6 +1,6 @@
 [
   "/customers",
-  "/vouchers",
+  "/vouchers/campaigns",
   "/subscriptions",
   "/appStores/orders",
   "/appStores/appleAppStore",
