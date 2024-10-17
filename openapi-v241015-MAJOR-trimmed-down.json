@@ -1236,6 +1236,323 @@
         }
       }
     },
+    "/paymentMethods/bankAccounts/{bankAccountId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/bankAccountIdPath"
+        }
+      ],
+      "get": {
+        "summary": "Get a bank account entity",
+        "operationId": "getBankAccount",
+        "security": [
+          {
+            "plenigoToken": []
+          }
+        ],
+        "tags": [
+          "Payment Methods"
+        ],
+        "description": "Get bank account that is identified by the passed bank account id.\n",
+        "responses": {
+          "200": {
+            "description": "Returns bank account details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankAccount"
+                },
+                "examples": {
+                  "paymentMethod": {
+                    "$ref": "#/components/examples/bankAccountExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo api token provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Entity for given id does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultNotFoundExample": {
+                    "$ref": "#/components/examples/errorResultNotFoundExample"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The rate limit for this endpoint is reached. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultTooManyRequestsExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update bank account entity",
+        "operationId": "updateBankAccount",
+        "tags": [
+          "Payment Methods"
+        ],
+        "description": "Update an bank account that is identified by the passed bank account id with the data provided.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BankAccountChange"
+              },
+              "examples": {
+                "paymentMethod": {
+                  "$ref": "#/components/examples/bankAccountExample"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bank account was successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankAccount"
+                },
+                "examples": {
+                  "paymentMethod": {
+                    "$ref": "#/components/examples/bankAccountExample"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request is not formatted correctly or contains invalid data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                },
+                "examples": {
+                  "errorResultBadRequestExample": {
+                    "$ref": "#/components/examples/errorResultBadRequestExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo api token provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Entity for given id does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultNotFoundExample": {
+                    "$ref": "#/components/examples/errorResultNotFoundExample"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The rate limit for this endpoint is reached. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultTooManyRequestsExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a bank account",
+        "operationId": "deleteBankAccount",
+        "security": [
+          {
+            "plenigoToken": []
+          }
+        ],
+        "tags": [
+          "Payment Methods"
+        ],
+        "description": "Delete a bank account. This is only possible if bank account is not associated with a subscription. Otherwise the subscription association must be\nremoved first.\n",
+        "responses": {
+          "202": {
+            "description": "Bank account successfully deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessStatus"
+                },
+                "examples": {
+                  "sessionExample": {
+                    "$ref": "#/components/examples/successStatusExample"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bank account cannot be deleted because it is still used by subscriptions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                },
+                "examples": {
+                  "errorResultBadRequestExample": {
+                    "$ref": "#/components/examples/errorResultBadRequestExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo api token provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Entity for given id does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultNotFoundExample": {
+                    "$ref": "#/components/examples/errorResultNotFoundExample"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The rate limit for this endpoint is reached. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultTooManyRequestsExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/products/offers": {
       "get": {
         "summary": "Search offers",
@@ -1808,6 +2125,299 @@
         }
       }
     },
+    "/subscriptions/{subscriptionId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/subscriptionIdPath"
+        }
+      ],
+      "get": {
+        "summary": "Get",
+        "operationId": "getSubscription",
+        "security": [
+          {
+            "plenigoToken": []
+          }
+        ],
+        "tags": [
+          "Subscriptions"
+        ],
+        "description": "Get subscription that is identified by the passed subscription id.\n",
+        "responses": {
+          "200": {
+            "description": "Returns subscription details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subscription"
+                },
+                "examples": {
+                  "subscriptionExample": {
+                    "$ref": "#/components/examples/subscriptionExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo api token provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Entity for given id does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultNotFoundExample": {
+                    "$ref": "#/components/examples/errorResultNotFoundExample"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The rate limit for this endpoint is reached. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultTooManyRequestsExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/chain/{chainId}/additionalData": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/chainIdPath"
+        }
+      ],
+      "get": {
+        "summary": "Get additional chain data",
+        "operationId": "getSubscriptionChainAdditionalData",
+        "security": [
+          {
+            "plenigoToken": []
+          }
+        ],
+        "tags": [
+          "Subscriptions"
+        ],
+        "description": "Returns additional data associated with the chain associated with the provided chain id.\n",
+        "responses": {
+          "200": {
+            "description": "Returns additional data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdditionalChainData"
+                },
+                "examples": {
+                  "additionalChainDataExample": {
+                    "$ref": "#/components/examples/additionalChainDataExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo api token provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Entity for given id does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultNotFoundExample": {
+                    "$ref": "#/components/examples/errorResultNotFoundExample"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The rate limit for this endpoint is reached. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultTooManyRequestsExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace additional chain data",
+        "tags": [
+          "Subscriptions"
+        ],
+        "description": "Replace additional data of a subscription chain. All data will be replaced with the new data provided.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdditionalChainData"
+              },
+              "examples": {
+                "additionalChainDataExample": {
+                  "$ref": "#/components/examples/additionalChainDataExample"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns additional data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdditionalChainData"
+                },
+                "examples": {
+                  "additionalChainDataExample": {
+                    "$ref": "#/components/examples/additionalChainDataExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo api token provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Entity for given id does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultNotFoundExample": {
+                    "$ref": "#/components/examples/errorResultNotFoundExample"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The rate limit for this endpoint is reached. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultTooManyRequestsExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/transactions": {
       "get": {
         "summary": "Search",
@@ -2268,6 +2878,99 @@
           }
         }
       }
+    },
+    "/vouchers/channels/{channelId}/vouchers": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/channelIdPath"
+          },
+          {
+            "$ref": "#/components/parameters/startingAfterQuery"
+          },
+          {
+            "$ref": "#/components/parameters/endingBeforeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/sizeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/voucherStatusQuery"
+          }
+        ],
+        "summary": "Returns channel vouchers",
+        "security": [
+          {
+            "plenigoToken": []
+          }
+        ],
+        "tags": [
+          "Vouchers"
+        ],
+        "description": "Returns all vouchers of the selected channel page, depending on query parameters",
+        "responses": {
+          "200": {
+            "description": "Vouchers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiVoucherPage"
+                },
+                "examples": {
+                  "orderExample": {
+                    "$ref": "#/components/examples/apiVoucherPageExample"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request is not formatted correctly or contains invalid data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                },
+                "examples": {
+                  "errorResultBadRequestExample": {
+                    "$ref": "#/components/examples/errorResultBadRequestExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo merchant user session provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2413,6 +3116,16 @@
           "format": "int64"
         }
       },
+      "bankAccountIdPath": {
+        "name": "bankAccountId",
+        "in": "path",
+        "description": "unique id of the bank account",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
       "parameters-plenigoOfferIdQuery": {
         "name": "plenigoOfferId",
         "in": "query",
@@ -2455,6 +3168,26 @@
             "PROCESSING",
             "REJECTED"
           ]
+        }
+      },
+      "subscriptionIdPath": {
+        "name": "subscriptionId",
+        "in": "path",
+        "description": "unique id of the subscription",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "chainIdPath": {
+        "name": "chainId",
+        "in": "path",
+        "description": "unique id of the subscription chain",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "plenigoTransactionIdQuery": {
@@ -2504,6 +3237,15 @@
         "required": false,
         "schema": {
           "type": "boolean"
+        }
+      },
+      "channelIdPath": {
+        "name": "channelId",
+        "in": "path",
+        "description": "unique id of the channel",
+        "required": true,
+        "schema": {
+          "type": "string"
         }
       }
     },
@@ -4799,6 +5541,102 @@
             }
           }
         }
+      },
+      "BankAccountChange": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "description": "name on bank account",
+            "type": "string",
+            "maxLength": 30
+          },
+          "iban": {
+            "description": "<a href=\"https://en.wikipedia.org/wiki/International_Bank_Account_Number\" target=\"_blank\">IBAN</a>",
+            "type": "string",
+            "minLength": 18,
+            "maxLength": 32
+          },
+          "bic": {
+            "description": "<a href=\"https://en.wikipedia.org/wiki/ISO_9362\" target=\"_blank\">BIC</a> - only necessary for countries outside the EU",
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 11
+          },
+          "preferred": {
+            "description": "flag indicating if bank account is the preferred bank account - only one bank account can be preferred.",
+            "type": "boolean"
+          },
+          "invalid": {
+            "description": "flag indicating if payment method should be handled as invalid",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "owner",
+          "iban"
+        ]
+      },
+      "BankAccountCreation": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BankAccountChange"
+          }
+        ],
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "description": "unique id of the payment mandate - if not sent plenigo will generate a new one together with a mandate date",
+            "type": "string",
+            "pattern": "^[0-9]{1,18}$"
+          },
+          "mandateId": {
+            "description": "unique id of the payment mandate",
+            "type": "string"
+          },
+          "mandateDate": {
+            "description": "date the payment mandate was created with date-time notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21T17:32:28Z",
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date"
+          },
+          "pspMandateId": {
+            "description": "psp mandate id",
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "customerId"
+        ]
+      },
+      "BankAccount": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BankAccountCreation"
+          },
+          {
+            "$ref": "#/components/schemas/ApiBase"
+          }
+        ],
+        "type": "object",
+        "properties": {
+          "bankAccountId": {
+            "description": "unique id of the bank account",
+            "type": "integer",
+            "format": "int64"
+          },
+          "active": {
+            "description": "flag indicating if bank account is active - a bank account can become inactive by getting closed, etc.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "bankAccountId",
+          "mandateId",
+          "mandateDate"
+        ]
       },
       "SubscriptionConnectedOfferInfo": {
         "type": "object",
@@ -7347,6 +8185,27 @@
           }
         }
       },
+      "AdditionalChainData": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "maxLength": 30
+                },
+                "value": {
+                  "type": "string",
+                  "maxLength": 200
+                }
+              }
+            }
+          }
+        }
+      },
       "ApiVoucher": {
         "allOf": [
           {
@@ -7717,6 +8576,12 @@
         },
         "summary": "not found"
       },
+      "successStatusExample": {
+        "value": {
+          "success": true
+        },
+        "summary": "status"
+      },
       "errorResultExample": {
         "value": {
           "errorCode": 99000,
@@ -8048,6 +8913,25 @@
         },
         "summary": "additional data"
       },
+      "bankAccountExample": {
+        "value": {
+          "bankAccountId": 100001,
+          "createdDate": "2019-01-01T07:53:23.450961Z",
+          "createdBy": "PLENIGO",
+          "createdByType": "SYSTEM",
+          "changedDate": "2019-01-01T07:53:23.450961Z",
+          "changedBy": "PLENIGO",
+          "changedByType": "SYSTEM",
+          "customerId": "100003",
+          "owner": "John Doe",
+          "iban": "GB19123412341234123412",
+          "mandateId": "12342342",
+          "mandateDate": "2019-03-21T17:32:12Z",
+          "active": true,
+          "preferred": true
+        },
+        "summary": "detail"
+      },
       "offersExample": {
         "value": {
           "items": [
@@ -8347,6 +9231,62 @@
             ]
           }
         }
+      },
+      "subscriptionExample": {
+        "value": {
+          "subscriptionId": 9310,
+          "changedDate": "2019-03-21T17:32:12Z",
+          "startDate": "2019-02-01T17:32:12Z",
+          "endDate": "2090-02-01TT17:32:12Z",
+          "chainId": 9310,
+          "plenigoOfferId": "O_MZA1E7173120881551",
+          "invoiceCustomerId": "100003",
+          "deliveryCustomerId": "100003",
+          "term": 12,
+          "termTimeSpan": "MONTH",
+          "accountingPeriod": 1,
+          "accountingPeriodTimeSpan": "MONTH",
+          "cancellationPeriod": 1,
+          "cancellationPeriodTimeSpan": "DAY",
+          "currency": "EUR",
+          "paymentMethod": "CREDIT_CARD",
+          "paymentMethodId": 100230,
+          "accessBlocked": false,
+          "firstBookingDate": "2019-02-01",
+          "lastBookingDate": "2019-08-01",
+          "nextBookingDate": "2019-09-01",
+          "status": "ACTIVE",
+          "items": [
+            {
+              "subscriptonItemId": 7212,
+              "productId": "P_TTA1E7173120881551",
+              "plenigoProductId": "P_TTA1E7173120881551",
+              "plenigoStepId": "S_DRLEE7173120881551",
+              "title": "Best monthly news",
+              "internalTitle": "Monthly newspaper",
+              "taxType": "NEWSPAPER",
+              "price": 9.99,
+              "priceIssueId": 12345,
+              "discountPercentage": 0,
+              "quantity": 1,
+              "status": "ACTIVE",
+              "packageTitle": "Best offer bundle",
+              "packageId": "AX20429MK3222",
+              "packageCancellationLocked": true,
+              "costCenter": "43400",
+              "accessRightUniqueId": "global-access"
+            }
+          ]
+        },
+        "summary": "detail"
+      },
+      "additionalChainDataExample": {
+        "value": {
+          "data": {
+            "myChainInfo": "newChain"
+          }
+        },
+        "summary": "additional data"
       },
       "apiVoucherPageExample": {
         "value": {

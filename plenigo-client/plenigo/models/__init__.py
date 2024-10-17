@@ -1,5 +1,8 @@
 """Contains all the data models used in inputs/outputs"""
 
+from .additional_chain_data import AdditionalChainData
+from .additional_chain_data_data import AdditionalChainDataData
+from .additional_chain_data_data_additional_property import AdditionalChainDataDataAdditionalProperty
 from .additional_customer_data import AdditionalCustomerData
 from .additional_customer_data_data import AdditionalCustomerDataData
 from .additional_customer_data_data_additional_property import AdditionalCustomerDataDataAdditionalProperty
@@ -27,6 +30,8 @@ from .apple_app_store_receipt_item import AppleAppStoreReceiptItem
 from .apple_app_store_transaction import AppleAppStoreTransaction
 from .archive_settings import ArchiveSettings
 from .archive_settings_archive_type import ArchiveSettingsArchiveType
+from .bank_account import BankAccount
+from .bank_account_change import BankAccountChange
 from .campaign_creation import CampaignCreation
 from .campaign_creation_voucher_type import CampaignCreationVoucherType
 from .channel_creation import ChannelCreation
@@ -56,6 +61,7 @@ from .customer_sso_login_providers_item import CustomerSsoLoginProvidersItem
 from .customer_status import CustomerStatus
 from .customers import Customers
 from .error_result_base import ErrorResultBase
+from .get_vouchers_channels_channel_id_vouchers_voucher_status import GetVouchersChannelsChannelIdVouchersVoucherStatus
 from .gift_info import GiftInfo
 from .google_play_product_purchase import GooglePlayProductPurchase
 from .google_play_store_purchase_addition import GooglePlayStorePurchaseAddition
@@ -147,6 +153,9 @@ from .voucher_purchase_data import VoucherPurchaseData
 from .voucher_usage_data import VoucherUsageData
 
 __all__ = (
+    "AdditionalChainData",
+    "AdditionalChainDataData",
+    "AdditionalChainDataDataAdditionalProperty",
     "AdditionalCustomerData",
     "AdditionalCustomerDataData",
     "AdditionalCustomerDataDataAdditionalProperty",
@@ -172,6 +181,8 @@ __all__ = (
     "AppStorePurchaseList",
     "ArchiveSettings",
     "ArchiveSettingsArchiveType",
+    "BankAccount",
+    "BankAccountChange",
     "CampaignCreation",
     "CampaignCreationVoucherType",
     "ChannelCreation",
@@ -195,6 +206,7 @@ __all__ = (
     "CustomerSsoLoginProvidersItem",
     "CustomerStatus",
     "ErrorResultBase",
+    "GetVouchersChannelsChannelIdVouchersVoucherStatus",
     "GiftInfo",
     "GooglePlayProductPurchase",
     "GooglePlayStorePurchaseAddition",

@@ -13,5 +13,9 @@
   "/products/offers",
   "/products/priceIssues",
   "/orders/{orderId}/additionalData",
-  "/orders"
+  "/orders",
+  "/paymentMethods/bankAccounts/{bankAccountId}",
+  "/subscriptions/{subscriptionId}",
+  "/subscriptions/chain/{chainId}/additionalData",
+  "/vouchers/channels/{channelId}/vouchers"
 ]
