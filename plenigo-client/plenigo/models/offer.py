@@ -5,18 +5,20 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
+from ..models.api_base_changed_by_type import ApiBaseChangedByType
+from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..models.offer_base_allowed_payment_methods_item import OfferBaseAllowedPaymentMethodsItem
 from ..models.offer_base_managed_by import OfferBaseManagedBy
 from ..models.offer_base_pdf_template_usage import OfferBasePdfTemplateUsage
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
     from ..models.archive_settings import ArchiveSettings
     from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
     from ..models.offer_partner_settings import OfferPartnerSettings
     from ..models.offer_product import OfferProduct
     from ..models.offer_product_group import OfferProductGroup
+    from ..models.offer_translation import OfferTranslation
     from ..models.product_tag import ProductTag
 
 
@@ -28,7 +30,7 @@ class Offer:
     """
     Attributes:
         internal_title (str): internal title of the product group
-        translations (List['ApiBaseDate']): translations associated with this product
+        translations (List['OfferTranslation']): translations associated with this product
         plenigo_offer_id (str): unique id of the offer within a company
         pause_able (Union[Unset, bool]): flag indicating if subscription is pause able
         invoice_address_mandatory (Union[Unset, bool]): flag indicating if invoice address must be provided by the
@@ -66,6 +68,10 @@ class Offer:
         changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
+        created_by (Union[Unset, str]): id who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        changed_by (Union[Unset, str]): id who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
         managed_external (Union[Unset, bool]): flag indicating if offer is managed externally
         products (Union[Unset, List['OfferProduct']]): products associated with this offer
         product_groups (Union[Unset, List['OfferProductGroup']]): product groups associated with this offer
@@ -73,7 +79,7 @@ class Offer:
     """
 
     internal_title: str
-    translations: List["ApiBaseDate"]
+    translations: List["OfferTranslation"]
     plenigo_offer_id: str
     pause_able: Union[Unset, bool] = UNSET
     invoice_address_mandatory: Union[Unset, bool] = UNSET
@@ -99,6 +105,10 @@ class Offer:
     partner_settings: Union[Unset, "OfferPartnerSettings"] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
+    created_by: Union[Unset, str] = UNSET
+    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
+    changed_by: Union[Unset, str] = UNSET
+    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
     managed_external: Union[Unset, bool] = UNSET
     products: Union[Unset, List["OfferProduct"]] = UNSET
     product_groups: Union[Unset, List["OfferProductGroup"]] = UNSET
@@ -196,6 +206,18 @@ class Offer:
         else:
             changed_date = self.changed_date
 
+        created_by = self.created_by
+
+        created_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.created_by_type, Unset):
+            created_by_type = self.created_by_type.value
+
+        changed_by = self.changed_by
+
+        changed_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.changed_by_type, Unset):
+            changed_by_type = self.changed_by_type.value
+
         managed_external = self.managed_external
 
         products: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -276,6 +298,14 @@ class Offer:
             field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
             field_dict["changedDate"] = changed_date
+        if created_by is not UNSET:
+            field_dict["createdBy"] = created_by
+        if created_by_type is not UNSET:
+            field_dict["createdByType"] = created_by_type
+        if changed_by is not UNSET:
+            field_dict["changedBy"] = changed_by
+        if changed_by_type is not UNSET:
+            field_dict["changedByType"] = changed_by_type
         if managed_external is not UNSET:
             field_dict["managedExternal"] = managed_external
         if products is not UNSET:
@@ -289,12 +319,12 @@ class Offer:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
         from ..models.archive_settings import ArchiveSettings
         from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
         from ..models.offer_partner_settings import OfferPartnerSettings
         from ..models.offer_product import OfferProduct
         from ..models.offer_product_group import OfferProductGroup
+        from ..models.offer_translation import OfferTranslation
         from ..models.product_tag import ProductTag
 
         d = src_dict.copy()
@@ -303,7 +333,7 @@ class Offer:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = ApiBaseDate.from_dict(translations_item_data)
+            translations_item = OfferTranslation.from_dict(translations_item_data)
 
             translations.append(translations_item)
 
@@ -453,6 +483,24 @@ class Offer:
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
 
+        created_by = d.pop("createdBy", UNSET)
+
+        _created_by_type = d.pop("createdByType", UNSET)
+        created_by_type: Union[Unset, ApiBaseCreatedByType]
+        if isinstance(_created_by_type, Unset) or not _created_by_type:
+            created_by_type = UNSET
+        else:
+            created_by_type = ApiBaseCreatedByType(_created_by_type)
+
+        changed_by = d.pop("changedBy", UNSET)
+
+        _changed_by_type = d.pop("changedByType", UNSET)
+        changed_by_type: Union[Unset, ApiBaseChangedByType]
+        if isinstance(_changed_by_type, Unset) or not _changed_by_type:
+            changed_by_type = UNSET
+        else:
+            changed_by_type = ApiBaseChangedByType(_changed_by_type)
+
         managed_external = d.pop("managedExternal", UNSET)
 
         products = []
@@ -504,6 +552,10 @@ class Offer:
             partner_settings=partner_settings,
             created_date=created_date,
             changed_date=changed_date,
+            created_by=created_by,
+            created_by_type=created_by_type,
+            changed_by=changed_by,
+            changed_by_type=changed_by_type,
             managed_external=managed_external,
             products=products,
             product_groups=product_groups,

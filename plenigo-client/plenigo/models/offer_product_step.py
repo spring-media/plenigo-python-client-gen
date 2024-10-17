@@ -16,6 +16,7 @@ from ..models.offer_product_step_term_timespan import OfferProductStepTermTimesp
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.offer_translation import OfferTranslation
     from ..models.product_contract import ProductContract
     from ..models.product_tag import ProductTag
 
@@ -29,6 +30,9 @@ class OfferProductStep:
     Attributes:
         position (int): position inside the product
         product_contract_id (Union[Unset, int]): id of the product contract associated with this step
+        translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
+        product_tag_ids (Union[Unset, List[int]]): tags associated with this product
+        additional_product_contract_ids (Union[Unset, List[int]]): additioanl product contract ids with this product
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
@@ -62,6 +66,9 @@ class OfferProductStep:
 
     position: int
     product_contract_id: Union[Unset, int] = UNSET
+    translations: Union[Unset, List["OfferTranslation"]] = UNSET
+    product_tag_ids: Union[Unset, List[int]] = UNSET
+    additional_product_contract_ids: Union[Unset, List[int]] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     plenigo_step_id: Union[Unset, str] = UNSET
@@ -90,6 +97,21 @@ class OfferProductStep:
         position = self.position
 
         product_contract_id = self.product_contract_id
+
+        translations: Union[Unset, List[Dict[str, Any]]] = UNSET
+        if not isinstance(self.translations, Unset):
+            translations = []
+            for translations_item_data in self.translations:
+                translations_item = translations_item_data.to_dict()
+                translations.append(translations_item)
+
+        product_tag_ids: Union[Unset, List[int]] = UNSET
+        if not isinstance(self.product_tag_ids, Unset):
+            product_tag_ids = self.product_tag_ids
+
+        additional_product_contract_ids: Union[Unset, List[int]] = UNSET
+        if not isinstance(self.additional_product_contract_ids, Unset):
+            additional_product_contract_ids = self.additional_product_contract_ids
 
         created_date: Union[None, Unset, str]
         if isinstance(self.created_date, Unset) or self.created_date is None:
@@ -178,6 +200,12 @@ class OfferProductStep:
         )
         if product_contract_id is not UNSET:
             field_dict["productContractId"] = product_contract_id
+        if translations is not UNSET:
+            field_dict["translations"] = translations
+        if product_tag_ids is not UNSET:
+            field_dict["productTagIds"] = product_tag_ids
+        if additional_product_contract_ids is not UNSET:
+            field_dict["additionalProductContractIds"] = additional_product_contract_ids
         if created_date is not UNSET:
             field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
@@ -227,6 +255,7 @@ class OfferProductStep:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.offer_translation import OfferTranslation
         from ..models.product_contract import ProductContract
         from ..models.product_tag import ProductTag
 
@@ -234,6 +263,17 @@ class OfferProductStep:
         position = d.pop("position")
 
         product_contract_id = d.pop("productContractId", UNSET)
+
+        translations = []
+        _translations = d.pop("translations", UNSET)
+        for translations_item_data in _translations or []:
+            translations_item = OfferTranslation.from_dict(translations_item_data)
+
+            translations.append(translations_item)
+
+        product_tag_ids = cast(List[int], d.pop("productTagIds", UNSET))
+
+        additional_product_contract_ids = cast(List[int], d.pop("additionalProductContractIds", UNSET))
 
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
@@ -370,6 +410,9 @@ class OfferProductStep:
         offer_product_step = cls(
             position=position,
             product_contract_id=product_contract_id,
+            translations=translations,
+            product_tag_ids=product_tag_ids,
+            additional_product_contract_ids=additional_product_contract_ids,
             created_date=created_date,
             changed_date=changed_date,
             plenigo_step_id=plenigo_step_id,

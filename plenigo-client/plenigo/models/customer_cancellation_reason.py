@@ -5,10 +5,12 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
+from ..models.api_base_changed_by_type import ApiBaseChangedByType
+from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
+    from ..models.customer_cancellation_reason_translation import CustomerCancellationReasonTranslation
 
 
 T = TypeVar("T", bound="CustomerCancellationReason")
@@ -19,7 +21,9 @@ class CustomerCancellationReason:
     """
     Attributes:
         internal_title (str): internal title of the cancellation reason
-        translations (List['ApiBaseDate']): translations associated with this cancellation reason
+        translations (List['CustomerCancellationReasonTranslation']): translations associated with this cancellation
+            reason
+        unique_id (str): unique id to associate with the user after user has accepted cancellation reason
         customer_cancellation_reason_id (int): unique id of the customer cancellation reason
         active (Union[Unset, bool]): flag indicating if cancellation reason is currently active
         priority (Union[Unset, int]): priority of the cancellation reason
@@ -29,16 +33,25 @@ class CustomerCancellationReason:
         changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
+        created_by (Union[Unset, str]): id who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        changed_by (Union[Unset, str]): id who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
         archived (Union[Unset, bool]): flag indicating if customer cancellation reason is archived
     """
 
     internal_title: str
-    translations: List["ApiBaseDate"]
+    translations: List["CustomerCancellationReasonTranslation"]
+    unique_id: str
     customer_cancellation_reason_id: int
     active: Union[Unset, bool] = UNSET
     priority: Union[Unset, int] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
+    created_by: Union[Unset, str] = UNSET
+    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
+    changed_by: Union[Unset, str] = UNSET
+    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
     archived: Union[Unset, bool] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -49,6 +62,8 @@ class CustomerCancellationReason:
         for translations_item_data in self.translations:
             translations_item = translations_item_data.to_dict()
             translations.append(translations_item)
+
+        unique_id = self.unique_id
 
         customer_cancellation_reason_id = self.customer_cancellation_reason_id
 
@@ -72,6 +87,18 @@ class CustomerCancellationReason:
         else:
             changed_date = self.changed_date
 
+        created_by = self.created_by
+
+        created_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.created_by_type, Unset):
+            created_by_type = self.created_by_type.value
+
+        changed_by = self.changed_by
+
+        changed_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.changed_by_type, Unset):
+            changed_by_type = self.changed_by_type.value
+
         archived = self.archived
 
         field_dict: Dict[str, Any] = {}
@@ -80,6 +107,7 @@ class CustomerCancellationReason:
             {
                 "internalTitle": internal_title,
                 "translations": translations,
+                "uniqueId": unique_id,
                 "customerCancellationReasonId": customer_cancellation_reason_id,
             }
         )
@@ -91,6 +119,14 @@ class CustomerCancellationReason:
             field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
             field_dict["changedDate"] = changed_date
+        if created_by is not UNSET:
+            field_dict["createdBy"] = created_by
+        if created_by_type is not UNSET:
+            field_dict["createdByType"] = created_by_type
+        if changed_by is not UNSET:
+            field_dict["changedBy"] = changed_by
+        if changed_by_type is not UNSET:
+            field_dict["changedByType"] = changed_by_type
         if archived is not UNSET:
             field_dict["archived"] = archived
 
@@ -98,7 +134,7 @@ class CustomerCancellationReason:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
+        from ..models.customer_cancellation_reason_translation import CustomerCancellationReasonTranslation
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -106,9 +142,11 @@ class CustomerCancellationReason:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = ApiBaseDate.from_dict(translations_item_data)
+            translations_item = CustomerCancellationReasonTranslation.from_dict(translations_item_data)
 
             translations.append(translations_item)
+
+        unique_id = d.pop("uniqueId")
 
         customer_cancellation_reason_id = d.pop("customerCancellationReasonId")
 
@@ -164,16 +202,39 @@ class CustomerCancellationReason:
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
 
+        created_by = d.pop("createdBy", UNSET)
+
+        _created_by_type = d.pop("createdByType", UNSET)
+        created_by_type: Union[Unset, ApiBaseCreatedByType]
+        if isinstance(_created_by_type, Unset) or not _created_by_type:
+            created_by_type = UNSET
+        else:
+            created_by_type = ApiBaseCreatedByType(_created_by_type)
+
+        changed_by = d.pop("changedBy", UNSET)
+
+        _changed_by_type = d.pop("changedByType", UNSET)
+        changed_by_type: Union[Unset, ApiBaseChangedByType]
+        if isinstance(_changed_by_type, Unset) or not _changed_by_type:
+            changed_by_type = UNSET
+        else:
+            changed_by_type = ApiBaseChangedByType(_changed_by_type)
+
         archived = d.pop("archived", UNSET)
 
         customer_cancellation_reason = cls(
             internal_title=internal_title,
             translations=translations,
+            unique_id=unique_id,
             customer_cancellation_reason_id=customer_cancellation_reason_id,
             active=active,
             priority=priority,
             created_date=created_date,
             changed_date=changed_date,
+            created_by=created_by,
+            created_by_type=created_by_type,
+            changed_by=changed_by,
+            changed_by_type=changed_by_type,
             archived=archived,
         )
 

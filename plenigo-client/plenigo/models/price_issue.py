@@ -5,6 +5,8 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
+from ..models.api_base_changed_by_type import ApiBaseChangedByType
+from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -19,6 +21,7 @@ class PriceIssue:
     """
     Attributes:
         title (str): title of the price issue
+        price_segments (List['PriceSegment']): price segments
         price_issue_id (int): unique id of the price issue within a contract company
         archived (bool): flag indicating if price country segment is archived
         leaf_id (Union[Unset, int]): id of the tree leaf this price issue should be associated with
@@ -29,21 +32,33 @@ class PriceIssue:
         changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
-        price_segments (Union[Unset, List['PriceSegment']]): price segments
+        created_by (Union[Unset, str]): id who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        changed_by (Union[Unset, str]): id who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
     """
 
     title: str
+    price_segments: List["PriceSegment"]
     price_issue_id: int
     archived: bool
     leaf_id: Union[Unset, int] = UNSET
     description: Union[Unset, str] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
-    price_segments: Union[Unset, List["PriceSegment"]] = UNSET
+    created_by: Union[Unset, str] = UNSET
+    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
+    changed_by: Union[Unset, str] = UNSET
+    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         title = self.title
+
+        price_segments = []
+        for price_segments_item_data in self.price_segments:
+            price_segments_item = price_segments_item_data.to_dict()
+            price_segments.append(price_segments_item)
 
         price_issue_id = self.price_issue_id
 
@@ -69,18 +84,24 @@ class PriceIssue:
         else:
             changed_date = self.changed_date
 
-        price_segments: Union[Unset, List[Dict[str, Any]]] = UNSET
-        if not isinstance(self.price_segments, Unset):
-            price_segments = []
-            for price_segments_item_data in self.price_segments:
-                price_segments_item = price_segments_item_data.to_dict()
-                price_segments.append(price_segments_item)
+        created_by = self.created_by
+
+        created_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.created_by_type, Unset):
+            created_by_type = self.created_by_type.value
+
+        changed_by = self.changed_by
+
+        changed_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.changed_by_type, Unset):
+            changed_by_type = self.changed_by_type.value
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "title": title,
+                "priceSegments": price_segments,
                 "priceIssueId": price_issue_id,
                 "archived": archived,
             }
@@ -93,8 +114,14 @@ class PriceIssue:
             field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
             field_dict["changedDate"] = changed_date
-        if price_segments is not UNSET:
-            field_dict["priceSegments"] = price_segments
+        if created_by is not UNSET:
+            field_dict["createdBy"] = created_by
+        if created_by_type is not UNSET:
+            field_dict["createdByType"] = created_by_type
+        if changed_by is not UNSET:
+            field_dict["changedBy"] = changed_by
+        if changed_by_type is not UNSET:
+            field_dict["changedByType"] = changed_by_type
 
         return field_dict
 
@@ -104,6 +131,13 @@ class PriceIssue:
 
         d = src_dict.copy()
         title = d.pop("title")
+
+        price_segments = []
+        _price_segments = d.pop("priceSegments")
+        for price_segments_item_data in _price_segments:
+            price_segments_item = PriceSegment.from_dict(price_segments_item_data)
+
+            price_segments.append(price_segments_item)
 
         price_issue_id = d.pop("priceIssueId")
 
@@ -161,22 +195,37 @@ class PriceIssue:
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
 
-        price_segments = []
-        _price_segments = d.pop("priceSegments", UNSET)
-        for price_segments_item_data in _price_segments or []:
-            price_segments_item = PriceSegment.from_dict(price_segments_item_data)
+        created_by = d.pop("createdBy", UNSET)
 
-            price_segments.append(price_segments_item)
+        _created_by_type = d.pop("createdByType", UNSET)
+        created_by_type: Union[Unset, ApiBaseCreatedByType]
+        if isinstance(_created_by_type, Unset) or not _created_by_type:
+            created_by_type = UNSET
+        else:
+            created_by_type = ApiBaseCreatedByType(_created_by_type)
+
+        changed_by = d.pop("changedBy", UNSET)
+
+        _changed_by_type = d.pop("changedByType", UNSET)
+        changed_by_type: Union[Unset, ApiBaseChangedByType]
+        if isinstance(_changed_by_type, Unset) or not _changed_by_type:
+            changed_by_type = UNSET
+        else:
+            changed_by_type = ApiBaseChangedByType(_changed_by_type)
 
         price_issue = cls(
             title=title,
+            price_segments=price_segments,
             price_issue_id=price_issue_id,
             archived=archived,
             leaf_id=leaf_id,
             description=description,
             created_date=created_date,
             changed_date=changed_date,
-            price_segments=price_segments,
+            created_by=created_by,
+            created_by_type=created_by_type,
+            changed_by=changed_by,
+            changed_by_type=changed_by_type,
         )
 
         price_issue.additional_properties = d

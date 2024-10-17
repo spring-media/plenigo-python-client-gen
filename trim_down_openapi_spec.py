@@ -71,6 +71,44 @@ def save_openapi_spec(file_path, openapi_spec):
     with open(abs_path, 'w') as file:
         json.dump(openapi_spec, file, indent=2)
 
+def allOf_fixer(openapi_spec):
+    # fix the openapi spec because it might contain allOf entries that were not "correctly" created
+    # the correct way is to get all the keys inside the schemas dictionary beside the allOf key and create a new dictionary with those keys
+    # and append this new dictionary to the allOf list and also erase the original keys, keeping only the allOf key
+    openapi_spec = deepcopy(openapi_spec)
+    for schema in openapi_spec["components"]["schemas"]:
+        schema_obj = openapi_spec["components"]["schemas"][schema]
+        if "allOf" in schema_obj:
+            all_of_obj = schema_obj["allOf"]
+            new_schema_obj = {}
+            for key in schema_obj:
+                if key != "allOf":
+                    new_schema_obj[key] = schema_obj[key]
+            all_of_obj.append(new_schema_obj)
+            openapi_spec["components"]["schemas"][schema] = {"allOf": all_of_obj}
+    return openapi_spec
+
+def enum_deduplicator(openapi_spec):
+    # look for "enum" keys in the dictionary recursively
+    # because the dictionary might contain other dicts or arrays
+    # if the key is found, make sure that the contents of the enums list are unique
+    openapi_spec = deepcopy(openapi_spec)
+    def enum_deduplicator_helper(data):
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if key == "enum":
+                    data[key] = list(set(value))
+                else:
+                    enum_deduplicator_helper(value)
+        elif isinstance(data, list):
+            for item in data:
+                enum_deduplicator_helper(item)
+    enum_deduplicator_helper(openapi_spec)
+    return openapi_spec
+
+
+
+
 # Main function to set up the CLI
 def main():
     parser = argparse.ArgumentParser(description="Filter an OpenAPI specification based on specific endpoints.")
@@ -90,6 +128,9 @@ def main():
 
     # Filter the OpenAPI spec
     new_open_api = filter_openapi_spec(openapi_spec, endpoints, all_references)
+
+    new_open_api = allOf_fixer(new_open_api)
+    new_open_api = enum_deduplicator(new_open_api)
 
     # Save the filtered spec
     save_openapi_spec(args.output_file, new_open_api)

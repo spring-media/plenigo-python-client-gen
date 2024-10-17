@@ -5,6 +5,8 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
+from ..models.api_base_changed_by_type import ApiBaseChangedByType
+from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..models.customer_base_salutation import CustomerBaseSalutation
 from ..models.customer_customer_marks_item import CustomerCustomerMarksItem
 from ..models.customer_sso_login_providers_item import CustomerSsoLoginProvidersItem
@@ -46,6 +48,10 @@ class Customer:
         changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
+        created_by (Union[Unset, str]): id who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        changed_by (Union[Unset, str]): id who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
         registration_source (Union[Unset, str]): source the user registration was started from
         registration_date (Union[None, Unset, datetime.datetime]): date the customer was registered with date-time
             notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339,
@@ -84,6 +90,10 @@ class Customer:
     miscellaneous_data: Union[Unset, "CustomerMiscellaneousData"] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
+    created_by: Union[Unset, str] = UNSET
+    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
+    changed_by: Union[Unset, str] = UNSET
+    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
     registration_source: Union[Unset, str] = UNSET
     registration_date: Union[None, Unset, datetime.datetime] = UNSET
     age_verification_pin_enabled: Union[Unset, bool] = UNSET
@@ -143,6 +153,18 @@ class Customer:
             changed_date = self.changed_date.isoformat()
         else:
             changed_date = self.changed_date
+
+        created_by = self.created_by
+
+        created_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.created_by_type, Unset):
+            created_by_type = self.created_by_type.value
+
+        changed_by = self.changed_by
+
+        changed_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.changed_by_type, Unset):
+            changed_by_type = self.changed_by_type.value
 
         registration_source = self.registration_source
 
@@ -211,6 +233,14 @@ class Customer:
             field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
             field_dict["changedDate"] = changed_date
+        if created_by is not UNSET:
+            field_dict["createdBy"] = created_by
+        if created_by_type is not UNSET:
+            field_dict["createdByType"] = created_by_type
+        if changed_by is not UNSET:
+            field_dict["changedBy"] = changed_by
+        if changed_by_type is not UNSET:
+            field_dict["changedByType"] = changed_by_type
         if registration_source is not UNSET:
             field_dict["registrationSource"] = registration_source
         if registration_date is not UNSET:
@@ -338,6 +368,24 @@ class Customer:
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
 
+        created_by = d.pop("createdBy", UNSET)
+
+        _created_by_type = d.pop("createdByType", UNSET)
+        created_by_type: Union[Unset, ApiBaseCreatedByType]
+        if isinstance(_created_by_type, Unset) or not _created_by_type:
+            created_by_type = UNSET
+        else:
+            created_by_type = ApiBaseCreatedByType(_created_by_type)
+
+        changed_by = d.pop("changedBy", UNSET)
+
+        _changed_by_type = d.pop("changedByType", UNSET)
+        changed_by_type: Union[Unset, ApiBaseChangedByType]
+        if isinstance(_changed_by_type, Unset) or not _changed_by_type:
+            changed_by_type = UNSET
+        else:
+            changed_by_type = ApiBaseChangedByType(_changed_by_type)
+
         registration_source = d.pop("registrationSource", UNSET)
 
         def _parse_registration_date(data: object) -> Union[None, Unset, datetime.datetime]:
@@ -409,6 +457,10 @@ class Customer:
             miscellaneous_data=miscellaneous_data,
             created_date=created_date,
             changed_date=changed_date,
+            created_by=created_by,
+            created_by_type=created_by_type,
+            changed_by=changed_by,
+            changed_by_type=changed_by_type,
             registration_source=registration_source,
             registration_date=registration_date,
             age_verification_pin_enabled=age_verification_pin_enabled,

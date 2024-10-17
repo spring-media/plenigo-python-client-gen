@@ -11,10 +11,10 @@ from ..models.offer_base_pdf_template_usage import OfferBasePdfTemplateUsage
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
     from ..models.archive_settings import ArchiveSettings
     from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
     from ..models.offer_partner_settings import OfferPartnerSettings
+    from ..models.offer_translation import OfferTranslation
 
 
 T = TypeVar("T", bound="OfferBase")
@@ -25,7 +25,7 @@ class OfferBase:
     """
     Attributes:
         internal_title (str): internal title of the product group
-        translations (List['ApiBaseDate']): translations associated with this product
+        translations (List['OfferTranslation']): translations associated with this product
         pause_able (Union[Unset, bool]): flag indicating if subscription is pause able
         invoice_address_mandatory (Union[Unset, bool]): flag indicating if invoice address must be provided by the
             customer
@@ -59,7 +59,7 @@ class OfferBase:
     """
 
     internal_title: str
-    translations: List["ApiBaseDate"]
+    translations: List["OfferTranslation"]
     pause_able: Union[Unset, bool] = UNSET
     invoice_address_mandatory: Union[Unset, bool] = UNSET
     delivery_address_mandatory: Union[Unset, bool] = UNSET
@@ -214,10 +214,10 @@ class OfferBase:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
         from ..models.archive_settings import ArchiveSettings
         from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
         from ..models.offer_partner_settings import OfferPartnerSettings
+        from ..models.offer_translation import OfferTranslation
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -225,7 +225,7 @@ class OfferBase:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = ApiBaseDate.from_dict(translations_item_data)
+            translations_item = OfferTranslation.from_dict(translations_item_data)
 
             translations.append(translations_item)
 

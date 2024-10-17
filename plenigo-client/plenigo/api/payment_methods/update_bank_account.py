@@ -9,6 +9,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.bank_account import BankAccount
 from ...models.bank_account_change import BankAccountChange
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...types import Response
 
@@ -41,13 +42,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[BankAccount, ErrorResultBase]]:
+) -> Optional[Union[BankAccount, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = BankAccount.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -78,7 +79,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[BankAccount, ErrorResultBase]]:
+) -> Response[Union[BankAccount, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -97,7 +98,7 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: BankAccountChange,
-) -> Response[Union[BankAccount, ErrorResultBase]]:
+) -> Response[Union[BankAccount, ErrorResult, ErrorResultBase]]:
     """Update bank account entity
 
      Update an bank account that is identified by the passed bank account id with the data provided.
@@ -111,7 +112,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[BankAccount, ErrorResultBase]]
+        Response[Union[BankAccount, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -131,7 +132,7 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     body: BankAccountChange,
-) -> Optional[Union[BankAccount, ErrorResultBase]]:
+) -> Optional[Union[BankAccount, ErrorResult, ErrorResultBase]]:
     """Update bank account entity
 
      Update an bank account that is identified by the passed bank account id with the data provided.
@@ -145,7 +146,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[BankAccount, ErrorResultBase]
+        Union[BankAccount, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -165,7 +166,7 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: BankAccountChange,
-) -> Response[Union[BankAccount, ErrorResultBase]]:
+) -> Response[Union[BankAccount, ErrorResult, ErrorResultBase]]:
     """Update bank account entity
 
      Update an bank account that is identified by the passed bank account id with the data provided.
@@ -179,7 +180,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[BankAccount, ErrorResultBase]]
+        Response[Union[BankAccount, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -197,7 +198,7 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     body: BankAccountChange,
-) -> Optional[Union[BankAccount, ErrorResultBase]]:
+) -> Optional[Union[BankAccount, ErrorResult, ErrorResultBase]]:
     """Update bank account entity
 
      Update an bank account that is identified by the passed bank account id with the data provided.
@@ -211,7 +212,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[BankAccount, ErrorResultBase]
+        Union[BankAccount, ErrorResult, ErrorResultBase]
     """
 
     return (

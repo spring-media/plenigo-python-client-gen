@@ -9,6 +9,7 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.apple_app_store_purchases import AppleAppStorePurchases
+from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.search_apple_app_store_purchases_sort import SearchAppleAppStorePurchasesSort
 from ...types import UNSET, Response, Unset
@@ -67,13 +68,13 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[AppleAppStorePurchases, ErrorResultBase]]:
+) -> Optional[Union[AppleAppStorePurchases, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = AppleAppStorePurchases.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
-        response_400 = ErrorResultBase.from_dict(response.json())
+        response_400 = ErrorResult.from_dict(response.json())
 
         return response_400
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -100,7 +101,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[AppleAppStorePurchases, ErrorResultBase]]:
+) -> Response[Union[AppleAppStorePurchases, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -119,7 +120,7 @@ def sync_all(
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchAppleAppStorePurchasesSort] = UNSET,
     token: Union[Unset, str] = UNSET,
-) -> Optional[Union[AppleAppStorePurchases, ErrorResultBase]]:
+) -> Optional[Union[AppleAppStorePurchases, ErrorResult, ErrorResultBase]]:
     all_results = AppleAppStorePurchases(items=[])
     # type: ignore
 
@@ -168,7 +169,7 @@ def sync_detailed(
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchAppleAppStorePurchasesSort] = UNSET,
     token: Union[Unset, str] = UNSET,
-) -> Response[Union[AppleAppStorePurchases, ErrorResultBase]]:
+) -> Response[Union[AppleAppStorePurchases, ErrorResult, ErrorResultBase]]:
     """Search Apple purchases
 
      Search all Apple purchases that correspond to the given search conditions.
@@ -187,7 +188,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AppleAppStorePurchases, ErrorResultBase]]
+        Response[Union[AppleAppStorePurchases, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -217,7 +218,7 @@ def sync(
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchAppleAppStorePurchasesSort] = UNSET,
     token: Union[Unset, str] = UNSET,
-) -> Optional[Union[AppleAppStorePurchases, ErrorResultBase]]:
+) -> Optional[Union[AppleAppStorePurchases, ErrorResult, ErrorResultBase]]:
     """Search Apple purchases
 
      Search all Apple purchases that correspond to the given search conditions.
@@ -236,7 +237,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AppleAppStorePurchases, ErrorResultBase]
+        Union[AppleAppStorePurchases, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -266,7 +267,7 @@ async def asyncio_detailed(
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchAppleAppStorePurchasesSort] = UNSET,
     token: Union[Unset, str] = UNSET,
-) -> Response[Union[AppleAppStorePurchases, ErrorResultBase]]:
+) -> Response[Union[AppleAppStorePurchases, ErrorResult, ErrorResultBase]]:
     """Search Apple purchases
 
      Search all Apple purchases that correspond to the given search conditions.
@@ -285,7 +286,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AppleAppStorePurchases, ErrorResultBase]]
+        Response[Union[AppleAppStorePurchases, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -313,7 +314,7 @@ async def asyncio_all(
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchAppleAppStorePurchasesSort] = UNSET,
     token: Union[Unset, str] = UNSET,
-) -> Response[Union[AppleAppStorePurchases, ErrorResultBase]]:
+) -> Response[Union[AppleAppStorePurchases, ErrorResult, ErrorResultBase]]:
     all_results = AppleAppStorePurchases(items=[])
     # type: ignore
 
@@ -359,7 +360,7 @@ async def asyncio(
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchAppleAppStorePurchasesSort] = UNSET,
     token: Union[Unset, str] = UNSET,
-) -> Optional[Union[AppleAppStorePurchases, ErrorResultBase]]:
+) -> Optional[Union[AppleAppStorePurchases, ErrorResult, ErrorResultBase]]:
     """Search Apple purchases
 
      Search all Apple purchases that correspond to the given search conditions.
@@ -378,7 +379,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AppleAppStorePurchases, ErrorResultBase]
+        Union[AppleAppStorePurchases, ErrorResult, ErrorResultBase]
     """
 
     return (

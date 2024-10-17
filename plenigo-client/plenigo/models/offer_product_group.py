@@ -8,8 +8,8 @@ from dateutil.parser import isoparse
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_base_date import ApiBaseDate
     from ..models.offer_product import OfferProduct
+    from ..models.offer_translation import OfferTranslation
 
 
 T = TypeVar("T", bound="OfferProductGroup")
@@ -20,7 +20,7 @@ class OfferProductGroup:
     """
     Attributes:
         internal_title (str): internal title of the product group
-        translations (List['ApiBaseDate']): translations associated with this product
+        translations (List['OfferTranslation']): translations associated with this product
         plenigo_product_group_id (str): unique id of the product group within the offer
         products (List['OfferProduct']): products associated with this product group
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
@@ -32,7 +32,7 @@ class OfferProductGroup:
     """
 
     internal_title: str
-    translations: List["ApiBaseDate"]
+    translations: List["OfferTranslation"]
     plenigo_product_group_id: str
     products: List["OfferProduct"]
     created_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -89,8 +89,8 @@ class OfferProductGroup:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_base_date import ApiBaseDate
         from ..models.offer_product import OfferProduct
+        from ..models.offer_translation import OfferTranslation
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
@@ -98,7 +98,7 @@ class OfferProductGroup:
         translations = []
         _translations = d.pop("translations")
         for translations_item_data in _translations:
-            translations_item = ApiBaseDate.from_dict(translations_item_data)
+            translations_item = OfferTranslation.from_dict(translations_item_data)
 
             translations.append(translations_item)
 
