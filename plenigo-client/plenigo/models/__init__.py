@@ -141,6 +141,7 @@ from .time_based_product_contract_condition_cancellation_timespan import (
 from .time_based_product_contract_condition_duration_timespan import TimeBasedProductContractConditionDurationTimespan
 from .time_based_product_contract_condition_term_timespan import TimeBasedProductContractConditionTermTimespan
 from .transactions import Transactions
+from .utm import Utm
 from .validation_error import ValidationError
 from .voucher_purchase_data import VoucherPurchaseData
 from .voucher_usage_data import VoucherUsageData
@@ -273,6 +274,7 @@ __all__ = (
     "TimeBasedProductContractConditionDurationTimespan",
     "TimeBasedProductContractConditionTermTimespan",
     "Transactions",
+    "Utm",
     "ValidationError",
     "VoucherPurchaseData",
     "VoucherUsageData",

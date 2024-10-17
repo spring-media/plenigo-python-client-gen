@@ -1139,6 +1139,103 @@
         }
       }
     },
+    "/orders/{orderId}/additionalData": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orderIdPath"
+        }
+      ],
+      "get": {
+        "summary": "Get additional data",
+        "operationId": "getOrderAdditionalData",
+        "security": [
+          {
+            "plenigoToken": []
+          }
+        ],
+        "tags": [
+          "Orders"
+        ],
+        "description": "Returns additional data associated with the order associated with the provided order id.\n",
+        "responses": {
+          "200": {
+            "description": "Returns additional data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdditionalOrderData"
+                },
+                "examples": {
+                  "additionalDataExample": {
+                    "$ref": "#/components/examples/additionalOrderDataExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo api token provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Entity for given id does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultNotFoundExample": {
+                    "$ref": "#/components/examples/errorResultNotFoundExample"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The rate limit for this endpoint is reached. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultTooManyRequestsExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/products/offers": {
       "get": {
         "summary": "Search offers",
@@ -2306,6 +2403,16 @@
           "type": "boolean"
         }
       },
+      "orderIdPath": {
+        "name": "orderId",
+        "in": "path",
+        "description": "unique id of the order",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
       "parameters-plenigoOfferIdQuery": {
         "name": "plenigoOfferId",
         "in": "query",
@@ -3449,6 +3556,80 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AppStoreOrder"
+            }
+          }
+        }
+      },
+      "Utm": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "description": "identify the source of the traffic",
+            "type": "string",
+            "maxLength": 100
+          },
+          "medium": {
+            "description": "identify the medium the link was used on",
+            "type": "string",
+            "maxLength": 100
+          },
+          "campaign": {
+            "description": "identify a strategic campaign (e.g. product launch, new feature, partnership, etc.) or specific promotion (e.g. a sale, a giveaway, etc.)",
+            "type": "string",
+            "maxLength": 100
+          },
+          "term": {
+            "description": "suggested for paid search to identify keywords for your ad",
+            "type": "string",
+            "maxLength": 100
+          },
+          "content": {
+            "description": "suggested for additional details for A/B testing and content-targeted ads",
+            "type": "string",
+            "maxLength": 100
+          }
+        }
+      },
+      "AdditionalOrderData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiBaseDate"
+          }
+        ],
+        "type": "object",
+        "properties": {
+          "affiliateId": {
+            "description": "affiliate id associated",
+            "type": "string",
+            "maxLength": 100
+          },
+          "partnerId": {
+            "description": "id of the partner",
+            "type": "string",
+            "maxLength": 100
+          },
+          "sourceId": {
+            "description": "id (e.g. URI) to identify source",
+            "type": "string",
+            "maxLength": 500
+          },
+          "utm": {
+            "$ref": "#/components/schemas/Utm"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "maxLength": 30
+                },
+                "value": {
+                  "type": "string",
+                  "maxLength": 200
+                }
+              }
             }
           }
         }
@@ -7848,6 +8029,24 @@
           ]
         },
         "summary": "detail list"
+      },
+      "additionalOrderDataExample": {
+        "value": {
+          "affiliateId": "AID-32473",
+          "partnerId": "PartnerOne",
+          "sourceId": "https://www.example.com",
+          "utm": {
+            "source": "https://www.example.com",
+            "medium": "https://www.example.com",
+            "campaign": "product launch",
+            "term": "something",
+            "content": "Test1"
+          },
+          "data": {
+            "specialId": "1234Special"
+          }
+        },
+        "summary": "additional data"
       },
       "offersExample": {
         "value": {

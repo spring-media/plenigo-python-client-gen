@@ -12,5 +12,6 @@
   "/transactions",
   "/products/offers",
   "/products/priceIssues",
+  "/orders/{orderId}/additionalData",
   "/orders"
 ]
