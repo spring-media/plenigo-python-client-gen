@@ -98,7 +98,13 @@ def enum_deduplicator(openapi_spec):
         if isinstance(data, dict):
             for key, value in data.items():
                 if key == "enum":
-                    data[key] = list(set(value))
+                    seen = set()
+                    deduplicated_list = []
+                    for item in value:
+                        if item not in seen:
+                            deduplicated_list.append(item)
+                            seen.add(item)
+                    data[key] = deduplicated_list
                 else:
                     enum_deduplicator_helper(value)
         elif isinstance(data, list):
