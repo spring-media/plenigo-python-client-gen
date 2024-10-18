@@ -84,7 +84,8 @@ def allOf_fixer(openapi_spec):
             for key in schema_obj:
                 if key != "allOf":
                     new_schema_obj[key] = schema_obj[key]
-            all_of_obj.append(new_schema_obj)
+            if new_schema_obj:
+                all_of_obj.append(new_schema_obj)
             openapi_spec["components"]["schemas"][schema] = {"allOf": all_of_obj}
     return openapi_spec
 
