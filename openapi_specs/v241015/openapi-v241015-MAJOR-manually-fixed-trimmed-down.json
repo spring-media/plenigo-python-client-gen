@@ -3039,8 +3039,8 @@
           "type": "string",
           "maxLength": 4,
           "enum": [
-            "DESC",
-            "ASC"
+            "ASC",
+            "DESC"
           ]
         }
       },
@@ -3162,11 +3162,11 @@
         "schema": {
           "type": "string",
           "enum": [
-            "PROCESSING",
-            "REJECTED",
-            "OPEN",
+            "CLOSED",
             "IGNORED",
-            "CLOSED"
+            "OPEN",
+            "PROCESSING",
+            "REJECTED"
           ]
         }
       },
@@ -3214,9 +3214,9 @@
         "schema": {
           "type": "string",
           "enum": [
-            "INACTIVE",
-            "CANCELLED",
             "ACTIVE",
+            "CANCELLED",
+            "INACTIVE",
             "DELETED"
           ]
         }
@@ -3288,10 +3288,11 @@
                 "description": "type of created by",
                 "type": "string",
                 "enum": [
-                  "MERCHANT",
+                  "API",
                   "CUSTOMER",
-                  "SYSTEM",
-                  "API"
+                  "MERCHANT",
+                  "IMPORTER",
+                  "SYSTEM"
                 ]
               },
               "changedBy": {
@@ -3303,10 +3304,11 @@
                 "description": "type of changed by",
                 "type": "string",
                 "enum": [
-                  "MERCHANT",
+                  "API",
                   "CUSTOMER",
-                  "SYSTEM",
-                  "API"
+                  "MERCHANT",
+                  "IMPORTER",
+                  "SYSTEM"
                 ]
               }
             }
@@ -3399,10 +3401,10 @@
             "description": "salutation to identify the correct designation of a customer",
             "type": "string",
             "enum": [
-              "NONE",
+              "DIVERSE",
               "MR",
               "MRS",
-              "DIVERSE"
+              "NONE"
             ]
           },
           "title": {
@@ -3501,11 +3503,11 @@
             "description": "validation status of the address",
             "type": "string",
             "enum": [
-              "OVERRIDDEN",
-              "SUSPECT",
+              "NONE",
               "VALID",
               "INVALID",
-              "NONE"
+              "SUSPECT",
+              "OVERRIDDEN"
             ]
           },
           "validationHash": {
@@ -4425,10 +4427,10 @@
             "description": "salutation to identify the correct designation of a customer",
             "type": "string",
             "enum": [
-              "NONE",
+              "DIVERSE",
               "MR",
               "MRS",
-              "DIVERSE"
+              "NONE"
             ]
           },
           "firstName": {
@@ -4532,9 +4534,9 @@
                 "description": "status of the customer\n\n| Status      | Description                                                                                                                                               |\n| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------|\n| ACTIVATED   | customer is active and can log in and use full functionality                                                                                              |\n| BLOCKED     | customer is blocked and needs to reset his password to be able to log in again                                                                            |\n| DEACTIVATED | customer is deactivated and cannot log in - the customer cannot change this state by himself and a log in attempt is handled like a false password log in |\n| DISABLED    | customer is disabled by plenigo and cannot be used anymore - please contact plenigo for further information (this status is currently not actively used)  |\n",
                 "type": "string",
                 "enum": [
-                  "DEACTIVATED",
-                  "BLOCKED",
                   "ACTIVATED",
+                  "BLOCKED",
+                  "DEACTIVATED",
                   "DISABLED"
                 ]
               },
@@ -4628,8 +4630,8 @@
                 "description": "address type",
                 "type": "string",
                 "enum": [
-                  "DELIVERY",
-                  "INVOICE"
+                  "INVOICE",
+                  "DELIVERY"
                 ]
               }
             },
@@ -4721,10 +4723,10 @@
                 "description": "salutation to identify the correct designation of a customer",
                 "type": "string",
                 "enum": [
-                  "NONE",
+                  "DIVERSE",
                   "MR",
                   "MRS",
-                  "DIVERSE"
+                  "NONE"
                 ]
               },
               "title": {
@@ -4980,18 +4982,18 @@
                 "description": "payment method used to pay for the invoice",
                 "type": "string",
                 "enum": [
-                  "PAYPAL",
-                  "ZERO",
-                  "BILLING",
                   "AMAZON_PAY",
                   "APPLE_PAY",
+                  "BANK_ACCOUNT",
+                  "BILLING",
+                  "CREDIT_CARD",
+                  "GOOGLE_PAY",
+                  "IDEAL",
+                  "PAYPAL",
                   "POSTFINANCE",
                   "SOFORT",
-                  "GOOGLE_PAY",
                   "TWINT",
-                  "IDEAL",
-                  "CREDIT_CARD",
-                  "BANK_ACCOUNT"
+                  "ZERO"
                 ]
               },
               "paymentMethodId": {
@@ -5020,8 +5022,8 @@
                 "description": "type of the invoice",
                 "type": "string",
                 "enum": [
-                  "CANCELLATION_CORRECTION",
                   "CANCELLATION",
+                  "CANCELLATION_CORRECTION",
                   "CORRECTION",
                   "INVOICE"
                 ]
@@ -5030,8 +5032,8 @@
                 "description": "payment status of the invoice",
                 "type": "string",
                 "enum": [
-                  "NOT_PAID",
-                  "PAID"
+                  "PAID",
+                  "NOT_PAID"
                 ]
               },
               "paymentChangedToBilling": {
@@ -5134,10 +5136,10 @@
                 "description": "salutation to identify the correct designation of a customer",
                 "type": "string",
                 "enum": [
-                  "NONE",
+                  "DIVERSE",
                   "MR",
                   "MRS",
-                  "DIVERSE"
+                  "NONE"
                 ]
               },
               "title": {
@@ -5319,22 +5321,22 @@
                 "type": "string",
                 "enum": [
                   "ADVERTISEMENT",
-                  "PHYSICALPRODUCT",
-                  "EBOOK",
-                  "VOUCHER",
                   "BOOK",
-                  "DONATION",
                   "DIGITALNEWSPAPER",
-                  "DIGITALPRODUCT",
                   "DIGITALOFFER",
+                  "DIGITALPRODUCT",
+                  "DONATION",
                   "DOWNLOAD",
+                  "EBOOK",
                   "EVENT",
                   "FEE",
+                  "MAGAZINE",
+                  "MEMBERSHIP",
                   "MUSIC",
                   "NEWSPAPER",
-                  "MEMBERSHIP",
-                  "MAGAZINE",
-                  "VIDEO"
+                  "PHYSICALPRODUCT",
+                  "VIDEO",
+                  "VOUCHER"
                 ]
               },
               "price": {
@@ -5465,17 +5467,17 @@
                 "description": "current status of the order",
                 "type": "string",
                 "enum": [
-                  "CANCELLED",
                   "ACTIVE",
-                  "DONE"
+                  "DONE",
+                  "CANCELLED"
                 ]
               },
               "type": {
                 "description": "current type of the order",
                 "type": "string",
                 "enum": [
-                  "CROSS_SELLING",
-                  "ORDER"
+                  "ORDER",
+                  "CROSS_SELLING"
                 ]
               },
               "orderDate": {
@@ -5501,18 +5503,18 @@
                 "description": "payment method used to pay for the order (ZERO indicates a free subscription)",
                 "type": "string",
                 "enum": [
-                  "PAYPAL",
-                  "ZERO",
-                  "BILLING",
                   "AMAZON_PAY",
                   "APPLE_PAY",
+                  "BANK_ACCOUNT",
+                  "BILLING",
+                  "CREDIT_CARD",
+                  "GOOGLE_PAY",
+                  "IDEAL",
+                  "PAYPAL",
                   "POSTFINANCE",
                   "SOFORT",
-                  "GOOGLE_PAY",
                   "TWINT",
-                  "IDEAL",
-                  "CREDIT_CARD",
-                  "BANK_ACCOUNT"
+                  "ZERO"
                 ]
               },
               "paymentMethodId": {
@@ -5732,8 +5734,8 @@
             "description": "type of the pause",
             "type": "string",
             "enum": [
-              "STANDARD",
-              "PAYMENT_ONLY"
+              "PAYMENT_ONLY",
+              "STANDARD"
             ]
           }
         },
@@ -5792,22 +5794,22 @@
                 "type": "string",
                 "enum": [
                   "ADVERTISEMENT",
-                  "PHYSICALPRODUCT",
-                  "EBOOK",
-                  "VOUCHER",
                   "BOOK",
-                  "DONATION",
                   "DIGITALNEWSPAPER",
-                  "DIGITALPRODUCT",
                   "DIGITALOFFER",
+                  "DIGITALPRODUCT",
+                  "DONATION",
                   "DOWNLOAD",
+                  "EBOOK",
                   "EVENT",
                   "FEE",
+                  "MAGAZINE",
+                  "MEMBERSHIP",
                   "MUSIC",
                   "NEWSPAPER",
-                  "MEMBERSHIP",
-                  "MAGAZINE",
-                  "VIDEO"
+                  "PHYSICALPRODUCT",
+                  "VIDEO",
+                  "VOUCHER"
                 ]
               },
               "packageTitle": {
@@ -5866,9 +5868,9 @@
                 "description": "current status of the subscription item",
                 "type": "string",
                 "enum": [
+                  "ACTIVE",
                   "INACTIVE",
-                  "CANCELLED",
-                  "ACTIVE"
+                  "CANCELLED"
                 ]
               },
               "costCenter": {
@@ -5957,11 +5959,11 @@
                 "description": "represents the time span that is represented by the term",
                 "type": "string",
                 "enum": [
-                  "WEEK",
                   "DAY",
-                  "YEAR",
                   "MONTH",
-                  "NONE"
+                  "NONE",
+                  "WEEK",
+                  "YEAR"
                 ]
               },
               "accountingPeriod": {
@@ -5975,11 +5977,11 @@
                 "description": "represents the time span that is represented by the accounting period",
                 "type": "string",
                 "enum": [
-                  "WEEK",
                   "DAY",
-                  "YEAR",
                   "MONTH",
-                  "NONE"
+                  "NONE",
+                  "WEEK",
+                  "YEAR"
                 ]
               },
               "cancellationPeriod": {
@@ -5993,21 +5995,21 @@
                 "description": "represents the time span that is represented by the cancellation period",
                 "type": "string",
                 "enum": [
-                  "WEEK",
                   "DAY",
-                  "YEAR",
                   "MONTH",
-                  "NONE"
+                  "NONE",
+                  "WEEK",
+                  "YEAR"
                 ]
               },
               "cancellationType": {
                 "description": "represents the cancellation type of the subscription",
                 "type": "string",
                 "enum": [
-                  "ISSUE_BASED_REGULAR",
                   "CREDIT_BASED",
-                  "TIME_BASED",
-                  "ISSUE_BASED"
+                  "ISSUE_BASED",
+                  "ISSUE_BASED_REGULAR",
+                  "TIME_BASED"
                 ]
               },
               "startDate": {
@@ -6046,8 +6048,8 @@
                 "description": "current status of the subscription",
                 "type": "string",
                 "enum": [
-                  "INACTIVE",
                   "ACTIVE",
+                  "INACTIVE",
                   "IGNORED"
                 ]
               },
@@ -6061,18 +6063,18 @@
                 "description": "payment method used to pay for the subscription (ZERO indicates a free subscription)",
                 "type": "string",
                 "enum": [
-                  "PAYPAL",
-                  "ZERO",
-                  "BILLING",
                   "AMAZON_PAY",
                   "APPLE_PAY",
+                  "BANK_ACCOUNT",
+                  "BILLING",
+                  "CREDIT_CARD",
+                  "GOOGLE_PAY",
+                  "IDEAL",
+                  "PAYPAL",
                   "POSTFINANCE",
                   "SOFORT",
-                  "GOOGLE_PAY",
                   "TWINT",
-                  "IDEAL",
-                  "CREDIT_CARD",
-                  "BANK_ACCOUNT"
+                  "ZERO"
                 ]
               },
               "paymentMethodId": {
@@ -6121,13 +6123,13 @@
                 "description": "reason for changing the subscription from the precursor",
                 "type": "string",
                 "enum": [
-                  "PRICE_PERIOD",
-                  "CROSS_SELLING",
-                  "AGE",
                   "ACTION",
+                  "AGE",
+                  "CANCELLATION",
+                  "CROSS_SELLING",
+                  "PRICE_PERIOD",
                   "PRODUCT_EOL",
-                  "RELATION_RULE",
-                  "CANCELLATION"
+                  "RELATION_RULE"
                 ]
               },
               "precursorReasonDetail": {
@@ -6143,13 +6145,13 @@
                 "description": "reason for changing the subscription to the successor",
                 "type": "string",
                 "enum": [
-                  "PRICE_PERIOD",
-                  "CROSS_SELLING",
-                  "AGE",
                   "ACTION",
+                  "AGE",
+                  "CANCELLATION",
+                  "CROSS_SELLING",
+                  "PRICE_PERIOD",
                   "PRODUCT_EOL",
-                  "RELATION_RULE",
-                  "CANCELLATION"
+                  "RELATION_RULE"
                 ]
               },
               "successorReasonDetail": {
@@ -6184,20 +6186,20 @@
                 "description": "represents the time span that is represented by the duration period",
                 "type": "string",
                 "enum": [
-                  "WEEK",
                   "DAY",
-                  "YEAR",
                   "MONTH",
-                  "NONE"
+                  "NONE",
+                  "WEEK",
+                  "YEAR"
                 ]
               },
               "managedBy": {
                 "description": "managed by of the given subscription.",
                 "type": "string",
                 "enum": [
-                  "WBZ",
+                  "PLENIGO",
                   "EXTERNAL",
-                  "PLENIGO"
+                  "WBZ"
                 ]
               },
               "paymentTriesDone": {
@@ -6211,19 +6213,19 @@
                 "description": "represents the type of the subscription",
                 "type": "string",
                 "enum": [
-                  "TIME_CREDIT_BASED",
                   "CREDIT_BASED",
-                  "TIME_BASED",
-                  "VOUCHER_CREDIT_BASED",
-                  "VOUCHER_CREDIT_TRIGGER_BASED",
-                  "VOUCHER_TIME_CREDIT_BASED",
                   "CREDIT_TIME_BASED",
-                  "VOUCHER_TIME_BASED",
-                  "VOUCHER_ISSUE_BASED",
-                  "VOUCHER_CREDIT_TIME_BASED",
+                  "CREDIT_TRIGGER_BASED",
                   "CROSS_COMPANY_TIME_BASED",
                   "ISSUE_BASED",
-                  "CREDIT_TRIGGER_BASED"
+                  "TIME_BASED",
+                  "TIME_CREDIT_BASED",
+                  "VOUCHER_CREDIT_BASED",
+                  "VOUCHER_CREDIT_TIME_BASED",
+                  "VOUCHER_CREDIT_TRIGGER_BASED",
+                  "VOUCHER_ISSUE_BASED",
+                  "VOUCHER_TIME_BASED",
+                  "VOUCHER_TIME_CREDIT_BASED"
                 ]
               },
               "suppressInvoiceSending": {
@@ -6376,64 +6378,64 @@
                 "description": "payment provider used for transaction execution",
                 "type": "string",
                 "enum": [
-                  "PAYPAL",
-                  "PAYONE",
-                  "GOOGLE",
-                  "WIRECARD_LEGACY",
                   "AMAZON",
-                  "STRIPE",
+                  "APPLE",
                   "DATATRANS",
-                  "APPLE"
+                  "GOOGLE",
+                  "PAYONE",
+                  "PAYPAL",
+                  "STRIPE",
+                  "WIRECARD_LEGACY"
                 ]
               },
               "paymentMethod": {
                 "description": "payment method used",
                 "type": "string",
                 "enum": [
-                  "PAYPAL",
-                  "ZERO",
-                  "BILLING",
                   "AMAZON_PAY",
                   "APPLE_PAY",
+                  "BANK_ACCOUNT",
+                  "BILLING",
+                  "CREDIT_CARD",
+                  "GOOGLE_PAY",
+                  "IDEAL",
+                  "PAYPAL",
                   "POSTFINANCE",
                   "SOFORT",
-                  "GOOGLE_PAY",
                   "TWINT",
-                  "IDEAL",
-                  "CREDIT_CARD",
-                  "BANK_ACCOUNT"
+                  "ZERO"
                 ]
               },
               "paymentAction": {
                 "description": "payment action executed",
                 "type": "string",
                 "enum": [
-                  "AMAZON_FINISH_CHECKOUT_SESSION",
-                  "IDEAL_INITIALIZATION",
+                  "AMAZON_EXECUTE_PAYMENT",
                   "AMAZON_EXECUTE_REFUND",
-                  "CREDIT_CARD_CHARGEBACK",
-                  "IDEAL_DATA",
-                  "SEPA_VOID",
-                  "SEPA_DEBIT",
-                  "CREDIT_CARD_INITIALIZATION",
+                  "AMAZON_FINISH_CHECKOUT_SESSION",
                   "AMAZON_PAY_INITIALIZATION",
+                  "BANK_FEES",
+                  "CREDIT_CARD_INITIALIZATION",
+                  "CREDIT_CARD_VERIFICATION",
+                  "CREDIT_CARD_AUTHORIZATION",
+                  "CREDIT_CARD_PRE_AUTHORIZATION",
+                  "CREDIT_CARD_REFUND",
+                  "CREDIT_CARD_PAYMENT",
+                  "CREDIT_CARD_CHARGEBACK",
+                  "IDEAL_INITIALIZATION",
+                  "IDEAL_DATA",
+                  "PAYPAL_PAYMENT",
                   "PAYPAL_PAYOUT",
                   "PAYPAL_PAYMENT_FAILED",
-                  "CREDIT_CARD_AUTHORIZATION",
-                  "SOFORT_REFUND",
-                  "SEPA_MANDATE_CREATION",
-                  "CREDIT_CARD_PAYMENT",
-                  "CREDIT_CARD_REFUND",
-                  "SOFORT_PAYMENT",
-                  "SEPA_DEBIT_RETURN",
                   "PAYPAL_REFERENCE_TRANSACTION",
-                  "CREDIT_CARD_PRE_AUTHORIZATION",
-                  "CREDIT_CARD_VERIFICATION",
-                  "AMAZON_EXECUTE_PAYMENT",
-                  "PAYPAL_PAYMENT",
                   "PAYPAL_REFUND",
                   "SEPA_CREATION",
-                  "BANK_FEES"
+                  "SEPA_DEBIT",
+                  "SEPA_DEBIT_RETURN",
+                  "SEPA_MANDATE_CREATION",
+                  "SEPA_VOID",
+                  "SOFORT_PAYMENT",
+                  "SOFORT_REFUND"
                 ]
               },
               "paymentStatus": {
@@ -6441,8 +6443,8 @@
                 "type": "string",
                 "enum": [
                   "FAILURE",
-                  "SUCCESS",
-                  "PENDING"
+                  "PENDING",
+                  "SUCCESS"
                 ]
               },
               "customerId": {
@@ -6513,10 +6515,10 @@
             "description": "category that reflects the usage of the tag",
             "type": "string",
             "enum": [
-              "RULE",
-              "FLOW",
               "ANALYTICS",
-              "CUSTOM"
+              "FLOW",
+              "CUSTOM",
+              "RULE"
             ]
           }
         },
@@ -6555,9 +6557,9 @@
             "description": "archive type",
             "type": "string",
             "enum": [
+              "BLOCK",
               "DEFAULT",
-              "SUCCESSOR",
-              "BLOCK"
+              "SUCCESSOR"
             ]
           },
           "customerTextTmId": {
@@ -6784,18 +6786,18 @@
             "items": {
               "type": "string",
               "enum": [
-                "PAYPAL",
-                "ZERO",
-                "BILLING",
                 "AMAZON_PAY",
                 "APPLE_PAY",
+                "BANK_ACCOUNT",
+                "BILLING",
+                "CREDIT_CARD",
+                "GOOGLE_PAY",
+                "IDEAL",
+                "PAYPAL",
                 "POSTFINANCE",
                 "SOFORT",
-                "GOOGLE_PAY",
                 "TWINT",
-                "IDEAL",
-                "CREDIT_CARD",
-                "BANK_ACCOUNT"
+                "ZERO"
               ]
             }
           },
@@ -6838,9 +6840,9 @@
             "description": "managed by of the given offer.",
             "type": "string",
             "enum": [
-              "WBZ",
+              "PLENIGO",
               "EXTERNAL",
-              "PLENIGO"
+              "WBZ"
             ]
           },
           "translations": {
@@ -6854,10 +6856,10 @@
             "description": "contains the pdf template to use with this offer",
             "type": "string",
             "enum": [
-              "B2C",
-              "EVENT_B2C",
               "B2B",
-              "EVENT_B2B"
+              "B2C",
+              "EVENT_B2B",
+              "EVENT_B2C"
             ]
           },
           "partnerSettings": {
@@ -6889,38 +6891,38 @@
             "type": "string",
             "enum": [
               "ADVERTISEMENT",
-              "PHYSICALPRODUCT",
-              "EBOOK",
-              "VOUCHER",
               "BOOK",
-              "DONATION",
               "DIGITALNEWSPAPER",
-              "DIGITALPRODUCT",
               "DIGITALOFFER",
+              "DIGITALPRODUCT",
+              "DONATION",
               "DOWNLOAD",
+              "EBOOK",
               "EVENT",
               "FEE",
+              "MAGAZINE",
+              "MEMBERSHIP",
               "MUSIC",
               "NEWSPAPER",
-              "MEMBERSHIP",
-              "MAGAZINE",
-              "VIDEO"
+              "PHYSICALPRODUCT",
+              "VIDEO",
+              "VOUCHER"
             ]
           },
           "productType": {
             "description": "defines the type of product",
             "type": "string",
             "enum": [
-              "SUBSCRIPTION_TIME_CREDIT_BASED",
-              "SUBSCRIPTION_CREDIT_TIME_BASED",
-              "VOUCHER_SALE",
-              "SUBSCRIPTION_TIME_BASED",
-              "SUBSCRIPTION_CREDIT_TRIGGER_BASED",
+              "CROSS_CLIENT_SUBSCRIPTION_TIME_BASED",
+              "SINGLE_PRODUCT",
               "SINGLE_PRODUCT_CREDIT_BASED",
               "SUBSCRIPTION_CREDIT_BASED",
-              "SINGLE_PRODUCT",
-              "CROSS_CLIENT_SUBSCRIPTION_TIME_BASED",
-              "SUBSCRIPTION_ISSUE_BASED"
+              "SUBSCRIPTION_CREDIT_TIME_BASED",
+              "SUBSCRIPTION_CREDIT_TRIGGER_BASED",
+              "SUBSCRIPTION_ISSUE_BASED",
+              "SUBSCRIPTION_TIME_BASED",
+              "SUBSCRIPTION_TIME_CREDIT_BASED",
+              "VOUCHER_SALE"
             ]
           },
           "subscription": {
@@ -6994,11 +6996,11 @@
             "description": "date the this product validity will be end",
             "type": "string",
             "enum": [
-              "WEEK",
               "DAY",
-              "YEAR",
               "MONTH",
-              "NONE"
+              "NONE",
+              "WEEK",
+              "YEAR"
             ]
           },
           "additionalData": {
@@ -7136,11 +7138,11 @@
             "description": "term timespan",
             "type": "string",
             "enum": [
-              "WEEK",
               "DAY",
-              "YEAR",
               "MONTH",
-              "NONE"
+              "NONE",
+              "WEEK",
+              "YEAR"
             ]
           },
           "durationPeriod": {
@@ -7154,11 +7156,11 @@
             "description": "duration timespan",
             "type": "string",
             "enum": [
-              "WEEK",
               "DAY",
-              "YEAR",
               "MONTH",
-              "NONE"
+              "NONE",
+              "WEEK",
+              "YEAR"
             ]
           },
           "accountingPeriod": {
@@ -7172,11 +7174,11 @@
             "description": "accounting timespan",
             "type": "string",
             "enum": [
-              "WEEK",
               "DAY",
-              "YEAR",
               "MONTH",
-              "NONE"
+              "NONE",
+              "WEEK",
+              "YEAR"
             ]
           },
           "cancellationPeriod": {
@@ -7190,11 +7192,11 @@
             "description": "cancellation timespan",
             "type": "string",
             "enum": [
-              "WEEK",
               "DAY",
-              "YEAR",
               "MONTH",
-              "NONE"
+              "NONE",
+              "WEEK",
+              "YEAR"
             ]
           }
         }
@@ -7220,8 +7222,8 @@
             "description": "cancellation type",
             "type": "string",
             "enum": [
-              "ISSUE_BASED_REGULAR",
-              "ISSUE_BASED"
+              "ISSUE_BASED",
+              "ISSUE_BASED_REGULAR"
             ]
           },
           "cancellationPeriod": {
@@ -7235,11 +7237,11 @@
             "description": "issue based cancellation timespan of the contract",
             "type": "string",
             "enum": [
-              "WEEK",
               "DAY",
-              "YEAR",
               "MONTH",
-              "NONE"
+              "NONE",
+              "WEEK",
+              "YEAR"
             ]
           },
           "autoRenewalDelivery": {
@@ -7269,11 +7271,11 @@
             "description": "term timespan",
             "type": "string",
             "enum": [
-              "WEEK",
               "DAY",
-              "YEAR",
               "MONTH",
-              "NONE"
+              "NONE",
+              "WEEK",
+              "YEAR"
             ]
           },
           "durationPeriod": {
@@ -7287,11 +7289,11 @@
             "description": "duration timespan",
             "type": "string",
             "enum": [
-              "WEEK",
               "DAY",
-              "YEAR",
               "MONTH",
-              "NONE"
+              "NONE",
+              "WEEK",
+              "YEAR"
             ]
           },
           "accountingPeriod": {
@@ -7305,11 +7307,11 @@
             "description": "accounting timespan",
             "type": "string",
             "enum": [
-              "WEEK",
               "DAY",
-              "YEAR",
               "MONTH",
-              "NONE"
+              "NONE",
+              "WEEK",
+              "YEAR"
             ]
           },
           "cancellationPeriod": {
@@ -7323,11 +7325,11 @@
             "description": "cancellation timespan",
             "type": "string",
             "enum": [
-              "WEEK",
               "DAY",
-              "YEAR",
               "MONTH",
-              "NONE"
+              "NONE",
+              "WEEK",
+              "YEAR"
             ]
           },
           "creditCount": {
@@ -7360,8 +7362,8 @@
             "type": "string",
             "enum": [
               "CREDIT_BASED",
-              "TIME_BASED",
-              "ISSUE_BASED"
+              "ISSUE_BASED",
+              "TIME_BASED"
             ]
           },
           "productTagIds": {
@@ -7482,11 +7484,11 @@
                 "description": "issue based cancellation timespan",
                 "type": "string",
                 "enum": [
-                  "WEEK",
                   "DAY",
-                  "YEAR",
                   "MONTH",
-                  "NONE"
+                  "NONE",
+                  "WEEK",
+                  "YEAR"
                 ]
               },
               "regularBasedCancellationPeriod": {
@@ -7500,11 +7502,11 @@
                 "description": "regular based cancellation timespan",
                 "type": "string",
                 "enum": [
-                  "WEEK",
                   "DAY",
-                  "YEAR",
                   "MONTH",
-                  "NONE"
+                  "NONE",
+                  "WEEK",
+                  "YEAR"
                 ]
               },
               "termPeriod": {
@@ -7518,11 +7520,11 @@
                 "description": "term timespan",
                 "type": "string",
                 "enum": [
-                  "WEEK",
                   "DAY",
-                  "YEAR",
                   "MONTH",
-                  "NONE"
+                  "NONE",
+                  "WEEK",
+                  "YEAR"
                 ]
               },
               "durationPeriod": {
@@ -7536,11 +7538,11 @@
                 "description": "duration timespan",
                 "type": "string",
                 "enum": [
-                  "WEEK",
                   "DAY",
-                  "YEAR",
                   "MONTH",
-                  "NONE"
+                  "NONE",
+                  "WEEK",
+                  "YEAR"
                 ]
               },
               "accountingPeriod": {
@@ -7554,11 +7556,11 @@
                 "description": "accounting timespan",
                 "type": "string",
                 "enum": [
-                  "WEEK",
                   "DAY",
-                  "YEAR",
                   "MONTH",
-                  "NONE"
+                  "NONE",
+                  "WEEK",
+                  "YEAR"
                 ]
               },
               "cancellationPeriod": {
@@ -7572,11 +7574,11 @@
                 "description": "cancellation timespan",
                 "type": "string",
                 "enum": [
-                  "WEEK",
                   "DAY",
-                  "YEAR",
                   "MONTH",
-                  "NONE"
+                  "NONE",
+                  "WEEK",
+                  "YEAR"
                 ]
               },
               "productContractId": {
@@ -7992,11 +7994,11 @@
             "description": "status of the refund",
             "type": "string",
             "enum": [
-              "PROCESSING",
-              "REJECTED",
-              "OPEN",
+              "CLOSED",
               "IGNORED",
-              "CLOSED"
+              "OPEN",
+              "PROCESSING",
+              "REJECTED"
             ]
           },
           "reason": {
@@ -8062,32 +8064,32 @@
                 "description": "payment provider used for refund execution",
                 "type": "string",
                 "enum": [
-                  "PAYPAL",
-                  "PAYONE",
-                  "GOOGLE",
-                  "WIRECARD_LEGACY",
                   "AMAZON",
-                  "STRIPE",
+                  "APPLE",
                   "DATATRANS",
-                  "APPLE"
+                  "GOOGLE",
+                  "PAYONE",
+                  "PAYPAL",
+                  "STRIPE",
+                  "WIRECARD_LEGACY"
                 ]
               },
               "paymentMethod": {
                 "description": "payment method used",
                 "type": "string",
                 "enum": [
-                  "PAYPAL",
-                  "ZERO",
-                  "BILLING",
                   "AMAZON_PAY",
                   "APPLE_PAY",
+                  "BANK_ACCOUNT",
+                  "BILLING",
+                  "CREDIT_CARD",
+                  "GOOGLE_PAY",
+                  "IDEAL",
+                  "PAYPAL",
                   "POSTFINANCE",
                   "SOFORT",
-                  "GOOGLE_PAY",
                   "TWINT",
-                  "IDEAL",
-                  "CREDIT_CARD",
-                  "BANK_ACCOUNT"
+                  "ZERO"
                 ]
               },
               "cancellationInvoiceId": {
@@ -8109,11 +8111,11 @@
                 "description": "status of the refund",
                 "type": "string",
                 "enum": [
-                  "PROCESSING",
-                  "REJECTED",
-                  "OPEN",
+                  "CLOSED",
                   "IGNORED",
-                  "CLOSED"
+                  "OPEN",
+                  "PROCESSING",
+                  "REJECTED"
                 ]
               },
               "statusHistory": {
@@ -8315,8 +8317,8 @@
                 "description": "status of the voucher",
                 "type": "string",
                 "enum": [
-                  "INACTIVE",
                   "ACTIVE",
+                  "INACTIVE",
                   "DELETED"
                 ]
               },
@@ -8383,8 +8385,8 @@
                 "description": "represents the type of the vouchers of this campaign",
                 "type": "string",
                 "enum": [
-                  "SINGLE",
-                  "MULTI"
+                  "MULTI",
+                  "SINGLE"
                 ]
               },
               "plenigoOfferId": {
@@ -8396,11 +8398,11 @@
                 "description": "status of the campaign",
                 "type": "string",
                 "enum": [
+                  "ACTIVE",
                   "CREATING",
                   "INACTIVE",
-                  "ACTIVE",
-                  "UPDATING",
-                  "DELETED"
+                  "DELETED",
+                  "UPDATING"
                 ]
               },
               "startDate": {
@@ -8467,11 +8469,11 @@
                 "description": "status of the campaign",
                 "type": "string",
                 "enum": [
+                  "ACTIVE",
                   "CREATING",
                   "INACTIVE",
-                  "ACTIVE",
-                  "UPDATING",
-                  "DELETED"
+                  "DELETED",
+                  "UPDATING"
                 ]
               }
             },
@@ -8564,8 +8566,8 @@
             "description": "represents the type of the vouchers of this campaign",
             "type": "string",
             "enum": [
-              "SINGLE",
-              "MULTI"
+              "MULTI",
+              "SINGLE"
             ]
           },
           "plenigoOfferId": {

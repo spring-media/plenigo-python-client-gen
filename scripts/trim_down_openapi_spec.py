@@ -113,6 +113,18 @@ def enum_deduplicator(openapi_spec):
     enum_deduplicator_helper(openapi_spec)
     return openapi_spec
 
+def delete_key_from_dict(data, key):
+    # because the dictionary might contain other dicts or arrays
+    # if the key is found, delete it
+    if isinstance(data, dict):
+        for k, v in list(data.items()):
+            if k == key:
+                del data[k]
+            else:
+                delete_key_from_dict(v, key)
+    elif isinstance(data, list):
+        for item in data:
+            delete_key_from_dict(item, key)
 
 
 
@@ -138,6 +150,11 @@ def main():
 
     new_open_api = allOf_fixer(new_open_api)
     new_open_api = enum_deduplicator(new_open_api)
+
+    schema_obj = new_open_api["components"]["schemas"]
+    #delete_key_from_dict(schema_obj, "required")
+    #delete_key_from_dict(new_open_api, "enum")
+
 
     # Save the filtered spec
     save_openapi_spec(args.output_file, new_open_api)
