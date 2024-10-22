@@ -52,14 +52,16 @@ class Subscription:
             target="_blank">ISO 4217, alphabetic code</a>
         payment_method (SubscriptionPaymentMethod): payment method used to pay for the subscription (ZERO indicates a
             free subscription)
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        created_by (Union[Unset, str]): ID of who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
-        changed_by (Union[Unset, str]): ID of who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        created_by (Union[Unset, str]): id who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        changed_by (Union[Unset, str]): id who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
         analog_invoice (Union[Unset, bool]): flag indicating if the subscription is a analog invoice
         external_system_id (Union[Unset, str]): if subscription was imported from another system this field contains the
             unique id of the other system
@@ -116,7 +118,6 @@ class Subscription:
             subscription
         duration_period_time_span (Union[Unset, SubscriptionDurationPeriodTimeSpan]): represents the time span that is
             represented by the duration period
-        managed_external (Union[Unset, bool]): flag indicates if a subscription is not managed by plenigo
         managed_by (Union[Unset, SubscriptionManagedBy]): managed by of the given subscription.
         payment_tries_done (Union[Unset, int]): amount of payment tries done in the current accounting period
         subscription_type (Union[Unset, SubscriptionSubscriptionType]): represents the type of the subscription
@@ -183,7 +184,6 @@ class Subscription:
     customer_cancellation_reason_id: Union[Unset, int] = UNSET
     duration_period: Union[Unset, int] = UNSET
     duration_period_time_span: Union[Unset, SubscriptionDurationPeriodTimeSpan] = UNSET
-    managed_external: Union[Unset, bool] = UNSET
     managed_by: Union[Unset, SubscriptionManagedBy] = UNSET
     payment_tries_done: Union[Unset, int] = UNSET
     subscription_type: Union[Unset, SubscriptionSubscriptionType] = UNSET
@@ -366,8 +366,6 @@ class Subscription:
         if not isinstance(self.duration_period_time_span, Unset):
             duration_period_time_span = self.duration_period_time_span.value
 
-        managed_external = self.managed_external
-
         managed_by: Union[Unset, str] = UNSET
         if not isinstance(self.managed_by, Unset):
             managed_by = self.managed_by.value
@@ -509,8 +507,6 @@ class Subscription:
             field_dict["durationPeriod"] = duration_period
         if duration_period_time_span is not UNSET:
             field_dict["durationPeriodTimeSpan"] = duration_period_time_span
-        if managed_external is not UNSET:
-            field_dict["managedExternal"] = managed_external
         if managed_by is not UNSET:
             field_dict["managedBy"] = managed_by
         if payment_tries_done is not UNSET:
@@ -582,9 +578,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                start_date_type_0 = isoparse(data)
+                start_date_type_1 = isoparse(data)
 
-                return start_date_type_0
+                return start_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -610,9 +606,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -634,9 +630,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -695,9 +691,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                reference_start_date_type_0 = isoparse(data)
+                reference_start_date_type_1 = isoparse(data)
 
-                return reference_start_date_type_0
+                return reference_start_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -719,9 +715,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                end_date_type_0 = isoparse(data)
+                end_date_type_1 = isoparse(data)
 
-                return end_date_type_0
+                return end_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -743,9 +739,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                cancellation_date_type_0 = isoparse(data)
+                cancellation_date_type_1 = isoparse(data)
 
-                return cancellation_date_type_0
+                return cancellation_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -785,9 +781,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                first_booking_date_type_0 = isoparse(data).date()
+                first_booking_date_type_1 = isoparse(data).date()
 
-                return first_booking_date_type_0
+                return first_booking_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -809,9 +805,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                last_booking_date_type_0 = isoparse(data).date()
+                last_booking_date_type_1 = isoparse(data).date()
 
-                return last_booking_date_type_0
+                return last_booking_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -833,9 +829,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                next_booking_date_type_0 = isoparse(data).date()
+                next_booking_date_type_1 = isoparse(data).date()
 
-                return next_booking_date_type_0
+                return next_booking_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -881,8 +877,6 @@ class Subscription:
             duration_period_time_span = UNSET
         else:
             duration_period_time_span = SubscriptionDurationPeriodTimeSpan(_duration_period_time_span)
-
-        managed_external = d.pop("managedExternal", UNSET)
 
         _managed_by = d.pop("managedBy", UNSET)
         managed_by: Union[Unset, SubscriptionManagedBy]
@@ -1001,7 +995,6 @@ class Subscription:
             customer_cancellation_reason_id=customer_cancellation_reason_id,
             duration_period=duration_period,
             duration_period_time_span=duration_period_time_span,
-            managed_external=managed_external,
             managed_by=managed_by,
             payment_tries_done=payment_tries_done,
             subscription_type=subscription_type,

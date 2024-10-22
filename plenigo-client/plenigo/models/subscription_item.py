@@ -24,14 +24,16 @@ class SubscriptionItem:
         price (float): price of the subscription
         discount_percentage (int): discount offered to the subscription
         quantity (int): quantity of purchased entities
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        created_by (Union[Unset, str]): ID of who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
-        changed_by (Union[Unset, str]): ID of who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        created_by (Union[Unset, str]): id who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        changed_by (Union[Unset, str]): id who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
         plenigo_product_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo product id is
             provided here - can be identically to the productId
         plenigo_step_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo step id is provided
@@ -54,6 +56,7 @@ class SubscriptionItem:
         credit_wallet_unique_id (Union[Unset, str]): the credit wallet unique id
         status (Union[Unset, SubscriptionItemStatus]): current status of the subscription item
         cost_center (Union[Unset, str]): cost center associated with this subscription item
+        purchase_number (Union[Unset, str]): purchase number associated with this subscription item
     """
 
     subscription_item_id: int
@@ -81,6 +84,7 @@ class SubscriptionItem:
     credit_wallet_unique_id: Union[Unset, str] = UNSET
     status: Union[Unset, SubscriptionItemStatus] = UNSET
     cost_center: Union[Unset, str] = UNSET
+    purchase_number: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -154,6 +158,8 @@ class SubscriptionItem:
 
         cost_center = self.cost_center
 
+        purchase_number = self.purchase_number
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -204,6 +210,8 @@ class SubscriptionItem:
             field_dict["status"] = status
         if cost_center is not UNSET:
             field_dict["costCenter"] = cost_center
+        if purchase_number is not UNSET:
+            field_dict["purchaseNumber"] = purchase_number
 
         return field_dict
 
@@ -236,9 +244,9 @@ class SubscriptionItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -260,9 +268,9 @@ class SubscriptionItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -324,6 +332,8 @@ class SubscriptionItem:
 
         cost_center = d.pop("costCenter", UNSET)
 
+        purchase_number = d.pop("purchaseNumber", UNSET)
+
         subscription_item = cls(
             subscription_item_id=subscription_item_id,
             product_id=product_id,
@@ -350,6 +360,7 @@ class SubscriptionItem:
             credit_wallet_unique_id=credit_wallet_unique_id,
             status=status,
             cost_center=cost_center,
+            purchase_number=purchase_number,
         )
 
         subscription_item.additional_properties = d

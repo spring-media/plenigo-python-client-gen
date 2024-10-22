@@ -27,10 +27,12 @@ class InvoiceItem:
             href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank">ISO 3166-1 alpha-2</a>
         quantity (int): purchase amount
         delivery_customer_id (str): id of the customer the delivery belongs to (also includes digital products)
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
         product_id (Union[Unset, str]): product id - will be identical with the plenigo product id if not overwritten
             during checkout
         plenigo_offer_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo offer id is
@@ -40,6 +42,7 @@ class InvoiceItem:
         plenigo_step_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo step id is provided
             here
         cost_center (Union[Unset, str]): cost center associated with this product at the time of invoice creation
+        purchase_number (Union[Unset, str]): purchase number associated with this subscription item
         delivery_address (Union[Unset, InvoiceAddress]):
         subscription_item_id (Union[Unset, int]): if invoice item represents a subscription the id of the subscription
             item is provided here
@@ -65,6 +68,7 @@ class InvoiceItem:
     plenigo_product_id: Union[Unset, str] = UNSET
     plenigo_step_id: Union[Unset, str] = UNSET
     cost_center: Union[Unset, str] = UNSET
+    purchase_number: Union[Unset, str] = UNSET
     delivery_address: Union[Unset, "InvoiceAddress"] = UNSET
     subscription_item_id: Union[Unset, int] = UNSET
     period_start_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -113,6 +117,8 @@ class InvoiceItem:
         plenigo_step_id = self.plenigo_step_id
 
         cost_center = self.cost_center
+
+        purchase_number = self.purchase_number
 
         delivery_address: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.delivery_address, Unset):
@@ -167,6 +173,8 @@ class InvoiceItem:
             field_dict["plenigoStepId"] = plenigo_step_id
         if cost_center is not UNSET:
             field_dict["costCenter"] = cost_center
+        if purchase_number is not UNSET:
+            field_dict["purchaseNumber"] = purchase_number
         if delivery_address is not UNSET:
             field_dict["deliveryAddress"] = delivery_address
         if subscription_item_id is not UNSET:
@@ -215,9 +223,9 @@ class InvoiceItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -239,9 +247,9 @@ class InvoiceItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -258,6 +266,8 @@ class InvoiceItem:
         plenigo_step_id = d.pop("plenigoStepId", UNSET)
 
         cost_center = d.pop("costCenter", UNSET)
+
+        purchase_number = d.pop("purchaseNumber", UNSET)
 
         _delivery_address = d.pop("deliveryAddress", UNSET)
         delivery_address: Union[Unset, InvoiceAddress]
@@ -282,9 +292,9 @@ class InvoiceItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                period_start_date_type_0 = isoparse(data)
+                period_start_date_type_1 = isoparse(data)
 
-                return period_start_date_type_0
+                return period_start_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -306,9 +316,9 @@ class InvoiceItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                period_end_date_type_0 = isoparse(data)
+                period_end_date_type_1 = isoparse(data)
 
-                return period_end_date_type_0
+                return period_end_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -335,6 +345,7 @@ class InvoiceItem:
             plenigo_product_id=plenigo_product_id,
             plenigo_step_id=plenigo_step_id,
             cost_center=cost_center,
+            purchase_number=purchase_number,
             delivery_address=delivery_address,
             subscription_item_id=subscription_item_id,
             period_start_date=period_start_date,

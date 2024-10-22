@@ -90,9 +90,9 @@ class AppStorePurchaseDetail:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                purchase_date_type_0 = isoparse(data)
+                purchase_date_type_1 = isoparse(data)
 
-                return purchase_date_type_0
+                return purchase_date_type_1
             except:  # noqa: E722
                 pass
 

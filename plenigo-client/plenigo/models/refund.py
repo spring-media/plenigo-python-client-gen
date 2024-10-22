@@ -11,7 +11,7 @@ from ..models.refund_status import RefundStatus
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.status_history import StatusHistory
+    from ..models.schemas_status_history import SchemasStatusHistory
 
 
 T = TypeVar("T", bound="Refund")
@@ -28,15 +28,17 @@ class Refund:
             target="_blank">ISO 4217, alphabetic code</a>
         payment_method (RefundPaymentMethod): payment method used
         status (RefundStatus): status of the refund
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
         payment_provider (Union[Unset, RefundPaymentProvider]): payment provider used for refund execution
         cancellation_invoice_id (Union[Unset, int]): unique id of the cancellation also used for pagination
         transaction_id (Union[Unset, str]): unique id of the transaction also used for pagination
         psp_transaction_id (Union[Unset, str]): id of the payment service provider if one was provided
-        status_history (Union[Unset, List['StatusHistory']]):
+        status_history (Union[Unset, List['SchemasStatusHistory']]):
     """
 
     refund_id: int
@@ -51,7 +53,7 @@ class Refund:
     cancellation_invoice_id: Union[Unset, int] = UNSET
     transaction_id: Union[Unset, str] = UNSET
     psp_transaction_id: Union[Unset, str] = UNSET
-    status_history: Union[Unset, List["StatusHistory"]] = UNSET
+    status_history: Union[Unset, List["SchemasStatusHistory"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -131,7 +133,7 @@ class Refund:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.status_history import StatusHistory
+        from ..models.schemas_status_history import SchemasStatusHistory
 
         d = src_dict.copy()
         refund_id = d.pop("refundId")
@@ -160,9 +162,9 @@ class Refund:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -184,9 +186,9 @@ class Refund:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -210,7 +212,7 @@ class Refund:
         status_history = []
         _status_history = d.pop("statusHistory", UNSET)
         for status_history_item_data in _status_history or []:
-            status_history_item = StatusHistory.from_dict(status_history_item_data)
+            status_history_item = SchemasStatusHistory.from_dict(status_history_item_data)
 
             status_history.append(status_history_item)
 

@@ -31,9 +31,9 @@ class CustomerChange:
             href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank">ISO 639-1</a>
         mobile_number (Union[Unset, str]): mobile number of the customer formatted as <a
             href="https://en.wikipedia.org/wiki/E.164" target="_blank">E.164</a>
-        birthday (Union[None, Unset, datetime.datetime]): birthday of the customer with full-date notation as defined by
-            <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
-            example, 2017-07-01
+        birthday (Union[None, Unset, datetime.date]): birthday of the customer with full-date notation as defined by <a
+            href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
+            2017-07-01
         miscellaneous_data (Union[Unset, CustomerMiscellaneousData]):
         pseudo_email (Union[Unset, bool]): flag indicating that email should be a pseudo email
         password (Union[Unset, str]): new password of the user - if left empty the old password will be kept
@@ -51,7 +51,7 @@ class CustomerChange:
     invoice_email: Union[Unset, str] = UNSET
     language: Union[Unset, str] = UNSET
     mobile_number: Union[Unset, str] = UNSET
-    birthday: Union[None, Unset, datetime.datetime] = UNSET
+    birthday: Union[None, Unset, datetime.date] = UNSET
     miscellaneous_data: Union[Unset, "CustomerMiscellaneousData"] = UNSET
     pseudo_email: Union[Unset, bool] = UNSET
     password: Union[Unset, str] = UNSET
@@ -82,7 +82,7 @@ class CustomerChange:
         birthday: Union[None, Unset, str]
         if isinstance(self.birthday, Unset) or self.birthday is None:
             birthday = UNSET
-        elif isinstance(self.birthday, datetime.datetime):
+        elif isinstance(self.birthday, datetime.date):
             birthday = self.birthday.isoformat()
         else:
             birthday = self.birthday
@@ -159,7 +159,7 @@ class CustomerChange:
 
         mobile_number = d.pop("mobileNumber", UNSET)
 
-        def _parse_birthday(data: object) -> Union[None, Unset, datetime.datetime]:
+        def _parse_birthday(data: object) -> Union[None, Unset, datetime.date]:
             if data is None:
                 return data
 
@@ -169,17 +169,17 @@ class CustomerChange:
             if isinstance(data, Unset):
                 return data
 
-            # Try to parse the data as datetime.datetime
+            # Try to parse the data as datetime.date
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                birthday_type_0 = isoparse(data)
+                birthday_type_1 = isoparse(data).date()
 
-                return birthday_type_0
+                return birthday_type_1
             except:  # noqa: E722
                 pass
 
-            return cast(Union[None, Unset, datetime.datetime], data)
+            return cast(Union[None, Unset, datetime.date], data)
 
         birthday = _parse_birthday(d.pop("birthday", UNSET))
 

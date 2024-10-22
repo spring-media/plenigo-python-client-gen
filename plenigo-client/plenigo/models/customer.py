@@ -38,18 +38,20 @@ class Customer:
             href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank">ISO 639-1</a>
         mobile_number (Union[Unset, str]): mobile number of the customer formatted as <a
             href="https://en.wikipedia.org/wiki/E.164" target="_blank">E.164</a>
-        birthday (Union[None, Unset, datetime.datetime]): birthday of the customer with full-date notation as defined by
-            <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
-            example, 2017-07-01
+        birthday (Union[None, Unset, datetime.date]): birthday of the customer with full-date notation as defined by <a
+            href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
+            2017-07-01
         miscellaneous_data (Union[Unset, CustomerMiscellaneousData]):
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        created_by (Union[Unset, str]): ID of who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
-        changed_by (Union[Unset, str]): ID of who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        created_by (Union[Unset, str]): id who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        changed_by (Union[Unset, str]): id who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
         registration_source (Union[Unset, str]): source the user registration was started from
         registration_date (Union[None, Unset, datetime.datetime]): date the customer was registered with date-time
             notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339,
@@ -84,7 +86,7 @@ class Customer:
     invoice_email: Union[Unset, str] = UNSET
     language: Union[Unset, str] = UNSET
     mobile_number: Union[Unset, str] = UNSET
-    birthday: Union[None, Unset, datetime.datetime] = UNSET
+    birthday: Union[None, Unset, datetime.date] = UNSET
     miscellaneous_data: Union[Unset, "CustomerMiscellaneousData"] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -127,7 +129,7 @@ class Customer:
         birthday: Union[None, Unset, str]
         if isinstance(self.birthday, Unset) or self.birthday is None:
             birthday = UNSET
-        elif isinstance(self.birthday, datetime.datetime):
+        elif isinstance(self.birthday, datetime.date):
             birthday = self.birthday.isoformat()
         else:
             birthday = self.birthday
@@ -287,7 +289,7 @@ class Customer:
 
         mobile_number = d.pop("mobileNumber", UNSET)
 
-        def _parse_birthday(data: object) -> Union[None, Unset, datetime.datetime]:
+        def _parse_birthday(data: object) -> Union[None, Unset, datetime.date]:
             if data is None:
                 return data
 
@@ -297,17 +299,17 @@ class Customer:
             if isinstance(data, Unset):
                 return data
 
-            # Try to parse the data as datetime.datetime
+            # Try to parse the data as datetime.date
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                birthday_type_0 = isoparse(data)
+                birthday_type_1 = isoparse(data).date()
 
-                return birthday_type_0
+                return birthday_type_1
             except:  # noqa: E722
                 pass
 
-            return cast(Union[None, Unset, datetime.datetime], data)
+            return cast(Union[None, Unset, datetime.date], data)
 
         birthday = _parse_birthday(d.pop("birthday", UNSET))
 
@@ -332,9 +334,9 @@ class Customer:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -356,9 +358,9 @@ class Customer:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -400,9 +402,9 @@ class Customer:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                registration_date_type_0 = isoparse(data)
+                registration_date_type_1 = isoparse(data)
 
-                return registration_date_type_0
+                return registration_date_type_1
             except:  # noqa: E722
                 pass
 

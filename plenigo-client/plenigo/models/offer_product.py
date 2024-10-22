@@ -56,10 +56,12 @@ class OfferProduct:
         credit_count (Union[Unset, int]): credit count added with this product
         option (Union[Unset, bool]): flag indicating if product is an option in a basket
         translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
         steps (Union[Unset, List['OfferProductStep']]): steps associated with this product - mandatory field for
             subscriptions
         product_tags (Union[Unset, List['ProductTag']]): tags associated with this product
@@ -303,9 +305,9 @@ class OfferProduct:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                validity_end_time_type_0 = isoparse(data)
+                validity_end_time_type_1 = isoparse(data)
 
-                return validity_end_time_type_0
+                return validity_end_time_type_1
             except:  # noqa: E722
                 pass
 
@@ -377,9 +379,9 @@ class OfferProduct:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -401,9 +403,9 @@ class OfferProduct:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 

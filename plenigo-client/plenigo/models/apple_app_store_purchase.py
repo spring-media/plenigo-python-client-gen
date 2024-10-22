@@ -10,6 +10,7 @@ from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.apple_app_store_purchase_data import AppleAppStorePurchaseData
     from ..models.apple_app_store_receipt import AppleAppStoreReceipt
 
 
@@ -20,20 +21,23 @@ T = TypeVar("T", bound="AppleAppStorePurchase")
 class AppleAppStorePurchase:
     """
     Attributes:
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        created_by (Union[Unset, str]): ID of who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
-        changed_by (Union[Unset, str]): ID of who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        created_by (Union[Unset, str]): id who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        changed_by (Union[Unset, str]): id who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
         apple_app_store_purchase_id (Union[Unset, int]): unique id of the purchase
         purchase_date (Union[None, Unset, datetime.datetime]): date of the purchase
         token (Union[Unset, str]): token for the purchase
         valid (Union[Unset, bool]): flag indicating if purchase is valid
         app_store_order_id (Union[Unset, int]): id of the app store order if mapped
         receipt (Union[Unset, AppleAppStoreReceipt]):
+        purchase_data (Union[Unset, AppleAppStorePurchaseData]):
     """
 
     created_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -48,6 +52,7 @@ class AppleAppStorePurchase:
     valid: Union[Unset, bool] = UNSET
     app_store_order_id: Union[Unset, int] = UNSET
     receipt: Union[Unset, "AppleAppStoreReceipt"] = UNSET
+    purchase_data: Union[Unset, "AppleAppStorePurchaseData"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -99,6 +104,10 @@ class AppleAppStorePurchase:
         if not isinstance(self.receipt, Unset):
             receipt = self.receipt.to_dict()
 
+        purchase_data: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.purchase_data, Unset):
+            purchase_data = self.purchase_data.to_dict()
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -126,11 +135,14 @@ class AppleAppStorePurchase:
             field_dict["appStoreOrderId"] = app_store_order_id
         if receipt is not UNSET:
             field_dict["receipt"] = receipt
+        if purchase_data is not UNSET:
+            field_dict["purchaseData"] = purchase_data
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.apple_app_store_purchase_data import AppleAppStorePurchaseData
         from ..models.apple_app_store_receipt import AppleAppStoreReceipt
 
         d = src_dict.copy()
@@ -149,9 +161,9 @@ class AppleAppStorePurchase:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -173,9 +185,9 @@ class AppleAppStorePurchase:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -217,9 +229,9 @@ class AppleAppStorePurchase:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                purchase_date_type_0 = isoparse(data)
+                purchase_date_type_1 = isoparse(data)
 
-                return purchase_date_type_0
+                return purchase_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -240,6 +252,13 @@ class AppleAppStorePurchase:
         else:
             receipt = AppleAppStoreReceipt.from_dict(_receipt)
 
+        _purchase_data = d.pop("purchaseData", UNSET)
+        purchase_data: Union[Unset, AppleAppStorePurchaseData]
+        if isinstance(_purchase_data, Unset) or not _purchase_data:
+            purchase_data = UNSET
+        else:
+            purchase_data = AppleAppStorePurchaseData.from_dict(_purchase_data)
+
         apple_app_store_purchase = cls(
             created_date=created_date,
             changed_date=changed_date,
@@ -253,6 +272,7 @@ class AppleAppStorePurchase:
             valid=valid,
             app_store_order_id=app_store_order_id,
             receipt=receipt,
+            purchase_data=purchase_data,
         )
 
         apple_app_store_purchase.additional_properties = d

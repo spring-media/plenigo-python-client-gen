@@ -12,26 +12,26 @@ T = TypeVar("T", bound="GooglePlayProductPurchase")
 class GooglePlayProductPurchase:
     """
     Attributes:
-        acknowledgement_state (Union[Unset, int]): acknowledgement state of the inapp product
-        consumption_state (Union[Unset, int]): consumption state of the inapp product
+        acknowledgement_state (Union[Unset, str]): acknowledgement state of the inapp product
+        consumption_state (Union[Unset, str]): consumption state of the inapp product
         developer_payload (Union[Unset, str]): developer-specified string that contains supplemental information about
             an order
         kind (Union[Unset, str]): kind represents a subscriptionPurchase object in the androidpublisher service
         order_id (Union[Unset, str]): order id associated with the purchase of the inapp product
-        purchase_state (Union[Unset, int]): purchase state of the order
-        purchase_time_millis (Union[Unset, int]): time the product was purchased, in milliseconds since the epoch (Jan
+        purchase_state (Union[Unset, str]): purchase state of the order
+        purchase_time_millis (Union[Unset, str]): time the product was purchased, in milliseconds since the epoch (Jan
             1, 1970)
-        purchase_type (Union[Unset, int]): type of purchase of the inapp product
+        purchase_type (Union[Unset, str]): type of purchase of the inapp product
     """
 
-    acknowledgement_state: Union[Unset, int] = UNSET
-    consumption_state: Union[Unset, int] = UNSET
+    acknowledgement_state: Union[Unset, str] = UNSET
+    consumption_state: Union[Unset, str] = UNSET
     developer_payload: Union[Unset, str] = UNSET
     kind: Union[Unset, str] = UNSET
     order_id: Union[Unset, str] = UNSET
-    purchase_state: Union[Unset, int] = UNSET
-    purchase_time_millis: Union[Unset, int] = UNSET
-    purchase_type: Union[Unset, int] = UNSET
+    purchase_state: Union[Unset, str] = UNSET
+    purchase_time_millis: Union[Unset, str] = UNSET
+    purchase_type: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:

@@ -24,9 +24,9 @@ class BankAccountCreation:
             account can be preferred.
         invalid (Union[Unset, bool]): flag indicating if payment method should be handled as invalid
         mandate_id (Union[Unset, str]): unique id of the payment mandate
-        mandate_date (Union[None, Unset, datetime.datetime]): date the payment mandate was created with date-time
-            notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339,
-            section 5.6</a>, for example, 2017-07-21T17:32:28Z
+        mandate_date (Union[None, Unset, datetime.date]): date the payment mandate was created with date-time notation
+            as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section
+            5.6</a>, for example, 2017-07-21T17:32:28Z
         psp_mandate_id (Union[Unset, str]): psp mandate id
     """
 
@@ -37,7 +37,7 @@ class BankAccountCreation:
     preferred: Union[Unset, bool] = UNSET
     invalid: Union[Unset, bool] = UNSET
     mandate_id: Union[Unset, str] = UNSET
-    mandate_date: Union[None, Unset, datetime.datetime] = UNSET
+    mandate_date: Union[None, Unset, datetime.date] = UNSET
     psp_mandate_id: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -59,7 +59,7 @@ class BankAccountCreation:
         mandate_date: Union[None, Unset, str]
         if isinstance(self.mandate_date, Unset) or self.mandate_date is None:
             mandate_date = UNSET
-        elif isinstance(self.mandate_date, datetime.datetime):
+        elif isinstance(self.mandate_date, datetime.date):
             mandate_date = self.mandate_date.isoformat()
         else:
             mandate_date = self.mandate_date
@@ -107,7 +107,7 @@ class BankAccountCreation:
 
         mandate_id = d.pop("mandateId", UNSET)
 
-        def _parse_mandate_date(data: object) -> Union[None, Unset, datetime.datetime]:
+        def _parse_mandate_date(data: object) -> Union[None, Unset, datetime.date]:
             if data is None:
                 return data
 
@@ -117,17 +117,17 @@ class BankAccountCreation:
             if isinstance(data, Unset):
                 return data
 
-            # Try to parse the data as datetime.datetime
+            # Try to parse the data as datetime.date
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                mandate_date_type_0 = isoparse(data)
+                mandate_date_type_1 = isoparse(data).date()
 
-                return mandate_date_type_0
+                return mandate_date_type_1
             except:  # noqa: E722
                 pass
 
-            return cast(Union[None, Unset, datetime.datetime], data)
+            return cast(Union[None, Unset, datetime.date], data)
 
         mandate_date = _parse_mandate_date(d.pop("mandateDate", UNSET))
 

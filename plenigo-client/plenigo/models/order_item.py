@@ -34,10 +34,12 @@ class OrderItem:
         quantity (int): purchase quantity
         discount_percentage (int): discount offered to the order item
         delivery_customer_id (str): id of the customer the delivery belongs to (also includes digital products)
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
         plenigo_offer_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo offer id is
             provided here
         plenigo_product_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo product id is
@@ -48,6 +50,7 @@ class OrderItem:
         internal_title (Union[Unset, str]): if the product is based on a plenigo offer the product title for internal
             usage is provided here
         cost_center (Union[Unset, str]): cost center associated with this product at the time of order creation
+        purchase_number (Union[Unset, str]): purchase number associated with this subscription item
         voucher_code (Union[Unset, str]): voucher code to purchase this order item
         delivery_address (Union[Unset, OrderAddress]):
         subscription_item_id (Union[Unset, int]): if order item represents a subscription the id of the subscription
@@ -80,6 +83,7 @@ class OrderItem:
     access_right_unique_id: Union[Unset, str] = UNSET
     internal_title: Union[Unset, str] = UNSET
     cost_center: Union[Unset, str] = UNSET
+    purchase_number: Union[Unset, str] = UNSET
     voucher_code: Union[Unset, str] = UNSET
     delivery_address: Union[Unset, "OrderAddress"] = UNSET
     subscription_item_id: Union[Unset, int] = UNSET
@@ -139,6 +143,8 @@ class OrderItem:
         internal_title = self.internal_title
 
         cost_center = self.cost_center
+
+        purchase_number = self.purchase_number
 
         voucher_code = self.voucher_code
 
@@ -202,6 +208,8 @@ class OrderItem:
             field_dict["internalTitle"] = internal_title
         if cost_center is not UNSET:
             field_dict["costCenter"] = cost_center
+        if purchase_number is not UNSET:
+            field_dict["purchaseNumber"] = purchase_number
         if voucher_code is not UNSET:
             field_dict["voucherCode"] = voucher_code
         if delivery_address is not UNSET:
@@ -264,9 +272,9 @@ class OrderItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -288,9 +296,9 @@ class OrderItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -309,6 +317,8 @@ class OrderItem:
         internal_title = d.pop("internalTitle", UNSET)
 
         cost_center = d.pop("costCenter", UNSET)
+
+        purchase_number = d.pop("purchaseNumber", UNSET)
 
         voucher_code = d.pop("voucherCode", UNSET)
 
@@ -341,9 +351,9 @@ class OrderItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                validity_end_date_type_0 = isoparse(data)
+                validity_end_date_type_1 = isoparse(data)
 
-                return validity_end_date_type_0
+                return validity_end_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -384,6 +394,7 @@ class OrderItem:
             access_right_unique_id=access_right_unique_id,
             internal_title=internal_title,
             cost_center=cost_center,
+            purchase_number=purchase_number,
             voucher_code=voucher_code,
             delivery_address=delivery_address,
             subscription_item_id=subscription_item_id,

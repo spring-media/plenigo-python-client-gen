@@ -20,34 +20,53 @@ T = TypeVar("T", bound="PriceIssue")
 class PriceIssue:
     """
     Attributes:
+        title (str): title of the price issue
+        price_segments (List['PriceSegment']): price segments
         price_issue_id (int): unique id of the price issue within a contract company
         archived (bool): flag indicating if price country segment is archived
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        created_by (Union[Unset, str]): ID of who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
-        changed_by (Union[Unset, str]): ID of who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
-        price_segments (Union[Unset, List['PriceSegment']]):
+        leaf_id (Union[Unset, int]): id of the tree leaf this price issue should be associated with
+        description (Union[Unset, str]): Internal description of the price issue
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        created_by (Union[Unset, str]): id who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        changed_by (Union[Unset, str]): id who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
     """
 
+    title: str
+    price_segments: List["PriceSegment"]
     price_issue_id: int
     archived: bool
+    leaf_id: Union[Unset, int] = UNSET
+    description: Union[Unset, str] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     created_by: Union[Unset, str] = UNSET
     created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
     changed_by: Union[Unset, str] = UNSET
     changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
-    price_segments: Union[Unset, List["PriceSegment"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        title = self.title
+
+        price_segments = []
+        for price_segments_item_data in self.price_segments:
+            price_segments_item = price_segments_item_data.to_dict()
+            price_segments.append(price_segments_item)
+
         price_issue_id = self.price_issue_id
 
         archived = self.archived
+
+        leaf_id = self.leaf_id
+
+        description = self.description
 
         created_date: Union[None, Unset, str]
         if isinstance(self.created_date, Unset) or self.created_date is None:
@@ -77,21 +96,20 @@ class PriceIssue:
         if not isinstance(self.changed_by_type, Unset):
             changed_by_type = self.changed_by_type.value
 
-        price_segments: Union[Unset, List[Dict[str, Any]]] = UNSET
-        if not isinstance(self.price_segments, Unset):
-            price_segments = []
-            for price_segments_item_data in self.price_segments:
-                price_segments_item = price_segments_item_data.to_dict()
-                price_segments.append(price_segments_item)
-
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "title": title,
+                "priceSegments": price_segments,
                 "priceIssueId": price_issue_id,
                 "archived": archived,
             }
         )
+        if leaf_id is not UNSET:
+            field_dict["leafId"] = leaf_id
+        if description is not UNSET:
+            field_dict["description"] = description
         if created_date is not UNSET:
             field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
@@ -104,8 +122,6 @@ class PriceIssue:
             field_dict["changedBy"] = changed_by
         if changed_by_type is not UNSET:
             field_dict["changedByType"] = changed_by_type
-        if price_segments is not UNSET:
-            field_dict["priceSegments"] = price_segments
 
         return field_dict
 
@@ -114,9 +130,22 @@ class PriceIssue:
         from ..models.price_segment import PriceSegment
 
         d = src_dict.copy()
+        title = d.pop("title")
+
+        price_segments = []
+        _price_segments = d.pop("priceSegments")
+        for price_segments_item_data in _price_segments:
+            price_segments_item = PriceSegment.from_dict(price_segments_item_data)
+
+            price_segments.append(price_segments_item)
+
         price_issue_id = d.pop("priceIssueId")
 
         archived = d.pop("archived")
+
+        leaf_id = d.pop("leafId", UNSET)
+
+        description = d.pop("description", UNSET)
 
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
@@ -132,9 +161,9 @@ class PriceIssue:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -156,9 +185,9 @@ class PriceIssue:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -184,23 +213,19 @@ class PriceIssue:
         else:
             changed_by_type = ApiBaseChangedByType(_changed_by_type)
 
-        price_segments = []
-        _price_segments = d.pop("priceSegments", UNSET)
-        for price_segments_item_data in _price_segments or []:
-            price_segments_item = PriceSegment.from_dict(price_segments_item_data)
-
-            price_segments.append(price_segments_item)
-
         price_issue = cls(
+            title=title,
+            price_segments=price_segments,
             price_issue_id=price_issue_id,
             archived=archived,
+            leaf_id=leaf_id,
+            description=description,
             created_date=created_date,
             changed_date=changed_date,
             created_by=created_by,
             created_by_type=created_by_type,
             changed_by=changed_by,
             changed_by_type=changed_by_type,
-            price_segments=price_segments,
         )
 
         price_issue.additional_properties = d

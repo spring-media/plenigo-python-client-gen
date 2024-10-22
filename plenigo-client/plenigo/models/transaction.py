@@ -28,10 +28,12 @@ class Transaction:
         payment_action (TransactionPaymentAction): payment action executed
         payment_status (TransactionPaymentStatus): status of the transaction
         customer_id (str): unique id of the customer the transaction is related to
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
         transaction_date (Union[None, Unset, datetime.datetime]): date the transaction was done with date-time notation
             as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section
             5.6</a>, for example, 2017-07-21T17:32:28Z
@@ -191,9 +193,9 @@ class Transaction:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -215,9 +217,9 @@ class Transaction:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -239,9 +241,9 @@ class Transaction:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                transaction_date_type_0 = isoparse(data)
+                transaction_date_type_1 = isoparse(data)
 
-                return transaction_date_type_0
+                return transaction_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -263,9 +265,9 @@ class Transaction:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                fulfillment_date_type_0 = isoparse(data)
+                fulfillment_date_type_1 = isoparse(data)
 
-                return fulfillment_date_type_0
+                return fulfillment_date_type_1
             except:  # noqa: E722
                 pass
 

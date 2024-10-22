@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.price_segment_creation import PriceSegmentCreation
+    from ..models.price_segment import PriceSegment
 
 
 T = TypeVar("T", bound="PriceIssueCreation")
@@ -17,13 +17,13 @@ class PriceIssueCreation:
     """
     Attributes:
         title (str): title of the price issue
-        price_segments (PriceSegmentCreation):
+        price_segments (List['PriceSegment']): price segments
         leaf_id (Union[Unset, int]): id of the tree leaf this price issue should be associated with
         description (Union[Unset, str]): Internal description of the price issue
     """
 
     title: str
-    price_segments: "PriceSegmentCreation"
+    price_segments: List["PriceSegment"]
     leaf_id: Union[Unset, int] = UNSET
     description: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -31,7 +31,10 @@ class PriceIssueCreation:
     def to_dict(self) -> Dict[str, Any]:
         title = self.title
 
-        price_segments = self.price_segments.to_dict()
+        price_segments = []
+        for price_segments_item_data in self.price_segments:
+            price_segments_item = price_segments_item_data.to_dict()
+            price_segments.append(price_segments_item)
 
         leaf_id = self.leaf_id
 
@@ -54,12 +57,17 @@ class PriceIssueCreation:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.price_segment_creation import PriceSegmentCreation
+        from ..models.price_segment import PriceSegment
 
         d = src_dict.copy()
         title = d.pop("title")
 
-        price_segments = PriceSegmentCreation.from_dict(d.pop("priceSegments"))
+        price_segments = []
+        _price_segments = d.pop("priceSegments")
+        for price_segments_item_data in _price_segments:
+            price_segments_item = PriceSegment.from_dict(price_segments_item_data)
+
+            price_segments.append(price_segments_item)
 
         leaf_id = d.pop("leafId", UNSET)
 

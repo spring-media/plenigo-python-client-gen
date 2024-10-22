@@ -13,6 +13,7 @@ from ..models.offer_base_pdf_template_usage import OfferBasePdfTemplateUsage
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.archive_settings import ArchiveSettings
     from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
     from ..models.offer_partner_settings import OfferPartnerSettings
     from ..models.offer_product import OfferProduct
@@ -45,6 +46,7 @@ class Offer:
         issues_in_future (Union[Unset, int]): amount of issues that the user can select in the future - cannot be
             selected with fixed start date
         archived (Union[Unset, bool]): flag indicating if offer is archived
+        archive_settings (Union[Unset, ArchiveSettings]):
         allowed_payment_methods (Union[Unset, List[OfferBaseAllowedPaymentMethodsItem]]): additional constraints to the
             payment methods if some of the selected payment methods cannot be used for this offer - there can be no more
             payment methods than selected in the global payment settings section
@@ -60,14 +62,16 @@ class Offer:
         managed_by (Union[Unset, OfferBaseManagedBy]): managed by of the given offer.
         pdf_template_usage (Union[Unset, OfferBasePdfTemplateUsage]): contains the pdf template to use with this offer
         partner_settings (Union[Unset, OfferPartnerSettings]):
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        created_by (Union[Unset, str]): ID of who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
-        changed_by (Union[Unset, str]): ID of who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        created_by (Union[Unset, str]): id who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        changed_by (Union[Unset, str]): id who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
         managed_external (Union[Unset, bool]): flag indicating if offer is managed externally
         products (Union[Unset, List['OfferProduct']]): products associated with this offer
         product_groups (Union[Unset, List['OfferProductGroup']]): product groups associated with this offer
@@ -86,6 +90,7 @@ class Offer:
     issues_in_past: Union[Unset, int] = UNSET
     issues_in_future: Union[Unset, int] = UNSET
     archived: Union[Unset, bool] = UNSET
+    archive_settings: Union[Unset, "ArchiveSettings"] = UNSET
     allowed_payment_methods: Union[Unset, List[OfferBaseAllowedPaymentMethodsItem]] = UNSET
     connected_company_settings: Union[Unset, "OfferConnectedCompanySettings"] = UNSET
     leaf_id: Union[Unset, int] = UNSET
@@ -143,6 +148,10 @@ class Offer:
         issues_in_future = self.issues_in_future
 
         archived = self.archived
+
+        archive_settings: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.archive_settings, Unset):
+            archive_settings = self.archive_settings.to_dict()
 
         allowed_payment_methods: Union[Unset, List[str]] = UNSET
         if not isinstance(self.allowed_payment_methods, Unset):
@@ -259,6 +268,8 @@ class Offer:
             field_dict["issuesInFuture"] = issues_in_future
         if archived is not UNSET:
             field_dict["archived"] = archived
+        if archive_settings is not UNSET:
+            field_dict["archiveSettings"] = archive_settings
         if allowed_payment_methods is not UNSET:
             field_dict["allowedPaymentMethods"] = allowed_payment_methods
         if connected_company_settings is not UNSET:
@@ -308,6 +319,7 @@ class Offer:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.archive_settings import ArchiveSettings
         from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
         from ..models.offer_partner_settings import OfferPartnerSettings
         from ..models.offer_product import OfferProduct
@@ -351,9 +363,9 @@ class Offer:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                fixed_start_date_type_0 = isoparse(data).date()
+                fixed_start_date_type_1 = isoparse(data).date()
 
-                return fixed_start_date_type_0
+                return fixed_start_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -366,6 +378,13 @@ class Offer:
         issues_in_future = d.pop("issuesInFuture", UNSET)
 
         archived = d.pop("archived", UNSET)
+
+        _archive_settings = d.pop("archiveSettings", UNSET)
+        archive_settings: Union[Unset, ArchiveSettings]
+        if isinstance(_archive_settings, Unset) or not _archive_settings:
+            archive_settings = UNSET
+        else:
+            archive_settings = ArchiveSettings.from_dict(_archive_settings)
 
         allowed_payment_methods = []
         _allowed_payment_methods = d.pop("allowedPaymentMethods", UNSET)
@@ -430,9 +449,9 @@ class Offer:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -454,9 +473,9 @@ class Offer:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -518,6 +537,7 @@ class Offer:
             issues_in_past=issues_in_past,
             issues_in_future=issues_in_future,
             archived=archived,
+            archive_settings=archive_settings,
             allowed_payment_methods=allowed_payment_methods,
             connected_company_settings=connected_company_settings,
             leaf_id=leaf_id,

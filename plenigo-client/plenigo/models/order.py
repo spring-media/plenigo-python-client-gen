@@ -37,14 +37,16 @@ class Order:
             subscription)
         invoice_customer_id (str): id of the customer the invoice belongs to
         items (List['OrderItem']):
-        created_date (Union[None, Unset, datetime.datetime]): Time the object was created in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        changed_date (Union[None, Unset, datetime.datetime]): Time the object was changed in RFC 3339 format, e.g.,
-            2021-08-30T17:32:28Z
-        created_by (Union[Unset, str]): ID of who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): Type of creator
-        changed_by (Union[Unset, str]): ID of who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): Type of changer
+        created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
+            by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
+            example, 17:32:28
+        created_by (Union[Unset, str]): id who created the object
+        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        changed_by (Union[Unset, str]): id who changed the object
+        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
         external_system_id (Union[Unset, str]): if order was imported from another system this field contains the unique
             id of the other system
         status (Union[Unset, OrderStatus]): current status of the order
@@ -53,7 +55,6 @@ class Order:
         payment_method_details (Union[Unset, PaymentMethodDetails]):
         purchase_order_indicator (Union[Unset, str]): purchase order indicator if provided by the customer
         analog_invoice (Union[Unset, bool]): flag indicating if order should produce analog invoices
-        managed_external (Union[Unset, bool]): flag indicates if a subscription is not managed by plenigo
         suppress_invoice_sending (Union[Unset, bool]): flag indicating if the subscription invoice sending is suppressed
         gift_info (Union[Unset, GiftInfo]):
         invoice_address (Union[Unset, OrderAddress]):
@@ -79,7 +80,6 @@ class Order:
     payment_method_details: Union[Unset, "PaymentMethodDetails"] = UNSET
     purchase_order_indicator: Union[Unset, str] = UNSET
     analog_invoice: Union[Unset, bool] = UNSET
-    managed_external: Union[Unset, bool] = UNSET
     suppress_invoice_sending: Union[Unset, bool] = UNSET
     gift_info: Union[Unset, "GiftInfo"] = UNSET
     invoice_address: Union[Unset, "OrderAddress"] = UNSET
@@ -155,8 +155,6 @@ class Order:
 
         analog_invoice = self.analog_invoice
 
-        managed_external = self.managed_external
-
         suppress_invoice_sending = self.suppress_invoice_sending
 
         gift_info: Union[Unset, Dict[str, Any]] = UNSET
@@ -206,8 +204,6 @@ class Order:
             field_dict["purchaseOrderIndicator"] = purchase_order_indicator
         if analog_invoice is not UNSET:
             field_dict["analogInvoice"] = analog_invoice
-        if managed_external is not UNSET:
-            field_dict["managedExternal"] = managed_external
         if suppress_invoice_sending is not UNSET:
             field_dict["suppressInvoiceSending"] = suppress_invoice_sending
         if gift_info is not UNSET:
@@ -235,9 +231,9 @@ class Order:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                order_date_type_0 = isoparse(data)
+                order_date_type_1 = isoparse(data)
 
-                return order_date_type_0
+                return order_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -274,9 +270,9 @@ class Order:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_0 = isoparse(data)
+                created_date_type_1 = isoparse(data)
 
-                return created_date_type_0
+                return created_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -298,9 +294,9 @@ class Order:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_0 = isoparse(data)
+                changed_date_type_1 = isoparse(data)
 
-                return changed_date_type_0
+                return changed_date_type_1
             except:  # noqa: E722
                 pass
 
@@ -355,8 +351,6 @@ class Order:
 
         analog_invoice = d.pop("analogInvoice", UNSET)
 
-        managed_external = d.pop("managedExternal", UNSET)
-
         suppress_invoice_sending = d.pop("suppressInvoiceSending", UNSET)
 
         _gift_info = d.pop("giftInfo", UNSET)
@@ -394,7 +388,6 @@ class Order:
             payment_method_details=payment_method_details,
             purchase_order_indicator=purchase_order_indicator,
             analog_invoice=analog_invoice,
-            managed_external=managed_external,
             suppress_invoice_sending=suppress_invoice_sending,
             gift_info=gift_info,
             invoice_address=invoice_address,
