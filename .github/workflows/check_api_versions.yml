@@ -9,6 +9,7 @@ on:
 jobs:
   run-python-script:
     runs-on: ubuntu-latest  # Use Ubuntu as the runner environment
+  workflow_dispatch:      # Allows manual triggering
 
     steps:
       # Step 1: Checkout the repository
