@@ -2,9 +2,9 @@ name: Run Python Script
 
 on:
   # Run the workflow every day at midnight (00:00) UTC. 
+  workflow_dispatch:      # Allows manual triggering
   schedule:
     - cron: '0 0 * * *'
-  workflow_dispatch:      # Allows manual triggering
 
 jobs:
   run-python-script:
