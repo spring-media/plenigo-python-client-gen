@@ -122,7 +122,6 @@ from .offer_partner_settings import OfferPartnerSettings
 from .offer_product import OfferProduct
 from .offer_product_base import OfferProductBase
 from .offer_product_base_additional_data import OfferProductBaseAdditionalData
-from .offer_product_base_additional_data_additional_property import OfferProductBaseAdditionalDataAdditionalProperty
 from .offer_product_base_data import OfferProductBaseData
 from .offer_product_base_product_type import OfferProductBaseProductType
 from .offer_product_base_tax_type import OfferProductBaseTaxType
@@ -340,7 +339,6 @@ __all__ = (
     "OfferProduct",
     "OfferProductBase",
     "OfferProductBaseAdditionalData",
-    "OfferProductBaseAdditionalDataAdditionalProperty",
     "OfferProductBaseData",
     "OfferProductBaseProductType",
     "OfferProductBaseTaxType",
