@@ -578,9 +578,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                start_date_type_1 = isoparse(data)
+                start_date_type_0 = isoparse(data)
 
-                return start_date_type_1
+                return start_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -606,9 +606,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_1 = isoparse(data)
+                created_date_type_0 = isoparse(data)
 
-                return created_date_type_1
+                return created_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -630,9 +630,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_1 = isoparse(data)
+                changed_date_type_0 = isoparse(data)
 
-                return changed_date_type_1
+                return changed_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -715,9 +715,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                end_date_type_1 = isoparse(data)
+                end_date_type_0 = isoparse(data)
 
-                return end_date_type_1
+                return end_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -739,9 +739,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                cancellation_date_type_1 = isoparse(data)
+                cancellation_date_type_0 = isoparse(data)
 
-                return cancellation_date_type_1
+                return cancellation_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -781,9 +781,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                first_booking_date_type_1 = isoparse(data).date()
+                first_booking_date_type_0 = isoparse(data).date()
 
-                return first_booking_date_type_1
+                return first_booking_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -805,9 +805,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                last_booking_date_type_1 = isoparse(data).date()
+                last_booking_date_type_0 = isoparse(data).date()
 
-                return last_booking_date_type_1
+                return last_booking_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -829,9 +829,9 @@ class Subscription:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                next_booking_date_type_1 = isoparse(data).date()
+                next_booking_date_type_0 = isoparse(data).date()
 
-                return next_booking_date_type_1
+                return next_booking_date_type_0
             except:  # noqa: E722
                 pass
 

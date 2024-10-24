@@ -178,6 +178,7 @@ from .search_app_store_orders_sort import SearchAppStoreOrdersSort
 from .search_apple_app_store_purchases_sort import SearchAppleAppStorePurchasesSort
 from .search_customers_sort import SearchCustomersSort
 from .search_google_play_store_purchases_sort import SearchGooglePlayStorePurchasesSort
+from .search_invoices_invoice_type import SearchInvoicesInvoiceType
 from .search_invoices_sort import SearchInvoicesSort
 from .search_orders_sort import SearchOrdersSort
 from .search_product_offers_sort import SearchProductOffersSort
@@ -395,6 +396,7 @@ __all__ = (
     "SearchAppStoreOrdersSort",
     "SearchCustomersSort",
     "SearchGooglePlayStorePurchasesSort",
+    "SearchInvoicesInvoiceType",
     "SearchInvoicesSort",
     "SearchOrdersSort",
     "SearchProductOffersSort",

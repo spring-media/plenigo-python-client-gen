@@ -243,9 +243,9 @@ class OfferProductBase:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                validity_end_time_type_1 = isoparse(data)
+                validity_end_time_type_0 = isoparse(data)
 
-                return validity_end_time_type_1
+                return validity_end_time_type_0
             except:  # noqa: E722
                 pass
 

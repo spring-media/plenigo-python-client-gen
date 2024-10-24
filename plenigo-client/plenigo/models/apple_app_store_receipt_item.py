@@ -190,9 +190,9 @@ class AppleAppStoreReceiptItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                expires_date_type_1 = isoparse(data)
+                expires_date_type_0 = isoparse(data)
 
-                return expires_date_type_1
+                return expires_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -214,9 +214,9 @@ class AppleAppStoreReceiptItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                purchase_date_type_1 = isoparse(data)
+                purchase_date_type_0 = isoparse(data)
 
-                return purchase_date_type_1
+                return purchase_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -238,9 +238,9 @@ class AppleAppStoreReceiptItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                original_purchase_date_type_1 = isoparse(data)
+                original_purchase_date_type_0 = isoparse(data)
 
-                return original_purchase_date_type_1
+                return original_purchase_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -262,9 +262,9 @@ class AppleAppStoreReceiptItem:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                cancellation_date_type_1 = isoparse(data)
+                cancellation_date_type_0 = isoparse(data)
 
-                return cancellation_date_type_1
+                return cancellation_date_type_0
             except:  # noqa: E722
                 pass
 

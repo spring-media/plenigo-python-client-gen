@@ -303,9 +303,9 @@ class Customer:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                birthday_type_1 = isoparse(data).date()
+                birthday_type_0 = isoparse(data).date()
 
-                return birthday_type_1
+                return birthday_type_0
             except:  # noqa: E722
                 pass
 
@@ -334,9 +334,9 @@ class Customer:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_1 = isoparse(data)
+                created_date_type_0 = isoparse(data)
 
-                return created_date_type_1
+                return created_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -358,9 +358,9 @@ class Customer:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_1 = isoparse(data)
+                changed_date_type_0 = isoparse(data)
 
-                return changed_date_type_1
+                return changed_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -402,9 +402,9 @@ class Customer:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                registration_date_type_1 = isoparse(data)
+                registration_date_type_0 = isoparse(data)
 
-                return registration_date_type_1
+                return registration_date_type_0
             except:  # noqa: E722
                 pass
 

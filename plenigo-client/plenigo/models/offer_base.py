@@ -253,9 +253,9 @@ class OfferBase:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                fixed_start_date_type_1 = isoparse(data).date()
+                fixed_start_date_type_0 = isoparse(data).date()
 
-                return fixed_start_date_type_1
+                return fixed_start_date_type_0
             except:  # noqa: E722
                 pass
 

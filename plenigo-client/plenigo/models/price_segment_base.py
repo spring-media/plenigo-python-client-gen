@@ -86,9 +86,9 @@ class PriceSegmentBase:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_from_type_1 = isoparse(data).date()
+                valid_from_type_0 = isoparse(data).date()
 
-                return valid_from_type_1
+                return valid_from_type_0
             except:  # noqa: E722
                 pass
 
@@ -110,9 +110,9 @@ class PriceSegmentBase:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_from_existing_subscription_type_1 = isoparse(data).date()
+                valid_from_existing_subscription_type_0 = isoparse(data).date()
 
-                return valid_from_existing_subscription_type_1
+                return valid_from_existing_subscription_type_0
             except:  # noqa: E722
                 pass
 
