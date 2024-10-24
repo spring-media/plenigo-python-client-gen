@@ -193,9 +193,9 @@ class GooglePlaySubscriptionPurchase:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                subscription_end_date_type_1 = isoparse(data)
+                subscription_end_date_type_0 = isoparse(data)
 
-                return subscription_end_date_type_1
+                return subscription_end_date_type_0
             except:  # noqa: E722
                 pass
 

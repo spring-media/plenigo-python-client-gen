@@ -121,9 +121,9 @@ class BankAccountCreation:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                mandate_date_type_1 = isoparse(data).date()
+                mandate_date_type_0 = isoparse(data).date()
 
-                return mandate_date_type_1
+                return mandate_date_type_0
             except:  # noqa: E722
                 pass
 

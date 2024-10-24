@@ -71,9 +71,9 @@ class SubscriptionPauseAt:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                start_pause_date_type_1 = isoparse(data).date()
+                start_pause_date_type_0 = isoparse(data).date()
 
-                return start_pause_date_type_1
+                return start_pause_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -89,9 +89,9 @@ class SubscriptionPauseAt:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                end_pause_date_type_1 = isoparse(data).date()
+                end_pause_date_type_0 = isoparse(data).date()
 
-                return end_pause_date_type_1
+                return end_pause_date_type_0
             except:  # noqa: E722
                 pass
 

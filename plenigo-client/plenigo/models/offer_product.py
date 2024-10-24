@@ -305,9 +305,9 @@ class OfferProduct:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                validity_end_time_type_1 = isoparse(data)
+                validity_end_time_type_0 = isoparse(data)
 
-                return validity_end_time_type_1
+                return validity_end_time_type_0
             except:  # noqa: E722
                 pass
 
@@ -379,9 +379,9 @@ class OfferProduct:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                created_date_type_1 = isoparse(data)
+                created_date_type_0 = isoparse(data)
 
-                return created_date_type_1
+                return created_date_type_0
             except:  # noqa: E722
                 pass
 
@@ -403,9 +403,9 @@ class OfferProduct:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                changed_date_type_1 = isoparse(data)
+                changed_date_type_0 = isoparse(data)
 
-                return changed_date_type_1
+                return changed_date_type_0
             except:  # noqa: E722
                 pass
 
