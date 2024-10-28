@@ -11,6 +11,7 @@ from ...client import AuthenticatedClient, Client
 from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.invoices import Invoices
+from ...models.search_invoices_invoice_type import SearchInvoicesInvoiceType
 from ...models.search_invoices_sort import SearchInvoicesSort
 from ...types import UNSET, Response, Unset
 
@@ -28,6 +29,7 @@ def _get_kwargs(
     order_id: Union[Unset, int] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     filter_by_invoice_date: Union[Unset, bool] = UNSET,
+    invoice_type: Union[Unset, SearchInvoicesInvoiceType] = UNSET,
 ) -> Dict[str, Any]:
     params: Dict[str, Any] = {}
 
@@ -58,6 +60,12 @@ def _get_kwargs(
     params["subscriptionItemId"] = subscription_item_id
 
     params["filterByInvoiceDate"] = filter_by_invoice_date
+
+    json_invoice_type: Union[Unset, str] = UNSET
+    if not isinstance(invoice_type, Unset):
+        json_invoice_type = invoice_type.value
+
+    params["invoiceType"] = json_invoice_type
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -128,6 +136,7 @@ def sync_all(
     order_id: Union[Unset, int] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     filter_by_invoice_date: Union[Unset, bool] = UNSET,
+    invoice_type: Union[Unset, SearchInvoicesInvoiceType] = UNSET,
 ) -> Optional[Union[ErrorResult, ErrorResultBase, Invoices]]:
     all_results = Invoices(items=[])
     # type: ignore
@@ -145,6 +154,7 @@ def sync_all(
                 order_id=order_id,
                 subscription_item_id=subscription_item_id,
                 filter_by_invoice_date=filter_by_invoice_date,
+                invoice_type=invoice_type,
             ).parsed
 
             if results and not isinstance(results, ErrorResultBase) and not isinstance(results.items, Unset):
@@ -181,6 +191,7 @@ def sync_detailed(
     order_id: Union[Unset, int] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     filter_by_invoice_date: Union[Unset, bool] = UNSET,
+    invoice_type: Union[Unset, SearchInvoicesInvoiceType] = UNSET,
 ) -> Response[Union[ErrorResult, ErrorResultBase, Invoices]]:
     """Search
 
@@ -196,6 +207,7 @@ def sync_detailed(
         order_id (Union[Unset, int]):
         subscription_item_id (Union[Unset, int]):
         filter_by_invoice_date (Union[Unset, bool]):
+        invoice_type (Union[Unset, SearchInvoicesInvoiceType]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -215,6 +227,7 @@ def sync_detailed(
         order_id=order_id,
         subscription_item_id=subscription_item_id,
         filter_by_invoice_date=filter_by_invoice_date,
+        invoice_type=invoice_type,
     )
 
     response = client.get_httpx_client().request(
@@ -236,6 +249,7 @@ def sync(
     order_id: Union[Unset, int] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     filter_by_invoice_date: Union[Unset, bool] = UNSET,
+    invoice_type: Union[Unset, SearchInvoicesInvoiceType] = UNSET,
 ) -> Optional[Union[ErrorResult, ErrorResultBase, Invoices]]:
     """Search
 
@@ -251,6 +265,7 @@ def sync(
         order_id (Union[Unset, int]):
         subscription_item_id (Union[Unset, int]):
         filter_by_invoice_date (Union[Unset, bool]):
+        invoice_type (Union[Unset, SearchInvoicesInvoiceType]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -271,6 +286,7 @@ def sync(
         order_id=order_id,
         subscription_item_id=subscription_item_id,
         filter_by_invoice_date=filter_by_invoice_date,
+        invoice_type=invoice_type,
     ).parsed
 
 
@@ -291,6 +307,7 @@ async def asyncio_detailed(
     order_id: Union[Unset, int] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     filter_by_invoice_date: Union[Unset, bool] = UNSET,
+    invoice_type: Union[Unset, SearchInvoicesInvoiceType] = UNSET,
 ) -> Response[Union[ErrorResult, ErrorResultBase, Invoices]]:
     """Search
 
@@ -306,6 +323,7 @@ async def asyncio_detailed(
         order_id (Union[Unset, int]):
         subscription_item_id (Union[Unset, int]):
         filter_by_invoice_date (Union[Unset, bool]):
+        invoice_type (Union[Unset, SearchInvoicesInvoiceType]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -325,6 +343,7 @@ async def asyncio_detailed(
         order_id=order_id,
         subscription_item_id=subscription_item_id,
         filter_by_invoice_date=filter_by_invoice_date,
+        invoice_type=invoice_type,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -344,6 +363,7 @@ async def asyncio_all(
     order_id: Union[Unset, int] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     filter_by_invoice_date: Union[Unset, bool] = UNSET,
+    invoice_type: Union[Unset, SearchInvoicesInvoiceType] = UNSET,
 ) -> Response[Union[ErrorResult, ErrorResultBase, Invoices]]:
     all_results = Invoices(items=[])
     # type: ignore
@@ -362,6 +382,7 @@ async def asyncio_all(
                     order_id=order_id,
                     subscription_item_id=subscription_item_id,
                     filter_by_invoice_date=filter_by_invoice_date,
+                    invoice_type=invoice_type,
                 )
             ).parsed
 
@@ -394,6 +415,7 @@ async def asyncio(
     order_id: Union[Unset, int] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     filter_by_invoice_date: Union[Unset, bool] = UNSET,
+    invoice_type: Union[Unset, SearchInvoicesInvoiceType] = UNSET,
 ) -> Optional[Union[ErrorResult, ErrorResultBase, Invoices]]:
     """Search
 
@@ -409,6 +431,7 @@ async def asyncio(
         order_id (Union[Unset, int]):
         subscription_item_id (Union[Unset, int]):
         filter_by_invoice_date (Union[Unset, bool]):
+        invoice_type (Union[Unset, SearchInvoicesInvoiceType]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -430,5 +453,6 @@ async def asyncio(
             order_id=order_id,
             subscription_item_id=subscription_item_id,
             filter_by_invoice_date=filter_by_invoice_date,
+            invoice_type=invoice_type,
         )
     ).parsed

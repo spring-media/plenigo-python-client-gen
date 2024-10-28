@@ -72,9 +72,9 @@ class CustomerAcceptedTerm:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                acceptance_date_type_1 = isoparse(data)
+                acceptance_date_type_0 = isoparse(data)
 
-                return acceptance_date_type_1
+                return acceptance_date_type_0
             except:  # noqa: E722
                 pass
 

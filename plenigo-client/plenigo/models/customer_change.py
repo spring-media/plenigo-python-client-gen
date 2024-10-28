@@ -173,9 +173,9 @@ class CustomerChange:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                birthday_type_1 = isoparse(data).date()
+                birthday_type_0 = isoparse(data).date()
 
-                return birthday_type_1
+                return birthday_type_0
             except:  # noqa: E722
                 pass
 

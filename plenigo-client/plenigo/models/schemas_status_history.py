@@ -75,9 +75,9 @@ class SchemasStatusHistory:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                change_date_type_1 = isoparse(data)
+                change_date_type_0 = isoparse(data)
 
-                return change_date_type_1
+                return change_date_type_0
             except:  # noqa: E722
                 pass
 
