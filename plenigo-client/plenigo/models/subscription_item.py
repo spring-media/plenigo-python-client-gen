@@ -5,10 +5,9 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.api_base_changed_by_type import ApiBaseChangedByType
-from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..models.subscription_item_status import SubscriptionItemStatus
 from ..models.subscription_item_tax_type import SubscriptionItemTaxType
+from ..models.user_type import UserType
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="SubscriptionItem")
@@ -31,9 +30,9 @@ class SubscriptionItem:
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
         created_by (Union[Unset, str]): id who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        created_by_type (Union[Unset, UserType]): type of user who performs the action
         changed_by (Union[Unset, str]): id who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
+        changed_by_type (Union[Unset, UserType]): type of user who performs the action
         plenigo_product_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo product id is
             provided here - can be identically to the productId
         plenigo_step_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo step id is provided
@@ -68,9 +67,9 @@ class SubscriptionItem:
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     created_by: Union[Unset, str] = UNSET
-    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
+    created_by_type: Union[Unset, UserType] = UNSET
     changed_by: Union[Unset, str] = UNSET
-    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
+    changed_by_type: Union[Unset, UserType] = UNSET
     plenigo_product_id: Union[Unset, str] = UNSET
     plenigo_step_id: Union[Unset, str] = UNSET
     access_right_unique_id: Union[Unset, str] = UNSET
@@ -281,20 +280,20 @@ class SubscriptionItem:
         created_by = d.pop("createdBy", UNSET)
 
         _created_by_type = d.pop("createdByType", UNSET)
-        created_by_type: Union[Unset, ApiBaseCreatedByType]
+        created_by_type: Union[Unset, UserType]
         if isinstance(_created_by_type, Unset) or not _created_by_type:
             created_by_type = UNSET
         else:
-            created_by_type = ApiBaseCreatedByType(_created_by_type)
+            created_by_type = UserType(_created_by_type)
 
         changed_by = d.pop("changedBy", UNSET)
 
         _changed_by_type = d.pop("changedByType", UNSET)
-        changed_by_type: Union[Unset, ApiBaseChangedByType]
+        changed_by_type: Union[Unset, UserType]
         if isinstance(_changed_by_type, Unset) or not _changed_by_type:
             changed_by_type = UNSET
         else:
-            changed_by_type = ApiBaseChangedByType(_changed_by_type)
+            changed_by_type = UserType(_changed_by_type)
 
         plenigo_product_id = d.pop("plenigoProductId", UNSET)
 

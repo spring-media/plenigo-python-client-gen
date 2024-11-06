@@ -5,11 +5,10 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.api_base_changed_by_type import ApiBaseChangedByType
-from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..models.invoice_payment_method import InvoicePaymentMethod
 from ..models.invoice_status import InvoiceStatus
 from ..models.invoice_type import InvoiceType
+from ..models.user_type import UserType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -41,9 +40,9 @@ class Invoice:
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
         created_by (Union[Unset, str]): id who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        created_by_type (Union[Unset, UserType]): type of user who performs the action
         changed_by (Union[Unset, str]): id who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
+        changed_by_type (Union[Unset, UserType]): type of user who performs the action
         customer_email (Union[Unset, str]): email used for sending invoice
         payment_method_id (Union[Unset, int]): id of the payment method that is associated with this invoice
         purchase_order_indicator (Union[Unset, str]): purchase invoice indicator if provided by the customer
@@ -68,9 +67,9 @@ class Invoice:
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     created_by: Union[Unset, str] = UNSET
-    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
+    created_by_type: Union[Unset, UserType] = UNSET
     changed_by: Union[Unset, str] = UNSET
-    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
+    changed_by_type: Union[Unset, UserType] = UNSET
     customer_email: Union[Unset, str] = UNSET
     payment_method_id: Union[Unset, int] = UNSET
     purchase_order_indicator: Union[Unset, str] = UNSET
@@ -304,20 +303,20 @@ class Invoice:
         created_by = d.pop("createdBy", UNSET)
 
         _created_by_type = d.pop("createdByType", UNSET)
-        created_by_type: Union[Unset, ApiBaseCreatedByType]
+        created_by_type: Union[Unset, UserType]
         if isinstance(_created_by_type, Unset) or not _created_by_type:
             created_by_type = UNSET
         else:
-            created_by_type = ApiBaseCreatedByType(_created_by_type)
+            created_by_type = UserType(_created_by_type)
 
         changed_by = d.pop("changedBy", UNSET)
 
         _changed_by_type = d.pop("changedByType", UNSET)
-        changed_by_type: Union[Unset, ApiBaseChangedByType]
+        changed_by_type: Union[Unset, UserType]
         if isinstance(_changed_by_type, Unset) or not _changed_by_type:
             changed_by_type = UNSET
         else:
-            changed_by_type = ApiBaseChangedByType(_changed_by_type)
+            changed_by_type = UserType(_changed_by_type)
 
         customer_email = d.pop("customerEmail", UNSET)
 

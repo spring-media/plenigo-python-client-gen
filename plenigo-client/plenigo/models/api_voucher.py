@@ -5,9 +5,8 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.api_base_changed_by_type import ApiBaseChangedByType
-from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..models.api_voucher_status import ApiVoucherStatus
+from ..models.user_type import UserType
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ApiVoucher")
@@ -27,9 +26,9 @@ class ApiVoucher:
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
         created_by (Union[Unset, str]): id who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        created_by_type (Union[Unset, UserType]): type of user who performs the action
         changed_by (Union[Unset, str]): id who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
+        changed_by_type (Union[Unset, UserType]): type of user who performs the action
         custom_data (Union[Unset, str]): free text field
         order_id (Union[Unset, int]): order id this voucher was used
     """
@@ -40,9 +39,9 @@ class ApiVoucher:
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     created_by: Union[Unset, str] = UNSET
-    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
+    created_by_type: Union[Unset, UserType] = UNSET
     changed_by: Union[Unset, str] = UNSET
-    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
+    changed_by_type: Union[Unset, UserType] = UNSET
     custom_data: Union[Unset, str] = UNSET
     order_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -174,20 +173,20 @@ class ApiVoucher:
         created_by = d.pop("createdBy", UNSET)
 
         _created_by_type = d.pop("createdByType", UNSET)
-        created_by_type: Union[Unset, ApiBaseCreatedByType]
+        created_by_type: Union[Unset, UserType]
         if isinstance(_created_by_type, Unset) or not _created_by_type:
             created_by_type = UNSET
         else:
-            created_by_type = ApiBaseCreatedByType(_created_by_type)
+            created_by_type = UserType(_created_by_type)
 
         changed_by = d.pop("changedBy", UNSET)
 
         _changed_by_type = d.pop("changedByType", UNSET)
-        changed_by_type: Union[Unset, ApiBaseChangedByType]
+        changed_by_type: Union[Unset, UserType]
         if isinstance(_changed_by_type, Unset) or not _changed_by_type:
             changed_by_type = UNSET
         else:
-            changed_by_type = ApiBaseChangedByType(_changed_by_type)
+            changed_by_type = UserType(_changed_by_type)
 
         custom_data = d.pop("customData", UNSET)
 

@@ -95,6 +95,14 @@ def _parse_response(
         response_500 = ErrorResultBase.from_dict(response.json())
 
         return response_500
+    if response.status_code == HTTPStatus.BAD_GATEWAY:
+        response_502 = ErrorResultBase.from_dict(response.json())
+
+        return response_502
+    if response.status_code == HTTPStatus.GATEWAY_TIMEOUT:
+        response_504 = ErrorResultBase.from_dict(response.json())
+
+        return response_504
 
     if (response.status_code == HTTPStatus.BAD_GATEWAY) or (response.status_code == HTTPStatus.GATEWAY_TIMEOUT):
         raise errors.RetryableError
@@ -182,7 +190,7 @@ def sync_detailed(
     email: Union[Unset, str] = UNSET,
     username: Union[Unset, str] = UNSET,
 ) -> Response[Union[Customers, ErrorResult, ErrorResultBase]]:
-    """Search
+    """Search customers
 
      Search all customers that correspond to the given search conditions. It is important to note that
     email, username, and
@@ -240,7 +248,7 @@ def sync(
     email: Union[Unset, str] = UNSET,
     username: Union[Unset, str] = UNSET,
 ) -> Optional[Union[Customers, ErrorResult, ErrorResultBase]]:
-    """Search
+    """Search customers
 
      Search all customers that correspond to the given search conditions. It is important to note that
     email, username, and
@@ -298,7 +306,7 @@ async def asyncio_detailed(
     email: Union[Unset, str] = UNSET,
     username: Union[Unset, str] = UNSET,
 ) -> Response[Union[Customers, ErrorResult, ErrorResultBase]]:
-    """Search
+    """Search customers
 
      Search all customers that correspond to the given search conditions. It is important to note that
     email, username, and
@@ -404,7 +412,7 @@ async def asyncio(
     email: Union[Unset, str] = UNSET,
     username: Union[Unset, str] = UNSET,
 ) -> Optional[Union[Customers, ErrorResult, ErrorResultBase]]:
-    """Search
+    """Search customers
 
      Search all customers that correspond to the given search conditions. It is important to note that
     email, username, and

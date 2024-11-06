@@ -14,8 +14,6 @@ from .address_base_salutation import AddressBaseSalutation
 from .address_base_validation_status import AddressBaseValidationStatus
 from .address_change import AddressChange
 from .api_base import ApiBase
-from .api_base_changed_by_type import ApiBaseChangedByType
-from .api_base_created_by_type import ApiBaseCreatedByType
 from .api_base_date import ApiBaseDate
 from .api_campaign_base import ApiCampaignBase
 from .api_campaign_base_status import ApiCampaignBaseStatus
@@ -222,6 +220,7 @@ from .transaction_payment_method import TransactionPaymentMethod
 from .transaction_payment_provider import TransactionPaymentProvider
 from .transaction_payment_status import TransactionPaymentStatus
 from .transactions import Transactions
+from .user_type import UserType
 from .utm import Utm
 from .validation_error import ValidationError
 from .voucher_purchase_data import VoucherPurchaseData
@@ -242,8 +241,6 @@ __all__ = (
     "AddressBaseValidationStatus",
     "AddressChange",
     "ApiBase",
-    "ApiBaseChangedByType",
-    "ApiBaseCreatedByType",
     "ApiBaseDate",
     "ApiCampaignBase",
     "ApiCampaignBaseStatus",
@@ -436,6 +433,7 @@ __all__ = (
     "TransactionPaymentProvider",
     "TransactionPaymentStatus",
     "Transactions",
+    "UserType",
     "Utm",
     "ValidationError",
     "VoucherPurchaseData",
