@@ -42,8 +42,7 @@ jobs:
           password: ${{secrets.MAIL_PASSWORD}}
           subject: "[Plenigo][WARNING] Plenigo openapi spec version mismatch"
           body: |
-            Action Output:
-            ${{ steps.check_openapi_version.outputs.stdout }}
+            $(cat output.log)  # Executes cat command to get file content
           to: plenigo_openapi_spec-aaaaooflpibdbm4k3xoaxq7uye@spring-media.slack.com
           from: '"User" <user@deepthought.cloud>' # <user@example.com>
 
