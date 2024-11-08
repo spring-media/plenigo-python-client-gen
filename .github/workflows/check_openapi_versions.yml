@@ -41,7 +41,7 @@ jobs:
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSWORD}}
           subject: "[Plenigo][WARNING] Plenigo openapi spec version mismatch"
-          body: file://output.log
+          html_body: file://output.log
           to: plenigo_openapi_spec-aaaaooflpibdbm4k3xoaxq7uye@spring-media.slack.com
           from: '"User" <user@deepthought.cloud>' # <user@example.com>
 
