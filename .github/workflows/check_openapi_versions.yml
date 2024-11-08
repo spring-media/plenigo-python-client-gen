@@ -29,18 +29,19 @@ jobs:
 
       # Step 4: Run your Python script
       - name: Run Python script
+        id: check_openapi_version
         run: python ./scripts/check_openapi_version.py
 
       - name: Send notification
         if: failure()
-        uses: dawidd6/action-send-mail@v2
+        uses: dawidd6/action-send-mail@v3
         with:
           server_address: email-smtp.eu-central-1.amazonaws.com
           server_port: 465
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSWORD}}
           subject: "[Plenigo][WARNING] Plenigo openapi spec version mismatch"
-          body: "There is a version mismatch between the openapi spec in prod and the latest released version."
+          html_body: file://output.log
           to: plenigo_openapi_spec-aaaaooflpibdbm4k3xoaxq7uye@spring-media.slack.com
           from: '"User" <user@deepthought.cloud>' # <user@example.com>
 
