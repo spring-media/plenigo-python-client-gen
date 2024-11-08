@@ -26,7 +26,8 @@ with open(file_path, 'r') as file:
     openapi_spec = json.load(file)
 current_prod_version = openapi_spec['info']['version']
 if version != current_prod_version:
-    print(f"Version mismatch: Current version is {current_prod_version} while the website version is {version}")
+    with open("output.log", "w") as f:
+        f.write(f"Version mismatch: Current version is {current_prod_version} while the website version is {version}. Visit {url} to see the detailed spec.")
     sys.exit(1)
 else:
     print("We are currently using the latest version")
