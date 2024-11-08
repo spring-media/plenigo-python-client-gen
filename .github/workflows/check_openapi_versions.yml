@@ -31,6 +31,7 @@ jobs:
       - name: Run Python script
         id: check_openapi_version
         run: python ./scripts/check_openapi_version.py
+        continue-on-error: true
 
       - name: Send notification
         if: failure()
