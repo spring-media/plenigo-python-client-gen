@@ -34,7 +34,7 @@ jobs:
 
       - name: Send notification
         if: failure()
-        uses: dawidd6/action-send-mail@v2
+        uses: dawidd6/action-send-mail@v3
         with:
           server_address: email-smtp.eu-central-1.amazonaws.com
           server_port: 465
