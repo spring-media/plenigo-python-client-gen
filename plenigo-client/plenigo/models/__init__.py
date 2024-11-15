@@ -4,7 +4,6 @@ from .access_right_data import AccessRightData
 from .access_right_item_data import AccessRightItemData
 from .access_right_item_data_access_right_data import AccessRightItemDataAccessRightData
 from .access_right_item_data_data_item import AccessRightItemDataDataItem
-from .access_right_item_data_item_type import AccessRightItemDataItemType
 from .access_rights_data import AccessRightsData
 from .additional_chain_data import AdditionalChainData
 from .additional_chain_data_data import AdditionalChainDataData
@@ -239,7 +238,6 @@ __all__ = (
     "AccessRightItemData",
     "AccessRightItemDataAccessRightData",
     "AccessRightItemDataDataItem",
-    "AccessRightItemDataItemType",
     "AccessRightsData",
     "AdditionalChainData",
     "AdditionalChainDataData",
