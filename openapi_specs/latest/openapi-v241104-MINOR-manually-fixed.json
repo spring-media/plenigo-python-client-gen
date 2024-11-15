@@ -45181,12 +45181,7 @@
           },
           "itemType": {
             "description": "type of this access right item",
-            "type": "string",
-            "enum": [
-              "EXTERNAL",
-              "SINGLE_PRODUCT",
-              "SUBSCRIPTION_ITEM"
-            ]
+            "type": "string"
           },
           "itemId": {
             "description": "the id this access right belongs to",

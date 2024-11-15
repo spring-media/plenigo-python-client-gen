@@ -5,7 +5,6 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.access_right_item_data_item_type import AccessRightItemDataItemType
 from ..models.user_type import UserType
 from ..types import UNSET, Unset
 
@@ -56,7 +55,7 @@ class AccessRightItemData:
         plenigo_step_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo step id is provided
             here
         access_right_unique_id (Union[Unset, str]): unique id of the access right this access right grants access to
-        item_type (Union[Unset, AccessRightItemDataItemType]): type of this access right item
+        item_type (Union[Unset, str]): type of this access right item
         item_id (Union[Unset, str]): the id this access right belongs to
         access_right_data (Union[Unset, AccessRightItemDataAccessRightData]):
     """
@@ -79,7 +78,7 @@ class AccessRightItemData:
     plenigo_product_id: Union[Unset, str] = UNSET
     plenigo_step_id: Union[Unset, str] = UNSET
     access_right_unique_id: Union[Unset, str] = UNSET
-    item_type: Union[Unset, AccessRightItemDataItemType] = UNSET
+    item_type: Union[Unset, str] = UNSET
     item_id: Union[Unset, str] = UNSET
     access_right_data: Union[Unset, "AccessRightItemDataAccessRightData"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -172,9 +171,7 @@ class AccessRightItemData:
 
         access_right_unique_id = self.access_right_unique_id
 
-        item_type: Union[Unset, str] = UNSET
-        if not isinstance(self.item_type, Unset):
-            item_type = self.item_type.value
+        item_type = self.item_type
 
         item_id = self.item_id
 
@@ -442,12 +439,7 @@ class AccessRightItemData:
 
         access_right_unique_id = d.pop("accessRightUniqueId", UNSET)
 
-        _item_type = d.pop("itemType", UNSET)
-        item_type: Union[Unset, AccessRightItemDataItemType]
-        if isinstance(_item_type, Unset) or not _item_type:
-            item_type = UNSET
-        else:
-            item_type = AccessRightItemDataItemType(_item_type)
+        item_type = d.pop("itemType", UNSET)
 
         item_id = d.pop("itemId", UNSET)
 
