@@ -3,6 +3,7 @@
   "/vouchers",
   "/vouchers/campaigns",
   "/subscriptions",
+  "/accessRights",
   "/appStores/orders",
   "/appStores/appleAppStore",
   "/appStores/googlePlayStore",
