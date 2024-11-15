@@ -116,6 +116,148 @@
     }
   ],
   "paths": {
+    "/accessRights": {
+      "get": {
+        "summary": "Search access rights",
+        "operationId": "searchAccessRights",
+        "security": [
+          {
+            "plenigoToken": []
+          }
+        ],
+        "tags": [
+          "Access Rights"
+        ],
+        "description": "Search all access rights that correspond to the given search conditions.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sizeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/startTimeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/endTimeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/startingAfterQuery"
+          },
+          {
+            "$ref": "#/components/parameters/endingBeforeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/sortQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns search result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessRightsData"
+                },
+                "examples": {
+                  "accessRightsDataExample": {
+                    "$ref": "#/components/examples/accessRightsDataExample"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request is not formatted correctly or contains invalid data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                },
+                "examples": {
+                  "errorResultBadRequestExample": {
+                    "$ref": "#/components/examples/errorResultBadRequestExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo api token provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The rate limit for this endpoint is reached. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultTooManyRequestsExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad Gateway.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultBadGatewayErrorExample"
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Processing of your request took to long. To prevent blocking we aborted the request. You can resend your request without any changes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultGatewayTimeoutErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/appStores/appleAppStore": {
       "get": {
         "summary": "Search Apple purchases",
@@ -4040,6 +4182,21 @@
       }
     },
     "schemas": {
+      "ApiSearchResultBase": {
+        "type": "object",
+        "properties": {
+          "endingBeforeId": {
+            "description": "A cursor for use in pagination. endingBefore is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_bar, your subsequent call can include endingBefore=obj_bar in order to fetch the previous page of the list.",
+            "type": "string",
+            "maxLength": 100
+          },
+          "startingAfterId": {
+            "description": "A cursor for use in pagination. startingAfter is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include startingAfter=obj_foo in order to fetch the next result set.",
+            "type": "string",
+            "maxLength": 100
+          }
+        }
+      },
       "ApiBaseDate": {
         "type": "object",
         "properties": {
@@ -4095,6 +4252,178 @@
               },
               "changedByType": {
                 "$ref": "#/components/schemas/UserType"
+              }
+            }
+          }
+        ]
+      },
+      "AccessRightItemData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "lifeTimeStart": {
+                "description": "date the access right will start with date-time notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21T17:32:28Z",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "lifeTimeEnd": {
+                "description": "date the access right will end with date-time notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21T17:32:28Z",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "accessTimeStart": {
+                "description": "time the access right will start with time notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 17:32:28",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "accessTimeEnd": {
+                "description": "time the access right will end with time notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 17:32:28",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "maxCacheDate": {
+                "description": "max cache date with date-time notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21T17:32:28Z",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "data": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "maxLength": 20
+                    },
+                    "value": {
+                      "type": "string",
+                      "maxLength": 2000
+                    }
+                  }
+                }
+              },
+              "blocked": {
+                "description": "flag indicating if access is blocked",
+                "type": "boolean"
+              },
+              "productId": {
+                "description": "id of the product bought",
+                "type": "string",
+                "maxLength": 100
+              },
+              "plenigoOfferId": {
+                "description": "if the product is based on a plenigo offer the plenigo offer id is provided here",
+                "type": "string",
+                "minLength": 20,
+                "maxLength": 20
+              },
+              "plenigoProductId": {
+                "description": "if the product is based on a plenigo offer the plenigo product id is provided here - can be identically to the productId",
+                "type": "string",
+                "minLength": 20,
+                "maxLength": 20
+              },
+              "plenigoStepId": {
+                "description": "if the product is based on a plenigo offer the plenigo step id is provided here",
+                "type": "string",
+                "minLength": 20,
+                "maxLength": 20
+              },
+              "accessRightUniqueId": {
+                "description": "unique id of the access right this access right grants access to",
+                "type": "string",
+                "pattern": "^[0-9\\-a-zA-Z]{2,30}$"
+              },
+              "itemType": {
+                "description": "type of this access right item",
+                "type": "string",
+                "enum": [
+                  "EXTERNAL",
+                  "SINGLE_PRODUCT",
+                  "SUBSCRIPTION_ITEM"
+                ]
+              },
+              "itemId": {
+                "description": "the id this access right belongs to",
+                "type": "string",
+                "maxLength": 30
+              },
+              "accessRightData": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "maxLength": 30
+                  },
+                  "value": {
+                    "type": "string",
+                    "maxLength": 200
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "AccessRightData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "customerId": {
+                "description": "unique id of the customer the access right belongs to",
+                "type": "string",
+                "pattern": "^[0-9]{1,18}$"
+              },
+              "customerBlocked": {
+                "description": "flag indicating if customer is blocked completely",
+                "type": "boolean"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AccessRightItemData"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "AccessRightsData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiSearchResultBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AccessRightData"
+                }
               }
             }
           }
@@ -9405,6 +9734,54 @@
       }
     },
     "examples": {
+      "accessRightsDataExample": {
+        "value": {
+          "startingAfterId": "100002",
+          "items": [
+            {
+              "customerId": "100003",
+              "createdDate": "2019-01-01T07:53:23.450961Z",
+              "createdBy": "PLENIGO",
+              "createdByType": "SYSTEM",
+              "changedDate": "2019-01-01T07:53:23.450961Z",
+              "changedBy": "PLENIGO",
+              "changedByType": "SYSTEM",
+              "items": [
+                {
+                  "createdDate": "2019-01-01T07:53:23.450961Z",
+                  "createdBy": "PLENIGO",
+                  "createdByType": "SYSTEM",
+                  "changedDate": "2019-01-01T07:53:23.450961Z",
+                  "changedBy": "PLENIGO",
+                  "changedByType": "SYSTEM",
+                  "lifeTimeStart": "2019-01-01T07:53:23.450961Z",
+                  "lifeTimeEnd": "2020-01-01T07:53:23.450961Z",
+                  "accessTimeStart": "06:00:00",
+                  "accessTimeEnd": "18:00:00",
+                  "maxCacheDate": "2020-01-01T07:53:23.450961Z",
+                  "data": [
+                    {
+                      "key": "value"
+                    }
+                  ],
+                  "blocked": false,
+                  "productId": "P_TTA1E7173120881551",
+                  "plenigoOfferId": "O_TTA1E7173120881552",
+                  "plenigoProductId": "P_TTA1E7173120881551",
+                  "plenigoStepId": "S_TTA1E7173120881553",
+                  "accessRightUniqueId": "UNIQUE-ID",
+                  "accessRightData": {
+                    "key": "value"
+                  },
+                  "itemType": "SUBSCRIPTION_ITEM",
+                  "itemId": "7212"
+                }
+              ]
+            }
+          ]
+        },
+        "summary": "detail list"
+      },
       "errorResultBadRequestExample": {
         "value": {
           "errorCode": 99400,
