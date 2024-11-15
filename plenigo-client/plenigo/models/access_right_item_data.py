@@ -10,7 +10,7 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.access_right_item_data_access_right_data import AccessRightItemDataAccessRightData
-    from ..models.access_right_item_data_data_item import AccessRightItemDataDataItem
+    from ..models.access_right_item_data_data import AccessRightItemDataData
 
 
 T = TypeVar("T", bound="AccessRightItemData")
@@ -45,7 +45,7 @@ class AccessRightItemData:
         max_cache_date (Union[None, Unset, datetime.datetime]): max cache date with date-time notation as defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
             2017-07-21T17:32:28Z
-        data (Union[Unset, List['AccessRightItemDataDataItem']]):
+        data (Union[Unset, AccessRightItemDataData]):
         blocked (Union[Unset, bool]): flag indicating if access is blocked
         product_id (Union[Unset, str]): id of the product bought
         plenigo_offer_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo offer id is
@@ -71,7 +71,7 @@ class AccessRightItemData:
     access_time_start: Union[None, Unset, datetime.datetime] = UNSET
     access_time_end: Union[None, Unset, datetime.datetime] = UNSET
     max_cache_date: Union[None, Unset, datetime.datetime] = UNSET
-    data: Union[Unset, List["AccessRightItemDataDataItem"]] = UNSET
+    data: Union[Unset, "AccessRightItemDataData"] = UNSET
     blocked: Union[Unset, bool] = UNSET
     product_id: Union[Unset, str] = UNSET
     plenigo_offer_id: Union[Unset, str] = UNSET
@@ -152,12 +152,9 @@ class AccessRightItemData:
         else:
             max_cache_date = self.max_cache_date
 
-        data: Union[Unset, List[Dict[str, Any]]] = UNSET
+        data: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.data, Unset):
-            data = []
-            for data_item_data in self.data:
-                data_item = data_item_data.to_dict()
-                data.append(data_item)
+            data = self.data.to_dict()
 
         blocked = self.blocked
 
@@ -230,7 +227,7 @@ class AccessRightItemData:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         from ..models.access_right_item_data_access_right_data import AccessRightItemDataAccessRightData
-        from ..models.access_right_item_data_data_item import AccessRightItemDataDataItem
+        from ..models.access_right_item_data_data import AccessRightItemDataData
 
         d = src_dict.copy()
 
@@ -420,12 +417,12 @@ class AccessRightItemData:
 
         max_cache_date = _parse_max_cache_date(d.pop("maxCacheDate", UNSET))
 
-        data = []
         _data = d.pop("data", UNSET)
-        for data_item_data in _data or []:
-            data_item = AccessRightItemDataDataItem.from_dict(data_item_data)
-
-            data.append(data_item)
+        data: Union[Unset, AccessRightItemDataData]
+        if isinstance(_data, Unset) or not _data:
+            data = UNSET
+        else:
+            data = AccessRightItemDataData.from_dict(_data)
 
         blocked = d.pop("blocked", UNSET)
 

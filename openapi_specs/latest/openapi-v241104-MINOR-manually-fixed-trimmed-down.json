@@ -4306,19 +4306,9 @@
                 "format": "date-time"
               },
               "data": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "key": {
-                      "type": "string",
-                      "maxLength": 20
-                    },
-                    "value": {
-                      "type": "string",
-                      "maxLength": 2000
-                    }
-                  }
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
                 }
               },
               "blocked": {
