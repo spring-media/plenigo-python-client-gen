@@ -5,8 +5,6 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.api_base_changed_by_type import ApiBaseChangedByType
-from ..models.api_base_created_by_type import ApiBaseCreatedByType
 from ..models.subscription_accounting_period_time_span import SubscriptionAccountingPeriodTimeSpan
 from ..models.subscription_cancellation_period_time_span import SubscriptionCancellationPeriodTimeSpan
 from ..models.subscription_cancellation_type import SubscriptionCancellationType
@@ -18,6 +16,7 @@ from ..models.subscription_status import SubscriptionStatus
 from ..models.subscription_subscription_type import SubscriptionSubscriptionType
 from ..models.subscription_successor_reason import SubscriptionSuccessorReason
 from ..models.subscription_term_time_span import SubscriptionTermTimeSpan
+from ..models.user_type import UserType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -59,10 +58,10 @@ class Subscription:
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
         created_by (Union[Unset, str]): id who created the object
-        created_by_type (Union[Unset, ApiBaseCreatedByType]): type of created by
+        created_by_type (Union[Unset, UserType]): type of user who performs the action
         changed_by (Union[Unset, str]): id who changed the object
-        changed_by_type (Union[Unset, ApiBaseChangedByType]): type of changed by
-        analog_invoice (Union[Unset, bool]): flag indicating if the subscription is a analog invoice
+        changed_by_type (Union[Unset, UserType]): type of user who performs the action
+        analog_invoice (Union[Unset, bool]): flag indicating if the subscription is an analog invoice
         external_system_id (Union[Unset, str]): if subscription was imported from another system this field contains the
             unique id of the other system
         chain_id (Union[Unset, int]): all subscriptions that are in one chain because of some rules or cross selling
@@ -152,9 +151,9 @@ class Subscription:
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     created_by: Union[Unset, str] = UNSET
-    created_by_type: Union[Unset, ApiBaseCreatedByType] = UNSET
+    created_by_type: Union[Unset, UserType] = UNSET
     changed_by: Union[Unset, str] = UNSET
-    changed_by_type: Union[Unset, ApiBaseChangedByType] = UNSET
+    changed_by_type: Union[Unset, UserType] = UNSET
     analog_invoice: Union[Unset, bool] = UNSET
     external_system_id: Union[Unset, str] = UNSET
     chain_id: Union[Unset, int] = UNSET
@@ -643,20 +642,20 @@ class Subscription:
         created_by = d.pop("createdBy", UNSET)
 
         _created_by_type = d.pop("createdByType", UNSET)
-        created_by_type: Union[Unset, ApiBaseCreatedByType]
+        created_by_type: Union[Unset, UserType]
         if isinstance(_created_by_type, Unset) or not _created_by_type:
             created_by_type = UNSET
         else:
-            created_by_type = ApiBaseCreatedByType(_created_by_type)
+            created_by_type = UserType(_created_by_type)
 
         changed_by = d.pop("changedBy", UNSET)
 
         _changed_by_type = d.pop("changedByType", UNSET)
-        changed_by_type: Union[Unset, ApiBaseChangedByType]
+        changed_by_type: Union[Unset, UserType]
         if isinstance(_changed_by_type, Unset) or not _changed_by_type:
             changed_by_type = UNSET
         else:
-            changed_by_type = ApiBaseChangedByType(_changed_by_type)
+            changed_by_type = UserType(_changed_by_type)
 
         analog_invoice = d.pop("analogInvoice", UNSET)
 

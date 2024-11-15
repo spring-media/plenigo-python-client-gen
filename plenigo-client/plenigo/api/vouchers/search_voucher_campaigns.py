@@ -72,6 +72,14 @@ def _parse_response(
         response_500 = ErrorResultBase.from_dict(response.json())
 
         return response_500
+    if response.status_code == HTTPStatus.BAD_GATEWAY:
+        response_502 = ErrorResultBase.from_dict(response.json())
+
+        return response_502
+    if response.status_code == HTTPStatus.GATEWAY_TIMEOUT:
+        response_504 = ErrorResultBase.from_dict(response.json())
+
+        return response_504
 
     if (response.status_code == HTTPStatus.BAD_GATEWAY) or (response.status_code == HTTPStatus.GATEWAY_TIMEOUT):
         raise errors.RetryableError
@@ -144,7 +152,7 @@ def sync_detailed(
     ending_before: Union[Unset, str] = UNSET,
     voucher_code: Union[Unset, str] = UNSET,
 ) -> Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
-    """Search
+    """Search campaigns
 
      Search all campaigns that correspond to the given search conditions.
 
@@ -184,7 +192,7 @@ def sync(
     ending_before: Union[Unset, str] = UNSET,
     voucher_code: Union[Unset, str] = UNSET,
 ) -> Optional[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
-    """Search
+    """Search campaigns
 
      Search all campaigns that correspond to the given search conditions.
 
@@ -224,7 +232,7 @@ async def asyncio_detailed(
     ending_before: Union[Unset, str] = UNSET,
     voucher_code: Union[Unset, str] = UNSET,
 ) -> Response[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
-    """Search
+    """Search campaigns
 
      Search all campaigns that correspond to the given search conditions.
 
@@ -302,7 +310,7 @@ async def asyncio(
     ending_before: Union[Unset, str] = UNSET,
     voucher_code: Union[Unset, str] = UNSET,
 ) -> Optional[Union[ApiCampaignPage, ErrorResult, ErrorResultBase]]:
-    """Search
+    """Search campaigns
 
      Search all campaigns that correspond to the given search conditions.
 

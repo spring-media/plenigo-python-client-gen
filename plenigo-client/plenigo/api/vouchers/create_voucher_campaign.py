@@ -75,6 +75,14 @@ def _parse_response(
         response_500 = ErrorResultBase.from_dict(response.json())
 
         return response_500
+    if response.status_code == HTTPStatus.BAD_GATEWAY:
+        response_502 = ErrorResultBase.from_dict(response.json())
+
+        return response_502
+    if response.status_code == HTTPStatus.GATEWAY_TIMEOUT:
+        response_504 = ErrorResultBase.from_dict(response.json())
+
+        return response_504
 
     if (response.status_code == HTTPStatus.BAD_GATEWAY) or (response.status_code == HTTPStatus.GATEWAY_TIMEOUT):
         raise errors.RetryableError
@@ -107,7 +115,7 @@ def sync_detailed(
     body: CampaignCreation,
     callback: Union[Unset, bool] = UNSET,
 ) -> Response[Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]]:
-    """Create
+    """Create voucher campaign
 
      *ASYNC* Creates a new voucher campaign with the data provided. ATTENTION - this process is async.
 
@@ -141,7 +149,7 @@ def sync(
     body: CampaignCreation,
     callback: Union[Unset, bool] = UNSET,
 ) -> Optional[Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]]:
-    """Create
+    """Create voucher campaign
 
      *ASYNC* Creates a new voucher campaign with the data provided. ATTENTION - this process is async.
 
@@ -175,7 +183,7 @@ async def asyncio_detailed(
     body: CampaignCreation,
     callback: Union[Unset, bool] = UNSET,
 ) -> Response[Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]]:
-    """Create
+    """Create voucher campaign
 
      *ASYNC* Creates a new voucher campaign with the data provided. ATTENTION - this process is async.
 
@@ -207,7 +215,7 @@ async def asyncio(
     body: CampaignCreation,
     callback: Union[Unset, bool] = UNSET,
 ) -> Optional[Union[ApiCampaignCreationResult, ErrorResult, ErrorResultBase, SuccessStatus]]:
-    """Create
+    """Create voucher campaign
 
      *ASYNC* Creates a new voucher campaign with the data provided. ATTENTION - this process is async.
 

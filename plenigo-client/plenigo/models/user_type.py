@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class ApiBaseChangedByType(str, Enum):
+class UserType(str, Enum):
     API = "API"
     CUSTOMER = "CUSTOMER"
     IMPORTER = "IMPORTER"

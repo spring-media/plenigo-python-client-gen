@@ -50,6 +50,14 @@ def _parse_response(
         response_500 = ErrorResultBase.from_dict(response.json())
 
         return response_500
+    if response.status_code == HTTPStatus.BAD_GATEWAY:
+        response_502 = ErrorResultBase.from_dict(response.json())
+
+        return response_502
+    if response.status_code == HTTPStatus.GATEWAY_TIMEOUT:
+        response_504 = ErrorResultBase.from_dict(response.json())
+
+        return response_504
 
     if (response.status_code == HTTPStatus.BAD_GATEWAY) or (response.status_code == HTTPStatus.GATEWAY_TIMEOUT):
         raise errors.RetryableError
@@ -81,7 +89,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[Union[ErrorResultBase, Subscription]]:
-    """Get
+    """Get subscription
 
      Get subscription that is identified by the passed subscription id.
 
@@ -112,7 +120,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> Optional[Union[ErrorResultBase, Subscription]]:
-    """Get
+    """Get subscription
 
      Get subscription that is identified by the passed subscription id.
 
@@ -143,7 +151,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[Union[ErrorResultBase, Subscription]]:
-    """Get
+    """Get subscription
 
      Get subscription that is identified by the passed subscription id.
 
@@ -172,7 +180,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> Optional[Union[ErrorResultBase, Subscription]]:
-    """Get
+    """Get subscription
 
      Get subscription that is identified by the passed subscription id.
 

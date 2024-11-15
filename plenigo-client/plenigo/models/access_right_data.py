@@ -9,15 +9,14 @@ from ..models.user_type import UserType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.apple_app_store_purchase_data import AppleAppStorePurchaseData
-    from ..models.apple_app_store_receipt import AppleAppStoreReceipt
+    from ..models.access_right_item_data import AccessRightItemData
 
 
-T = TypeVar("T", bound="AppleAppStorePurchase")
+T = TypeVar("T", bound="AccessRightData")
 
 
 @_attrs_define
-class AppleAppStorePurchase:
+class AccessRightData:
     """
     Attributes:
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
@@ -30,13 +29,9 @@ class AppleAppStorePurchase:
         created_by_type (Union[Unset, UserType]): type of user who performs the action
         changed_by (Union[Unset, str]): id who changed the object
         changed_by_type (Union[Unset, UserType]): type of user who performs the action
-        apple_app_store_purchase_id (Union[Unset, int]): unique id of the purchase
-        purchase_date (Union[None, Unset, datetime.datetime]): date of the purchase
-        token (Union[Unset, str]): token for the purchase
-        valid (Union[Unset, bool]): flag indicating if purchase is valid
-        app_store_order_id (Union[Unset, int]): id of the app store order if mapped
-        receipt (Union[Unset, AppleAppStoreReceipt]):
-        purchase_data (Union[Unset, AppleAppStorePurchaseData]):
+        customer_id (Union[Unset, str]): unique id of the customer the access right belongs to
+        customer_blocked (Union[Unset, bool]): flag indicating if customer is blocked completely
+        items (Union[Unset, List['AccessRightItemData']]):
     """
 
     created_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -45,13 +40,9 @@ class AppleAppStorePurchase:
     created_by_type: Union[Unset, UserType] = UNSET
     changed_by: Union[Unset, str] = UNSET
     changed_by_type: Union[Unset, UserType] = UNSET
-    apple_app_store_purchase_id: Union[Unset, int] = UNSET
-    purchase_date: Union[None, Unset, datetime.datetime] = UNSET
-    token: Union[Unset, str] = UNSET
-    valid: Union[Unset, bool] = UNSET
-    app_store_order_id: Union[Unset, int] = UNSET
-    receipt: Union[Unset, "AppleAppStoreReceipt"] = UNSET
-    purchase_data: Union[Unset, "AppleAppStorePurchaseData"] = UNSET
+    customer_id: Union[Unset, str] = UNSET
+    customer_blocked: Union[Unset, bool] = UNSET
+    items: Union[Unset, List["AccessRightItemData"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -83,29 +74,16 @@ class AppleAppStorePurchase:
         if not isinstance(self.changed_by_type, Unset):
             changed_by_type = self.changed_by_type.value
 
-        apple_app_store_purchase_id = self.apple_app_store_purchase_id
+        customer_id = self.customer_id
 
-        purchase_date: Union[None, Unset, str]
-        if isinstance(self.purchase_date, Unset) or self.purchase_date is None:
-            purchase_date = UNSET
-        elif isinstance(self.purchase_date, datetime.datetime):
-            purchase_date = self.purchase_date.isoformat()
-        else:
-            purchase_date = self.purchase_date
+        customer_blocked = self.customer_blocked
 
-        token = self.token
-
-        valid = self.valid
-
-        app_store_order_id = self.app_store_order_id
-
-        receipt: Union[Unset, Dict[str, Any]] = UNSET
-        if not isinstance(self.receipt, Unset):
-            receipt = self.receipt.to_dict()
-
-        purchase_data: Union[Unset, Dict[str, Any]] = UNSET
-        if not isinstance(self.purchase_data, Unset):
-            purchase_data = self.purchase_data.to_dict()
+        items: Union[Unset, List[Dict[str, Any]]] = UNSET
+        if not isinstance(self.items, Unset):
+            items = []
+            for items_item_data in self.items:
+                items_item = items_item_data.to_dict()
+                items.append(items_item)
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -122,27 +100,18 @@ class AppleAppStorePurchase:
             field_dict["changedBy"] = changed_by
         if changed_by_type is not UNSET:
             field_dict["changedByType"] = changed_by_type
-        if apple_app_store_purchase_id is not UNSET:
-            field_dict["appleAppStorePurchaseId"] = apple_app_store_purchase_id
-        if purchase_date is not UNSET:
-            field_dict["purchaseDate"] = purchase_date
-        if token is not UNSET:
-            field_dict["token"] = token
-        if valid is not UNSET:
-            field_dict["valid"] = valid
-        if app_store_order_id is not UNSET:
-            field_dict["appStoreOrderId"] = app_store_order_id
-        if receipt is not UNSET:
-            field_dict["receipt"] = receipt
-        if purchase_data is not UNSET:
-            field_dict["purchaseData"] = purchase_data
+        if customer_id is not UNSET:
+            field_dict["customerId"] = customer_id
+        if customer_blocked is not UNSET:
+            field_dict["customerBlocked"] = customer_blocked
+        if items is not UNSET:
+            field_dict["items"] = items
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.apple_app_store_purchase_data import AppleAppStorePurchaseData
-        from ..models.apple_app_store_receipt import AppleAppStoreReceipt
+        from ..models.access_right_item_data import AccessRightItemData
 
         d = src_dict.copy()
 
@@ -212,70 +181,31 @@ class AppleAppStorePurchase:
         else:
             changed_by_type = UserType(_changed_by_type)
 
-        apple_app_store_purchase_id = d.pop("appleAppStorePurchaseId", UNSET)
+        customer_id = d.pop("customerId", UNSET)
 
-        def _parse_purchase_date(data: object) -> Union[None, Unset, datetime.datetime]:
-            if data is None:
-                return data
+        customer_blocked = d.pop("customerBlocked", UNSET)
 
-            if data is None:
-                return data
+        items = []
+        _items = d.pop("items", UNSET)
+        for items_item_data in _items or []:
+            items_item = AccessRightItemData.from_dict(items_item_data)
 
-            if isinstance(data, Unset):
-                return data
+            items.append(items_item)
 
-            # Try to parse the data as datetime.datetime
-            try:
-                if not isinstance(data, str):
-                    raise TypeError()
-                purchase_date_type_0 = isoparse(data)
-
-                return purchase_date_type_0
-            except:  # noqa: E722
-                pass
-
-            return cast(Union[None, Unset, datetime.datetime], data)
-
-        purchase_date = _parse_purchase_date(d.pop("purchaseDate", UNSET))
-
-        token = d.pop("token", UNSET)
-
-        valid = d.pop("valid", UNSET)
-
-        app_store_order_id = d.pop("appStoreOrderId", UNSET)
-
-        _receipt = d.pop("receipt", UNSET)
-        receipt: Union[Unset, AppleAppStoreReceipt]
-        if isinstance(_receipt, Unset) or not _receipt:
-            receipt = UNSET
-        else:
-            receipt = AppleAppStoreReceipt.from_dict(_receipt)
-
-        _purchase_data = d.pop("purchaseData", UNSET)
-        purchase_data: Union[Unset, AppleAppStorePurchaseData]
-        if isinstance(_purchase_data, Unset) or not _purchase_data:
-            purchase_data = UNSET
-        else:
-            purchase_data = AppleAppStorePurchaseData.from_dict(_purchase_data)
-
-        apple_app_store_purchase = cls(
+        access_right_data = cls(
             created_date=created_date,
             changed_date=changed_date,
             created_by=created_by,
             created_by_type=created_by_type,
             changed_by=changed_by,
             changed_by_type=changed_by_type,
-            apple_app_store_purchase_id=apple_app_store_purchase_id,
-            purchase_date=purchase_date,
-            token=token,
-            valid=valid,
-            app_store_order_id=app_store_order_id,
-            receipt=receipt,
-            purchase_data=purchase_data,
+            customer_id=customer_id,
+            customer_blocked=customer_blocked,
+            items=items,
         )
 
-        apple_app_store_purchase.additional_properties = d
-        return apple_app_store_purchase
+        access_right_data.additional_properties = d
+        return access_right_data
 
     @property
     def additional_keys(self) -> List[str]:

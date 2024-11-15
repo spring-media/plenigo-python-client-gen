@@ -8,10 +8,10 @@ from tenacity import RetryError, retry, retry_if_exception_type, stop_after_atte
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.access_rights_data import AccessRightsData
 from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
-from ...models.price_issues import PriceIssues
-from ...models.search_product_price_issues_sort import SearchProductPriceIssuesSort
+from ...models.search_access_rights_sort import SearchAccessRightsSort
 from ...types import UNSET, Response, Unset
 
 log = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ def _get_kwargs(
     end_time: Union[Unset, datetime.datetime] = UNSET,
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
-    sort: Union[Unset, SearchProductPriceIssuesSort] = UNSET,
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
 ) -> Dict[str, Any]:
     params: Dict[str, Any] = {}
 
@@ -54,7 +54,7 @@ def _get_kwargs(
 
     _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": "/products/priceIssues",
+        "url": "/accessRights",
         "params": params,
     }
 
@@ -65,9 +65,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResult, ErrorResultBase, PriceIssues]]:
+) -> Optional[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = PriceIssues.from_dict(response.json())
+        response_200 = AccessRightsData.from_dict(response.json())
 
         return response_200
     if response.status_code == HTTPStatus.BAD_REQUEST:
@@ -106,7 +106,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResult, ErrorResultBase, PriceIssues]]:
+) -> Response[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -123,9 +123,9 @@ def sync_all(
     end_time: Union[Unset, datetime.datetime] = UNSET,
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
-    sort: Union[Unset, SearchProductPriceIssuesSort] = UNSET,
-) -> Optional[Union[ErrorResult, ErrorResultBase, PriceIssues]]:
-    all_results = PriceIssues(items=[])
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
+) -> Optional[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
+    all_results = AccessRightsData(items=[])
     # type: ignore
 
     while True:
@@ -170,11 +170,11 @@ def sync_detailed(
     end_time: Union[Unset, datetime.datetime] = UNSET,
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
-    sort: Union[Unset, SearchProductPriceIssuesSort] = UNSET,
-) -> Response[Union[ErrorResult, ErrorResultBase, PriceIssues]]:
-    """Search price issues
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
+) -> Response[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
+    """Search access rights
 
-     Search all price issues that correspond to the given search conditions.
+     Search all access rights that correspond to the given search conditions.
 
     Args:
         size (Union[Unset, int]):
@@ -182,14 +182,14 @@ def sync_detailed(
         end_time (Union[Unset, datetime.datetime]):
         starting_after (Union[Unset, str]):
         ending_before (Union[Unset, str]):
-        sort (Union[Unset, SearchProductPriceIssuesSort]):
+        sort (Union[Unset, SearchAccessRightsSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, PriceIssues]]
+        Response[Union[AccessRightsData, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -216,11 +216,11 @@ def sync(
     end_time: Union[Unset, datetime.datetime] = UNSET,
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
-    sort: Union[Unset, SearchProductPriceIssuesSort] = UNSET,
-) -> Optional[Union[ErrorResult, ErrorResultBase, PriceIssues]]:
-    """Search price issues
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
+) -> Optional[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
+    """Search access rights
 
-     Search all price issues that correspond to the given search conditions.
+     Search all access rights that correspond to the given search conditions.
 
     Args:
         size (Union[Unset, int]):
@@ -228,14 +228,14 @@ def sync(
         end_time (Union[Unset, datetime.datetime]):
         starting_after (Union[Unset, str]):
         ending_before (Union[Unset, str]):
-        sort (Union[Unset, SearchProductPriceIssuesSort]):
+        sort (Union[Unset, SearchAccessRightsSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, PriceIssues]
+        Union[AccessRightsData, ErrorResult, ErrorResultBase]
     """
 
     return sync_detailed(
@@ -262,11 +262,11 @@ async def asyncio_detailed(
     end_time: Union[Unset, datetime.datetime] = UNSET,
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
-    sort: Union[Unset, SearchProductPriceIssuesSort] = UNSET,
-) -> Response[Union[ErrorResult, ErrorResultBase, PriceIssues]]:
-    """Search price issues
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
+) -> Response[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
+    """Search access rights
 
-     Search all price issues that correspond to the given search conditions.
+     Search all access rights that correspond to the given search conditions.
 
     Args:
         size (Union[Unset, int]):
@@ -274,14 +274,14 @@ async def asyncio_detailed(
         end_time (Union[Unset, datetime.datetime]):
         starting_after (Union[Unset, str]):
         ending_before (Union[Unset, str]):
-        sort (Union[Unset, SearchProductPriceIssuesSort]):
+        sort (Union[Unset, SearchAccessRightsSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResult, ErrorResultBase, PriceIssues]]
+        Response[Union[AccessRightsData, ErrorResult, ErrorResultBase]]
     """
 
     kwargs = _get_kwargs(
@@ -306,9 +306,9 @@ async def asyncio_all(
     end_time: Union[Unset, datetime.datetime] = UNSET,
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
-    sort: Union[Unset, SearchProductPriceIssuesSort] = UNSET,
-) -> Response[Union[ErrorResult, ErrorResultBase, PriceIssues]]:
-    all_results = PriceIssues(items=[])
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
+) -> Response[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
+    all_results = AccessRightsData(items=[])
     # type: ignore
 
     while True:
@@ -350,11 +350,11 @@ async def asyncio(
     end_time: Union[Unset, datetime.datetime] = UNSET,
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
-    sort: Union[Unset, SearchProductPriceIssuesSort] = UNSET,
-) -> Optional[Union[ErrorResult, ErrorResultBase, PriceIssues]]:
-    """Search price issues
+    sort: Union[Unset, SearchAccessRightsSort] = UNSET,
+) -> Optional[Union[AccessRightsData, ErrorResult, ErrorResultBase]]:
+    """Search access rights
 
-     Search all price issues that correspond to the given search conditions.
+     Search all access rights that correspond to the given search conditions.
 
     Args:
         size (Union[Unset, int]):
@@ -362,14 +362,14 @@ async def asyncio(
         end_time (Union[Unset, datetime.datetime]):
         starting_after (Union[Unset, str]):
         ending_before (Union[Unset, str]):
-        sort (Union[Unset, SearchProductPriceIssuesSort]):
+        sort (Union[Unset, SearchAccessRightsSort]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResult, ErrorResultBase, PriceIssues]
+        Union[AccessRightsData, ErrorResult, ErrorResultBase]
     """
 
     return (
