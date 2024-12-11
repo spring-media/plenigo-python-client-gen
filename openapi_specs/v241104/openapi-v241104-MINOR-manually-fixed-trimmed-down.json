@@ -9433,13 +9433,20 @@
       "ApiVoucherPage": {
         "type": "object",
         "properties": {
-          "startingAfterId": {
-            "type": "integer",
-            "description": "The ID to start retrieving vouchers after."
+          "startingAfter": {
+            "description": "starting after element id",
+            "type": "integer"
           },
-          "items": {
+          "size": {
+            "description": "size of elements of the page",
+            "type": "integer"
+          },
+          "totalSize": {
+            "description": "total of elements",
+            "type": "integer"
+          },
+          "campaigns": {
             "type": "array",
-            "description": "A list of voucher items.",
             "items": {
               "$ref": "#/components/schemas/ApiVoucher"
             }
@@ -9597,12 +9604,19 @@
         "type": "object",
         "properties": {
           "startingAfter": {
-            "description": "Starting after element id",
+            "description": "starting after element id",
             "type": "integer"
           },
-          "items": {
+          "size": {
+            "description": "size of elements of the page",
+            "type": "integer"
+          },
+          "totalSize": {
+            "description": "total of elements",
+            "type": "integer"
+          },
+          "campaigns": {
             "type": "array",
-            "description": "Array of campaigns",
             "items": {
               "$ref": "#/components/schemas/ApiCampaignView"
             }

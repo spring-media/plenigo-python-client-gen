@@ -1,4 +1,3 @@
-# Notes:
-- changed the additionalData field to the proper type
-- removed the enum info regarding AccessRightItemData -> itemType because it was missing fields like APP_STORE_PRODUCT, APP_STORE_SUBSCRIPTION, etc.
-- corrected the AccessRightItemData -> data field to be a dictionary, instead of an array of dictionaries.
+- all the fixes from v241104 are already in the manually fixed file, we just apply the following fix:
+- patching the ApiVouchersPage because it is wrong.
+- patching the ApiCampaignPage because it is wrong.
