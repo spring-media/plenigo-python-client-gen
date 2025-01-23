@@ -932,6 +932,143 @@
         }
       }
     },
+    "/appStores/subscriptions": {
+      "get": {
+        "summary": "Search app store subscription",
+        "operationId": "searchAppStoreSubscriptions",
+        "security": [
+          {
+            "plenigoToken": []
+          }
+        ],
+        "tags": [
+          "App Stores"
+        ],
+        "description": "Search all app store subscriptions that correspond to the given search conditions.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sizeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/startTimeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/endTimeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/startingAfterQuery"
+          },
+          {
+            "$ref": "#/components/parameters/endingBeforeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/sortQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns search result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppStoreSubscriptions"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request is not formatted correctly or contains invalid data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                },
+                "examples": {
+                  "errorResultBadRequestExample": {
+                    "$ref": "#/components/examples/errorResultBadRequestExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo api token provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The rate limit for this endpoint is reached. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultTooManyRequestsExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad Gateway.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultBadGatewayErrorExample"
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Processing of your request took to long. To prevent blocking we aborted the request. You can resend your request without any changes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultGatewayTimeoutErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/customers": {
       "get": {
         "summary": "Search customers",
@@ -5413,6 +5550,85 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AppStoreOrder"
+            }
+          }
+        }
+      },
+      "AppStoreSubscription": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "appStoreSubscriptionId": {
+                "description": "unique identifier for the app store subscription",
+                "type": "integer",
+                "format": "int64"
+              },
+              "chainId": {
+                "description": "all subscriptions that are in one chain because of some rules or cross selling share a unique chain id in the context of a company that is identically with the first subscription within the chain",
+                "type": "integer",
+                "format": "int64"
+              },
+              "externalSystemId": {
+                "description": "subscription id from app store",
+                "type": "string"
+              },
+              "customerId": {
+                "description": "id of the customer the subscription belongs to",
+                "type": "string"
+              },
+              "startDate": {
+                "description": "date time the subscription started with date-time notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21T17:32:28Z",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "endDate": {
+                "description": "date time the subscription ended with date-time notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21T17:32:28Z",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "cancellationDate": {
+                "description": "date time the subscription was cancelled with date-time notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21T17:32:28Z",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "status": {
+                "description": "date time the order was created with date-time notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21T17:32:28Z",
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "PAUSED",
+                  "INACTIVE",
+                  "IGNORED"
+                ]
+              },
+              "accessRightUniqueId": {
+                "description": "unique id of the used access right",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "AppStoreSubscriptions": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppStoreSubscription"
             }
           }
         }

@@ -18,5 +18,6 @@
   "/paymentMethods/bankAccounts/{bankAccountId}",
   "/subscriptions/{subscriptionId}",
   "/subscriptions/chain/{chainId}/additionalData",
-  "/vouchers/channels/{channelId}/vouchers"
+  "/vouchers/channels/{channelId}/vouchers",
+  "/appStores/subscriptions"
 ]

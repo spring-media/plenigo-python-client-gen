@@ -45,6 +45,9 @@ from .app_store_orders import AppStoreOrders
 from .app_store_purchase import AppStorePurchase
 from .app_store_purchase_detail import AppStorePurchaseDetail
 from .app_store_purchase_list import AppStorePurchaseList
+from .app_store_subscription import AppStoreSubscription
+from .app_store_subscription_status import AppStoreSubscriptionStatus
+from .app_store_subscriptions import AppStoreSubscriptions
 from .apple_app_store_purchase import AppleAppStorePurchase
 from .apple_app_store_purchase_addition import AppleAppStorePurchaseAddition
 from .apple_app_store_purchase_data import AppleAppStorePurchaseData
@@ -180,6 +183,7 @@ from .refunds import Refunds
 from .schemas_status_history import SchemasStatusHistory
 from .search_access_rights_sort import SearchAccessRightsSort
 from .search_app_store_orders_sort import SearchAppStoreOrdersSort
+from .search_app_store_subscriptions_sort import SearchAppStoreSubscriptionsSort
 from .search_apple_app_store_purchases_sort import SearchAppleAppStorePurchasesSort
 from .search_customers_sort import SearchCustomersSort
 from .search_google_play_store_purchases_sort import SearchGooglePlayStorePurchasesSort
@@ -284,6 +288,9 @@ __all__ = (
     "AppStorePurchase",
     "AppStorePurchaseDetail",
     "AppStorePurchaseList",
+    "AppStoreSubscription",
+    "AppStoreSubscriptions",
+    "AppStoreSubscriptionStatus",
     "ArchiveSettings",
     "ArchiveSettingsArchiveType",
     "BankAccount",
@@ -405,6 +412,7 @@ __all__ = (
     "SearchAccessRightsSort",
     "SearchAppleAppStorePurchasesSort",
     "SearchAppStoreOrdersSort",
+    "SearchAppStoreSubscriptionsSort",
     "SearchCustomersSort",
     "SearchGooglePlayStorePurchasesSort",
     "SearchInvoicesInvoiceType",
