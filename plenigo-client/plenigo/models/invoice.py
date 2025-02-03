@@ -54,7 +54,7 @@ class Invoice:
             payment process
         precursor_id (Union[Unset, int]): invoice id which was corrected or cancelled
         successor_id (Union[Unset, int]): invoice id of the corrected invoice
-        invoice_cancellation_id (Union[Unset, int]): invoice id of the cancellation invoice
+        cancellation_invoice_id (Union[Unset, int]): invoice id of the cancellation invoice
     """
 
     invoice_id: int
@@ -80,7 +80,7 @@ class Invoice:
     payment_changed_to_billing: Union[Unset, bool] = UNSET
     precursor_id: Union[Unset, int] = UNSET
     successor_id: Union[Unset, int] = UNSET
-    invoice_cancellation_id: Union[Unset, int] = UNSET
+    cancellation_invoice_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -159,7 +159,7 @@ class Invoice:
 
         successor_id = self.successor_id
 
-        invoice_cancellation_id = self.invoice_cancellation_id
+        cancellation_invoice_id = self.cancellation_invoice_id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -206,8 +206,8 @@ class Invoice:
             field_dict["precursorId"] = precursor_id
         if successor_id is not UNSET:
             field_dict["successorId"] = successor_id
-        if invoice_cancellation_id is not UNSET:
-            field_dict["invoiceCancellationId"] = invoice_cancellation_id
+        if cancellation_invoice_id is not UNSET:
+            field_dict["cancellationInvoiceId"] = cancellation_invoice_id
 
         return field_dict
 
@@ -353,7 +353,7 @@ class Invoice:
 
         successor_id = d.pop("successorId", UNSET)
 
-        invoice_cancellation_id = d.pop("invoiceCancellationId", UNSET)
+        cancellation_invoice_id = d.pop("cancellationInvoiceId", UNSET)
 
         invoice = cls(
             invoice_id=invoice_id,
@@ -379,7 +379,7 @@ class Invoice:
             payment_changed_to_billing=payment_changed_to_billing,
             precursor_id=precursor_id,
             successor_id=successor_id,
-            invoice_cancellation_id=invoice_cancellation_id,
+            cancellation_invoice_id=cancellation_invoice_id,
         )
 
         invoice.additional_properties = d

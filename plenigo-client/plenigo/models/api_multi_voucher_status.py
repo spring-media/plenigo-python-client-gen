@@ -1,9 +1,8 @@
 from enum import Enum
 
 
-class GetVouchersChannelsChannelIdVouchersVoucherStatus(str, Enum):
+class ApiMultiVoucherStatus(str, Enum):
     ACTIVE = "ACTIVE"
-    CANCELLED = "CANCELLED"
     DELETED = "DELETED"
     INACTIVE = "INACTIVE"
 

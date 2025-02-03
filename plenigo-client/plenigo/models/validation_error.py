@@ -10,9 +10,9 @@ T = TypeVar("T", bound="ValidationError")
 class ValidationError:
     """
     Attributes:
-        field (str): field name with the error
-        error (str): error description
-        value (str): value of the field
+        field (str): field name with the error Example: customerId.
+        error (str): error description Example: numeric.
+        value (str): value of the field Example: C1454646.
     """
 
     field: str

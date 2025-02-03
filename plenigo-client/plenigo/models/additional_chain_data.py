@@ -16,7 +16,7 @@ T = TypeVar("T", bound="AdditionalChainData")
 class AdditionalChainData:
     """
     Attributes:
-        data (Union[Unset, AdditionalChainDataData]):
+        data (Union[Unset, AdditionalChainDataData]): Key must be a string with a maximum length of 30 characters.
     """
 
     data: Union[Unset, "AdditionalChainDataData"] = UNSET

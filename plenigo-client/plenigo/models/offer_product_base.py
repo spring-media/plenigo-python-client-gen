@@ -6,8 +6,8 @@ from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..models.offer_product_base_product_type import OfferProductBaseProductType
-from ..models.offer_product_base_tax_type import OfferProductBaseTaxType
 from ..models.offer_product_base_voucher_validity_timespan import OfferProductBaseVoucherValidityTimespan
+from ..models.tax_type import TaxType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -24,7 +24,7 @@ class OfferProductBase:
     """
     Attributes:
         position (int): order position within the offer - must start with one and be in order
-        tax_type (OfferProductBaseTaxType): tax type product is associated with
+        tax_type (TaxType): unique identification of the tax type the product represents
         product_type (OfferProductBaseProductType): defines the type of product
         amount (int): amount of goods represented by this product
         access_right_id (int): id of the access right associated with this product
@@ -43,7 +43,8 @@ class OfferProductBase:
         voucher_validity_time (Union[Unset, int]): validity time of the voucher based on timespan
         voucher_validity_timespan (Union[Unset, OfferProductBaseVoucherValidityTimespan]): date the this product
             validity will be end
-        additional_data (Union[Unset, OfferProductBaseAdditionalData]):
+        additional_data (Union[Unset, OfferProductBaseAdditionalData]): Key must be a string with a maximum length of 30
+            characters.
         data (Union[Unset, OfferProductBaseData]): additional data field
         price_issue_id (Union[Unset, int]): id of the price issue associated with this product
         shipping_cost_price_issue_id (Union[Unset, int]): id of the shipping cost price issue associated with this
@@ -56,7 +57,7 @@ class OfferProductBase:
     """
 
     position: int
-    tax_type: OfferProductBaseTaxType
+    tax_type: TaxType
     product_type: OfferProductBaseProductType
     amount: int
     access_right_id: int
@@ -213,7 +214,7 @@ class OfferProductBase:
         d = src_dict.copy()
         position = d.pop("position")
 
-        tax_type = OfferProductBaseTaxType(d.pop("taxType"))
+        tax_type = TaxType(d.pop("taxType"))
 
         product_type = OfferProductBaseProductType(d.pop("productType"))
 

@@ -3,16 +3,14 @@ from http import HTTPStatus
 from typing import Any, Dict, Optional, Union
 
 import httpx
-from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
+from tenacity import RetryError, retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.api_voucher_page import ApiVoucherPage
 from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
-from ...models.get_vouchers_channels_channel_id_vouchers_voucher_status import (
-    GetVouchersChannelsChannelIdVouchersVoucherStatus,
-)
+from ...models.search_channel_vouchers_voucher_status import SearchChannelVouchersVoucherStatus
 from ...types import UNSET, Response, Unset
 
 log = logging.getLogger(__name__)
@@ -24,7 +22,7 @@ def _get_kwargs(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     size: Union[Unset, int] = UNSET,
-    voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
+    voucher_status: Union[Unset, SearchChannelVouchersVoucherStatus] = UNSET,
 ) -> Dict[str, Any]:
     params: Dict[str, Any] = {}
 
@@ -101,6 +99,46 @@ def _build_response(
     )
 
 
+def sync_all(
+    channel_id: str,
+    *,
+    client: AuthenticatedClient,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    voucher_status: Union[Unset, SearchChannelVouchersVoucherStatus] = UNSET,
+) -> Optional[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
+    all_results = ApiVoucherPage(items=[])
+    # type: ignore
+
+    while True:
+        try:
+            results = sync_detailed(
+                channel_id=channel_id,
+                client=client,
+                starting_after=starting_after,
+                ending_before=ending_before,
+                size=size,
+                voucher_status=voucher_status,
+            ).parsed
+
+            if results and not isinstance(results, ErrorResultBase) and not isinstance(results.items, Unset):
+                all_results.items.extend(results.items)  # type: ignore
+
+                cursor = results.additional_properties.get("startingAfterId")
+
+                if not cursor:
+                    break
+
+                starting_after = cursor  # noqa
+            else:
+                break
+        except RetryError:
+            break
+
+    return all_results
+
+
 @retry(
     retry=retry_if_exception_type(errors.RetryableError),
     stop=stop_after_attempt(3),
@@ -113,7 +151,7 @@ def sync_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     size: Union[Unset, int] = UNSET,
-    voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
+    voucher_status: Union[Unset, SearchChannelVouchersVoucherStatus] = UNSET,
 ) -> Response[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
     """Returns channel vouchers
 
@@ -124,7 +162,7 @@ def sync_detailed(
         starting_after (Union[Unset, str]):
         ending_before (Union[Unset, str]):
         size (Union[Unset, int]):
-        voucher_status (Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus]):
+        voucher_status (Union[Unset, SearchChannelVouchersVoucherStatus]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -156,7 +194,7 @@ def sync(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     size: Union[Unset, int] = UNSET,
-    voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
+    voucher_status: Union[Unset, SearchChannelVouchersVoucherStatus] = UNSET,
 ) -> Optional[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
     """Returns channel vouchers
 
@@ -167,7 +205,7 @@ def sync(
         starting_after (Union[Unset, str]):
         ending_before (Union[Unset, str]):
         size (Union[Unset, int]):
-        voucher_status (Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus]):
+        voucher_status (Union[Unset, SearchChannelVouchersVoucherStatus]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -199,7 +237,7 @@ async def asyncio_detailed(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     size: Union[Unset, int] = UNSET,
-    voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
+    voucher_status: Union[Unset, SearchChannelVouchersVoucherStatus] = UNSET,
 ) -> Response[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
     """Returns channel vouchers
 
@@ -210,7 +248,7 @@ async def asyncio_detailed(
         starting_after (Union[Unset, str]):
         ending_before (Union[Unset, str]):
         size (Union[Unset, int]):
-        voucher_status (Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus]):
+        voucher_status (Union[Unset, SearchChannelVouchersVoucherStatus]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -233,6 +271,48 @@ async def asyncio_detailed(
     return _build_response(client=client, response=response)
 
 
+async def asyncio_all(
+    channel_id: str,
+    *,
+    client: AuthenticatedClient,
+    starting_after: Union[Unset, str] = UNSET,
+    ending_before: Union[Unset, str] = UNSET,
+    size: Union[Unset, int] = UNSET,
+    voucher_status: Union[Unset, SearchChannelVouchersVoucherStatus] = UNSET,
+) -> Response[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
+    all_results = ApiVoucherPage(items=[])
+    # type: ignore
+
+    while True:
+        try:
+            results = (
+                await asyncio_detailed(
+                    channel_id=channel_id,
+                    client=client,
+                    starting_after=starting_after,
+                    ending_before=ending_before,
+                    size=size,
+                    voucher_status=voucher_status,
+                )
+            ).parsed
+
+            if results and not isinstance(results, ErrorResultBase) and not isinstance(results.items, Unset):
+                all_results.items.extend(results.items)  # type: ignore
+
+                cursor = results.additional_properties.get("startingAfterId")
+
+                if not cursor:
+                    break
+
+                starting_after = cursor  # noqa
+            else:
+                break
+        except RetryError:
+            break
+
+    return all_results
+
+
 async def asyncio(
     channel_id: str,
     *,
@@ -240,7 +320,7 @@ async def asyncio(
     starting_after: Union[Unset, str] = UNSET,
     ending_before: Union[Unset, str] = UNSET,
     size: Union[Unset, int] = UNSET,
-    voucher_status: Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus] = UNSET,
+    voucher_status: Union[Unset, SearchChannelVouchersVoucherStatus] = UNSET,
 ) -> Optional[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
     """Returns channel vouchers
 
@@ -251,7 +331,7 @@ async def asyncio(
         starting_after (Union[Unset, str]):
         ending_before (Union[Unset, str]):
         size (Union[Unset, int]):
-        voucher_status (Union[Unset, GetVouchersChannelsChannelIdVouchersVoucherStatus]):
+        voucher_status (Union[Unset, SearchChannelVouchersVoucherStatus]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

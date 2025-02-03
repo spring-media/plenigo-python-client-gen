@@ -168,7 +168,7 @@ def sync_detailed(
     size: Union[Unset, int] = UNSET,
     voucher_status: Union[Unset, SearchVouchersVoucherStatus] = UNSET,
 ) -> Response[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
-    """Returns all vouchers
+    """Search all vouchers
 
      Returns all vouchers of the selected channel page, depending on query parameters
 
@@ -214,7 +214,7 @@ def sync(
     size: Union[Unset, int] = UNSET,
     voucher_status: Union[Unset, SearchVouchersVoucherStatus] = UNSET,
 ) -> Optional[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
-    """Returns all vouchers
+    """Search all vouchers
 
      Returns all vouchers of the selected channel page, depending on query parameters
 
@@ -260,7 +260,7 @@ async def asyncio_detailed(
     size: Union[Unset, int] = UNSET,
     voucher_status: Union[Unset, SearchVouchersVoucherStatus] = UNSET,
 ) -> Response[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
-    """Returns all vouchers
+    """Search all vouchers
 
      Returns all vouchers of the selected channel page, depending on query parameters
 
@@ -348,7 +348,7 @@ async def asyncio(
     size: Union[Unset, int] = UNSET,
     voucher_status: Union[Unset, SearchVouchersVoucherStatus] = UNSET,
 ) -> Optional[Union[ApiVoucherPage, ErrorResult, ErrorResultBase]]:
-    """Returns all vouchers
+    """Search all vouchers
 
      Returns all vouchers of the selected channel page, depending on query parameters
 

@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..models.subscription_item_status import SubscriptionItemStatus
-from ..models.subscription_item_tax_type import SubscriptionItemTaxType
+from ..models.tax_type import TaxType
 from ..models.user_type import UserType
 from ..types import UNSET, Unset
 
@@ -41,8 +41,7 @@ class SubscriptionItem:
             to
         internal_title (Union[Unset, str]): if the product is based on a plenigo offer the product title for internal
             usage is provided here
-        tax_type (Union[Unset, SubscriptionItemTaxType]): unique identification of tax type the product represents -
-            important for tax handling purposes
+        tax_type (Union[Unset, TaxType]): unique identification of the tax type the product represents
         package_title (Union[Unset, str]): if subscription item is correlated to another subscription item in a way that
             both items are presented as one (bundle) this field contains the correlation title
         package_id (Union[Unset, str]): if subscription item is correlated to another subscription item in a way that
@@ -74,7 +73,7 @@ class SubscriptionItem:
     plenigo_step_id: Union[Unset, str] = UNSET
     access_right_unique_id: Union[Unset, str] = UNSET
     internal_title: Union[Unset, str] = UNSET
-    tax_type: Union[Unset, SubscriptionItemTaxType] = UNSET
+    tax_type: Union[Unset, TaxType] = UNSET
     package_title: Union[Unset, str] = UNSET
     package_id: Union[Unset, str] = UNSET
     package_cancellation_locked: Union[Unset, bool] = UNSET
@@ -304,11 +303,11 @@ class SubscriptionItem:
         internal_title = d.pop("internalTitle", UNSET)
 
         _tax_type = d.pop("taxType", UNSET)
-        tax_type: Union[Unset, SubscriptionItemTaxType]
+        tax_type: Union[Unset, TaxType]
         if isinstance(_tax_type, Unset) or not _tax_type:
             tax_type = UNSET
         else:
-            tax_type = SubscriptionItemTaxType(_tax_type)
+            tax_type = TaxType(_tax_type)
 
         package_title = d.pop("packageTitle", UNSET)
 

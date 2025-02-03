@@ -13,20 +13,20 @@ T = TypeVar("T", bound="ProductTagCreation")
 class ProductTagCreation:
     """
     Attributes:
+        name (str): a name that is unique in combination with a category
         category (ProductTagCreationCategory): category that reflects the usage of the tag
-        name (Union[Unset, str]): a name that is unique in combination with a category
         description (Union[Unset, str]): internal description of the product tag
     """
 
+    name: str
     category: ProductTagCreationCategory
-    name: Union[Unset, str] = UNSET
     description: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        category = self.category.value
-
         name = self.name
+
+        category = self.category.value
 
         description = self.description
 
@@ -34,11 +34,10 @@ class ProductTagCreation:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "name": name,
                 "category": category,
             }
         )
-        if name is not UNSET:
-            field_dict["name"] = name
         if description is not UNSET:
             field_dict["description"] = description
 
@@ -47,15 +46,15 @@ class ProductTagCreation:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        category = ProductTagCreationCategory(d.pop("category"))
+        name = d.pop("name")
 
-        name = d.pop("name", UNSET)
+        category = ProductTagCreationCategory(d.pop("category"))
 
         description = d.pop("description", UNSET)
 
         product_tag_creation = cls(
-            category=category,
             name=name,
+            category=category,
             description=description,
         )
 

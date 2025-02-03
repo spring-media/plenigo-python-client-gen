@@ -18,30 +18,30 @@ class OfferTranslationImage:
         image_type (OfferTranslationImageImageType): type of the image - there can only be one image of each type per
             translation
         name (str): name of the image
-        url (str): url to get image from
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
         changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
+        url (Union[Unset, str]): url to get image from
         alt_text (Union[Unset, str]): image alt text
+        image (Union[Unset, str]):
     """
 
     image_type: OfferTranslationImageImageType
     name: str
-    url: str
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
+    url: Union[Unset, str] = UNSET
     alt_text: Union[Unset, str] = UNSET
+    image: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         image_type = self.image_type.value
 
         name = self.name
-
-        url = self.url
 
         created_date: Union[None, Unset, str]
         if isinstance(self.created_date, Unset) or self.created_date is None:
@@ -59,7 +59,11 @@ class OfferTranslationImage:
         else:
             changed_date = self.changed_date
 
+        url = self.url
+
         alt_text = self.alt_text
+
+        image = self.image
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -67,15 +71,18 @@ class OfferTranslationImage:
             {
                 "imageType": image_type,
                 "name": name,
-                "url": url,
             }
         )
         if created_date is not UNSET:
             field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
             field_dict["changedDate"] = changed_date
+        if url is not UNSET:
+            field_dict["url"] = url
         if alt_text is not UNSET:
             field_dict["altText"] = alt_text
+        if image is not UNSET:
+            field_dict["image"] = image
 
         return field_dict
 
@@ -85,8 +92,6 @@ class OfferTranslationImage:
         image_type = OfferTranslationImageImageType(d.pop("imageType"))
 
         name = d.pop("name")
-
-        url = d.pop("url")
 
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
@@ -136,15 +141,20 @@ class OfferTranslationImage:
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
 
+        url = d.pop("url", UNSET)
+
         alt_text = d.pop("altText", UNSET)
+
+        image = d.pop("image", UNSET)
 
         offer_translation_image = cls(
             image_type=image_type,
             name=name,
-            url=url,
             created_date=created_date,
             changed_date=changed_date,
+            url=url,
             alt_text=alt_text,
+            image=image,
         )
 
         offer_translation_image.additional_properties = d

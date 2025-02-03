@@ -4,7 +4,7 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 if TYPE_CHECKING:
-    from ..models.customer_accepted_terms_additional_property import CustomerAcceptedTermsAdditionalProperty
+    from ..models.customer_accepted_term import CustomerAcceptedTerm
 
 
 T = TypeVar("T", bound="CustomerAcceptedTerms")
@@ -14,7 +14,7 @@ T = TypeVar("T", bound="CustomerAcceptedTerms")
 class CustomerAcceptedTerms:
     """ """
 
-    additional_properties: Dict[str, "CustomerAcceptedTermsAdditionalProperty"] = _attrs_field(init=False, factory=dict)
+    additional_properties: Dict[str, "CustomerAcceptedTerm"] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         field_dict: Dict[str, Any] = {}
@@ -25,14 +25,14 @@ class CustomerAcceptedTerms:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.customer_accepted_terms_additional_property import CustomerAcceptedTermsAdditionalProperty
+        from ..models.customer_accepted_term import CustomerAcceptedTerm
 
         d = src_dict.copy()
         customer_accepted_terms = cls()
 
         additional_properties = {}
         for prop_name, prop_dict in d.items():
-            additional_property = CustomerAcceptedTermsAdditionalProperty.from_dict(prop_dict)
+            additional_property = CustomerAcceptedTerm.from_dict(prop_dict)
 
             additional_properties[prop_name] = additional_property
 
@@ -43,10 +43,10 @@ class CustomerAcceptedTerms:
     def additional_keys(self) -> List[str]:
         return list(self.additional_properties.keys())
 
-    def __getitem__(self, key: str) -> "CustomerAcceptedTermsAdditionalProperty":
+    def __getitem__(self, key: str) -> "CustomerAcceptedTerm":
         return self.additional_properties[key]
 
-    def __setitem__(self, key: str, value: "CustomerAcceptedTermsAdditionalProperty") -> None:
+    def __setitem__(self, key: str, value: "CustomerAcceptedTerm") -> None:
         self.additional_properties[key] = value
 
     def __delitem__(self, key: str) -> None:

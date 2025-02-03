@@ -16,9 +16,9 @@ T = TypeVar("T", bound="ProductTag")
 class ProductTag:
     """
     Attributes:
+        name (str): a name that is unique in combination with a category
         category (ProductTagCreationCategory): category that reflects the usage of the tag
         product_tag_id (int): unique id of the product tag within a contract company
-        name (Union[Unset, str]): a name that is unique in combination with a category
         description (Union[Unset, str]): internal description of the product tag
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
@@ -32,9 +32,9 @@ class ProductTag:
         changed_by_type (Union[Unset, UserType]): type of user who performs the action
     """
 
+    name: str
     category: ProductTagCreationCategory
     product_tag_id: int
-    name: Union[Unset, str] = UNSET
     description: Union[Unset, str] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -45,11 +45,11 @@ class ProductTag:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        name = self.name
+
         category = self.category.value
 
         product_tag_id = self.product_tag_id
-
-        name = self.name
 
         description = self.description
 
@@ -85,12 +85,11 @@ class ProductTag:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "name": name,
                 "category": category,
                 "productTagId": product_tag_id,
             }
         )
-        if name is not UNSET:
-            field_dict["name"] = name
         if description is not UNSET:
             field_dict["description"] = description
         if created_date is not UNSET:
@@ -111,11 +110,11 @@ class ProductTag:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+        name = d.pop("name")
+
         category = ProductTagCreationCategory(d.pop("category"))
 
         product_tag_id = d.pop("productTagId")
-
-        name = d.pop("name", UNSET)
 
         description = d.pop("description", UNSET)
 
@@ -186,9 +185,9 @@ class ProductTag:
             changed_by_type = UserType(_changed_by_type)
 
         product_tag = cls(
+            name=name,
             category=category,
             product_tag_id=product_tag_id,
-            name=name,
             description=description,
             created_date=created_date,
             changed_date=changed_date,

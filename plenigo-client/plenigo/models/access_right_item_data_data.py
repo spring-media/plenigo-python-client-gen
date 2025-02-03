@@ -8,7 +8,7 @@ T = TypeVar("T", bound="AccessRightItemDataData")
 
 @_attrs_define
 class AccessRightItemDataData:
-    """ """
+    """Key must be a string with a maximum length of 20 characters."""
 
     additional_properties: Dict[str, str] = _attrs_field(init=False, factory=dict)
 
