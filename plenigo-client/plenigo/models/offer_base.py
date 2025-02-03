@@ -25,7 +25,6 @@ class OfferBase:
     """
     Attributes:
         internal_title (str): internal title of the product group
-        translations (List['OfferTranslation']): translations associated with this product
         pause_able (Union[Unset, bool]): flag indicating if subscription is pause able
         invoice_address_mandatory (Union[Unset, bool]): flag indicating if invoice address must be provided by the
             customer
@@ -54,12 +53,12 @@ class OfferBase:
         bonus_id (Union[Unset, int]): id of the bonus associated with this offer
         self_service_hint_tm_id (Union[Unset, int]): id of the text module used as self service hint
         managed_by (Union[Unset, OfferBaseManagedBy]): managed by of the given offer.
+        translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
         pdf_template_usage (Union[Unset, OfferBasePdfTemplateUsage]): contains the pdf template to use with this offer
         partner_settings (Union[Unset, OfferPartnerSettings]):
     """
 
     internal_title: str
-    translations: List["OfferTranslation"]
     pause_able: Union[Unset, bool] = UNSET
     invoice_address_mandatory: Union[Unset, bool] = UNSET
     delivery_address_mandatory: Union[Unset, bool] = UNSET
@@ -80,17 +79,13 @@ class OfferBase:
     bonus_id: Union[Unset, int] = UNSET
     self_service_hint_tm_id: Union[Unset, int] = UNSET
     managed_by: Union[Unset, OfferBaseManagedBy] = UNSET
+    translations: Union[Unset, List["OfferTranslation"]] = UNSET
     pdf_template_usage: Union[Unset, OfferBasePdfTemplateUsage] = UNSET
     partner_settings: Union[Unset, "OfferPartnerSettings"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         internal_title = self.internal_title
-
-        translations = []
-        for translations_item_data in self.translations:
-            translations_item = translations_item_data.to_dict()
-            translations.append(translations_item)
 
         pause_able = self.pause_able
 
@@ -149,6 +144,13 @@ class OfferBase:
         if not isinstance(self.managed_by, Unset):
             managed_by = self.managed_by.value
 
+        translations: Union[Unset, List[Dict[str, Any]]] = UNSET
+        if not isinstance(self.translations, Unset):
+            translations = []
+            for translations_item_data in self.translations:
+                translations_item = translations_item_data.to_dict()
+                translations.append(translations_item)
+
         pdf_template_usage: Union[Unset, str] = UNSET
         if not isinstance(self.pdf_template_usage, Unset):
             pdf_template_usage = self.pdf_template_usage.value
@@ -162,7 +164,6 @@ class OfferBase:
         field_dict.update(
             {
                 "internalTitle": internal_title,
-                "translations": translations,
             }
         )
         if pause_able is not UNSET:
@@ -205,6 +206,8 @@ class OfferBase:
             field_dict["selfServiceHintTmId"] = self_service_hint_tm_id
         if managed_by is not UNSET:
             field_dict["managedBy"] = managed_by
+        if translations is not UNSET:
+            field_dict["translations"] = translations
         if pdf_template_usage is not UNSET:
             field_dict["pdfTemplateUsage"] = pdf_template_usage
         if partner_settings is not UNSET:
@@ -221,13 +224,6 @@ class OfferBase:
 
         d = src_dict.copy()
         internal_title = d.pop("internalTitle")
-
-        translations = []
-        _translations = d.pop("translations")
-        for translations_item_data in _translations:
-            translations_item = OfferTranslation.from_dict(translations_item_data)
-
-            translations.append(translations_item)
 
         pause_able = d.pop("pauseAble", UNSET)
 
@@ -311,6 +307,13 @@ class OfferBase:
         else:
             managed_by = OfferBaseManagedBy(_managed_by)
 
+        translations = []
+        _translations = d.pop("translations", UNSET)
+        for translations_item_data in _translations or []:
+            translations_item = OfferTranslation.from_dict(translations_item_data)
+
+            translations.append(translations_item)
+
         _pdf_template_usage = d.pop("pdfTemplateUsage", UNSET)
         pdf_template_usage: Union[Unset, OfferBasePdfTemplateUsage]
         if isinstance(_pdf_template_usage, Unset) or not _pdf_template_usage:
@@ -327,7 +330,6 @@ class OfferBase:
 
         offer_base = cls(
             internal_title=internal_title,
-            translations=translations,
             pause_able=pause_able,
             invoice_address_mandatory=invoice_address_mandatory,
             delivery_address_mandatory=delivery_address_mandatory,
@@ -348,6 +350,7 @@ class OfferBase:
             bonus_id=bonus_id,
             self_service_hint_tm_id=self_service_hint_tm_id,
             managed_by=managed_by,
+            translations=translations,
             pdf_template_usage=pdf_template_usage,
             partner_settings=partner_settings,
         )

@@ -1,47 +1,62 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
+from ..models.api_multi_voucher_status import ApiMultiVoucherStatus
+from ..models.user_type import UserType
 from ..types import UNSET, Unset
 
-if TYPE_CHECKING:
-    from ..models.additional_order_data_data import AdditionalOrderDataData
-    from ..models.utm import Utm
-
-
-T = TypeVar("T", bound="AdditionalOrderData")
+T = TypeVar("T", bound="ApiMultiVoucher")
 
 
 @_attrs_define
-class AdditionalOrderData:
+class ApiMultiVoucher:
     """
     Attributes:
+        id (int): unique id of the multi voucher in the context of a company
+        voucher_code (str): voucher code
+        status (ApiMultiVoucherStatus): status of the multi voucher
+        voucher_amount (int): amount how often the voucher code can be used
+        voucher_used (int): amount of how often the voucher code is already used
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
         changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
-        affiliate_id (Union[Unset, str]): affiliate id associated
-        partner_id (Union[Unset, str]): id of the partner
-        source_id (Union[Unset, str]): id (e.g. URI) to identify source
-        utm (Union[Unset, Utm]):
-        data (Union[Unset, AdditionalOrderDataData]): Key must be a string with a maximum length of 30 characters.
+        created_by (Union[Unset, str]): id who created the object
+        created_by_type (Union[Unset, UserType]): type of user who performs the action
+        changed_by (Union[Unset, str]): id who changed the object
+        changed_by_type (Union[Unset, UserType]): type of user who performs the action
     """
 
+    id: int
+    voucher_code: str
+    status: ApiMultiVoucherStatus
+    voucher_amount: int
+    voucher_used: int
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
-    affiliate_id: Union[Unset, str] = UNSET
-    partner_id: Union[Unset, str] = UNSET
-    source_id: Union[Unset, str] = UNSET
-    utm: Union[Unset, "Utm"] = UNSET
-    data: Union[Unset, "AdditionalOrderDataData"] = UNSET
+    created_by: Union[Unset, str] = UNSET
+    created_by_type: Union[Unset, UserType] = UNSET
+    changed_by: Union[Unset, str] = UNSET
+    changed_by_type: Union[Unset, UserType] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        id = self.id
+
+        voucher_code = self.voucher_code
+
+        status = self.status.value
+
+        voucher_amount = self.voucher_amount
+
+        voucher_used = self.voucher_used
+
         created_date: Union[None, Unset, str]
         if isinstance(self.created_date, Unset) or self.created_date is None:
             created_date = UNSET
@@ -58,46 +73,56 @@ class AdditionalOrderData:
         else:
             changed_date = self.changed_date
 
-        affiliate_id = self.affiliate_id
+        created_by = self.created_by
 
-        partner_id = self.partner_id
+        created_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.created_by_type, Unset):
+            created_by_type = self.created_by_type.value
 
-        source_id = self.source_id
+        changed_by = self.changed_by
 
-        utm: Union[Unset, Dict[str, Any]] = UNSET
-        if not isinstance(self.utm, Unset):
-            utm = self.utm.to_dict()
-
-        data: Union[Unset, Dict[str, Any]] = UNSET
-        if not isinstance(self.data, Unset):
-            data = self.data.to_dict()
+        changed_by_type: Union[Unset, str] = UNSET
+        if not isinstance(self.changed_by_type, Unset):
+            changed_by_type = self.changed_by_type.value
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "id": id,
+                "voucherCode": voucher_code,
+                "status": status,
+                "voucherAmount": voucher_amount,
+                "voucherUsed": voucher_used,
+            }
+        )
         if created_date is not UNSET:
             field_dict["createdDate"] = created_date
         if changed_date is not UNSET:
             field_dict["changedDate"] = changed_date
-        if affiliate_id is not UNSET:
-            field_dict["affiliateId"] = affiliate_id
-        if partner_id is not UNSET:
-            field_dict["partnerId"] = partner_id
-        if source_id is not UNSET:
-            field_dict["sourceId"] = source_id
-        if utm is not UNSET:
-            field_dict["utm"] = utm
-        if data is not UNSET:
-            field_dict["data"] = data
+        if created_by is not UNSET:
+            field_dict["createdBy"] = created_by
+        if created_by_type is not UNSET:
+            field_dict["createdByType"] = created_by_type
+        if changed_by is not UNSET:
+            field_dict["changedBy"] = changed_by
+        if changed_by_type is not UNSET:
+            field_dict["changedByType"] = changed_by_type
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.additional_order_data_data import AdditionalOrderDataData
-        from ..models.utm import Utm
-
         d = src_dict.copy()
+        id = d.pop("id")
+
+        voucher_code = d.pop("voucherCode")
+
+        status = ApiMultiVoucherStatus(d.pop("status"))
+
+        voucher_amount = d.pop("voucherAmount")
+
+        voucher_used = d.pop("voucherUsed")
 
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
@@ -147,38 +172,40 @@ class AdditionalOrderData:
 
         changed_date = _parse_changed_date(d.pop("changedDate", UNSET))
 
-        affiliate_id = d.pop("affiliateId", UNSET)
+        created_by = d.pop("createdBy", UNSET)
 
-        partner_id = d.pop("partnerId", UNSET)
-
-        source_id = d.pop("sourceId", UNSET)
-
-        _utm = d.pop("utm", UNSET)
-        utm: Union[Unset, Utm]
-        if isinstance(_utm, Unset) or not _utm:
-            utm = UNSET
+        _created_by_type = d.pop("createdByType", UNSET)
+        created_by_type: Union[Unset, UserType]
+        if isinstance(_created_by_type, Unset) or not _created_by_type:
+            created_by_type = UNSET
         else:
-            utm = Utm.from_dict(_utm)
+            created_by_type = UserType(_created_by_type)
 
-        _data = d.pop("data", UNSET)
-        data: Union[Unset, AdditionalOrderDataData]
-        if isinstance(_data, Unset) or not _data:
-            data = UNSET
+        changed_by = d.pop("changedBy", UNSET)
+
+        _changed_by_type = d.pop("changedByType", UNSET)
+        changed_by_type: Union[Unset, UserType]
+        if isinstance(_changed_by_type, Unset) or not _changed_by_type:
+            changed_by_type = UNSET
         else:
-            data = AdditionalOrderDataData.from_dict(_data)
+            changed_by_type = UserType(_changed_by_type)
 
-        additional_order_data = cls(
+        api_multi_voucher = cls(
+            id=id,
+            voucher_code=voucher_code,
+            status=status,
+            voucher_amount=voucher_amount,
+            voucher_used=voucher_used,
             created_date=created_date,
             changed_date=changed_date,
-            affiliate_id=affiliate_id,
-            partner_id=partner_id,
-            source_id=source_id,
-            utm=utm,
-            data=data,
+            created_by=created_by,
+            created_by_type=created_by_type,
+            changed_by=changed_by,
+            changed_by_type=changed_by_type,
         )
 
-        additional_order_data.additional_properties = d
-        return additional_order_data
+        api_multi_voucher.additional_properties = d
+        return api_multi_voucher
 
     @property
     def additional_keys(self) -> List[str]:

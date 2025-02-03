@@ -16,8 +16,8 @@ T = TypeVar("T", bound="ErrorResult")
 class ErrorResult:
     """
     Attributes:
-        error_code (int): plenigo error code
-        error_message (str): plenigo error description
+        error_code (int): plenigo error code Example: 99400.
+        error_message (str): plenigo error description Example: Provided data cannot be processed..
         validation_errors (Union[Unset, List['ValidationError']]):
     """
 

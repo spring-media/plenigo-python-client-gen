@@ -13,25 +13,25 @@ class PriceCountrySegmentCreation:
     """
     Attributes:
         title (str): title of the price country segment
+        priority (int): priority of the price country segment - the lower the priority the higher the rank of the price
+            segment
         countries (List[str]): array of country codes formatted as <a
             href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank">ISO 3166-1 alpha-2</a>
-        priority (Union[Unset, int]): priority of the price country segment - the lower the priority the higher the rank
-            of the price segment
         description (Union[Unset, str]): internal description of the price country segment
     """
 
     title: str
+    priority: int
     countries: List[str]
-    priority: Union[Unset, int] = UNSET
     description: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         title = self.title
 
-        countries = self.countries
-
         priority = self.priority
+
+        countries = self.countries
 
         description = self.description
 
@@ -40,11 +40,10 @@ class PriceCountrySegmentCreation:
         field_dict.update(
             {
                 "title": title,
+                "priority": priority,
                 "countries": countries,
             }
         )
-        if priority is not UNSET:
-            field_dict["priority"] = priority
         if description is not UNSET:
             field_dict["description"] = description
 
@@ -55,16 +54,16 @@ class PriceCountrySegmentCreation:
         d = src_dict.copy()
         title = d.pop("title")
 
-        countries = cast(List[str], d.pop("countries"))
+        priority = d.pop("priority")
 
-        priority = d.pop("priority", UNSET)
+        countries = cast(List[str], d.pop("countries"))
 
         description = d.pop("description", UNSET)
 
         price_country_segment_creation = cls(
             title=title,
-            countries=countries,
             priority=priority,
+            countries=countries,
             description=description,
         )
 

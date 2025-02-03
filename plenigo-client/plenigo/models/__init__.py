@@ -4,52 +4,36 @@ from .access_right_data import AccessRightData
 from .access_right_item_data import AccessRightItemData
 from .access_right_item_data_access_right_data import AccessRightItemDataAccessRightData
 from .access_right_item_data_data import AccessRightItemDataData
+from .access_right_item_data_item_type import AccessRightItemDataItemType
 from .access_rights_data import AccessRightsData
 from .additional_chain_data import AdditionalChainData
 from .additional_chain_data_data import AdditionalChainDataData
-from .additional_chain_data_data_additional_property import AdditionalChainDataDataAdditionalProperty
-from .additional_customer_data import AdditionalCustomerData
-from .additional_customer_data_data import AdditionalCustomerDataData
-from .additional_customer_data_data_additional_property import AdditionalCustomerDataDataAdditionalProperty
 from .additional_order_data import AdditionalOrderData
 from .additional_order_data_data import AdditionalOrderDataData
-from .additional_order_data_data_additional_property import AdditionalOrderDataDataAdditionalProperty
-from .address_base import AddressBase
-from .address_base_salutation import AddressBaseSalutation
-from .address_base_validation_status import AddressBaseValidationStatus
-from .address_change import AddressChange
 from .api_base import ApiBase
 from .api_base_date import ApiBaseDate
+from .api_campaign import ApiCampaign
 from .api_campaign_base import ApiCampaignBase
 from .api_campaign_base_status import ApiCampaignBaseStatus
 from .api_campaign_base_voucher_type import ApiCampaignBaseVoucherType
-from .api_campaign_creation_result import ApiCampaignCreationResult
 from .api_campaign_page import ApiCampaignPage
-from .api_campaign_view import ApiCampaignView
+from .api_channel import ApiChannel
 from .api_channel_base import ApiChannelBase
 from .api_channel_base_status import ApiChannelBaseStatus
+from .api_multi_voucher import ApiMultiVoucher
+from .api_multi_voucher_status import ApiMultiVoucherStatus
 from .api_search_result_base import ApiSearchResultBase
 from .api_voucher import ApiVoucher
 from .api_voucher_page import ApiVoucherPage
 from .api_voucher_status import ApiVoucherStatus
-from .app_store_access_right import AppStoreAccessRight
-from .app_store_access_right_additional_data import AppStoreAccessRightAdditionalData
-from .app_store_access_right_additional_data_additional_property import (
-    AppStoreAccessRightAdditionalDataAdditionalProperty,
-)
-from .app_store_access_rights import AppStoreAccessRights
 from .app_store_order import AppStoreOrder
 from .app_store_order_item import AppStoreOrderItem
 from .app_store_order_store_type import AppStoreOrderStoreType
 from .app_store_orders import AppStoreOrders
-from .app_store_purchase import AppStorePurchase
-from .app_store_purchase_detail import AppStorePurchaseDetail
-from .app_store_purchase_list import AppStorePurchaseList
 from .app_store_subscription import AppStoreSubscription
 from .app_store_subscription_status import AppStoreSubscriptionStatus
 from .app_store_subscriptions import AppStoreSubscriptions
 from .apple_app_store_purchase import AppleAppStorePurchase
-from .apple_app_store_purchase_addition import AppleAppStorePurchaseAddition
 from .apple_app_store_purchase_data import AppleAppStorePurchaseData
 from .apple_app_store_purchases import AppleAppStorePurchases
 from .apple_app_store_receipt import AppleAppStoreReceipt
@@ -60,9 +44,6 @@ from .archive_settings_archive_type import ArchiveSettingsArchiveType
 from .bank_account import BankAccount
 from .bank_account_change import BankAccountChange
 from .bank_account_creation import BankAccountCreation
-from .campaign_creation import CampaignCreation
-from .campaign_creation_voucher_type import CampaignCreationVoucherType
-from .channel_creation import ChannelCreation
 from .credit_based_product_contract_condition import CreditBasedProductContractCondition
 from .credit_based_product_contract_condition_accounting_timespan import (
     CreditBasedProductContractConditionAccountingTimespan,
@@ -77,9 +58,6 @@ from .credit_based_product_contract_condition_term_timespan import CreditBasedPr
 from .customer import Customer
 from .customer_accepted_term import CustomerAcceptedTerm
 from .customer_accepted_terms import CustomerAcceptedTerms
-from .customer_accepted_terms_additional_property import CustomerAcceptedTermsAdditionalProperty
-from .customer_address_creation import CustomerAddressCreation
-from .customer_address_creation_type import CustomerAddressCreationType
 from .customer_base import CustomerBase
 from .customer_base_salutation import CustomerBaseSalutation
 from .customer_cancellation_reason import CustomerCancellationReason
@@ -87,8 +65,6 @@ from .customer_cancellation_reason_creation import CustomerCancellationReasonCre
 from .customer_cancellation_reason_translation import CustomerCancellationReasonTranslation
 from .customer_cancellation_reason_update import CustomerCancellationReasonUpdate
 from .customer_cancellation_reasons import CustomerCancellationReasons
-from .customer_change import CustomerChange
-from .customer_creation import CustomerCreation
 from .customer_customer_marks_item import CustomerCustomerMarksItem
 from .customer_miscellaneous_data import CustomerMiscellaneousData
 from .customer_sso_login_providers_item import CustomerSsoLoginProvidersItem
@@ -96,12 +72,9 @@ from .customer_status import CustomerStatus
 from .customers import Customers
 from .error_result import ErrorResult
 from .error_result_base import ErrorResultBase
-from .get_vouchers_channels_channel_id_vouchers_voucher_status import GetVouchersChannelsChannelIdVouchersVoucherStatus
 from .gift_info import GiftInfo
 from .google_play_product_purchase import GooglePlayProductPurchase
 from .google_play_store_purchase import GooglePlayStorePurchase
-from .google_play_store_purchase_addition import GooglePlayStorePurchaseAddition
-from .google_play_store_purchase_addition_element import GooglePlayStorePurchaseAdditionElement
 from .google_play_store_purchases import GooglePlayStorePurchases
 from .google_play_subscription_purchase import GooglePlaySubscriptionPurchase
 from .invoice import Invoice
@@ -131,7 +104,6 @@ from .offer_product_base import OfferProductBase
 from .offer_product_base_additional_data import OfferProductBaseAdditionalData
 from .offer_product_base_data import OfferProductBaseData
 from .offer_product_base_product_type import OfferProductBaseProductType
-from .offer_product_base_tax_type import OfferProductBaseTaxType
 from .offer_product_base_voucher_validity_timespan import OfferProductBaseVoucherValidityTimespan
 from .offer_product_group import OfferProductGroup
 from .offer_product_group_base import OfferProductGroupBase
@@ -152,7 +124,6 @@ from .order import Order
 from .order_address import OrderAddress
 from .order_address_salutation import OrderAddressSalutation
 from .order_item import OrderItem
-from .order_item_tax_type import OrderItemTaxType
 from .order_payment_method import OrderPaymentMethod
 from .order_status import OrderStatus
 from .order_type import OrderType
@@ -185,6 +156,7 @@ from .search_access_rights_sort import SearchAccessRightsSort
 from .search_app_store_orders_sort import SearchAppStoreOrdersSort
 from .search_app_store_subscriptions_sort import SearchAppStoreSubscriptionsSort
 from .search_apple_app_store_purchases_sort import SearchAppleAppStorePurchasesSort
+from .search_channel_vouchers_voucher_status import SearchChannelVouchersVoucherStatus
 from .search_customers_sort import SearchCustomersSort
 from .search_google_play_store_purchases_sort import SearchGooglePlayStorePurchasesSort
 from .search_invoices_invoice_type import SearchInvoicesInvoiceType
@@ -204,7 +176,6 @@ from .subscription_connected_offer_info import SubscriptionConnectedOfferInfo
 from .subscription_duration_period_time_span import SubscriptionDurationPeriodTimeSpan
 from .subscription_item import SubscriptionItem
 from .subscription_item_status import SubscriptionItemStatus
-from .subscription_item_tax_type import SubscriptionItemTaxType
 from .subscription_managed_by import SubscriptionManagedBy
 from .subscription_pause_at import SubscriptionPauseAt
 from .subscription_pause_at_pause_type import SubscriptionPauseAtPauseType
@@ -215,7 +186,7 @@ from .subscription_subscription_type import SubscriptionSubscriptionType
 from .subscription_successor_reason import SubscriptionSuccessorReason
 from .subscription_term_time_span import SubscriptionTermTimeSpan
 from .subscriptions import Subscriptions
-from .success_status import SuccessStatus
+from .tax_type import TaxType
 from .time_based_product_contract_condition import TimeBasedProductContractCondition
 from .time_based_product_contract_condition_accounting_timespan import (
     TimeBasedProductContractConditionAccountingTimespan,
@@ -242,52 +213,38 @@ __all__ = (
     "AccessRightItemData",
     "AccessRightItemDataAccessRightData",
     "AccessRightItemDataData",
+    "AccessRightItemDataItemType",
     "AccessRightsData",
     "AdditionalChainData",
     "AdditionalChainDataData",
-    "AdditionalChainDataDataAdditionalProperty",
-    "AdditionalCustomerData",
-    "AdditionalCustomerDataData",
-    "AdditionalCustomerDataDataAdditionalProperty",
     "AdditionalOrderData",
     "AdditionalOrderDataData",
-    "AdditionalOrderDataDataAdditionalProperty",
-    "AddressBase",
-    "AddressBaseSalutation",
-    "AddressBaseValidationStatus",
-    "AddressChange",
     "ApiBase",
     "ApiBaseDate",
+    "ApiCampaign",
     "ApiCampaignBase",
     "ApiCampaignBaseStatus",
     "ApiCampaignBaseVoucherType",
-    "ApiCampaignCreationResult",
     "ApiCampaignPage",
-    "ApiCampaignView",
+    "ApiChannel",
     "ApiChannelBase",
     "ApiChannelBaseStatus",
+    "ApiMultiVoucher",
+    "ApiMultiVoucherStatus",
     "ApiSearchResultBase",
     "ApiVoucher",
     "ApiVoucherPage",
     "ApiVoucherStatus",
     "AppleAppStorePurchase",
-    "AppleAppStorePurchaseAddition",
     "AppleAppStorePurchaseData",
     "AppleAppStorePurchases",
     "AppleAppStoreReceipt",
     "AppleAppStoreReceiptItem",
     "AppleAppStoreTransaction",
-    "AppStoreAccessRight",
-    "AppStoreAccessRightAdditionalData",
-    "AppStoreAccessRightAdditionalDataAdditionalProperty",
-    "AppStoreAccessRights",
     "AppStoreOrder",
     "AppStoreOrderItem",
     "AppStoreOrders",
     "AppStoreOrderStoreType",
-    "AppStorePurchase",
-    "AppStorePurchaseDetail",
-    "AppStorePurchaseList",
     "AppStoreSubscription",
     "AppStoreSubscriptions",
     "AppStoreSubscriptionStatus",
@@ -296,9 +253,6 @@ __all__ = (
     "BankAccount",
     "BankAccountChange",
     "BankAccountCreation",
-    "CampaignCreation",
-    "CampaignCreationVoucherType",
-    "ChannelCreation",
     "CreditBasedProductContractCondition",
     "CreditBasedProductContractConditionAccountingTimespan",
     "CreditBasedProductContractConditionCancellationTimespan",
@@ -307,9 +261,6 @@ __all__ = (
     "Customer",
     "CustomerAcceptedTerm",
     "CustomerAcceptedTerms",
-    "CustomerAcceptedTermsAdditionalProperty",
-    "CustomerAddressCreation",
-    "CustomerAddressCreationType",
     "CustomerBase",
     "CustomerBaseSalutation",
     "CustomerCancellationReason",
@@ -317,8 +268,6 @@ __all__ = (
     "CustomerCancellationReasons",
     "CustomerCancellationReasonTranslation",
     "CustomerCancellationReasonUpdate",
-    "CustomerChange",
-    "CustomerCreation",
     "CustomerCustomerMarksItem",
     "CustomerMiscellaneousData",
     "Customers",
@@ -326,12 +275,9 @@ __all__ = (
     "CustomerStatus",
     "ErrorResult",
     "ErrorResultBase",
-    "GetVouchersChannelsChannelIdVouchersVoucherStatus",
     "GiftInfo",
     "GooglePlayProductPurchase",
     "GooglePlayStorePurchase",
-    "GooglePlayStorePurchaseAddition",
-    "GooglePlayStorePurchaseAdditionElement",
     "GooglePlayStorePurchases",
     "GooglePlaySubscriptionPurchase",
     "Invoice",
@@ -359,7 +305,6 @@ __all__ = (
     "OfferProductBaseAdditionalData",
     "OfferProductBaseData",
     "OfferProductBaseProductType",
-    "OfferProductBaseTaxType",
     "OfferProductBaseVoucherValidityTimespan",
     "OfferProductGroup",
     "OfferProductGroupBase",
@@ -380,7 +325,6 @@ __all__ = (
     "OrderAddress",
     "OrderAddressSalutation",
     "OrderItem",
-    "OrderItemTaxType",
     "OrderPaymentMethod",
     "Orders",
     "OrderStatus",
@@ -413,6 +357,7 @@ __all__ = (
     "SearchAppleAppStorePurchasesSort",
     "SearchAppStoreOrdersSort",
     "SearchAppStoreSubscriptionsSort",
+    "SearchChannelVouchersVoucherStatus",
     "SearchCustomersSort",
     "SearchGooglePlayStorePurchasesSort",
     "SearchInvoicesInvoiceType",
@@ -432,7 +377,6 @@ __all__ = (
     "SubscriptionDurationPeriodTimeSpan",
     "SubscriptionItem",
     "SubscriptionItemStatus",
-    "SubscriptionItemTaxType",
     "SubscriptionManagedBy",
     "SubscriptionPauseAt",
     "SubscriptionPauseAtPauseType",
@@ -443,7 +387,7 @@ __all__ = (
     "SubscriptionSubscriptionType",
     "SubscriptionSuccessorReason",
     "SubscriptionTermTimeSpan",
-    "SuccessStatus",
+    "TaxType",
     "TimeBasedProductContractCondition",
     "TimeBasedProductContractConditionAccountingTimespan",
     "TimeBasedProductContractConditionCancellationTimespan",

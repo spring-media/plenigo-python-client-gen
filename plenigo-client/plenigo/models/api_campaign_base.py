@@ -20,6 +20,7 @@ class ApiCampaignBase:
         campaign_id (str): unique id of the campaign in the context of a company
         campaign_name (str): name of the campaign
         voucher_type (ApiCampaignBaseVoucherType): represents the type of the vouchers of this campaign
+        plenigo_offer_id (str): offer id the vouchers are for
         status (ApiCampaignBaseStatus): status of the campaign
         start_date (Union[None, datetime.date]): start date of the campaign with full-date notation as defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
@@ -34,7 +35,6 @@ class ApiCampaignBase:
         created_by_type (Union[Unset, UserType]): type of user who performs the action
         changed_by (Union[Unset, str]): id who changed the object
         changed_by_type (Union[Unset, UserType]): type of user who performs the action
-        plenigo_offer_id (Union[Unset, str]): offer id the vouchers are for
         end_date (Union[None, Unset, datetime.date]): end date of the campaign with full-date notation as defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
             2017-07-21
@@ -43,6 +43,7 @@ class ApiCampaignBase:
     campaign_id: str
     campaign_name: str
     voucher_type: ApiCampaignBaseVoucherType
+    plenigo_offer_id: str
     status: ApiCampaignBaseStatus
     start_date: Union[None, datetime.date]
     created_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -51,7 +52,6 @@ class ApiCampaignBase:
     created_by_type: Union[Unset, UserType] = UNSET
     changed_by: Union[Unset, str] = UNSET
     changed_by_type: Union[Unset, UserType] = UNSET
-    plenigo_offer_id: Union[Unset, str] = UNSET
     end_date: Union[None, Unset, datetime.date] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -61,6 +61,8 @@ class ApiCampaignBase:
         campaign_name = self.campaign_name
 
         voucher_type = self.voucher_type.value
+
+        plenigo_offer_id = self.plenigo_offer_id
 
         status = self.status.value
 
@@ -98,8 +100,6 @@ class ApiCampaignBase:
         if not isinstance(self.changed_by_type, Unset):
             changed_by_type = self.changed_by_type.value
 
-        plenigo_offer_id = self.plenigo_offer_id
-
         end_date: Union[None, Unset, str]
         if isinstance(self.end_date, Unset) or self.end_date is None:
             end_date = UNSET
@@ -115,6 +115,7 @@ class ApiCampaignBase:
                 "campaignId": campaign_id,
                 "campaignName": campaign_name,
                 "voucherType": voucher_type,
+                "plenigoOfferId": plenigo_offer_id,
                 "status": status,
                 "startDate": start_date,
             }
@@ -131,8 +132,6 @@ class ApiCampaignBase:
             field_dict["changedBy"] = changed_by
         if changed_by_type is not UNSET:
             field_dict["changedByType"] = changed_by_type
-        if plenigo_offer_id is not UNSET:
-            field_dict["plenigoOfferId"] = plenigo_offer_id
         if end_date is not UNSET:
             field_dict["endDate"] = end_date
 
@@ -146,6 +145,8 @@ class ApiCampaignBase:
         campaign_name = d.pop("campaignName")
 
         voucher_type = ApiCampaignBaseVoucherType(d.pop("voucherType"))
+
+        plenigo_offer_id = d.pop("plenigoOfferId")
 
         status = ApiCampaignBaseStatus(d.pop("status"))
 
@@ -233,8 +234,6 @@ class ApiCampaignBase:
         else:
             changed_by_type = UserType(_changed_by_type)
 
-        plenigo_offer_id = d.pop("plenigoOfferId", UNSET)
-
         def _parse_end_date(data: object) -> Union[None, Unset, datetime.date]:
             if data is None:
                 return data
@@ -263,6 +262,7 @@ class ApiCampaignBase:
             campaign_id=campaign_id,
             campaign_name=campaign_name,
             voucher_type=voucher_type,
+            plenigo_offer_id=plenigo_offer_id,
             status=status,
             start_date=start_date,
             created_date=created_date,
@@ -271,7 +271,6 @@ class ApiCampaignBase:
             created_by_type=created_by_type,
             changed_by=changed_by,
             changed_by_type=changed_by_type,
-            plenigo_offer_id=plenigo_offer_id,
             end_date=end_date,
         )
 

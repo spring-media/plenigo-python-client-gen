@@ -1,9 +1,10 @@
 from enum import Enum
 
 
-class OfferProductBaseTaxType(str, Enum):
+class TaxType(str, Enum):
     ADVERTISEMENT = "ADVERTISEMENT"
     BOOK = "BOOK"
+    BUNDLE = "BUNDLE"
     DIGITALNEWSPAPER = "DIGITALNEWSPAPER"
     DIGITALOFFER = "DIGITALOFFER"
     DIGITALPRODUCT = "DIGITALPRODUCT"
@@ -17,6 +18,7 @@ class OfferProductBaseTaxType(str, Enum):
     MUSIC = "MUSIC"
     NEWSPAPER = "NEWSPAPER"
     PHYSICALPRODUCT = "PHYSICALPRODUCT"
+    SHIPPINGCOSTS = "SHIPPINGCOSTS"
     VIDEO = "VIDEO"
     VOUCHER = "VOUCHER"
 

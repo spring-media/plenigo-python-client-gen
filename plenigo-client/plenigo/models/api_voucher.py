@@ -29,6 +29,9 @@ class ApiVoucher:
         created_by_type (Union[Unset, UserType]): type of user who performs the action
         changed_by (Union[Unset, str]): id who changed the object
         changed_by_type (Union[Unset, UserType]): type of user who performs the action
+        purchase_order_id (Union[Unset, int]): id of the order voucher was purchased with
+        purchase_order_item_position (Union[Unset, int]): position of the order item inside the order voucher was
+            purchased with
         custom_data (Union[Unset, str]): free text field
         order_id (Union[Unset, int]): order id this voucher was used
     """
@@ -42,6 +45,8 @@ class ApiVoucher:
     created_by_type: Union[Unset, UserType] = UNSET
     changed_by: Union[Unset, str] = UNSET
     changed_by_type: Union[Unset, UserType] = UNSET
+    purchase_order_id: Union[Unset, int] = UNSET
+    purchase_order_item_position: Union[Unset, int] = UNSET
     custom_data: Union[Unset, str] = UNSET
     order_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -81,6 +86,10 @@ class ApiVoucher:
         if not isinstance(self.changed_by_type, Unset):
             changed_by_type = self.changed_by_type.value
 
+        purchase_order_id = self.purchase_order_id
+
+        purchase_order_item_position = self.purchase_order_item_position
+
         custom_data = self.custom_data
 
         order_id = self.order_id
@@ -106,6 +115,10 @@ class ApiVoucher:
             field_dict["changedBy"] = changed_by
         if changed_by_type is not UNSET:
             field_dict["changedByType"] = changed_by_type
+        if purchase_order_id is not UNSET:
+            field_dict["purchaseOrderId"] = purchase_order_id
+        if purchase_order_item_position is not UNSET:
+            field_dict["purchaseOrderItemPosition"] = purchase_order_item_position
         if custom_data is not UNSET:
             field_dict["customData"] = custom_data
         if order_id is not UNSET:
@@ -188,6 +201,10 @@ class ApiVoucher:
         else:
             changed_by_type = UserType(_changed_by_type)
 
+        purchase_order_id = d.pop("purchaseOrderId", UNSET)
+
+        purchase_order_item_position = d.pop("purchaseOrderItemPosition", UNSET)
+
         custom_data = d.pop("customData", UNSET)
 
         order_id = d.pop("orderId", UNSET)
@@ -202,6 +219,8 @@ class ApiVoucher:
             created_by_type=created_by_type,
             changed_by=changed_by,
             changed_by_type=changed_by_type,
+            purchase_order_id=purchase_order_id,
+            purchase_order_item_position=purchase_order_item_position,
             custom_data=custom_data,
             order_id=order_id,
         )

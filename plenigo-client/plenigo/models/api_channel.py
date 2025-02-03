@@ -5,30 +5,26 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.api_campaign_base_status import ApiCampaignBaseStatus
-from ..models.api_campaign_base_voucher_type import ApiCampaignBaseVoucherType
+from ..models.api_channel_base_status import ApiChannelBaseStatus
 from ..models.user_type import UserType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.api_channel_base import ApiChannelBase
+    from ..models.api_multi_voucher import ApiMultiVoucher
+    from ..models.api_voucher import ApiVoucher
 
 
-T = TypeVar("T", bound="ApiCampaignCreationResult")
+T = TypeVar("T", bound="ApiChannel")
 
 
 @_attrs_define
-class ApiCampaignCreationResult:
+class ApiChannel:
     """
     Attributes:
-        campaign_id (str): unique id of the campaign in the context of a company
-        campaign_name (str): name of the campaign
-        voucher_type (ApiCampaignBaseVoucherType): represents the type of the vouchers of this campaign
-        status (ApiCampaignBaseStatus): status of the campaign
-        start_date (Union[None, datetime.date]): start date of the campaign with full-date notation as defined by <a
-            href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
-            2017-07-21
-        channels (List['ApiChannelBase']):
+        channel_id (int): unique id of the channel in the context of a company
+        channel_name (str): name of the channel
+        voucher_amount (int): represents the amount of vouchers for this channel
+        status (ApiChannelBaseStatus): status of the campaign
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
@@ -39,47 +35,34 @@ class ApiCampaignCreationResult:
         created_by_type (Union[Unset, UserType]): type of user who performs the action
         changed_by (Union[Unset, str]): id who changed the object
         changed_by_type (Union[Unset, UserType]): type of user who performs the action
-        plenigo_offer_id (Union[Unset, str]): offer id the vouchers are for
-        end_date (Union[None, Unset, datetime.date]): end date of the campaign with full-date notation as defined by <a
-            href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
-            2017-07-21
+        custom_data (Union[Unset, str]): free text field
+        vouchers (Union[Unset, List['ApiVoucher']]):
+        multi_voucher (Union[Unset, ApiMultiVoucher]):
     """
 
-    campaign_id: str
-    campaign_name: str
-    voucher_type: ApiCampaignBaseVoucherType
-    status: ApiCampaignBaseStatus
-    start_date: Union[None, datetime.date]
-    channels: List["ApiChannelBase"]
+    channel_id: int
+    channel_name: str
+    voucher_amount: int
+    status: ApiChannelBaseStatus
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     created_by: Union[Unset, str] = UNSET
     created_by_type: Union[Unset, UserType] = UNSET
     changed_by: Union[Unset, str] = UNSET
     changed_by_type: Union[Unset, UserType] = UNSET
-    plenigo_offer_id: Union[Unset, str] = UNSET
-    end_date: Union[None, Unset, datetime.date] = UNSET
+    custom_data: Union[Unset, str] = UNSET
+    vouchers: Union[Unset, List["ApiVoucher"]] = UNSET
+    multi_voucher: Union[Unset, "ApiMultiVoucher"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        campaign_id = self.campaign_id
+        channel_id = self.channel_id
 
-        campaign_name = self.campaign_name
+        channel_name = self.channel_name
 
-        voucher_type = self.voucher_type.value
+        voucher_amount = self.voucher_amount
 
         status = self.status.value
-
-        start_date: Union[None, str]
-        if isinstance(self.start_date, datetime.date):
-            start_date = self.start_date.isoformat()
-        else:
-            start_date = self.start_date
-
-        channels = []
-        for channels_item_data in self.channels:
-            channels_item = channels_item_data.to_dict()
-            channels.append(channels_item)
 
         created_date: Union[None, Unset, str]
         if isinstance(self.created_date, Unset) or self.created_date is None:
@@ -109,26 +92,27 @@ class ApiCampaignCreationResult:
         if not isinstance(self.changed_by_type, Unset):
             changed_by_type = self.changed_by_type.value
 
-        plenigo_offer_id = self.plenigo_offer_id
+        custom_data = self.custom_data
 
-        end_date: Union[None, Unset, str]
-        if isinstance(self.end_date, Unset) or self.end_date is None:
-            end_date = UNSET
-        elif isinstance(self.end_date, datetime.date):
-            end_date = self.end_date.isoformat()
-        else:
-            end_date = self.end_date
+        vouchers: Union[Unset, List[Dict[str, Any]]] = UNSET
+        if not isinstance(self.vouchers, Unset):
+            vouchers = []
+            for vouchers_item_data in self.vouchers:
+                vouchers_item = vouchers_item_data.to_dict()
+                vouchers.append(vouchers_item)
+
+        multi_voucher: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.multi_voucher, Unset):
+            multi_voucher = self.multi_voucher.to_dict()
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "campaignId": campaign_id,
-                "campaignName": campaign_name,
-                "voucherType": voucher_type,
+                "channelId": channel_id,
+                "channelName": channel_name,
+                "voucherAmount": voucher_amount,
                 "status": status,
-                "startDate": start_date,
-                "channels": channels,
             }
         )
         if created_date is not UNSET:
@@ -143,50 +127,28 @@ class ApiCampaignCreationResult:
             field_dict["changedBy"] = changed_by
         if changed_by_type is not UNSET:
             field_dict["changedByType"] = changed_by_type
-        if plenigo_offer_id is not UNSET:
-            field_dict["plenigoOfferId"] = plenigo_offer_id
-        if end_date is not UNSET:
-            field_dict["endDate"] = end_date
+        if custom_data is not UNSET:
+            field_dict["customData"] = custom_data
+        if vouchers is not UNSET:
+            field_dict["vouchers"] = vouchers
+        if multi_voucher is not UNSET:
+            field_dict["multiVoucher"] = multi_voucher
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.api_channel_base import ApiChannelBase
+        from ..models.api_multi_voucher import ApiMultiVoucher
+        from ..models.api_voucher import ApiVoucher
 
         d = src_dict.copy()
-        campaign_id = d.pop("campaignId")
+        channel_id = d.pop("channelId")
 
-        campaign_name = d.pop("campaignName")
+        channel_name = d.pop("channelName")
 
-        voucher_type = ApiCampaignBaseVoucherType(d.pop("voucherType"))
+        voucher_amount = d.pop("voucherAmount")
 
-        status = ApiCampaignBaseStatus(d.pop("status"))
-
-        def _parse_start_date(data: object) -> Union[None, datetime.date]:
-            if data is None:
-                return data
-
-            # Try to parse the data as datetime.date
-            try:
-                if not isinstance(data, str):
-                    raise TypeError()
-                start_date_type_1 = isoparse(data).date()
-
-                return start_date_type_1
-            except:  # noqa: E722
-                pass
-
-            return cast(Union[None, datetime.date], data)
-
-        start_date = _parse_start_date(d.pop("startDate"))
-
-        channels = []
-        _channels = d.pop("channels")
-        for channels_item_data in _channels:
-            channels_item = ApiChannelBase.from_dict(channels_item_data)
-
-            channels.append(channels_item)
+        status = ApiChannelBaseStatus(d.pop("status"))
 
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
@@ -254,51 +216,40 @@ class ApiCampaignCreationResult:
         else:
             changed_by_type = UserType(_changed_by_type)
 
-        plenigo_offer_id = d.pop("plenigoOfferId", UNSET)
+        custom_data = d.pop("customData", UNSET)
 
-        def _parse_end_date(data: object) -> Union[None, Unset, datetime.date]:
-            if data is None:
-                return data
+        vouchers = []
+        _vouchers = d.pop("vouchers", UNSET)
+        for vouchers_item_data in _vouchers or []:
+            vouchers_item = ApiVoucher.from_dict(vouchers_item_data)
 
-            if data is None:
-                return data
+            vouchers.append(vouchers_item)
 
-            if isinstance(data, Unset):
-                return data
+        _multi_voucher = d.pop("multiVoucher", UNSET)
+        multi_voucher: Union[Unset, ApiMultiVoucher]
+        if isinstance(_multi_voucher, Unset) or not _multi_voucher:
+            multi_voucher = UNSET
+        else:
+            multi_voucher = ApiMultiVoucher.from_dict(_multi_voucher)
 
-            # Try to parse the data as datetime.date
-            try:
-                if not isinstance(data, str):
-                    raise TypeError()
-                end_date_type_1 = isoparse(data).date()
-
-                return end_date_type_1
-            except:  # noqa: E722
-                pass
-
-            return cast(Union[None, Unset, datetime.date], data)
-
-        end_date = _parse_end_date(d.pop("endDate", UNSET))
-
-        api_campaign_creation_result = cls(
-            campaign_id=campaign_id,
-            campaign_name=campaign_name,
-            voucher_type=voucher_type,
+        api_channel = cls(
+            channel_id=channel_id,
+            channel_name=channel_name,
+            voucher_amount=voucher_amount,
             status=status,
-            start_date=start_date,
-            channels=channels,
             created_date=created_date,
             changed_date=changed_date,
             created_by=created_by,
             created_by_type=created_by_type,
             changed_by=changed_by,
             changed_by_type=changed_by_type,
-            plenigo_offer_id=plenigo_offer_id,
-            end_date=end_date,
+            custom_data=custom_data,
+            vouchers=vouchers,
+            multi_voucher=multi_voucher,
         )
 
-        api_campaign_creation_result.additional_properties = d
-        return api_campaign_creation_result
+        api_channel.additional_properties = d
+        return api_channel
 
     @property
     def additional_keys(self) -> List[str]:

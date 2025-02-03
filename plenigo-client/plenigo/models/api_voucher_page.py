@@ -16,43 +16,41 @@ T = TypeVar("T", bound="ApiVoucherPage")
 class ApiVoucherPage:
     """
     Attributes:
-        starting_after (Union[Unset, int]): starting after element id
-        size (Union[Unset, int]): size of elements of the page
-        total_size (Union[Unset, int]): total of elements
-        campaigns (Union[Unset, List['ApiVoucher']]):
+        ending_before_id (Union[Unset, str]): A cursor for use in pagination. endingBefore is an object ID that defines
+            your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_bar,
+            your subsequent call can include endingBefore=obj_bar in order to fetch the previous page of the list.
+        starting_after_id (Union[Unset, str]): A cursor for use in pagination. startingAfter is an object ID that
+            defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+            obj_foo, your subsequent call can include startingAfter=obj_foo in order to fetch the next result set.
+        items (Union[Unset, List['ApiVoucher']]):
     """
 
-    starting_after: Union[Unset, int] = UNSET
-    size: Union[Unset, int] = UNSET
-    total_size: Union[Unset, int] = UNSET
-    campaigns: Union[Unset, List["ApiVoucher"]] = UNSET
+    ending_before_id: Union[Unset, str] = UNSET
+    starting_after_id: Union[Unset, str] = UNSET
+    items: Union[Unset, List["ApiVoucher"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        starting_after = self.starting_after
+        ending_before_id = self.ending_before_id
 
-        size = self.size
+        starting_after_id = self.starting_after_id
 
-        total_size = self.total_size
-
-        campaigns: Union[Unset, List[Dict[str, Any]]] = UNSET
-        if not isinstance(self.campaigns, Unset):
-            campaigns = []
-            for campaigns_item_data in self.campaigns:
-                campaigns_item = campaigns_item_data.to_dict()
-                campaigns.append(campaigns_item)
+        items: Union[Unset, List[Dict[str, Any]]] = UNSET
+        if not isinstance(self.items, Unset):
+            items = []
+            for items_item_data in self.items:
+                items_item = items_item_data.to_dict()
+                items.append(items_item)
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if starting_after is not UNSET:
-            field_dict["startingAfter"] = starting_after
-        if size is not UNSET:
-            field_dict["size"] = size
-        if total_size is not UNSET:
-            field_dict["totalSize"] = total_size
-        if campaigns is not UNSET:
-            field_dict["campaigns"] = campaigns
+        if ending_before_id is not UNSET:
+            field_dict["endingBeforeId"] = ending_before_id
+        if starting_after_id is not UNSET:
+            field_dict["startingAfterId"] = starting_after_id
+        if items is not UNSET:
+            field_dict["items"] = items
 
         return field_dict
 
@@ -61,24 +59,21 @@ class ApiVoucherPage:
         from ..models.api_voucher import ApiVoucher
 
         d = src_dict.copy()
-        starting_after = d.pop("startingAfter", UNSET)
+        ending_before_id = d.pop("endingBeforeId", UNSET)
 
-        size = d.pop("size", UNSET)
+        starting_after_id = d.pop("startingAfterId", UNSET)
 
-        total_size = d.pop("totalSize", UNSET)
+        items = []
+        _items = d.pop("items", UNSET)
+        for items_item_data in _items or []:
+            items_item = ApiVoucher.from_dict(items_item_data)
 
-        campaigns = []
-        _campaigns = d.pop("campaigns", UNSET)
-        for campaigns_item_data in _campaigns or []:
-            campaigns_item = ApiVoucher.from_dict(campaigns_item_data)
-
-            campaigns.append(campaigns_item)
+            items.append(items_item)
 
         api_voucher_page = cls(
-            starting_after=starting_after,
-            size=size,
-            total_size=total_size,
-            campaigns=campaigns,
+            ending_before_id=ending_before_id,
+            starting_after_id=starting_after_id,
+            items=items,
         )
 
         api_voucher_page.additional_properties = d

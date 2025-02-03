@@ -16,11 +16,11 @@ class PriceCountrySegment:
     """
     Attributes:
         title (str): title of the price country segment
+        priority (int): priority of the price country segment - the lower the priority the higher the rank of the price
+            segment
         countries (List[str]): array of country codes formatted as <a
             href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank">ISO 3166-1 alpha-2</a>
         price_country_segment_id (int): unique id of the price country segment within a contract company
-        priority (Union[Unset, int]): priority of the price country segment - the lower the priority the higher the rank
-            of the price segment
         description (Union[Unset, str]): internal description of the price country segment
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
@@ -35,9 +35,9 @@ class PriceCountrySegment:
     """
 
     title: str
+    priority: int
     countries: List[str]
     price_country_segment_id: int
-    priority: Union[Unset, int] = UNSET
     description: Union[Unset, str] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -50,11 +50,11 @@ class PriceCountrySegment:
     def to_dict(self) -> Dict[str, Any]:
         title = self.title
 
+        priority = self.priority
+
         countries = self.countries
 
         price_country_segment_id = self.price_country_segment_id
-
-        priority = self.priority
 
         description = self.description
 
@@ -91,12 +91,11 @@ class PriceCountrySegment:
         field_dict.update(
             {
                 "title": title,
+                "priority": priority,
                 "countries": countries,
                 "priceCountrySegmentId": price_country_segment_id,
             }
         )
-        if priority is not UNSET:
-            field_dict["priority"] = priority
         if description is not UNSET:
             field_dict["description"] = description
         if created_date is not UNSET:
@@ -119,11 +118,11 @@ class PriceCountrySegment:
         d = src_dict.copy()
         title = d.pop("title")
 
+        priority = d.pop("priority")
+
         countries = cast(List[str], d.pop("countries"))
 
         price_country_segment_id = d.pop("priceCountrySegmentId")
-
-        priority = d.pop("priority", UNSET)
 
         description = d.pop("description", UNSET)
 
@@ -195,9 +194,9 @@ class PriceCountrySegment:
 
         price_country_segment = cls(
             title=title,
+            priority=priority,
             countries=countries,
             price_country_segment_id=price_country_segment_id,
-            priority=priority,
             description=description,
             created_date=created_date,
             changed_date=changed_date,

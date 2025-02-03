@@ -18,7 +18,7 @@ T = TypeVar("T", bound="Transaction")
 class Transaction:
     """
     Attributes:
-        transaction_id (int): unique id of the transaction also used for pagination
+        transaction_id (str): unique id of the transaction also used for pagination
         plenigo_transaction_id (str): unique plenigo transaction id used to communicate with payment provider
         amount (float): amount of the transaction
         currency (str): currency of the transaction formatted as <a href="https://en.wikipedia.org/wiki/ISO_4217"
@@ -40,13 +40,14 @@ class Transaction:
         fulfillment_date (Union[None, Unset, datetime.datetime]): date the transaction was fulfilled with date-time
             notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339,
             section 5.6</a>, for example, 2017-07-21T17:32:28Z
+        sort_key (Union[None, Unset, int]): key to sort the results
         psp_transaction_id (Union[Unset, str]): id of the payment service provider if one was provided
         description (Union[Unset, str]): description describing the transaction reason
         error_code (Union[Unset, str]): error code for transaction failure
         error_message (Union[Unset, str]): description of the error
     """
 
-    transaction_id: int
+    transaction_id: str
     plenigo_transaction_id: str
     amount: float
     currency: str
@@ -59,6 +60,7 @@ class Transaction:
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     transaction_date: Union[None, Unset, datetime.datetime] = UNSET
     fulfillment_date: Union[None, Unset, datetime.datetime] = UNSET
+    sort_key: Union[None, Unset, int] = UNSET
     psp_transaction_id: Union[Unset, str] = UNSET
     description: Union[Unset, str] = UNSET
     error_code: Union[Unset, str] = UNSET
@@ -116,6 +118,12 @@ class Transaction:
         else:
             fulfillment_date = self.fulfillment_date
 
+        sort_key: Union[None, Unset, int]
+        if isinstance(self.sort_key, Unset) or self.sort_key is None:
+            sort_key = UNSET
+        else:
+            sort_key = self.sort_key
+
         psp_transaction_id = self.psp_transaction_id
 
         description = self.description
@@ -147,6 +155,8 @@ class Transaction:
             field_dict["transactionDate"] = transaction_date
         if fulfillment_date is not UNSET:
             field_dict["fulfillmentDate"] = fulfillment_date
+        if sort_key is not UNSET:
+            field_dict["sortKey"] = sort_key
         if psp_transaction_id is not UNSET:
             field_dict["pspTransactionId"] = psp_transaction_id
         if description is not UNSET:
@@ -275,6 +285,20 @@ class Transaction:
 
         fulfillment_date = _parse_fulfillment_date(d.pop("fulfillmentDate", UNSET))
 
+        def _parse_sort_key(data: object) -> Union[None, Unset, int]:
+            if data is None:
+                return data
+
+            if data is None:
+                return data
+
+            if isinstance(data, Unset):
+                return data
+
+            return cast(Union[None, Unset, int], data)
+
+        sort_key = _parse_sort_key(d.pop("sortKey", UNSET))
+
         psp_transaction_id = d.pop("pspTransactionId", UNSET)
 
         description = d.pop("description", UNSET)
@@ -297,6 +321,7 @@ class Transaction:
             changed_date=changed_date,
             transaction_date=transaction_date,
             fulfillment_date=fulfillment_date,
+            sort_key=sort_key,
             psp_transaction_id=psp_transaction_id,
             description=description,
             error_code=error_code,

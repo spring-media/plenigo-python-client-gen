@@ -89,7 +89,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[Union[AdditionalOrderData, ErrorResultBase]]:
-    """Get additional data
+    """Get additional order data
 
      Returns additional data associated with the order associated with the provided order id.
 
@@ -120,7 +120,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> Optional[Union[AdditionalOrderData, ErrorResultBase]]:
-    """Get additional data
+    """Get additional order data
 
      Returns additional data associated with the order associated with the provided order id.
 
@@ -151,7 +151,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[Union[AdditionalOrderData, ErrorResultBase]]:
-    """Get additional data
+    """Get additional order data
 
      Returns additional data associated with the order associated with the provided order id.
 
@@ -180,7 +180,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> Optional[Union[AdditionalOrderData, ErrorResultBase]]:
-    """Get additional data
+    """Get additional order data
 
      Returns additional data associated with the order associated with the provided order id.
 

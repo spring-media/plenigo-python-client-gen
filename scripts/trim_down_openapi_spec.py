@@ -5,6 +5,9 @@ import json
 import argparse
 from copy import deepcopy
 
+# Operations that we want to remove from paths
+METHODS_TO_REMOVE = {"put", "post", "delete", "options", "head", "patch", "trace"}
+
 # Function to find $ref values and gather them into a set
 def find_ref_values(data, ref_set=None):
     if ref_set is None:
@@ -55,6 +58,23 @@ def search_schemas(openapi_spec, all_references):
             if sub_schema not in already_searched:
                 schemas_seen_so_far.add(sub_schema)
     return all_references
+
+def remove_http_methods_we_dont_care(openapi_spec):
+    new_openapi = deepcopy(openapi_spec)
+    if "paths" not in new_openapi:
+        return new_openapi
+    
+    for path, path_item in new_openapi["paths"].items():
+        # path_item is a dictionary of methods => operationObject
+        methods_to_delete = []
+        for method in path_item.keys():
+            if method.lower() in METHODS_TO_REMOVE:
+                methods_to_delete.append(method)
+        # Actually remove them
+        for m in methods_to_delete:
+            del path_item[m]
+    return new_openapi
+
 
 # Filter the OpenAPI specification based on the endpoints and references
 def filter_openapi_spec(openapi_spec, endpoints, all_references):
@@ -140,6 +160,8 @@ def main():
     # Load the OpenAPI specification and endpoints
     openapi_spec = load_json_file(args.input_file)
     endpoints = load_json_file(args.endpoints_file)
+    
+    openapi_spec = remove_http_methods_we_dont_care(openapi_spec)
 
     # Gather and search references
     all_references = gather_references(openapi_spec, endpoints)
@@ -155,6 +177,9 @@ def main():
     #delete_key_from_dict(schema_obj, "required")
     #delete_key_from_dict(new_open_api, "enum")
 
+
+    # Deletes examples because we don't need them and they are usually wrong anyways
+    del new_open_api["components"]["examples"]
 
     # Save the filtered spec
     save_openapi_spec(args.output_file, new_open_api)

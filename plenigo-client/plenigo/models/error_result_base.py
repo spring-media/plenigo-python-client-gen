@@ -10,8 +10,8 @@ T = TypeVar("T", bound="ErrorResultBase")
 class ErrorResultBase:
     """
     Attributes:
-        error_code (int): plenigo error code
-        error_message (str): plenigo error description
+        error_code (int): plenigo error code Example: 99400.
+        error_message (str): plenigo error description Example: Provided data cannot be processed..
     """
 
     error_code: int

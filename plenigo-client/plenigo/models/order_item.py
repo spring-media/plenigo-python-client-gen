@@ -5,7 +5,7 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.order_item_tax_type import OrderItemTaxType
+from ..models.tax_type import TaxType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -25,14 +25,12 @@ class OrderItem:
             the orderId
         product_id (str): id of the product bought
         title (str): product title presented to the customer
-        tax_type (OrderItemTaxType): unique identification of the tax type the product represents - important for tax
-            handling purposes
+        tax_type (TaxType): unique identification of the tax type the product represents
         price (float): price of the order item
         tax (float): tax percentage operated on this order item
         tax_country (str): country tax is based on formatted as <a
             href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank">ISO 3166-1 alpha-2</a>
         quantity (int): purchase quantity
-        discount_percentage (int): discount offered to the order item
         delivery_customer_id (str): id of the customer the delivery belongs to (also includes digital products)
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
@@ -49,6 +47,7 @@ class OrderItem:
         access_right_unique_id (Union[Unset, str]): unique id of the access right this order item grants access to
         internal_title (Union[Unset, str]): if the product is based on a plenigo offer the product title for internal
             usage is provided here
+        discount_percentage (Union[Unset, int]): discount offered to the order item
         cost_center (Union[Unset, str]): cost center associated with this product at the time of order creation
         purchase_number (Union[Unset, str]): purchase number associated with this subscription item
         voucher_code (Union[Unset, str]): voucher code to purchase this order item
@@ -68,12 +67,11 @@ class OrderItem:
     position: int
     product_id: str
     title: str
-    tax_type: OrderItemTaxType
+    tax_type: TaxType
     price: float
     tax: float
     tax_country: str
     quantity: int
-    discount_percentage: int
     delivery_customer_id: str
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -82,6 +80,7 @@ class OrderItem:
     plenigo_step_id: Union[Unset, str] = UNSET
     access_right_unique_id: Union[Unset, str] = UNSET
     internal_title: Union[Unset, str] = UNSET
+    discount_percentage: Union[Unset, int] = UNSET
     cost_center: Union[Unset, str] = UNSET
     purchase_number: Union[Unset, str] = UNSET
     voucher_code: Union[Unset, str] = UNSET
@@ -112,8 +111,6 @@ class OrderItem:
 
         quantity = self.quantity
 
-        discount_percentage = self.discount_percentage
-
         delivery_customer_id = self.delivery_customer_id
 
         created_date: Union[None, Unset, str]
@@ -141,6 +138,8 @@ class OrderItem:
         access_right_unique_id = self.access_right_unique_id
 
         internal_title = self.internal_title
+
+        discount_percentage = self.discount_percentage
 
         cost_center = self.cost_center
 
@@ -188,7 +187,6 @@ class OrderItem:
                 "tax": tax,
                 "taxCountry": tax_country,
                 "quantity": quantity,
-                "discountPercentage": discount_percentage,
                 "deliveryCustomerId": delivery_customer_id,
             }
         )
@@ -206,6 +204,8 @@ class OrderItem:
             field_dict["accessRightUniqueId"] = access_right_unique_id
         if internal_title is not UNSET:
             field_dict["internalTitle"] = internal_title
+        if discount_percentage is not UNSET:
+            field_dict["discountPercentage"] = discount_percentage
         if cost_center is not UNSET:
             field_dict["costCenter"] = cost_center
         if purchase_number is not UNSET:
@@ -244,7 +244,7 @@ class OrderItem:
 
         title = d.pop("title")
 
-        tax_type = OrderItemTaxType(d.pop("taxType"))
+        tax_type = TaxType(d.pop("taxType"))
 
         price = d.pop("price")
 
@@ -253,8 +253,6 @@ class OrderItem:
         tax_country = d.pop("taxCountry")
 
         quantity = d.pop("quantity")
-
-        discount_percentage = d.pop("discountPercentage")
 
         delivery_customer_id = d.pop("deliveryCustomerId")
 
@@ -315,6 +313,8 @@ class OrderItem:
         access_right_unique_id = d.pop("accessRightUniqueId", UNSET)
 
         internal_title = d.pop("internalTitle", UNSET)
+
+        discount_percentage = d.pop("discountPercentage", UNSET)
 
         cost_center = d.pop("costCenter", UNSET)
 
@@ -384,7 +384,6 @@ class OrderItem:
             tax=tax,
             tax_country=tax_country,
             quantity=quantity,
-            discount_percentage=discount_percentage,
             delivery_customer_id=delivery_customer_id,
             created_date=created_date,
             changed_date=changed_date,
@@ -393,6 +392,7 @@ class OrderItem:
             plenigo_step_id=plenigo_step_id,
             access_right_unique_id=access_right_unique_id,
             internal_title=internal_title,
+            discount_percentage=discount_percentage,
             cost_center=cost_center,
             purchase_number=purchase_number,
             voucher_code=voucher_code,
