@@ -2,9 +2,15 @@
 
 This is an unofficial client for the [Plenigo API](https://api.plenigo.com/) and is generated with the help of [openapi-python-client](https://github.com/openapi-generators/openapi-python-client) based on the OpenAPI specs provided by Plenigo.
 
-Keep in mind that not all the endpoints have been tested. Make sure to check the client code and try it out in the staging environment before using it in production.
+This sdk is tailored to the specific needs of Axel Springer and likely won't work for your needs out of the box. For ex we remove unwanted paths, schemas out of the openapi spec because there were a lot of bugs and errors inside the spec given by plenigo that prevented us from compiling a working version for our needs. By reducing the openapi spec to only the paths we needed, we were able to reduce the blast radius of bugs.
 
-#### Note
+If you need a new path that is not specified in the ./scripts/endpoints.json file, just update the file with the new path like this:
+```json
+[
+  "/customers",
+  ...
+]
+```
 
 You can download the most recent OpenAPI specs from the [Plenigo API documentation](https://api.plenigo.com). The `openapi.json` file in this repo is a copy of the revision used when the client was last generated.
 
