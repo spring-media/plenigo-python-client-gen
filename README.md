@@ -12,8 +12,6 @@ If you need a new path that is not specified in the ./scripts/endpoints.json fil
 ]
 ```
 
-You can download the most recent OpenAPI specs from the [Plenigo API documentation](https://api.plenigo.com). The `openapi.json` file in this repo is a copy of the revision used when the client was last generated.
-
 ## :dart: Usage
 
 ```python
