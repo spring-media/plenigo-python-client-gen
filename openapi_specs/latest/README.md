@@ -1,0 +1,1 @@
+- patched the ApiVoucher -> status field to also contain the "CANCELLED" variant.
