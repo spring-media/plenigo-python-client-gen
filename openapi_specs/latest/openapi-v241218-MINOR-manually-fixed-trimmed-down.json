@@ -8469,7 +8469,8 @@
                 "enum": [
                   "ACTIVE",
                   "INACTIVE",
-                  "DELETED"
+                  "DELETED",
+                  "CANCELLED"
                 ]
               },
               "orderId": {
