@@ -53,7 +53,7 @@ class OfferProductBase:
             wallet
         credit_count (Union[Unset, int]): credit count added with this product
         option (Union[Unset, bool]): flag indicating if product is an option in a basket
-        translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
+        translations (Union[Unset, list['OfferTranslation']]): translations associated with this product
     """
 
     position: int
@@ -80,7 +80,7 @@ class OfferProductBase:
     credit_count_walled_id: Union[Unset, int] = UNSET
     credit_count: Union[Unset, int] = UNSET
     option: Union[Unset, bool] = UNSET
-    translations: Union[Unset, List["OfferTranslation"]] = UNSET
+    translations: Union[Unset, list["OfferTranslation"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -126,11 +126,11 @@ class OfferProductBase:
         if not isinstance(self.voucher_validity_timespan, Unset):
             voucher_validity_timespan = self.voucher_validity_timespan.value
 
-        additional_data: Union[Unset, Dict[str, Any]] = UNSET
+        additional_data: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.additional_data, Unset):
             additional_data = self.additional_data.to_dict()
 
-        data: Union[Unset, Dict[str, Any]] = UNSET
+        data: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.data, Unset):
             data = self.data.to_dict()
 
@@ -144,7 +144,7 @@ class OfferProductBase:
 
         option = self.option
 
-        translations: Union[Unset, List[Dict[str, Any]]] = UNSET
+        translations: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.translations, Unset):
             translations = []
             for translations_item_data in self.translations:

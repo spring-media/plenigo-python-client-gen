@@ -80,7 +80,7 @@ class AppStoreOrderItem:
 
         access_right_unique_id = self.access_right_unique_id
 
-        additional_store_item_data: Union[Dict[str, Any], Unset]
+        additional_store_item_data: Union[Unset, dict[str, Any]]
         if isinstance(self.additional_store_item_data, Unset) or self.additional_store_item_data is None:
             additional_store_item_data = UNSET
         elif isinstance(self.additional_store_item_data, AppleAppStoreReceiptItem):
@@ -179,7 +179,7 @@ class AppStoreOrderItem:
         access_right_unique_id = d.pop("accessRightUniqueId", UNSET)
 
         def _parse_additional_store_item_data(
-            data: object,
+            data: object
         ) -> Union["AppleAppStoreReceiptItem", "GooglePlayProductPurchase", "GooglePlaySubscriptionPurchase", Unset]:
             if data is None:
                 return data

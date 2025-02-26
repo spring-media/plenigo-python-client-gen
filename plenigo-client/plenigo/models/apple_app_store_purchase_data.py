@@ -16,14 +16,14 @@ T = TypeVar("T", bound="AppleAppStorePurchaseData")
 class AppleAppStorePurchaseData:
     """
     Attributes:
-        transactions (Union[Unset, List['AppleAppStoreTransaction']]):
+        transactions (Union[Unset, list['AppleAppStoreTransaction']]):
     """
 
-    transactions: Union[Unset, List["AppleAppStoreTransaction"]] = UNSET
+    transactions: Union[Unset, list["AppleAppStoreTransaction"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        transactions: Union[Unset, List[Dict[str, Any]]] = UNSET
+        transactions: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.transactions, Unset):
             transactions = []
             for transactions_item_data in self.transactions:

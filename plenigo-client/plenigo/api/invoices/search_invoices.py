@@ -31,7 +31,7 @@ def _get_kwargs(
     filter_by_invoice_date: Union[Unset, bool] = UNSET,
     invoice_type: Union[Unset, SearchInvoicesInvoiceType] = UNSET,
 ) -> Dict[str, Any]:
-    params: Dict[str, Any] = {}
+    params: dict[str, Any] = {}
 
     params["size"] = size
 

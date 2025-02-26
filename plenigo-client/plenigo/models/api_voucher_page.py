@@ -22,12 +22,12 @@ class ApiVoucherPage:
         starting_after_id (Union[Unset, str]): A cursor for use in pagination. startingAfter is an object ID that
             defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
             obj_foo, your subsequent call can include startingAfter=obj_foo in order to fetch the next result set.
-        items (Union[Unset, List['ApiVoucher']]):
+        items (Union[Unset, list['ApiVoucher']]):
     """
 
     ending_before_id: Union[Unset, str] = UNSET
     starting_after_id: Union[Unset, str] = UNSET
-    items: Union[Unset, List["ApiVoucher"]] = UNSET
+    items: Union[Unset, list["ApiVoucher"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -35,7 +35,7 @@ class ApiVoucherPage:
 
         starting_after_id = self.starting_after_id
 
-        items: Union[Unset, List[Dict[str, Any]]] = UNSET
+        items: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.items, Unset):
             items = []
             for items_item_data in self.items:

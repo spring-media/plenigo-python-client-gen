@@ -35,7 +35,7 @@ class OfferTranslation:
         withdrawal_instruction (Union[Unset, str]): translated withdrawal instruction
         preferred (Union[Unset, bool]): flag indicating if language is default fallback language if no suitable language
             is found
-        images (Union[Unset, List['OfferTranslationImage']]): images associated with translation
+        images (Union[Unset, list['OfferTranslationImage']]): images associated with translation
     """
 
     language: str
@@ -48,7 +48,7 @@ class OfferTranslation:
     summary_text: Union[Unset, str] = UNSET
     withdrawal_instruction: Union[Unset, str] = UNSET
     preferred: Union[Unset, bool] = UNSET
-    images: Union[Unset, List["OfferTranslationImage"]] = UNSET
+    images: Union[Unset, list["OfferTranslationImage"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -84,7 +84,7 @@ class OfferTranslation:
 
         preferred = self.preferred
 
-        images: Union[Unset, List[Dict[str, Any]]] = UNSET
+        images: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.images, Unset):
             images = []
             for images_item_data in self.images:

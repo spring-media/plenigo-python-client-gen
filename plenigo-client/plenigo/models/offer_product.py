@@ -56,16 +56,16 @@ class OfferProduct:
             wallet
         credit_count (Union[Unset, int]): credit count added with this product
         option (Union[Unset, bool]): flag indicating if product is an option in a basket
-        translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
+        translations (Union[Unset, list['OfferTranslation']]): translations associated with this product
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
         changed_date (Union[None, Unset, datetime.datetime]): time the object was changed with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
-        steps (Union[Unset, List['OfferProductStep']]): steps associated with this product - mandatory field for
+        steps (Union[Unset, list['OfferProductStep']]): steps associated with this product - mandatory field for
             subscriptions
-        product_tags (Union[Unset, List['ProductTag']]): tags associated with this product
+        product_tags (Union[Unset, list['ProductTag']]): tags associated with this product
     """
 
     position: int
@@ -93,11 +93,11 @@ class OfferProduct:
     credit_count_walled_id: Union[Unset, int] = UNSET
     credit_count: Union[Unset, int] = UNSET
     option: Union[Unset, bool] = UNSET
-    translations: Union[Unset, List["OfferTranslation"]] = UNSET
+    translations: Union[Unset, list["OfferTranslation"]] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
-    steps: Union[Unset, List["OfferProductStep"]] = UNSET
-    product_tags: Union[Unset, List["ProductTag"]] = UNSET
+    steps: Union[Unset, list["OfferProductStep"]] = UNSET
+    product_tags: Union[Unset, list["ProductTag"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -145,11 +145,11 @@ class OfferProduct:
         if not isinstance(self.voucher_validity_timespan, Unset):
             voucher_validity_timespan = self.voucher_validity_timespan.value
 
-        additional_data: Union[Unset, Dict[str, Any]] = UNSET
+        additional_data: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.additional_data, Unset):
             additional_data = self.additional_data.to_dict()
 
-        data: Union[Unset, Dict[str, Any]] = UNSET
+        data: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.data, Unset):
             data = self.data.to_dict()
 
@@ -163,7 +163,7 @@ class OfferProduct:
 
         option = self.option
 
-        translations: Union[Unset, List[Dict[str, Any]]] = UNSET
+        translations: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.translations, Unset):
             translations = []
             for translations_item_data in self.translations:
@@ -186,14 +186,14 @@ class OfferProduct:
         else:
             changed_date = self.changed_date
 
-        steps: Union[Unset, List[Dict[str, Any]]] = UNSET
+        steps: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.steps, Unset):
             steps = []
             for steps_item_data in self.steps:
                 steps_item = steps_item_data.to_dict()
                 steps.append(steps_item)
 
-        product_tags: Union[Unset, List[Dict[str, Any]]] = UNSET
+        product_tags: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.product_tags, Unset):
             product_tags = []
             for product_tags_item_data in self.product_tags:

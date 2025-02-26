@@ -20,7 +20,7 @@ class PriceIssue:
     """
     Attributes:
         title (str): title of the price issue
-        price_segments (List['PriceSegment']): price segments
+        price_segments (list['PriceSegment']): price segments
         price_issue_id (int): unique id of the price issue within a contract company
         archived (bool): flag indicating if price country segment is archived
         leaf_id (Union[Unset, int]): id of the tree leaf this price issue should be associated with
@@ -38,7 +38,7 @@ class PriceIssue:
     """
 
     title: str
-    price_segments: List["PriceSegment"]
+    price_segments: list["PriceSegment"]
     price_issue_id: int
     archived: bool
     leaf_id: Union[Unset, int] = UNSET

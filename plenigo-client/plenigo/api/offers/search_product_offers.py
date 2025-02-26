@@ -28,7 +28,7 @@ def _get_kwargs(
     plenigo_offer_id: Union[Unset, str] = UNSET,
     leaf_id: Union[Unset, int] = UNSET,
 ) -> Dict[str, Any]:
-    params: Dict[str, Any] = {}
+    params: dict[str, Any] = {}
 
     params["size"] = size
 

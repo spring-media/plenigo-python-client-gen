@@ -27,7 +27,7 @@ def _get_kwargs(
     sort: Union[Unset, SearchAppleAppStorePurchasesSort] = UNSET,
     token: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    params: Dict[str, Any] = {}
+    params: dict[str, Any] = {}
 
     params["size"] = size
 

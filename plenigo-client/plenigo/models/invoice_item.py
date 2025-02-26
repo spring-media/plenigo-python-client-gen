@@ -120,7 +120,7 @@ class InvoiceItem:
 
         purchase_number = self.purchase_number
 
-        delivery_address: Union[Unset, Dict[str, Any]] = UNSET
+        delivery_address: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.delivery_address, Unset):
             delivery_address = self.delivery_address.to_dict()
 

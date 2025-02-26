@@ -18,16 +18,16 @@ class OfferProductStepCreation:
     Attributes:
         position (int): position inside the product
         product_contract_id (Union[Unset, int]): id of the product contract associated with this step
-        translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
-        product_tag_ids (Union[Unset, List[int]]): tags associated with this product
-        additional_product_contract_ids (Union[Unset, List[int]]): additioanl product contract ids with this product
+        translations (Union[Unset, list['OfferTranslation']]): translations associated with this product
+        product_tag_ids (Union[Unset, list[int]]): tags associated with this product
+        additional_product_contract_ids (Union[Unset, list[int]]): additioanl product contract ids with this product
     """
 
     position: int
     product_contract_id: Union[Unset, int] = UNSET
-    translations: Union[Unset, List["OfferTranslation"]] = UNSET
-    product_tag_ids: Union[Unset, List[int]] = UNSET
-    additional_product_contract_ids: Union[Unset, List[int]] = UNSET
+    translations: Union[Unset, list["OfferTranslation"]] = UNSET
+    product_tag_ids: Union[Unset, list[int]] = UNSET
+    additional_product_contract_ids: Union[Unset, list[int]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -35,18 +35,18 @@ class OfferProductStepCreation:
 
         product_contract_id = self.product_contract_id
 
-        translations: Union[Unset, List[Dict[str, Any]]] = UNSET
+        translations: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.translations, Unset):
             translations = []
             for translations_item_data in self.translations:
                 translations_item = translations_item_data.to_dict()
                 translations.append(translations_item)
 
-        product_tag_ids: Union[Unset, List[int]] = UNSET
+        product_tag_ids: Union[Unset, list[int]] = UNSET
         if not isinstance(self.product_tag_ids, Unset):
             product_tag_ids = self.product_tag_ids
 
-        additional_product_contract_ids: Union[Unset, List[int]] = UNSET
+        additional_product_contract_ids: Union[Unset, list[int]] = UNSET
         if not isinstance(self.additional_product_contract_ids, Unset):
             additional_product_contract_ids = self.additional_product_contract_ids
 
@@ -84,9 +84,9 @@ class OfferProductStepCreation:
 
             translations.append(translations_item)
 
-        product_tag_ids = cast(List[int], d.pop("productTagIds", UNSET))
+        product_tag_ids = cast(list[int], d.pop("productTagIds", UNSET))
 
-        additional_product_contract_ids = cast(List[int], d.pop("additionalProductContractIds", UNSET))
+        additional_product_contract_ids = cast(list[int], d.pop("additionalProductContractIds", UNSET))
 
         offer_product_step_creation = cls(
             position=position,

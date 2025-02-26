@@ -17,13 +17,13 @@ class PriceIssueCreation:
     """
     Attributes:
         title (str): title of the price issue
-        price_segments (List['PriceSegment']): price segments
+        price_segments (list['PriceSegment']): price segments
         leaf_id (Union[Unset, int]): id of the tree leaf this price issue should be associated with
         description (Union[Unset, str]): Internal description of the price issue
     """
 
     title: str
-    price_segments: List["PriceSegment"]
+    price_segments: list["PriceSegment"]
     leaf_id: Union[Unset, int] = UNSET
     description: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)

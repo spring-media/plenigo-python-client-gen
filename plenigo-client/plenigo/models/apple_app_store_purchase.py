@@ -99,11 +99,11 @@ class AppleAppStorePurchase:
 
         app_store_order_id = self.app_store_order_id
 
-        receipt: Union[Unset, Dict[str, Any]] = UNSET
+        receipt: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.receipt, Unset):
             receipt = self.receipt.to_dict()
 
-        purchase_data: Union[Unset, Dict[str, Any]] = UNSET
+        purchase_data: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.purchase_data, Unset):
             purchase_data = self.purchase_data.to_dict()
 

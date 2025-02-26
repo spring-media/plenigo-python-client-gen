@@ -35,7 +35,7 @@ class AppleAppStoreReceipt:
             processed and the response was generated
         original_purchase_date (Union[None, Unset, datetime.datetime]): time of the original app purchase, in the
             Pacific Time zone
-        items (Union[Unset, List['AppleAppStoreReceiptItem']]):
+        items (Union[Unset, list['AppleAppStoreReceiptItem']]):
     """
 
     receipt_type: Union[Unset, str] = UNSET
@@ -49,7 +49,7 @@ class AppleAppStoreReceipt:
     receipt_creation_date: Union[None, Unset, datetime.datetime] = UNSET
     request_date: Union[None, Unset, datetime.datetime] = UNSET
     original_purchase_date: Union[None, Unset, datetime.datetime] = UNSET
-    items: Union[Unset, List["AppleAppStoreReceiptItem"]] = UNSET
+    items: Union[Unset, list["AppleAppStoreReceiptItem"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -93,7 +93,7 @@ class AppleAppStoreReceipt:
         else:
             original_purchase_date = self.original_purchase_date
 
-        items: Union[Unset, List[Dict[str, Any]]] = UNSET
+        items: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.items, Unset):
             items = []
             for items_item_data in self.items:

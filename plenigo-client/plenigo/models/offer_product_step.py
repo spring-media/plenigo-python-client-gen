@@ -30,9 +30,9 @@ class OfferProductStep:
     Attributes:
         position (int): position inside the product
         product_contract_id (Union[Unset, int]): id of the product contract associated with this step
-        translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
-        product_tag_ids (Union[Unset, List[int]]): tags associated with this product
-        additional_product_contract_ids (Union[Unset, List[int]]): additioanl product contract ids with this product
+        translations (Union[Unset, list['OfferTranslation']]): translations associated with this product
+        product_tag_ids (Union[Unset, list[int]]): tags associated with this product
+        additional_product_contract_ids (Union[Unset, list[int]]): additioanl product contract ids with this product
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
@@ -59,16 +59,16 @@ class OfferProductStep:
         price_issue_id (Union[Unset, int]): id of the price issue associated with this step
         ivw_rule_id (Union[Unset, int]): id of the ivw rule associated with this product step
         credit_count (Union[Unset, int]): credit count added with this step
-        product_tags (Union[Unset, List['ProductTag']]): tags associated with this product
-        additional_product_contracts (Union[Unset, List['ProductContract']]): additioanl product contract ids with this
+        product_tags (Union[Unset, list['ProductTag']]): tags associated with this product
+        additional_product_contracts (Union[Unset, list['ProductContract']]): additioanl product contract ids with this
             product
     """
 
     position: int
     product_contract_id: Union[Unset, int] = UNSET
-    translations: Union[Unset, List["OfferTranslation"]] = UNSET
-    product_tag_ids: Union[Unset, List[int]] = UNSET
-    additional_product_contract_ids: Union[Unset, List[int]] = UNSET
+    translations: Union[Unset, list["OfferTranslation"]] = UNSET
+    product_tag_ids: Union[Unset, list[int]] = UNSET
+    additional_product_contract_ids: Union[Unset, list[int]] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     plenigo_step_id: Union[Unset, str] = UNSET
@@ -89,8 +89,8 @@ class OfferProductStep:
     price_issue_id: Union[Unset, int] = UNSET
     ivw_rule_id: Union[Unset, int] = UNSET
     credit_count: Union[Unset, int] = UNSET
-    product_tags: Union[Unset, List["ProductTag"]] = UNSET
-    additional_product_contracts: Union[Unset, List["ProductContract"]] = UNSET
+    product_tags: Union[Unset, list["ProductTag"]] = UNSET
+    additional_product_contracts: Union[Unset, list["ProductContract"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -98,18 +98,18 @@ class OfferProductStep:
 
         product_contract_id = self.product_contract_id
 
-        translations: Union[Unset, List[Dict[str, Any]]] = UNSET
+        translations: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.translations, Unset):
             translations = []
             for translations_item_data in self.translations:
                 translations_item = translations_item_data.to_dict()
                 translations.append(translations_item)
 
-        product_tag_ids: Union[Unset, List[int]] = UNSET
+        product_tag_ids: Union[Unset, list[int]] = UNSET
         if not isinstance(self.product_tag_ids, Unset):
             product_tag_ids = self.product_tag_ids
 
-        additional_product_contract_ids: Union[Unset, List[int]] = UNSET
+        additional_product_contract_ids: Union[Unset, list[int]] = UNSET
         if not isinstance(self.additional_product_contract_ids, Unset):
             additional_product_contract_ids = self.additional_product_contract_ids
 
@@ -177,14 +177,14 @@ class OfferProductStep:
 
         credit_count = self.credit_count
 
-        product_tags: Union[Unset, List[Dict[str, Any]]] = UNSET
+        product_tags: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.product_tags, Unset):
             product_tags = []
             for product_tags_item_data in self.product_tags:
                 product_tags_item = product_tags_item_data.to_dict()
                 product_tags.append(product_tags_item)
 
-        additional_product_contracts: Union[Unset, List[Dict[str, Any]]] = UNSET
+        additional_product_contracts: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.additional_product_contracts, Unset):
             additional_product_contracts = []
             for additional_product_contracts_item_data in self.additional_product_contracts:
@@ -271,9 +271,9 @@ class OfferProductStep:
 
             translations.append(translations_item)
 
-        product_tag_ids = cast(List[int], d.pop("productTagIds", UNSET))
+        product_tag_ids = cast(list[int], d.pop("productTagIds", UNSET))
 
-        additional_product_contract_ids = cast(List[int], d.pop("additionalProductContractIds", UNSET))
+        additional_product_contract_ids = cast(list[int], d.pop("additionalProductContractIds", UNSET))
 
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:

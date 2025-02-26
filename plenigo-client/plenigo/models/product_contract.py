@@ -39,7 +39,7 @@ class ProductContract:
         changed_by_type (Union[Unset, UserType]): type of user who performs the action
         leaf_id (Union[Unset, int]): id of the leaf the contract is related to
         description (Union[Unset, str]): description of the product contract
-        product_tag_ids (Union[Unset, List[int]]): tags associated with this product
+        product_tag_ids (Union[Unset, list[int]]): tags associated with this product
         ivw_rule_id (Union[Unset, int]): unique id of this ivw rule
         time_based_condition (Union[Unset, TimeBasedProductContractCondition]):
         issue_based_condition (Union[Unset, IssueBasedProductContractCondition]):
@@ -59,7 +59,7 @@ class ProductContract:
     changed_by_type: Union[Unset, UserType] = UNSET
     leaf_id: Union[Unset, int] = UNSET
     description: Union[Unset, str] = UNSET
-    product_tag_ids: Union[Unset, List[int]] = UNSET
+    product_tag_ids: Union[Unset, list[int]] = UNSET
     ivw_rule_id: Union[Unset, int] = UNSET
     time_based_condition: Union[Unset, "TimeBasedProductContractCondition"] = UNSET
     issue_based_condition: Union[Unset, "IssueBasedProductContractCondition"] = UNSET
@@ -109,21 +109,21 @@ class ProductContract:
 
         description = self.description
 
-        product_tag_ids: Union[Unset, List[int]] = UNSET
+        product_tag_ids: Union[Unset, list[int]] = UNSET
         if not isinstance(self.product_tag_ids, Unset):
             product_tag_ids = self.product_tag_ids
 
         ivw_rule_id = self.ivw_rule_id
 
-        time_based_condition: Union[Unset, Dict[str, Any]] = UNSET
+        time_based_condition: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.time_based_condition, Unset):
             time_based_condition = self.time_based_condition.to_dict()
 
-        issue_based_condition: Union[Unset, Dict[str, Any]] = UNSET
+        issue_based_condition: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.issue_based_condition, Unset):
             issue_based_condition = self.issue_based_condition.to_dict()
 
-        credit_based_condition: Union[Unset, Dict[str, Any]] = UNSET
+        credit_based_condition: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.credit_based_condition, Unset):
             credit_based_condition = self.credit_based_condition.to_dict()
 
@@ -254,7 +254,7 @@ class ProductContract:
 
         description = d.pop("description", UNSET)
 
-        product_tag_ids = cast(List[int], d.pop("productTagIds", UNSET))
+        product_tag_ids = cast(list[int], d.pop("productTagIds", UNSET))
 
         ivw_rule_id = d.pop("ivwRuleId", UNSET)
 

@@ -22,7 +22,7 @@ def _get_kwargs(
     ending_before: Union[Unset, str] = UNSET,
     voucher_code: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    params: Dict[str, Any] = {}
+    params: dict[str, Any] = {}
 
     params["size"] = size
 

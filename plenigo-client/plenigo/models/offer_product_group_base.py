@@ -15,11 +15,11 @@ class OfferProductGroupBase:
     """
     Attributes:
         internal_title (str): internal title of the product group
-        translations (List['OfferTranslation']): translations associated with this product
+        translations (list['OfferTranslation']): translations associated with this product
     """
 
     internal_title: str
-    translations: List["OfferTranslation"]
+    translations: list["OfferTranslation"]
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:

@@ -36,7 +36,7 @@ class ApiChannel:
         changed_by (Union[Unset, str]): id who changed the object
         changed_by_type (Union[Unset, UserType]): type of user who performs the action
         custom_data (Union[Unset, str]): free text field
-        vouchers (Union[Unset, List['ApiVoucher']]):
+        vouchers (Union[Unset, list['ApiVoucher']]):
         multi_voucher (Union[Unset, ApiMultiVoucher]):
     """
 
@@ -51,7 +51,7 @@ class ApiChannel:
     changed_by: Union[Unset, str] = UNSET
     changed_by_type: Union[Unset, UserType] = UNSET
     custom_data: Union[Unset, str] = UNSET
-    vouchers: Union[Unset, List["ApiVoucher"]] = UNSET
+    vouchers: Union[Unset, list["ApiVoucher"]] = UNSET
     multi_voucher: Union[Unset, "ApiMultiVoucher"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -94,14 +94,14 @@ class ApiChannel:
 
         custom_data = self.custom_data
 
-        vouchers: Union[Unset, List[Dict[str, Any]]] = UNSET
+        vouchers: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.vouchers, Unset):
             vouchers = []
             for vouchers_item_data in self.vouchers:
                 vouchers_item = vouchers_item_data.to_dict()
                 vouchers.append(vouchers_item)
 
-        multi_voucher: Union[Unset, Dict[str, Any]] = UNSET
+        multi_voucher: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.multi_voucher, Unset):
             multi_voucher = self.multi_voucher.to_dict()
 

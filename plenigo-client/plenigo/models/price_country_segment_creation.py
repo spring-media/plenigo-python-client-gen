@@ -15,14 +15,14 @@ class PriceCountrySegmentCreation:
         title (str): title of the price country segment
         priority (int): priority of the price country segment - the lower the priority the higher the rank of the price
             segment
-        countries (List[str]): array of country codes formatted as <a
+        countries (list[str]): array of country codes formatted as <a
             href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank">ISO 3166-1 alpha-2</a>
         description (Union[Unset, str]): internal description of the price country segment
     """
 
     title: str
     priority: int
-    countries: List[str]
+    countries: list[str]
     description: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -56,7 +56,7 @@ class PriceCountrySegmentCreation:
 
         priority = d.pop("priority")
 
-        countries = cast(List[str], d.pop("countries"))
+        countries = cast(list[str], d.pop("countries"))
 
         description = d.pop("description", UNSET)
 

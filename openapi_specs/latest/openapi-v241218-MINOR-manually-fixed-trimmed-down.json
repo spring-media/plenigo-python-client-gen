@@ -8624,7 +8624,8 @@
                   "CREATING",
                   "INACTIVE",
                   "DELETED",
-                  "UPDATING"
+                  "UPDATING",
+                  "CANCELLED"
                 ]
               }
             }

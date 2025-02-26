@@ -117,11 +117,11 @@ class GooglePlayStorePurchase:
 
         app_store_order_id = self.app_store_order_id
 
-        subscription_purchase: Union[Unset, Dict[str, Any]] = UNSET
+        subscription_purchase: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.subscription_purchase, Unset):
             subscription_purchase = self.subscription_purchase.to_dict()
 
-        product_purchase: Union[Unset, Dict[str, Any]] = UNSET
+        product_purchase: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.product_purchase, Unset):
             product_purchase = self.product_purchase.to_dict()
 

@@ -32,7 +32,7 @@ class Invoice:
             target="_blank">ISO 4217, alphabetic code</a>
         payment_method (InvoicePaymentMethod): payment method used to pay for the invoice
         invoice_customer_id (str): id of the customer the invoice belongs to
-        items (List['InvoiceItem']):
+        items (list['InvoiceItem']):
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
@@ -48,7 +48,7 @@ class Invoice:
         purchase_order_indicator (Union[Unset, str]): purchase invoice indicator if provided by the customer
         invoice_address (Union[Unset, InvoiceAddress]):
         transaction_id (Union[Unset, str]): id of the related transaction if payment was not done via invoice
-        type (Union[Unset, InvoiceType]): type of the invoice
+        type_ (Union[Unset, InvoiceType]): type of the invoice
         status (Union[Unset, InvoiceStatus]): payment status of the invoice
         payment_changed_to_billing (Union[Unset, bool]): flag indicating if invoice was created because of a failed
             payment process
@@ -63,7 +63,7 @@ class Invoice:
     currency: str
     payment_method: InvoicePaymentMethod
     invoice_customer_id: str
-    items: List["InvoiceItem"]
+    items: list["InvoiceItem"]
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     created_by: Union[Unset, str] = UNSET
@@ -75,7 +75,7 @@ class Invoice:
     purchase_order_indicator: Union[Unset, str] = UNSET
     invoice_address: Union[Unset, "InvoiceAddress"] = UNSET
     transaction_id: Union[Unset, str] = UNSET
-    type: Union[Unset, InvoiceType] = UNSET
+    type_: Union[Unset, InvoiceType] = UNSET
     status: Union[Unset, InvoiceStatus] = UNSET
     payment_changed_to_billing: Union[Unset, bool] = UNSET
     precursor_id: Union[Unset, int] = UNSET
@@ -139,15 +139,15 @@ class Invoice:
 
         purchase_order_indicator = self.purchase_order_indicator
 
-        invoice_address: Union[Unset, Dict[str, Any]] = UNSET
+        invoice_address: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.invoice_address, Unset):
             invoice_address = self.invoice_address.to_dict()
 
         transaction_id = self.transaction_id
 
-        type: Union[Unset, str] = UNSET
-        if not isinstance(self.type, Unset):
-            type = self.type.value
+        type_: Union[Unset, str] = UNSET
+        if not isinstance(self.type_, Unset):
+            type_ = self.type_.value
 
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
@@ -196,8 +196,8 @@ class Invoice:
             field_dict["invoiceAddress"] = invoice_address
         if transaction_id is not UNSET:
             field_dict["transactionId"] = transaction_id
-        if type is not UNSET:
-            field_dict["type"] = type
+        if type_ is not UNSET:
+            field_dict["type"] = type_
         if status is not UNSET:
             field_dict["status"] = status
         if payment_changed_to_billing is not UNSET:
@@ -333,12 +333,12 @@ class Invoice:
 
         transaction_id = d.pop("transactionId", UNSET)
 
-        _type = d.pop("type", UNSET)
-        type: Union[Unset, InvoiceType]
-        if isinstance(_type, Unset) or not _type:
-            type = UNSET
+        _type_ = d.pop("type", UNSET)
+        type_: Union[Unset, InvoiceType]
+        if isinstance(_type_, Unset) or not _type_:
+            type_ = UNSET
         else:
-            type = InvoiceType(_type)
+            type_ = InvoiceType(_type_)
 
         _status = d.pop("status", UNSET)
         status: Union[Unset, InvoiceStatus]
@@ -374,7 +374,7 @@ class Invoice:
             purchase_order_indicator=purchase_order_indicator,
             invoice_address=invoice_address,
             transaction_id=transaction_id,
-            type=type,
+            type_=type_,
             status=status,
             payment_changed_to_billing=payment_changed_to_billing,
             precursor_id=precursor_id,

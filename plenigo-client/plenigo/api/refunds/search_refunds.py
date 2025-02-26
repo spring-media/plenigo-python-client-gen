@@ -27,7 +27,7 @@ def _get_kwargs(
     customer_id: Union[Unset, str] = UNSET,
     status: Union[Unset, SearchRefundsStatus] = UNSET,
 ) -> Dict[str, Any]:
-    params: Dict[str, Any] = {}
+    params: dict[str, Any] = {}
 
     params["size"] = size
 

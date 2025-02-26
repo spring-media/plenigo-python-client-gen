@@ -147,7 +147,7 @@ class OrderItem:
 
         voucher_code = self.voucher_code
 
-        delivery_address: Union[Unset, Dict[str, Any]] = UNSET
+        delivery_address: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.delivery_address, Unset):
             delivery_address = self.delivery_address.to_dict()
 
@@ -167,11 +167,11 @@ class OrderItem:
         else:
             validity_end_date = self.validity_end_date
 
-        voucher_purchase: Union[Unset, Dict[str, Any]] = UNSET
+        voucher_purchase: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.voucher_purchase, Unset):
             voucher_purchase = self.voucher_purchase.to_dict()
 
-        voucher_usage: Union[Unset, Dict[str, Any]] = UNSET
+        voucher_usage: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.voucher_usage, Unset):
             voucher_usage = self.voucher_usage.to_dict()
 

@@ -89,7 +89,7 @@ class PriceSegment:
 
         price_segment_id = self.price_segment_id
 
-        country_segments: Union[Unset, Dict[str, Any]] = UNSET
+        country_segments: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.country_segments, Unset):
             country_segments = self.country_segments.to_dict()
 

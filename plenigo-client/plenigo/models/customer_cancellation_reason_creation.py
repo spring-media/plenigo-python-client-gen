@@ -17,7 +17,7 @@ class CustomerCancellationReasonCreation:
     """
     Attributes:
         internal_title (str): internal title of the cancellation reason
-        translations (List['CustomerCancellationReasonTranslation']): translations associated with this cancellation
+        translations (list['CustomerCancellationReasonTranslation']): translations associated with this cancellation
             reason
         unique_id (str): unique id to associate with the user after user has accepted cancellation reason
         active (Union[Unset, bool]): flag indicating if cancellation reason is currently active
@@ -25,7 +25,7 @@ class CustomerCancellationReasonCreation:
     """
 
     internal_title: str
-    translations: List["CustomerCancellationReasonTranslation"]
+    translations: list["CustomerCancellationReasonTranslation"]
     unique_id: str
     active: Union[Unset, bool] = UNSET
     priority: Union[Unset, int] = UNSET

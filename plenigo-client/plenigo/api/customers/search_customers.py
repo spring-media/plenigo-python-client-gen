@@ -29,7 +29,7 @@ def _get_kwargs(
     email: Union[Unset, str] = UNSET,
     username: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    params: Dict[str, Any] = {}
+    params: dict[str, Any] = {}
 
     params["size"] = size
 
