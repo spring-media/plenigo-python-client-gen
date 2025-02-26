@@ -35,7 +35,7 @@ class Order:
         payment_method (OrderPaymentMethod): payment method used to pay for the order (ZERO indicates a free
             subscription)
         invoice_customer_id (str): id of the customer the invoice belongs to
-        items (List['OrderItem']):
+        items (list['OrderItem']):
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
@@ -49,7 +49,7 @@ class Order:
         external_system_id (Union[Unset, str]): if order was imported from another system this field contains the unique
             id of the other system
         status (Union[Unset, OrderStatus]): current status of the order
-        type (Union[Unset, OrderType]): current type of the order
+        type_ (Union[Unset, OrderType]): current type of the order
         payment_method_id (Union[Unset, int]): id of the payment method that is associated with this order
         payment_method_details (Union[Unset, PaymentMethodDetails]):
         purchase_order_indicator (Union[Unset, str]): purchase order indicator if provided by the customer
@@ -65,7 +65,7 @@ class Order:
     currency: str
     payment_method: OrderPaymentMethod
     invoice_customer_id: str
-    items: List["OrderItem"]
+    items: list["OrderItem"]
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     created_by: Union[Unset, str] = UNSET
@@ -74,7 +74,7 @@ class Order:
     changed_by_type: Union[Unset, UserType] = UNSET
     external_system_id: Union[Unset, str] = UNSET
     status: Union[Unset, OrderStatus] = UNSET
-    type: Union[Unset, OrderType] = UNSET
+    type_: Union[Unset, OrderType] = UNSET
     payment_method_id: Union[Unset, int] = UNSET
     payment_method_details: Union[Unset, "PaymentMethodDetails"] = UNSET
     purchase_order_indicator: Union[Unset, str] = UNSET
@@ -140,13 +140,13 @@ class Order:
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-        type: Union[Unset, str] = UNSET
-        if not isinstance(self.type, Unset):
-            type = self.type.value
+        type_: Union[Unset, str] = UNSET
+        if not isinstance(self.type_, Unset):
+            type_ = self.type_.value
 
         payment_method_id = self.payment_method_id
 
-        payment_method_details: Union[Unset, Dict[str, Any]] = UNSET
+        payment_method_details: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.payment_method_details, Unset):
             payment_method_details = self.payment_method_details.to_dict()
 
@@ -156,11 +156,11 @@ class Order:
 
         suppress_invoice_sending = self.suppress_invoice_sending
 
-        gift_info: Union[Unset, Dict[str, Any]] = UNSET
+        gift_info: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.gift_info, Unset):
             gift_info = self.gift_info.to_dict()
 
-        invoice_address: Union[Unset, Dict[str, Any]] = UNSET
+        invoice_address: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.invoice_address, Unset):
             invoice_address = self.invoice_address.to_dict()
 
@@ -193,8 +193,8 @@ class Order:
             field_dict["externalSystemId"] = external_system_id
         if status is not UNSET:
             field_dict["status"] = status
-        if type is not UNSET:
-            field_dict["type"] = type
+        if type_ is not UNSET:
+            field_dict["type"] = type_
         if payment_method_id is not UNSET:
             field_dict["paymentMethodId"] = payment_method_id
         if payment_method_details is not UNSET:
@@ -330,12 +330,12 @@ class Order:
         else:
             status = OrderStatus(_status)
 
-        _type = d.pop("type", UNSET)
-        type: Union[Unset, OrderType]
-        if isinstance(_type, Unset) or not _type:
-            type = UNSET
+        _type_ = d.pop("type", UNSET)
+        type_: Union[Unset, OrderType]
+        if isinstance(_type_, Unset) or not _type_:
+            type_ = UNSET
         else:
-            type = OrderType(_type)
+            type_ = OrderType(_type_)
 
         payment_method_id = d.pop("paymentMethodId", UNSET)
 
@@ -382,7 +382,7 @@ class Order:
             changed_by_type=changed_by_type,
             external_system_id=external_system_id,
             status=status,
-            type=type,
+            type_=type_,
             payment_method_id=payment_method_id,
             payment_method_details=payment_method_details,
             purchase_order_indicator=purchase_order_indicator,

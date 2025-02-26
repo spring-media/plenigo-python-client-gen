@@ -22,7 +22,7 @@ class AppleAppStoreTransaction:
         original_purchase_date (Union[Unset, int]):
         expires_date (Union[Unset, int]):
         quantity (Union[Unset, int]):
-        type (Union[Unset, str]):
+        type_ (Union[Unset, str]):
         app_account_token (Union[Unset, str]):
         in_app_ownership_type (Union[Unset, str]):
         signed_date (Union[Unset, int]):
@@ -50,7 +50,7 @@ class AppleAppStoreTransaction:
     original_purchase_date: Union[Unset, int] = UNSET
     expires_date: Union[Unset, int] = UNSET
     quantity: Union[Unset, int] = UNSET
-    type: Union[Unset, str] = UNSET
+    type_: Union[Unset, str] = UNSET
     app_account_token: Union[Unset, str] = UNSET
     in_app_ownership_type: Union[Unset, str] = UNSET
     signed_date: Union[Unset, int] = UNSET
@@ -89,7 +89,7 @@ class AppleAppStoreTransaction:
 
         quantity = self.quantity
 
-        type = self.type
+        type_ = self.type_
 
         app_account_token = self.app_account_token
 
@@ -144,8 +144,8 @@ class AppleAppStoreTransaction:
             field_dict["expiresDate"] = expires_date
         if quantity is not UNSET:
             field_dict["quantity"] = quantity
-        if type is not UNSET:
-            field_dict["type"] = type
+        if type_ is not UNSET:
+            field_dict["type"] = type_
         if app_account_token is not UNSET:
             field_dict["appAccountToken"] = app_account_token
         if in_app_ownership_type is not UNSET:
@@ -202,7 +202,7 @@ class AppleAppStoreTransaction:
 
         quantity = d.pop("quantity", UNSET)
 
-        type = d.pop("type", UNSET)
+        type_ = d.pop("type", UNSET)
 
         app_account_token = d.pop("appAccountToken", UNSET)
 
@@ -245,7 +245,7 @@ class AppleAppStoreTransaction:
             original_purchase_date=original_purchase_date,
             expires_date=expires_date,
             quantity=quantity,
-            type=type,
+            type_=type_,
             app_account_token=app_account_token,
             in_app_ownership_type=in_app_ownership_type,
             signed_date=signed_date,

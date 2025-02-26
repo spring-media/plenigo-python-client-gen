@@ -26,7 +26,7 @@ def _get_kwargs(
     size: Union[Unset, int] = UNSET,
     voucher_status: Union[Unset, SearchVouchersVoucherStatus] = UNSET,
 ) -> Dict[str, Any]:
-    params: Dict[str, Any] = {}
+    params: dict[str, Any] = {}
 
     params["startingAfter"] = starting_after
 

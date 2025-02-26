@@ -3,6 +3,7 @@ from enum import Enum
 
 class ApiCampaignBaseStatus(str, Enum):
     ACTIVE = "ACTIVE"
+    CANCELLED = "CANCELLED"
     CREATING = "CREATING"
     DELETED = "DELETED"
     INACTIVE = "INACTIVE"

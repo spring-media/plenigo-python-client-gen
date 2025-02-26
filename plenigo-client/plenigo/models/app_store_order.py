@@ -41,7 +41,7 @@ class AppStoreOrder:
         store_type (Union[Unset, AppStoreOrderStoreType]): type of store
         additional_store_data (Union['AppleAppStoreReceipt', 'GooglePlayProductPurchase',
             'GooglePlaySubscriptionPurchase', Unset]): additional data of the app store
-        items (Union[Unset, List['AppStoreOrderItem']]):
+        items (Union[Unset, list['AppStoreOrderItem']]):
     """
 
     created_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -57,7 +57,7 @@ class AppStoreOrder:
     additional_store_data: Union[
         "AppleAppStoreReceipt", "GooglePlayProductPurchase", "GooglePlaySubscriptionPurchase", Unset
     ] = UNSET
-    items: Union[Unset, List["AppStoreOrderItem"]] = UNSET
+    items: Union[Unset, list["AppStoreOrderItem"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -108,7 +108,7 @@ class AppStoreOrder:
         if not isinstance(self.store_type, Unset):
             store_type = self.store_type.value
 
-        additional_store_data: Union[Dict[str, Any], Unset]
+        additional_store_data: Union[Unset, dict[str, Any]]
         if isinstance(self.additional_store_data, Unset) or self.additional_store_data is None:
             additional_store_data = UNSET
         elif isinstance(self.additional_store_data, AppleAppStoreReceipt):
@@ -118,7 +118,7 @@ class AppStoreOrder:
         else:
             additional_store_data = self.additional_store_data.to_dict()
 
-        items: Union[Unset, List[Dict[str, Any]]] = UNSET
+        items: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.items, Unset):
             items = []
             for items_item_data in self.items:
@@ -266,7 +266,7 @@ class AppStoreOrder:
             store_type = AppStoreOrderStoreType(_store_type)
 
         def _parse_additional_store_data(
-            data: object,
+            data: object
         ) -> Union["AppleAppStoreReceipt", "GooglePlayProductPurchase", "GooglePlaySubscriptionPurchase", Unset]:
             if data is None:
                 return data

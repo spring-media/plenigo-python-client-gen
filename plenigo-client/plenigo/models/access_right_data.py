@@ -31,7 +31,7 @@ class AccessRightData:
         changed_by_type (Union[Unset, UserType]): type of user who performs the action
         customer_id (Union[Unset, str]): unique id of the customer the access right belongs to
         customer_blocked (Union[Unset, bool]): flag indicating if customer is blocked completely
-        items (Union[Unset, List['AccessRightItemData']]):
+        items (Union[Unset, list['AccessRightItemData']]):
     """
 
     created_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -42,7 +42,7 @@ class AccessRightData:
     changed_by_type: Union[Unset, UserType] = UNSET
     customer_id: Union[Unset, str] = UNSET
     customer_blocked: Union[Unset, bool] = UNSET
-    items: Union[Unset, List["AccessRightItemData"]] = UNSET
+    items: Union[Unset, list["AccessRightItemData"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -78,7 +78,7 @@ class AccessRightData:
 
         customer_blocked = self.customer_blocked
 
-        items: Union[Unset, List[Dict[str, Any]]] = UNSET
+        items: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.items, Unset):
             items = []
             for items_item_data in self.items:

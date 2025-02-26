@@ -79,7 +79,7 @@ class CustomerBase:
         else:
             birthday = self.birthday
 
-        miscellaneous_data: Union[Unset, Dict[str, Any]] = UNSET
+        miscellaneous_data: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.miscellaneous_data, Unset):
             miscellaneous_data = self.miscellaneous_data.to_dict()
 

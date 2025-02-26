@@ -17,14 +17,14 @@ class CustomerCancellationReasonUpdate:
     """
     Attributes:
         internal_title (str): internal title of the cancellation reason
-        translations (List['CustomerCancellationReasonTranslation']): translations associated with this cancellation
+        translations (list['CustomerCancellationReasonTranslation']): translations associated with this cancellation
             reason
         active (Union[Unset, bool]): flag indicating if cancellation reason is currently active
         priority (Union[Unset, int]): priority of the cancellation reason
     """
 
     internal_title: str
-    translations: List["CustomerCancellationReasonTranslation"]
+    translations: list["CustomerCancellationReasonTranslation"]
     active: Union[Unset, bool] = UNSET
     priority: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)

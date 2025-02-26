@@ -18,12 +18,12 @@ class ErrorResult:
     Attributes:
         error_code (int): plenigo error code Example: 99400.
         error_message (str): plenigo error description Example: Provided data cannot be processed..
-        validation_errors (Union[Unset, List['ValidationError']]):
+        validation_errors (Union[Unset, list['ValidationError']]):
     """
 
     error_code: int
     error_message: str
-    validation_errors: Union[Unset, List["ValidationError"]] = UNSET
+    validation_errors: Union[Unset, list["ValidationError"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -31,7 +31,7 @@ class ErrorResult:
 
         error_message = self.error_message
 
-        validation_errors: Union[Unset, List[Dict[str, Any]]] = UNSET
+        validation_errors: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.validation_errors, Unset):
             validation_errors = []
             for validation_errors_item_data in self.validation_errors:

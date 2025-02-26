@@ -45,7 +45,7 @@ class Offer:
             selected with fixed start date
         archived (Union[Unset, bool]): flag indicating if offer is archived
         archive_settings (Union[Unset, ArchiveSettings]):
-        allowed_payment_methods (Union[Unset, List[OfferBaseAllowedPaymentMethodsItem]]): additional constraints to the
+        allowed_payment_methods (Union[Unset, list[OfferBaseAllowedPaymentMethodsItem]]): additional constraints to the
             payment methods if some of the selected payment methods cannot be used for this offer - there can be no more
             payment methods than selected in the global payment settings section
         connected_company_settings (Union[Unset, OfferConnectedCompanySettings]):
@@ -58,7 +58,7 @@ class Offer:
         bonus_id (Union[Unset, int]): id of the bonus associated with this offer
         self_service_hint_tm_id (Union[Unset, int]): id of the text module used as self service hint
         managed_by (Union[Unset, OfferBaseManagedBy]): managed by of the given offer.
-        translations (Union[Unset, List['OfferTranslation']]): translations associated with this product
+        translations (Union[Unset, list['OfferTranslation']]): translations associated with this product
         pdf_template_usage (Union[Unset, OfferBasePdfTemplateUsage]): contains the pdf template to use with this offer
         partner_settings (Union[Unset, OfferPartnerSettings]):
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
@@ -72,9 +72,9 @@ class Offer:
         changed_by (Union[Unset, str]): id who changed the object
         changed_by_type (Union[Unset, UserType]): type of user who performs the action
         managed_external (Union[Unset, bool]): flag indicating if offer is managed externally
-        products (Union[Unset, List['OfferProduct']]): products associated with this offer
-        product_groups (Union[Unset, List['OfferProductGroup']]): product groups associated with this offer
-        product_tags (Union[Unset, List['ProductTag']]): tags associated with this product
+        products (Union[Unset, list['OfferProduct']]): products associated with this offer
+        product_groups (Union[Unset, list['OfferProductGroup']]): product groups associated with this offer
+        product_tags (Union[Unset, list['ProductTag']]): tags associated with this product
     """
 
     internal_title: str
@@ -89,7 +89,7 @@ class Offer:
     issues_in_future: Union[Unset, int] = UNSET
     archived: Union[Unset, bool] = UNSET
     archive_settings: Union[Unset, "ArchiveSettings"] = UNSET
-    allowed_payment_methods: Union[Unset, List[OfferBaseAllowedPaymentMethodsItem]] = UNSET
+    allowed_payment_methods: Union[Unset, list[OfferBaseAllowedPaymentMethodsItem]] = UNSET
     connected_company_settings: Union[Unset, "OfferConnectedCompanySettings"] = UNSET
     leaf_id: Union[Unset, int] = UNSET
     external_billing: Union[Unset, bool] = UNSET
@@ -99,7 +99,7 @@ class Offer:
     bonus_id: Union[Unset, int] = UNSET
     self_service_hint_tm_id: Union[Unset, int] = UNSET
     managed_by: Union[Unset, OfferBaseManagedBy] = UNSET
-    translations: Union[Unset, List["OfferTranslation"]] = UNSET
+    translations: Union[Unset, list["OfferTranslation"]] = UNSET
     pdf_template_usage: Union[Unset, OfferBasePdfTemplateUsage] = UNSET
     partner_settings: Union[Unset, "OfferPartnerSettings"] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -109,9 +109,9 @@ class Offer:
     changed_by: Union[Unset, str] = UNSET
     changed_by_type: Union[Unset, UserType] = UNSET
     managed_external: Union[Unset, bool] = UNSET
-    products: Union[Unset, List["OfferProduct"]] = UNSET
-    product_groups: Union[Unset, List["OfferProductGroup"]] = UNSET
-    product_tags: Union[Unset, List["ProductTag"]] = UNSET
+    products: Union[Unset, list["OfferProduct"]] = UNSET
+    product_groups: Union[Unset, list["OfferProductGroup"]] = UNSET
+    product_tags: Union[Unset, list["ProductTag"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -143,18 +143,18 @@ class Offer:
 
         archived = self.archived
 
-        archive_settings: Union[Unset, Dict[str, Any]] = UNSET
+        archive_settings: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.archive_settings, Unset):
             archive_settings = self.archive_settings.to_dict()
 
-        allowed_payment_methods: Union[Unset, List[str]] = UNSET
+        allowed_payment_methods: Union[Unset, list[str]] = UNSET
         if not isinstance(self.allowed_payment_methods, Unset):
             allowed_payment_methods = []
             for allowed_payment_methods_item_data in self.allowed_payment_methods:
                 allowed_payment_methods_item = allowed_payment_methods_item_data.value
                 allowed_payment_methods.append(allowed_payment_methods_item)
 
-        connected_company_settings: Union[Unset, Dict[str, Any]] = UNSET
+        connected_company_settings: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.connected_company_settings, Unset):
             connected_company_settings = self.connected_company_settings.to_dict()
 
@@ -176,7 +176,7 @@ class Offer:
         if not isinstance(self.managed_by, Unset):
             managed_by = self.managed_by.value
 
-        translations: Union[Unset, List[Dict[str, Any]]] = UNSET
+        translations: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.translations, Unset):
             translations = []
             for translations_item_data in self.translations:
@@ -187,7 +187,7 @@ class Offer:
         if not isinstance(self.pdf_template_usage, Unset):
             pdf_template_usage = self.pdf_template_usage.value
 
-        partner_settings: Union[Unset, Dict[str, Any]] = UNSET
+        partner_settings: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.partner_settings, Unset):
             partner_settings = self.partner_settings.to_dict()
 
@@ -221,21 +221,21 @@ class Offer:
 
         managed_external = self.managed_external
 
-        products: Union[Unset, List[Dict[str, Any]]] = UNSET
+        products: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.products, Unset):
             products = []
             for products_item_data in self.products:
                 products_item = products_item_data.to_dict()
                 products.append(products_item)
 
-        product_groups: Union[Unset, List[Dict[str, Any]]] = UNSET
+        product_groups: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.product_groups, Unset):
             product_groups = []
             for product_groups_item_data in self.product_groups:
                 product_groups_item = product_groups_item_data.to_dict()
                 product_groups.append(product_groups_item)
 
-        product_tags: Union[Unset, List[Dict[str, Any]]] = UNSET
+        product_tags: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.product_tags, Unset):
             product_tags = []
             for product_tags_item_data in self.product_tags:

@@ -29,7 +29,7 @@ class ApiCampaign:
         start_date (Union[None, datetime.date]): start date of the campaign with full-date notation as defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for example,
             2017-07-21
-        channels (List['ApiChannel']):
+        channels (list['ApiChannel']):
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
@@ -51,7 +51,7 @@ class ApiCampaign:
     plenigo_offer_id: str
     status: ApiCampaignBaseStatus
     start_date: Union[None, datetime.date]
-    channels: List["ApiChannel"]
+    channels: list["ApiChannel"]
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     created_by: Union[Unset, str] = UNSET

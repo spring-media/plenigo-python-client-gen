@@ -16,14 +16,14 @@ T = TypeVar("T", bound="OfferConnectedCompanySettings")
 class OfferConnectedCompanySettings:
     """
     Attributes:
-        connection_info (Union[Unset, List['OfferConnectionInfo']]): connected company settings
+        connection_info (Union[Unset, list['OfferConnectionInfo']]): connected company settings
     """
 
-    connection_info: Union[Unset, List["OfferConnectionInfo"]] = UNSET
+    connection_info: Union[Unset, list["OfferConnectionInfo"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        connection_info: Union[Unset, List[Dict[str, Any]]] = UNSET
+        connection_info: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.connection_info, Unset):
             connection_info = []
             for connection_info_item_data in self.connection_info:

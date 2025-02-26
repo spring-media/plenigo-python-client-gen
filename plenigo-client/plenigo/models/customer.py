@@ -71,8 +71,8 @@ class Customer:
             | DISABLED    | customer is disabled by plenigo and cannot be used anymore - please contact plenigo for further
             information (this status is currently not actively used)  |
         accepted_terms (Union[Unset, CustomerAcceptedTerms]):
-        sso_login_providers (Union[Unset, List[CustomerSsoLoginProvidersItem]]):
-        customer_marks (Union[Unset, List[CustomerCustomerMarksItem]]):
+        sso_login_providers (Union[Unset, list[CustomerSsoLoginProvidersItem]]):
+        customer_marks (Union[Unset, list[CustomerCustomerMarksItem]]):
     """
 
     customer_id: str
@@ -98,8 +98,8 @@ class Customer:
     age_verification_pin_enabled: Union[Unset, bool] = UNSET
     status: Union[Unset, CustomerStatus] = UNSET
     accepted_terms: Union[Unset, "CustomerAcceptedTerms"] = UNSET
-    sso_login_providers: Union[Unset, List[CustomerSsoLoginProvidersItem]] = UNSET
-    customer_marks: Union[Unset, List[CustomerCustomerMarksItem]] = UNSET
+    sso_login_providers: Union[Unset, list[CustomerSsoLoginProvidersItem]] = UNSET
+    customer_marks: Union[Unset, list[CustomerCustomerMarksItem]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -133,7 +133,7 @@ class Customer:
         else:
             birthday = self.birthday
 
-        miscellaneous_data: Union[Unset, Dict[str, Any]] = UNSET
+        miscellaneous_data: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.miscellaneous_data, Unset):
             miscellaneous_data = self.miscellaneous_data.to_dict()
 
@@ -181,18 +181,18 @@ class Customer:
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-        accepted_terms: Union[Unset, Dict[str, Any]] = UNSET
+        accepted_terms: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.accepted_terms, Unset):
             accepted_terms = self.accepted_terms.to_dict()
 
-        sso_login_providers: Union[Unset, List[str]] = UNSET
+        sso_login_providers: Union[Unset, list[str]] = UNSET
         if not isinstance(self.sso_login_providers, Unset):
             sso_login_providers = []
             for sso_login_providers_item_data in self.sso_login_providers:
                 sso_login_providers_item = sso_login_providers_item_data.value
                 sso_login_providers.append(sso_login_providers_item)
 
-        customer_marks: Union[Unset, List[str]] = UNSET
+        customer_marks: Union[Unset, list[str]] = UNSET
         if not isinstance(self.customer_marks, Unset):
             customer_marks = []
             for customer_marks_item_data in self.customer_marks:

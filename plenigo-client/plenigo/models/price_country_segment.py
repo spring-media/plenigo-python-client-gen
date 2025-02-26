@@ -18,7 +18,7 @@ class PriceCountrySegment:
         title (str): title of the price country segment
         priority (int): priority of the price country segment - the lower the priority the higher the rank of the price
             segment
-        countries (List[str]): array of country codes formatted as <a
+        countries (list[str]): array of country codes formatted as <a
             href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank">ISO 3166-1 alpha-2</a>
         price_country_segment_id (int): unique id of the price country segment within a contract company
         description (Union[Unset, str]): internal description of the price country segment
@@ -36,7 +36,7 @@ class PriceCountrySegment:
 
     title: str
     priority: int
-    countries: List[str]
+    countries: list[str]
     price_country_segment_id: int
     description: Union[Unset, str] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -120,7 +120,7 @@ class PriceCountrySegment:
 
         priority = d.pop("priority")
 
-        countries = cast(List[str], d.pop("countries"))
+        countries = cast(list[str], d.pop("countries"))
 
         price_country_segment_id = d.pop("priceCountrySegmentId")
 

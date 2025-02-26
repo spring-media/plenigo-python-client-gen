@@ -26,7 +26,7 @@ def _get_kwargs(
     ending_before: Union[Unset, str] = UNSET,
     sort: Union[Unset, SearchAccessRightsSort] = UNSET,
 ) -> Dict[str, Any]:
-    params: Dict[str, Any] = {}
+    params: dict[str, Any] = {}
 
     params["size"] = size
 

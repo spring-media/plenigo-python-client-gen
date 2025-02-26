@@ -156,7 +156,7 @@ class AccessRightItemData:
         else:
             max_cache_date = self.max_cache_date
 
-        data: Union[Unset, Dict[str, Any]] = UNSET
+        data: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.data, Unset):
             data = self.data.to_dict()
 
@@ -176,7 +176,7 @@ class AccessRightItemData:
 
         item_id = self.item_id
 
-        access_right_data: Union[Unset, Dict[str, Any]] = UNSET
+        access_right_data: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.access_right_data, Unset):
             access_right_data = self.access_right_data.to_dict()
 

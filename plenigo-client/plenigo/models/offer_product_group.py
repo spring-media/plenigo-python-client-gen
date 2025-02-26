@@ -20,9 +20,9 @@ class OfferProductGroup:
     """
     Attributes:
         internal_title (str): internal title of the product group
-        translations (List['OfferTranslation']): translations associated with this product
+        translations (list['OfferTranslation']): translations associated with this product
         plenigo_product_group_id (str): unique id of the product group within the offer
-        products (List['OfferProduct']): products associated with this product group
+        products (list['OfferProduct']): products associated with this product group
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
@@ -32,9 +32,9 @@ class OfferProductGroup:
     """
 
     internal_title: str
-    translations: List["OfferTranslation"]
+    translations: list["OfferTranslation"]
     plenigo_product_group_id: str
-    products: List["OfferProduct"]
+    products: list["OfferProduct"]
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)

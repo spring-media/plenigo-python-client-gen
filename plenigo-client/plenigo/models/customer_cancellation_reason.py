@@ -20,7 +20,7 @@ class CustomerCancellationReason:
     """
     Attributes:
         internal_title (str): internal title of the cancellation reason
-        translations (List['CustomerCancellationReasonTranslation']): translations associated with this cancellation
+        translations (list['CustomerCancellationReasonTranslation']): translations associated with this cancellation
             reason
         unique_id (str): unique id to associate with the user after user has accepted cancellation reason
         customer_cancellation_reason_id (int): unique id of the customer cancellation reason
@@ -40,7 +40,7 @@ class CustomerCancellationReason:
     """
 
     internal_title: str
-    translations: List["CustomerCancellationReasonTranslation"]
+    translations: list["CustomerCancellationReasonTranslation"]
     unique_id: str
     customer_cancellation_reason_id: int
     active: Union[Unset, bool] = UNSET

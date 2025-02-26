@@ -64,11 +64,11 @@ class AdditionalOrderData:
 
         source_id = self.source_id
 
-        utm: Union[Unset, Dict[str, Any]] = UNSET
+        utm: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.utm, Unset):
             utm = self.utm.to_dict()
 
-        data: Union[Unset, Dict[str, Any]] = UNSET
+        data: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.data, Unset):
             data = self.data.to_dict()
 

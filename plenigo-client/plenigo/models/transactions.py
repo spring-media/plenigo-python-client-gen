@@ -16,14 +16,14 @@ T = TypeVar("T", bound="Transactions")
 class Transactions:
     """
     Attributes:
-        items (Union[Unset, List['Transaction']]):
+        items (Union[Unset, list['Transaction']]):
     """
 
-    items: Union[Unset, List["Transaction"]] = UNSET
+    items: Union[Unset, list["Transaction"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        items: Union[Unset, List[Dict[str, Any]]] = UNSET
+        items: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.items, Unset):
             items = []
             for items_item_data in self.items:

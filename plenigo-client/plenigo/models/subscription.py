@@ -129,11 +129,11 @@ class Subscription:
         deliveries (Union[Unset, int]): the amount of deliveries
         chargeable_deliveries (Union[Unset, int]): the amount of chargeable deliveries
         recurring_deliveries (Union[Unset, int]): the amount of recurring deliveries
-        active_partners (Union[Unset, List[str]]): the active partners
+        active_partners (Union[Unset, list[str]]): the active partners
         delivery_paused (Union[Unset, SubscriptionPauseAt]):
         paused (Union[Unset, SubscriptionPauseAt]):
         payment_paused (Union[Unset, SubscriptionPauseAt]):
-        items (Union[Unset, List['SubscriptionItem']]):
+        items (Union[Unset, list['SubscriptionItem']]):
     """
 
     subscription_id: int
@@ -195,11 +195,11 @@ class Subscription:
     deliveries: Union[Unset, int] = UNSET
     chargeable_deliveries: Union[Unset, int] = UNSET
     recurring_deliveries: Union[Unset, int] = UNSET
-    active_partners: Union[Unset, List[str]] = UNSET
+    active_partners: Union[Unset, list[str]] = UNSET
     delivery_paused: Union[Unset, "SubscriptionPauseAt"] = UNSET
     paused: Union[Unset, "SubscriptionPauseAt"] = UNSET
     payment_paused: Union[Unset, "SubscriptionPauseAt"] = UNSET
-    items: Union[Unset, List["SubscriptionItem"]] = UNSET
+    items: Union[Unset, list["SubscriptionItem"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -305,7 +305,7 @@ class Subscription:
 
         payment_method_id = self.payment_method_id
 
-        payment_method_details: Union[Unset, Dict[str, Any]] = UNSET
+        payment_method_details: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.payment_method_details, Unset):
             payment_method_details = self.payment_method_details.to_dict()
 
@@ -381,7 +381,7 @@ class Subscription:
 
         connected_offer = self.connected_offer
 
-        connected_offer_info: Union[Unset, Dict[str, Any]] = UNSET
+        connected_offer_info: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.connected_offer_info, Unset):
             connected_offer_info = self.connected_offer_info.to_dict()
 
@@ -395,23 +395,23 @@ class Subscription:
 
         recurring_deliveries = self.recurring_deliveries
 
-        active_partners: Union[Unset, List[str]] = UNSET
+        active_partners: Union[Unset, list[str]] = UNSET
         if not isinstance(self.active_partners, Unset):
             active_partners = self.active_partners
 
-        delivery_paused: Union[Unset, Dict[str, Any]] = UNSET
+        delivery_paused: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.delivery_paused, Unset):
             delivery_paused = self.delivery_paused.to_dict()
 
-        paused: Union[Unset, Dict[str, Any]] = UNSET
+        paused: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.paused, Unset):
             paused = self.paused.to_dict()
 
-        payment_paused: Union[Unset, Dict[str, Any]] = UNSET
+        payment_paused: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.payment_paused, Unset):
             payment_paused = self.payment_paused.to_dict()
 
-        items: Union[Unset, List[Dict[str, Any]]] = UNSET
+        items: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.items, Unset):
             items = []
             for items_item_data in self.items:
@@ -916,7 +916,7 @@ class Subscription:
 
         recurring_deliveries = d.pop("recurringDeliveries", UNSET)
 
-        active_partners = cast(List[str], d.pop("activePartners", UNSET))
+        active_partners = cast(list[str], d.pop("activePartners", UNSET))
 
         _delivery_paused = d.pop("deliveryPaused", UNSET)
         delivery_paused: Union[Unset, SubscriptionPauseAt]

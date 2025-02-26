@@ -23,7 +23,7 @@ class OfferPartnerSettings:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        doo_settings: Union[Unset, Dict[str, Any]] = UNSET
+        doo_settings: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.doo_settings, Unset):
             doo_settings = self.doo_settings.to_dict()
 

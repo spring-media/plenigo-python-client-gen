@@ -38,7 +38,7 @@ class Refund:
         cancellation_invoice_id (Union[Unset, int]): unique id of the cancellation also used for pagination
         transaction_id (Union[Unset, str]): unique id of the transaction also used for pagination
         psp_transaction_id (Union[Unset, str]): id of the payment service provider if one was provided
-        status_history (Union[Unset, List['SchemasStatusHistory']]):
+        status_history (Union[Unset, list['SchemasStatusHistory']]):
     """
 
     refund_id: int
@@ -53,7 +53,7 @@ class Refund:
     cancellation_invoice_id: Union[Unset, int] = UNSET
     transaction_id: Union[Unset, str] = UNSET
     psp_transaction_id: Union[Unset, str] = UNSET
-    status_history: Union[Unset, List["SchemasStatusHistory"]] = UNSET
+    status_history: Union[Unset, list["SchemasStatusHistory"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -95,7 +95,7 @@ class Refund:
 
         psp_transaction_id = self.psp_transaction_id
 
-        status_history: Union[Unset, List[Dict[str, Any]]] = UNSET
+        status_history: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.status_history, Unset):
             status_history = []
             for status_history_item_data in self.status_history:
