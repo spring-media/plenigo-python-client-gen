@@ -21,7 +21,8 @@ version = version.split('(')[1].split(')')[0]
 # if the version is different, print a message
 latest_folder_path = "./openapi_specs/latest"
 files = os.listdir(latest_folder_path)
-file_path = os.path.join(latest_folder_path, files[0])
+first_openapi_file = next((f for f in file_names if f.startswith("openapi-v")), None)
+file_path = os.path.join(latest_folder_path, first_openapi_file)
 with open(file_path, 'r') as file:
     openapi_spec = json.load(file)
 current_prod_version = openapi_spec['info']['version']
