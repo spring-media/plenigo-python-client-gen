@@ -1,1 +1,2 @@
+- patched the ApiVoucher -> status field to also contain the "CANCELLED" variant.
 - patched ApiChannelBase -> status field to also contains the "CANCELLED" variant.
