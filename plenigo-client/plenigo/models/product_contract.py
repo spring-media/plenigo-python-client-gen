@@ -24,7 +24,6 @@ class ProductContract:
     Attributes:
         title (str): title of the product contract
         contract_type (ProductContractBaseContractType): contract type
-        price_issue_id (int): price issue to use
         product_contract_id (int): unique id of the product contract within a contract company
         archived (bool): flag indicating if price country segment is archived
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
@@ -44,11 +43,11 @@ class ProductContract:
         time_based_condition (Union[Unset, TimeBasedProductContractCondition]):
         issue_based_condition (Union[Unset, IssueBasedProductContractCondition]):
         credit_based_condition (Union[Unset, CreditBasedProductContractCondition]):
+        price_issue_id (Union[Unset, int]): price issue to use (is only not required when it is a multiuser contract.
     """
 
     title: str
     contract_type: ProductContractBaseContractType
-    price_issue_id: int
     product_contract_id: int
     archived: bool
     created_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -64,14 +63,13 @@ class ProductContract:
     time_based_condition: Union[Unset, "TimeBasedProductContractCondition"] = UNSET
     issue_based_condition: Union[Unset, "IssueBasedProductContractCondition"] = UNSET
     credit_based_condition: Union[Unset, "CreditBasedProductContractCondition"] = UNSET
+    price_issue_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         title = self.title
 
         contract_type = self.contract_type.value
-
-        price_issue_id = self.price_issue_id
 
         product_contract_id = self.product_contract_id
 
@@ -127,13 +125,14 @@ class ProductContract:
         if not isinstance(self.credit_based_condition, Unset):
             credit_based_condition = self.credit_based_condition.to_dict()
 
+        price_issue_id = self.price_issue_id
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "title": title,
                 "contractType": contract_type,
-                "priceIssueId": price_issue_id,
                 "productContractId": product_contract_id,
                 "archived": archived,
             }
@@ -164,6 +163,8 @@ class ProductContract:
             field_dict["issueBasedCondition"] = issue_based_condition
         if credit_based_condition is not UNSET:
             field_dict["creditBasedCondition"] = credit_based_condition
+        if price_issue_id is not UNSET:
+            field_dict["priceIssueId"] = price_issue_id
 
         return field_dict
 
@@ -177,8 +178,6 @@ class ProductContract:
         title = d.pop("title")
 
         contract_type = ProductContractBaseContractType(d.pop("contractType"))
-
-        price_issue_id = d.pop("priceIssueId")
 
         product_contract_id = d.pop("productContractId")
 
@@ -279,10 +278,11 @@ class ProductContract:
         else:
             credit_based_condition = CreditBasedProductContractCondition.from_dict(_credit_based_condition)
 
+        price_issue_id = d.pop("priceIssueId", UNSET)
+
         product_contract = cls(
             title=title,
             contract_type=contract_type,
-            price_issue_id=price_issue_id,
             product_contract_id=product_contract_id,
             archived=archived,
             created_date=created_date,
@@ -298,6 +298,7 @@ class ProductContract:
             time_based_condition=time_based_condition,
             issue_based_condition=issue_based_condition,
             credit_based_condition=credit_based_condition,
+            price_issue_id=price_issue_id,
         )
 
         product_contract.additional_properties = d

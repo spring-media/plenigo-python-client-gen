@@ -21,7 +21,6 @@ class ProductContractCreation:
     Attributes:
         title (str): title of the product contract
         contract_type (ProductContractBaseContractType): contract type
-        price_issue_id (int): price issue to use
         leaf_id (Union[Unset, int]): id of the leaf the contract is related to
         description (Union[Unset, str]): description of the product contract
         product_tag_ids (Union[Unset, list[int]]): tags associated with this product
@@ -29,11 +28,11 @@ class ProductContractCreation:
         time_based_condition (Union[Unset, TimeBasedProductContractCondition]):
         issue_based_condition (Union[Unset, IssueBasedProductContractCondition]):
         credit_based_condition (Union[Unset, CreditBasedProductContractCondition]):
+        price_issue_id (Union[Unset, int]): price issue to use (is only not required when it is a multiuser contract.
     """
 
     title: str
     contract_type: ProductContractBaseContractType
-    price_issue_id: int
     leaf_id: Union[Unset, int] = UNSET
     description: Union[Unset, str] = UNSET
     product_tag_ids: Union[Unset, list[int]] = UNSET
@@ -41,14 +40,13 @@ class ProductContractCreation:
     time_based_condition: Union[Unset, "TimeBasedProductContractCondition"] = UNSET
     issue_based_condition: Union[Unset, "IssueBasedProductContractCondition"] = UNSET
     credit_based_condition: Union[Unset, "CreditBasedProductContractCondition"] = UNSET
+    price_issue_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         title = self.title
 
         contract_type = self.contract_type.value
-
-        price_issue_id = self.price_issue_id
 
         leaf_id = self.leaf_id
 
@@ -72,13 +70,14 @@ class ProductContractCreation:
         if not isinstance(self.credit_based_condition, Unset):
             credit_based_condition = self.credit_based_condition.to_dict()
 
+        price_issue_id = self.price_issue_id
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "title": title,
                 "contractType": contract_type,
-                "priceIssueId": price_issue_id,
             }
         )
         if leaf_id is not UNSET:
@@ -95,6 +94,8 @@ class ProductContractCreation:
             field_dict["issueBasedCondition"] = issue_based_condition
         if credit_based_condition is not UNSET:
             field_dict["creditBasedCondition"] = credit_based_condition
+        if price_issue_id is not UNSET:
+            field_dict["priceIssueId"] = price_issue_id
 
         return field_dict
 
@@ -108,8 +109,6 @@ class ProductContractCreation:
         title = d.pop("title")
 
         contract_type = ProductContractBaseContractType(d.pop("contractType"))
-
-        price_issue_id = d.pop("priceIssueId")
 
         leaf_id = d.pop("leafId", UNSET)
 
@@ -140,10 +139,11 @@ class ProductContractCreation:
         else:
             credit_based_condition = CreditBasedProductContractCondition.from_dict(_credit_based_condition)
 
+        price_issue_id = d.pop("priceIssueId", UNSET)
+
         product_contract_creation = cls(
             title=title,
             contract_type=contract_type,
-            price_issue_id=price_issue_id,
             leaf_id=leaf_id,
             description=description,
             product_tag_ids=product_tag_ids,
@@ -151,6 +151,7 @@ class ProductContractCreation:
             time_based_condition=time_based_condition,
             issue_based_condition=issue_based_condition,
             credit_based_condition=credit_based_condition,
+            price_issue_id=price_issue_id,
         )
 
         product_contract_creation.additional_properties = d

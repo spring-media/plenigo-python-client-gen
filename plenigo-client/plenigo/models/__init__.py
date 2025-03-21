@@ -1,4 +1,4 @@
-""" Contains all the data models used in inputs/outputs """
+"""Contains all the data models used in inputs/outputs"""
 
 from .access_right_data import AccessRightData
 from .access_right_item_data import AccessRightItemData
@@ -77,6 +77,7 @@ from .google_play_product_purchase import GooglePlayProductPurchase
 from .google_play_store_purchase import GooglePlayStorePurchase
 from .google_play_store_purchases import GooglePlayStorePurchases
 from .google_play_subscription_purchase import GooglePlaySubscriptionPurchase
+from .graduated_price_per_user_segment import GraduatedPricePerUserSegment
 from .invoice import Invoice
 from .invoice_address import InvoiceAddress
 from .invoice_address_salutation import InvoiceAddressSalutation
@@ -90,6 +91,8 @@ from .issue_based_product_contract_condition_cancellation_period_timespan import
     IssueBasedProductContractConditionCancellationPeriodTimespan,
 )
 from .issue_based_product_contract_condition_cancellation_type import IssueBasedProductContractConditionCancellationType
+from .multiuser_conditions import MultiuserConditions
+from .multiuser_conditions_multiuser_payment_variant import MultiuserConditionsMultiuserPaymentVariant
 from .offer import Offer
 from .offer_base import OfferBase
 from .offer_base_allowed_payment_methods_item import OfferBaseAllowedPaymentMethodsItem
@@ -135,6 +138,7 @@ from .price_issue import PriceIssue
 from .price_issue_base import PriceIssueBase
 from .price_issue_creation import PriceIssueCreation
 from .price_issues import PriceIssues
+from .price_per_user_segment import PricePerUserSegment
 from .price_segment import PriceSegment
 from .price_segment_base import PriceSegmentBase
 from .product_contract import ProductContract
@@ -196,6 +200,9 @@ from .time_based_product_contract_condition_cancellation_timespan import (
 )
 from .time_based_product_contract_condition_duration_timespan import TimeBasedProductContractConditionDurationTimespan
 from .time_based_product_contract_condition_term_timespan import TimeBasedProductContractConditionTermTimespan
+from .time_based_product_contract_condition_time_based_contract_type import (
+    TimeBasedProductContractConditionTimeBasedContractType,
+)
 from .transaction import Transaction
 from .transaction_payment_action import TransactionPaymentAction
 from .transaction_payment_method import TransactionPaymentMethod
@@ -280,6 +287,7 @@ __all__ = (
     "GooglePlayStorePurchase",
     "GooglePlayStorePurchases",
     "GooglePlaySubscriptionPurchase",
+    "GraduatedPricePerUserSegment",
     "Invoice",
     "InvoiceAddress",
     "InvoiceAddressSalutation",
@@ -291,6 +299,8 @@ __all__ = (
     "IssueBasedProductContractCondition",
     "IssueBasedProductContractConditionCancellationPeriodTimespan",
     "IssueBasedProductContractConditionCancellationType",
+    "MultiuserConditions",
+    "MultiuserConditionsMultiuserPaymentVariant",
     "Offer",
     "OfferBase",
     "OfferBaseAllowedPaymentMethodsItem",
@@ -336,6 +346,7 @@ __all__ = (
     "PriceIssueBase",
     "PriceIssueCreation",
     "PriceIssues",
+    "PricePerUserSegment",
     "PriceSegment",
     "PriceSegmentBase",
     "ProductContract",
@@ -393,6 +404,7 @@ __all__ = (
     "TimeBasedProductContractConditionCancellationTimespan",
     "TimeBasedProductContractConditionDurationTimespan",
     "TimeBasedProductContractConditionTermTimespan",
+    "TimeBasedProductContractConditionTimeBasedContractType",
     "Transaction",
     "TransactionPaymentAction",
     "TransactionPaymentMethod",

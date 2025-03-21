@@ -73,6 +73,8 @@ class Customer:
         accepted_terms (Union[Unset, CustomerAcceptedTerms]):
         sso_login_providers (Union[Unset, list[CustomerSsoLoginProvidersItem]]):
         customer_marks (Union[Unset, list[CustomerCustomerMarksItem]]):
+        processing_blocked (Union[Unset, bool]): Flag to indicate to third party systems that the customer is blocked
+            for further processing and should not be used for advertisement, etc.
     """
 
     customer_id: str
@@ -100,6 +102,7 @@ class Customer:
     accepted_terms: Union[Unset, "CustomerAcceptedTerms"] = UNSET
     sso_login_providers: Union[Unset, list[CustomerSsoLoginProvidersItem]] = UNSET
     customer_marks: Union[Unset, list[CustomerCustomerMarksItem]] = UNSET
+    processing_blocked: Union[Unset, bool] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -199,6 +202,8 @@ class Customer:
                 customer_marks_item = customer_marks_item_data.value
                 customer_marks.append(customer_marks_item)
 
+        processing_blocked = self.processing_blocked
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -254,6 +259,8 @@ class Customer:
             field_dict["ssoLoginProviders"] = sso_login_providers
         if customer_marks is not UNSET:
             field_dict["customerMarks"] = customer_marks
+        if processing_blocked is not UNSET:
+            field_dict["processingBlocked"] = processing_blocked
 
         return field_dict
 
@@ -441,6 +448,8 @@ class Customer:
 
             customer_marks.append(customer_marks_item)
 
+        processing_blocked = d.pop("processingBlocked", UNSET)
+
         customer = cls(
             customer_id=customer_id,
             username=username,
@@ -467,6 +476,7 @@ class Customer:
             accepted_terms=accepted_terms,
             sso_login_providers=sso_login_providers,
             customer_marks=customer_marks,
+            processing_blocked=processing_blocked,
         )
 
         customer.additional_properties = d

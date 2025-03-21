@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -13,7 +13,14 @@ from ..models.time_based_product_contract_condition_duration_timespan import (
     TimeBasedProductContractConditionDurationTimespan,
 )
 from ..models.time_based_product_contract_condition_term_timespan import TimeBasedProductContractConditionTermTimespan
+from ..models.time_based_product_contract_condition_time_based_contract_type import (
+    TimeBasedProductContractConditionTimeBasedContractType,
+)
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.multiuser_conditions import MultiuserConditions
+
 
 T = TypeVar("T", bound="TimeBasedProductContractCondition")
 
@@ -31,6 +38,9 @@ class TimeBasedProductContractCondition:
         cancellation_period (Union[Unset, int]): cancellation period of the product step
         cancellation_timespan (Union[Unset, TimeBasedProductContractConditionCancellationTimespan]): cancellation
             timespan
+        time_based_contract_type (Union[Unset, TimeBasedProductContractConditionTimeBasedContractType]): time based
+            contract type
+        multiuser_conditions (Union[Unset, MultiuserConditions]):
     """
 
     term_period: Union[Unset, int] = UNSET
@@ -41,6 +51,8 @@ class TimeBasedProductContractCondition:
     accounting_timespan: Union[Unset, TimeBasedProductContractConditionAccountingTimespan] = UNSET
     cancellation_period: Union[Unset, int] = UNSET
     cancellation_timespan: Union[Unset, TimeBasedProductContractConditionCancellationTimespan] = UNSET
+    time_based_contract_type: Union[Unset, TimeBasedProductContractConditionTimeBasedContractType] = UNSET
+    multiuser_conditions: Union[Unset, "MultiuserConditions"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -68,6 +80,14 @@ class TimeBasedProductContractCondition:
         if not isinstance(self.cancellation_timespan, Unset):
             cancellation_timespan = self.cancellation_timespan.value
 
+        time_based_contract_type: Union[Unset, str] = UNSET
+        if not isinstance(self.time_based_contract_type, Unset):
+            time_based_contract_type = self.time_based_contract_type.value
+
+        multiuser_conditions: Union[Unset, dict[str, Any]] = UNSET
+        if not isinstance(self.multiuser_conditions, Unset):
+            multiuser_conditions = self.multiuser_conditions.to_dict()
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -87,11 +107,17 @@ class TimeBasedProductContractCondition:
             field_dict["cancellationPeriod"] = cancellation_period
         if cancellation_timespan is not UNSET:
             field_dict["cancellationTimespan"] = cancellation_timespan
+        if time_based_contract_type is not UNSET:
+            field_dict["timeBasedContractType"] = time_based_contract_type
+        if multiuser_conditions is not UNSET:
+            field_dict["multiuserConditions"] = multiuser_conditions
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.multiuser_conditions import MultiuserConditions
+
         d = src_dict.copy()
         term_period = d.pop("termPeriod", UNSET)
 
@@ -129,6 +155,20 @@ class TimeBasedProductContractCondition:
         else:
             cancellation_timespan = TimeBasedProductContractConditionCancellationTimespan(_cancellation_timespan)
 
+        _time_based_contract_type = d.pop("timeBasedContractType", UNSET)
+        time_based_contract_type: Union[Unset, TimeBasedProductContractConditionTimeBasedContractType]
+        if isinstance(_time_based_contract_type, Unset) or not _time_based_contract_type:
+            time_based_contract_type = UNSET
+        else:
+            time_based_contract_type = TimeBasedProductContractConditionTimeBasedContractType(_time_based_contract_type)
+
+        _multiuser_conditions = d.pop("multiuserConditions", UNSET)
+        multiuser_conditions: Union[Unset, MultiuserConditions]
+        if isinstance(_multiuser_conditions, Unset) or not _multiuser_conditions:
+            multiuser_conditions = UNSET
+        else:
+            multiuser_conditions = MultiuserConditions.from_dict(_multiuser_conditions)
+
         time_based_product_contract_condition = cls(
             term_period=term_period,
             term_timespan=term_timespan,
@@ -138,6 +178,8 @@ class TimeBasedProductContractCondition:
             accounting_timespan=accounting_timespan,
             cancellation_period=cancellation_period,
             cancellation_timespan=cancellation_timespan,
+            time_based_contract_type=time_based_contract_type,
+            multiuser_conditions=multiuser_conditions,
         )
 
         time_based_product_contract_condition.additional_properties = d
