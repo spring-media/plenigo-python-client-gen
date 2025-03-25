@@ -55,6 +55,12 @@ from .credit_based_product_contract_condition_duration_timespan import (
     CreditBasedProductContractConditionDurationTimespan,
 )
 from .credit_based_product_contract_condition_term_timespan import CreditBasedProductContractConditionTermTimespan
+from .credit_upload import CreditUpload
+from .credit_upload_item_type import CreditUploadItemType
+from .credit_upload_list import CreditUploadList
+from .credit_usage import CreditUsage
+from .credit_usage_base import CreditUsageBase
+from .credit_usage_list import CreditUsageList
 from .customer import Customer
 from .customer_accepted_term import CustomerAcceptedTerm
 from .customer_accepted_terms import CustomerAcceptedTerms
@@ -72,6 +78,8 @@ from .customer_status import CustomerStatus
 from .customers import Customers
 from .error_result import ErrorResult
 from .error_result_base import ErrorResultBase
+from .get_credit_wallet_uploads_sort import GetCreditWalletUploadsSort
+from .get_credit_wallet_usages_sort import GetCreditWalletUsagesSort
 from .gift_info import GiftInfo
 from .google_play_product_purchase import GooglePlayProductPurchase
 from .google_play_store_purchase import GooglePlayStorePurchase
@@ -265,6 +273,12 @@ __all__ = (
     "CreditBasedProductContractConditionCancellationTimespan",
     "CreditBasedProductContractConditionDurationTimespan",
     "CreditBasedProductContractConditionTermTimespan",
+    "CreditUpload",
+    "CreditUploadItemType",
+    "CreditUploadList",
+    "CreditUsage",
+    "CreditUsageBase",
+    "CreditUsageList",
     "Customer",
     "CustomerAcceptedTerm",
     "CustomerAcceptedTerms",
@@ -282,6 +296,8 @@ __all__ = (
     "CustomerStatus",
     "ErrorResult",
     "ErrorResultBase",
+    "GetCreditWalletUploadsSort",
+    "GetCreditWalletUsagesSort",
     "GiftInfo",
     "GooglePlayProductPurchase",
     "GooglePlayStorePurchase",
