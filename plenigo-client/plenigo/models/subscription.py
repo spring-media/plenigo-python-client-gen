@@ -83,6 +83,16 @@ class Subscription:
             time notation as defined by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339,
             section 5.6</a>, for example, 2017-07-21T17:32:28Z
         status (Union[Unset, SubscriptionStatus]): current status of the subscription
+            | Status   | Description
+            |
+            | ---------| ---------------------------------------------------------------------------------------------------
+            ------------------------------------------------------------------------------- |
+            | ACTIVE   | subscription is active
+            |
+            | INACTIVE | subscription was active and is not active anymore
+            |
+            | IGNORED  | the subscription was never active and will not be active in the future (e.g. because a previous
+            subscription or previous step in the chain of subscriptions ended or was cancelled |
         payment_method_id (Union[Unset, int]): id of the payment method that is associated with this subscription
         payment_method_details (Union[Unset, PaymentMethodDetails]):
         access_blocked (Union[Unset, bool]): flag indicating if subscription is blocked and delivery customer cannot
@@ -133,6 +143,7 @@ class Subscription:
         delivery_paused (Union[Unset, SubscriptionPauseAt]):
         paused (Union[Unset, SubscriptionPauseAt]):
         payment_paused (Union[Unset, SubscriptionPauseAt]):
+        managed_external (Union[Unset, bool]): flag indicating if subscription is managed externally
         items (Union[Unset, list['SubscriptionItem']]):
     """
 
@@ -199,6 +210,7 @@ class Subscription:
     delivery_paused: Union[Unset, "SubscriptionPauseAt"] = UNSET
     paused: Union[Unset, "SubscriptionPauseAt"] = UNSET
     payment_paused: Union[Unset, "SubscriptionPauseAt"] = UNSET
+    managed_external: Union[Unset, bool] = UNSET
     items: Union[Unset, list["SubscriptionItem"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -411,6 +423,8 @@ class Subscription:
         if not isinstance(self.payment_paused, Unset):
             payment_paused = self.payment_paused.to_dict()
 
+        managed_external = self.managed_external
+
         items: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.items, Unset):
             items = []
@@ -538,6 +552,8 @@ class Subscription:
             field_dict["paused"] = paused
         if payment_paused is not UNSET:
             field_dict["paymentPaused"] = payment_paused
+        if managed_external is not UNSET:
+            field_dict["managedExternal"] = managed_external
         if items is not UNSET:
             field_dict["items"] = items
 
@@ -939,6 +955,8 @@ class Subscription:
         else:
             payment_paused = SubscriptionPauseAt.from_dict(_payment_paused)
 
+        managed_external = d.pop("managedExternal", UNSET)
+
         items = []
         _items = d.pop("items", UNSET)
         for items_item_data in _items or []:
@@ -1010,6 +1028,7 @@ class Subscription:
             delivery_paused=delivery_paused,
             paused=paused,
             payment_paused=payment_paused,
+            managed_external=managed_external,
             items=items,
         )
 

@@ -179,7 +179,7 @@ class AppStoreOrderItem:
         access_right_unique_id = d.pop("accessRightUniqueId", UNSET)
 
         def _parse_additional_store_item_data(
-            data: object
+            data: object,
         ) -> Union["AppleAppStoreReceiptItem", "GooglePlayProductPurchase", "GooglePlaySubscriptionPurchase", Unset]:
             if data is None:
                 return data

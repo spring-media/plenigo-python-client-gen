@@ -1,6 +1,6 @@
 1. The AppleAppStorePurchaseAddition has a new field called transactionIds.
 2. AppStoreAcessRight -> additionalData changed from a {key: "...", value: "..."} to {foo: "...", bar: "..."} so this might be a breaking change?
-3. We have a new TaxType type, which is returned by OrderItem -> taxType and also SubscriptionItem and also OfferProductBase
+*3. We have a new TaxType type, which is returned by OrderItem -> taxType and also SubscriptionItem and also OfferProductBase
 4. Customer -> acceptedTerms changed similar to the change I mentioned in the 2.
 5. AdditionalCustomerData was renamed to CustomerData, and also got a similar change I mentioned in the 2. -> BREAKING CHANGE?
 6. Transaction -> TransactionId changed from int to string BREAKING CHANGE?
@@ -17,7 +17,5 @@
 17. 2 new types: ApiMultiVoucher and ApiChannel
 18. ApiCampaginView got renamed to ApiCampaign BREAKING CHANGE?
 19. ApiCampaignPage got fixed
---250313--
-20. ApiVoucherPage got fixed
 
 

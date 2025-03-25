@@ -266,7 +266,7 @@ class AppStoreOrder:
             store_type = AppStoreOrderStoreType(_store_type)
 
         def _parse_additional_store_data(
-            data: object
+            data: object,
         ) -> Union["AppleAppStoreReceipt", "GooglePlayProductPurchase", "GooglePlaySubscriptionPurchase", Unset]:
             if data is None:
                 return data
