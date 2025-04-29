@@ -19,5 +19,6 @@
 19. ApiCampaignPage got fixed
 --250313--
 20. ApiVoucherPage got fixed
+21. CreditUploadItemType patched by adding a new variant
 
 

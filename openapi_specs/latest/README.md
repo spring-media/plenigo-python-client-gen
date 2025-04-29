@@ -1,1 +1,2 @@
 - patched ApiChannelBase -> status field to also contains the "CANCELLED" variant.
+- patched CreditUploadItemType -> Enum now contains "EXTERNAL_UPLOAD" variant.

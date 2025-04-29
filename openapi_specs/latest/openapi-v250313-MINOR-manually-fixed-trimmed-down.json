@@ -3244,6 +3244,290 @@
           }
         }
       }
+    },
+    "/wallets/creditsUploaded": {
+      "get": {
+        "summary": "Get credit uploads",
+        "operationId": "getCreditWalletUploads",
+        "security": [
+          {
+            "plenigoToken": []
+          }
+        ],
+        "tags": [
+          "Wallets"
+        ],
+        "description": "Get credit wallet uploads.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sizeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/startTimeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/endTimeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/startingAfterQuery"
+          },
+          {
+            "$ref": "#/components/parameters/endingBeforeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/sortQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns all credit wallet uploads.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditUploadList"
+                },
+                "examples": {
+                  "creditUploadListExample": {
+                    "$ref": "#/components/examples/creditUploadListExample"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request is not formatted correctly or contains invalid data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                },
+                "examples": {
+                  "errorResultBadRequestExample": {
+                    "$ref": "#/components/examples/errorResultBadRequestExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo api token provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The rate limit for this endpoint is reached. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultTooManyRequestsExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad Gateway.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultBadGatewayErrorExample"
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Processing of your request took to long. To prevent blocking we aborted the request. You can resend your request without any changes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultGatewayTimeoutErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wallets/creditsUsed": {
+      "get": {
+        "summary": "Get credit usages",
+        "operationId": "getCreditWalletUsages",
+        "security": [
+          {
+            "plenigoToken": []
+          }
+        ],
+        "tags": [
+          "Wallets"
+        ],
+        "description": "Get credit wallet usages.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sizeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/startTimeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/endTimeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/startingAfterQuery"
+          },
+          {
+            "$ref": "#/components/parameters/endingBeforeQuery"
+          },
+          {
+            "$ref": "#/components/parameters/sortQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns all credit wallet usages.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditUsageList"
+                },
+                "examples": {
+                  "creditUsageListExample": {
+                    "$ref": "#/components/examples/creditUsageListExample"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request is not formatted correctly or contains invalid data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                },
+                "examples": {
+                  "errorResultBadRequestExample": {
+                    "$ref": "#/components/examples/errorResultBadRequestExample"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Plenigo api token provided is not valid or doesn't have necessary rights to access this method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultUnauthorizedExample"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The rate limit for this endpoint is reached. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultTooManyRequestsExample"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Currently we are not able to answer your request but we are working hard to resolve this problem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultInternalErrorExample"
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad Gateway.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultBadGatewayErrorExample"
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Processing of your request took to long. To prevent blocking we aborted the request. You can resend your request without any changes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResultBase"
+                },
+                "examples": {
+                  "errorResultUnauthorizedExample": {
+                    "$ref": "#/components/examples/errorResultGatewayTimeoutErrorExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -8850,6 +9134,181 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/ApiCampaign"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CreditUpload": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "customerId": {
+                "description": "id of the customer the credit usage should be accounted to",
+                "type": "string",
+                "pattern": "^[0-9]{1,18}$"
+              },
+              "uniqueId": {
+                "description": "unique id of the wallet to use",
+                "type": "string",
+                "pattern": "^[0-9\\-a-zA-Z]{2,30}$"
+              },
+              "uploadDate": {
+                "description": "date the upload was done with date-time notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21T17:32:28Z",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "creditUploadId": {
+                "description": "unique id of the credit upload also used for pagination",
+                "type": "integer",
+                "format": "int64"
+              },
+              "title": {
+                "description": "title of upload",
+                "type": "string",
+                "maxLength": 100
+              },
+              "creditsAdded": {
+                "description": "amount of credits added",
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 100000000
+              },
+              "itemType": {
+                "description": "type of this access right item",
+                "type": "string",
+                "enum": [
+                  "EXTERNAL",
+                  "SINGLE_PRODUCT",
+                  "SUBSCRIPTION_ITEM",
+                  "EXTERNAL_UPLOAD"
+                ]
+              },
+              "itemId": {
+                "description": "the id this access right belongs to",
+                "type": "string",
+                "maxLength": 30
+              }
+            }
+          },
+          {
+            "required": [
+              "creditUploadId",
+              "uniqueId",
+              "uploadDate",
+              "title",
+              "creditsAdded",
+              "customerId",
+              "itemType"
+            ]
+          }
+        ]
+      },
+      "CreditUploadList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiSearchResultBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CreditUpload"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CreditUsageBase": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "description": "id of the customer the credit usage should be accounted to",
+            "type": "string",
+            "pattern": "^[0-9]{1,18}$"
+          },
+          "uniqueId": {
+            "description": "unique id of the wallet to use",
+            "type": "string",
+            "pattern": "^[0-9\\-a-zA-Z]{2,30}$"
+          },
+          "creditsUsed": {
+            "description": "amount of credits used",
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "reason": {
+            "description": "reason for credit usage",
+            "type": "string",
+            "maxLength": 100
+          },
+          "category": {
+            "description": "category for credit usage",
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "customerId",
+          "uniqueId",
+          "creditsUsed",
+          "reason"
+        ]
+      },
+      "CreditUsage": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiBase"
+          },
+          {
+            "$ref": "#/components/schemas/CreditUsageBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "usageDate": {
+                "description": "date the usage was done with date-time notation as defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>, for example, 2017-07-21T17:32:28Z",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "creditUsageId": {
+                "description": "unique id of the credit usage also used for pagination",
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ]
+      },
+      "CreditUsageList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiSearchResultBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CreditUsage"
                 }
               }
             }
