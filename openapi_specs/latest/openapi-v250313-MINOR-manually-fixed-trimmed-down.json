@@ -6286,7 +6286,6 @@
               "productId",
               "title",
               "price",
-              "discountPercentage",
               "quantity"
             ]
           }
