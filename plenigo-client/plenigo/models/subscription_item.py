@@ -21,7 +21,6 @@ class SubscriptionItem:
         product_id (str): id of the product bought
         title (str): product title presented to the customer
         price (float): price of the subscription
-        discount_percentage (int): discount offered to the subscription
         quantity (int): quantity of purchased entities
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
@@ -50,6 +49,7 @@ class SubscriptionItem:
         package_cancellation_locked (Union[Unset, bool]): flag indicating if package elements can only be cancelled
             together
         price_issue_id (Union[Unset, int]): id of the price issue the subscription item's price is based on
+        discount_percentage (Union[Unset, int]): discount offered to the subscription
         credit_count (Union[Unset, int]): available credit count to use
         credit_wallet_unique_id (Union[Unset, str]): the credit wallet unique id
         status (Union[Unset, SubscriptionItemStatus]): current status of the subscription item
@@ -61,7 +61,6 @@ class SubscriptionItem:
     product_id: str
     title: str
     price: float
-    discount_percentage: int
     quantity: int
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -78,6 +77,7 @@ class SubscriptionItem:
     package_id: Union[Unset, str] = UNSET
     package_cancellation_locked: Union[Unset, bool] = UNSET
     price_issue_id: Union[Unset, int] = UNSET
+    discount_percentage: Union[Unset, int] = UNSET
     credit_count: Union[Unset, int] = UNSET
     credit_wallet_unique_id: Union[Unset, str] = UNSET
     status: Union[Unset, SubscriptionItemStatus] = UNSET
@@ -93,8 +93,6 @@ class SubscriptionItem:
         title = self.title
 
         price = self.price
-
-        discount_percentage = self.discount_percentage
 
         quantity = self.quantity
 
@@ -146,6 +144,8 @@ class SubscriptionItem:
 
         price_issue_id = self.price_issue_id
 
+        discount_percentage = self.discount_percentage
+
         credit_count = self.credit_count
 
         credit_wallet_unique_id = self.credit_wallet_unique_id
@@ -166,7 +166,6 @@ class SubscriptionItem:
                 "productId": product_id,
                 "title": title,
                 "price": price,
-                "discountPercentage": discount_percentage,
                 "quantity": quantity,
             }
         )
@@ -200,6 +199,8 @@ class SubscriptionItem:
             field_dict["packageCancellationLocked"] = package_cancellation_locked
         if price_issue_id is not UNSET:
             field_dict["priceIssueId"] = price_issue_id
+        if discount_percentage is not UNSET:
+            field_dict["discountPercentage"] = discount_percentage
         if credit_count is not UNSET:
             field_dict["creditCount"] = credit_count
         if credit_wallet_unique_id is not UNSET:
@@ -223,8 +224,6 @@ class SubscriptionItem:
         title = d.pop("title")
 
         price = d.pop("price")
-
-        discount_percentage = d.pop("discountPercentage")
 
         quantity = d.pop("quantity")
 
@@ -317,6 +316,8 @@ class SubscriptionItem:
 
         price_issue_id = d.pop("priceIssueId", UNSET)
 
+        discount_percentage = d.pop("discountPercentage", UNSET)
+
         credit_count = d.pop("creditCount", UNSET)
 
         credit_wallet_unique_id = d.pop("creditWalletUniqueId", UNSET)
@@ -337,7 +338,6 @@ class SubscriptionItem:
             product_id=product_id,
             title=title,
             price=price,
-            discount_percentage=discount_percentage,
             quantity=quantity,
             created_date=created_date,
             changed_date=changed_date,
@@ -354,6 +354,7 @@ class SubscriptionItem:
             package_id=package_id,
             package_cancellation_locked=package_cancellation_locked,
             price_issue_id=price_issue_id,
+            discount_percentage=discount_percentage,
             credit_count=credit_count,
             credit_wallet_unique_id=credit_wallet_unique_id,
             status=status,
