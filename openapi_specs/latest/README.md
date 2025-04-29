@@ -1,1 +1,2 @@
 - patched ApiChannelBase -> status field to also contains the "CANCELLED" variant.
+- patched SubscriptionItem -> discountPercentage removing it from the required fields as plenigo support said it is not really required https://support.plenigo.com/#ticket/zoom/9631

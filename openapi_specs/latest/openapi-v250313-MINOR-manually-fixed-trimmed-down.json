@@ -6002,7 +6002,6 @@
               "productId",
               "title",
               "price",
-              "discountPercentage",
               "quantity"
             ]
           }
@@ -8723,8 +8722,8 @@
                   "CREATING",
                   "INACTIVE",
                   "DELETED",
-                  "UPDATING",
-                  "CANCELLED"
+                  "CANCELLED",
+                  "UPDATING"
                 ]
               }
             }
