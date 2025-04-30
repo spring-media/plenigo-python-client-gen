@@ -51173,11 +51173,13 @@
           }
         ],
         "required": [
-          "subscriptionItemId",
-          "productId",
-          "title",
-          "price",
-          "quantity"
+            "subscriptionItemId",
+            "accessRightUniqueId",
+            "productId",
+            "title",
+            "quantity",
+            "status",
+            "taxType"
         ]
       },
       "Subscription": {
