@@ -6283,11 +6283,12 @@
           {
             "required": [
               "subscriptionItemId",
+              "accessRightUniqueId",
               "productId",
               "title",
-              "price",
-              "discountPercentage",
-              "quantity"
+              "quantity",
+              "status",
+              "taxType"
             ]
           }
         ]

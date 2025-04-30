@@ -19,10 +19,11 @@ class SubscriptionItem:
     Attributes:
         subscription_item_id (int): unique id of the subscription item in the context of a company
         product_id (str): id of the product bought
+        access_right_unique_id (str): unique id of the access right this subscription item grants access to
         title (str): product title presented to the customer
-        price (float): price of the subscription
-        discount_percentage (int): discount offered to the subscription
+        tax_type (TaxType): unique identification of the tax type the product represents
         quantity (int): quantity of purchased entities
+        status (SubscriptionItemStatus): current status of the subscription item
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
             example, 17:32:28
@@ -37,11 +38,8 @@ class SubscriptionItem:
             provided here - can be identically to the productId
         plenigo_step_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo step id is provided
             here
-        access_right_unique_id (Union[Unset, str]): unique id of the access right this subscription item grants access
-            to
         internal_title (Union[Unset, str]): if the product is based on a plenigo offer the product title for internal
             usage is provided here
-        tax_type (Union[Unset, TaxType]): unique identification of the tax type the product represents
         package_title (Union[Unset, str]): if subscription item is correlated to another subscription item in a way that
             both items are presented as one (bundle) this field contains the correlation title
         package_id (Union[Unset, str]): if subscription item is correlated to another subscription item in a way that
@@ -49,20 +47,22 @@ class SubscriptionItem:
             subscription
         package_cancellation_locked (Union[Unset, bool]): flag indicating if package elements can only be cancelled
             together
+        price (Union[Unset, float]): price of the subscription
         price_issue_id (Union[Unset, int]): id of the price issue the subscription item's price is based on
+        discount_percentage (Union[Unset, int]): discount offered to the subscription
         credit_count (Union[Unset, int]): available credit count to use
         credit_wallet_unique_id (Union[Unset, str]): the credit wallet unique id
-        status (Union[Unset, SubscriptionItemStatus]): current status of the subscription item
         cost_center (Union[Unset, str]): cost center associated with this subscription item
         purchase_number (Union[Unset, str]): purchase number associated with this subscription item
     """
 
     subscription_item_id: int
     product_id: str
+    access_right_unique_id: str
     title: str
-    price: float
-    discount_percentage: int
+    tax_type: TaxType
     quantity: int
+    status: SubscriptionItemStatus
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
     created_by: Union[Unset, str] = UNSET
@@ -71,16 +71,15 @@ class SubscriptionItem:
     changed_by_type: Union[Unset, UserType] = UNSET
     plenigo_product_id: Union[Unset, str] = UNSET
     plenigo_step_id: Union[Unset, str] = UNSET
-    access_right_unique_id: Union[Unset, str] = UNSET
     internal_title: Union[Unset, str] = UNSET
-    tax_type: Union[Unset, TaxType] = UNSET
     package_title: Union[Unset, str] = UNSET
     package_id: Union[Unset, str] = UNSET
     package_cancellation_locked: Union[Unset, bool] = UNSET
+    price: Union[Unset, float] = UNSET
     price_issue_id: Union[Unset, int] = UNSET
+    discount_percentage: Union[Unset, int] = UNSET
     credit_count: Union[Unset, int] = UNSET
     credit_wallet_unique_id: Union[Unset, str] = UNSET
-    status: Union[Unset, SubscriptionItemStatus] = UNSET
     cost_center: Union[Unset, str] = UNSET
     purchase_number: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -90,13 +89,15 @@ class SubscriptionItem:
 
         product_id = self.product_id
 
+        access_right_unique_id = self.access_right_unique_id
+
         title = self.title
 
-        price = self.price
-
-        discount_percentage = self.discount_percentage
+        tax_type = self.tax_type.value
 
         quantity = self.quantity
+
+        status = self.status.value
 
         created_date: Union[None, Unset, str]
         if isinstance(self.created_date, Unset) or self.created_date is None:
@@ -130,13 +131,7 @@ class SubscriptionItem:
 
         plenigo_step_id = self.plenigo_step_id
 
-        access_right_unique_id = self.access_right_unique_id
-
         internal_title = self.internal_title
-
-        tax_type: Union[Unset, str] = UNSET
-        if not isinstance(self.tax_type, Unset):
-            tax_type = self.tax_type.value
 
         package_title = self.package_title
 
@@ -144,15 +139,15 @@ class SubscriptionItem:
 
         package_cancellation_locked = self.package_cancellation_locked
 
+        price = self.price
+
         price_issue_id = self.price_issue_id
+
+        discount_percentage = self.discount_percentage
 
         credit_count = self.credit_count
 
         credit_wallet_unique_id = self.credit_wallet_unique_id
-
-        status: Union[Unset, str] = UNSET
-        if not isinstance(self.status, Unset):
-            status = self.status.value
 
         cost_center = self.cost_center
 
@@ -164,10 +159,11 @@ class SubscriptionItem:
             {
                 "subscriptionItemId": subscription_item_id,
                 "productId": product_id,
+                "accessRightUniqueId": access_right_unique_id,
                 "title": title,
-                "price": price,
-                "discountPercentage": discount_percentage,
+                "taxType": tax_type,
                 "quantity": quantity,
+                "status": status,
             }
         )
         if created_date is not UNSET:
@@ -186,26 +182,24 @@ class SubscriptionItem:
             field_dict["plenigoProductId"] = plenigo_product_id
         if plenigo_step_id is not UNSET:
             field_dict["plenigoStepId"] = plenigo_step_id
-        if access_right_unique_id is not UNSET:
-            field_dict["accessRightUniqueId"] = access_right_unique_id
         if internal_title is not UNSET:
             field_dict["internalTitle"] = internal_title
-        if tax_type is not UNSET:
-            field_dict["taxType"] = tax_type
         if package_title is not UNSET:
             field_dict["packageTitle"] = package_title
         if package_id is not UNSET:
             field_dict["packageId"] = package_id
         if package_cancellation_locked is not UNSET:
             field_dict["packageCancellationLocked"] = package_cancellation_locked
+        if price is not UNSET:
+            field_dict["price"] = price
         if price_issue_id is not UNSET:
             field_dict["priceIssueId"] = price_issue_id
+        if discount_percentage is not UNSET:
+            field_dict["discountPercentage"] = discount_percentage
         if credit_count is not UNSET:
             field_dict["creditCount"] = credit_count
         if credit_wallet_unique_id is not UNSET:
             field_dict["creditWalletUniqueId"] = credit_wallet_unique_id
-        if status is not UNSET:
-            field_dict["status"] = status
         if cost_center is not UNSET:
             field_dict["costCenter"] = cost_center
         if purchase_number is not UNSET:
@@ -220,13 +214,15 @@ class SubscriptionItem:
 
         product_id = d.pop("productId")
 
+        access_right_unique_id = d.pop("accessRightUniqueId")
+
         title = d.pop("title")
 
-        price = d.pop("price")
-
-        discount_percentage = d.pop("discountPercentage")
+        tax_type = TaxType(d.pop("taxType"))
 
         quantity = d.pop("quantity")
+
+        status = SubscriptionItemStatus(d.pop("status"))
 
         def _parse_created_date(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
@@ -298,16 +294,7 @@ class SubscriptionItem:
 
         plenigo_step_id = d.pop("plenigoStepId", UNSET)
 
-        access_right_unique_id = d.pop("accessRightUniqueId", UNSET)
-
         internal_title = d.pop("internalTitle", UNSET)
-
-        _tax_type = d.pop("taxType", UNSET)
-        tax_type: Union[Unset, TaxType]
-        if isinstance(_tax_type, Unset) or not _tax_type:
-            tax_type = UNSET
-        else:
-            tax_type = TaxType(_tax_type)
 
         package_title = d.pop("packageTitle", UNSET)
 
@@ -315,18 +302,15 @@ class SubscriptionItem:
 
         package_cancellation_locked = d.pop("packageCancellationLocked", UNSET)
 
+        price = d.pop("price", UNSET)
+
         price_issue_id = d.pop("priceIssueId", UNSET)
+
+        discount_percentage = d.pop("discountPercentage", UNSET)
 
         credit_count = d.pop("creditCount", UNSET)
 
         credit_wallet_unique_id = d.pop("creditWalletUniqueId", UNSET)
-
-        _status = d.pop("status", UNSET)
-        status: Union[Unset, SubscriptionItemStatus]
-        if isinstance(_status, Unset) or not _status:
-            status = UNSET
-        else:
-            status = SubscriptionItemStatus(_status)
 
         cost_center = d.pop("costCenter", UNSET)
 
@@ -335,10 +319,11 @@ class SubscriptionItem:
         subscription_item = cls(
             subscription_item_id=subscription_item_id,
             product_id=product_id,
+            access_right_unique_id=access_right_unique_id,
             title=title,
-            price=price,
-            discount_percentage=discount_percentage,
+            tax_type=tax_type,
             quantity=quantity,
+            status=status,
             created_date=created_date,
             changed_date=changed_date,
             created_by=created_by,
@@ -347,16 +332,15 @@ class SubscriptionItem:
             changed_by_type=changed_by_type,
             plenigo_product_id=plenigo_product_id,
             plenigo_step_id=plenigo_step_id,
-            access_right_unique_id=access_right_unique_id,
             internal_title=internal_title,
-            tax_type=tax_type,
             package_title=package_title,
             package_id=package_id,
             package_cancellation_locked=package_cancellation_locked,
+            price=price,
             price_issue_id=price_issue_id,
+            discount_percentage=discount_percentage,
             credit_count=credit_count,
             credit_wallet_unique_id=credit_wallet_unique_id,
-            status=status,
             cost_center=cost_center,
             purchase_number=purchase_number,
         )
