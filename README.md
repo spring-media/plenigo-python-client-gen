@@ -1,3 +1,8 @@
+# Requirements
+- python 3.12
+- ruff 0.11.7
+- openapi-python-client 0.24.3
+
 # Plenigo API client 
 
 This is an unofficial client for the [Plenigo API](https://api.plenigo.com/) and is generated with the help of [openapi-python-client](https://github.com/openapi-generators/openapi-python-client) based on the OpenAPI specs provided by Plenigo.
