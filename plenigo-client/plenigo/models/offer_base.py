@@ -13,6 +13,7 @@ from ..types import UNSET, Unset
 if TYPE_CHECKING:
     from ..models.archive_settings import ArchiveSettings
     from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
+    from ..models.offer_multiuser_settings import OfferMultiuserSettings
     from ..models.offer_partner_settings import OfferPartnerSettings
     from ..models.offer_translation import OfferTranslation
 
@@ -55,6 +56,7 @@ class OfferBase:
         managed_by (Union[Unset, OfferBaseManagedBy]): managed by of the given offer.
         translations (Union[Unset, list['OfferTranslation']]): translations associated with this product
         pdf_template_usage (Union[Unset, OfferBasePdfTemplateUsage]): contains the pdf template to use with this offer
+        multiuser_settings (Union[Unset, OfferMultiuserSettings]):
         partner_settings (Union[Unset, OfferPartnerSettings]):
     """
 
@@ -81,6 +83,7 @@ class OfferBase:
     managed_by: Union[Unset, OfferBaseManagedBy] = UNSET
     translations: Union[Unset, list["OfferTranslation"]] = UNSET
     pdf_template_usage: Union[Unset, OfferBasePdfTemplateUsage] = UNSET
+    multiuser_settings: Union[Unset, "OfferMultiuserSettings"] = UNSET
     partner_settings: Union[Unset, "OfferPartnerSettings"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -155,6 +158,10 @@ class OfferBase:
         if not isinstance(self.pdf_template_usage, Unset):
             pdf_template_usage = self.pdf_template_usage.value
 
+        multiuser_settings: Union[Unset, dict[str, Any]] = UNSET
+        if not isinstance(self.multiuser_settings, Unset):
+            multiuser_settings = self.multiuser_settings.to_dict()
+
         partner_settings: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.partner_settings, Unset):
             partner_settings = self.partner_settings.to_dict()
@@ -210,6 +217,8 @@ class OfferBase:
             field_dict["translations"] = translations
         if pdf_template_usage is not UNSET:
             field_dict["pdfTemplateUsage"] = pdf_template_usage
+        if multiuser_settings is not UNSET:
+            field_dict["multiuserSettings"] = multiuser_settings
         if partner_settings is not UNSET:
             field_dict["partnerSettings"] = partner_settings
 
@@ -219,6 +228,7 @@ class OfferBase:
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         from ..models.archive_settings import ArchiveSettings
         from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
+        from ..models.offer_multiuser_settings import OfferMultiuserSettings
         from ..models.offer_partner_settings import OfferPartnerSettings
         from ..models.offer_translation import OfferTranslation
 
@@ -321,6 +331,13 @@ class OfferBase:
         else:
             pdf_template_usage = OfferBasePdfTemplateUsage(_pdf_template_usage)
 
+        _multiuser_settings = d.pop("multiuserSettings", UNSET)
+        multiuser_settings: Union[Unset, OfferMultiuserSettings]
+        if isinstance(_multiuser_settings, Unset) or not _multiuser_settings:
+            multiuser_settings = UNSET
+        else:
+            multiuser_settings = OfferMultiuserSettings.from_dict(_multiuser_settings)
+
         _partner_settings = d.pop("partnerSettings", UNSET)
         partner_settings: Union[Unset, OfferPartnerSettings]
         if isinstance(_partner_settings, Unset) or not _partner_settings:
@@ -352,6 +369,7 @@ class OfferBase:
             managed_by=managed_by,
             translations=translations,
             pdf_template_usage=pdf_template_usage,
+            multiuser_settings=multiuser_settings,
             partner_settings=partner_settings,
         )
 

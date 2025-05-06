@@ -23,6 +23,7 @@ if TYPE_CHECKING:
     from ..models.payment_method_details import PaymentMethodDetails
     from ..models.subscription_connected_offer_info import SubscriptionConnectedOfferInfo
     from ..models.subscription_item import SubscriptionItem
+    from ..models.subscription_multiuser_settings import SubscriptionMultiuserSettings
     from ..models.subscription_pause_at import SubscriptionPauseAt
 
 
@@ -138,11 +139,12 @@ class Subscription:
         open_deliveries (Union[Unset, int]): the current amount of open deliveries
         deliveries (Union[Unset, int]): the amount of deliveries
         chargeable_deliveries (Union[Unset, int]): the amount of chargeable deliveries
-        recurring_deliveries (Union[Unset, int]): the amount of recurring deliveries
+        recurring_deliveries (Union[Unset, bool]): flag indicating if subscription is having recurring deliveries
         active_partners (Union[Unset, list[str]]): the active partners
         delivery_paused (Union[Unset, SubscriptionPauseAt]):
         paused (Union[Unset, SubscriptionPauseAt]):
         payment_paused (Union[Unset, SubscriptionPauseAt]):
+        multiuser_settings (Union[Unset, SubscriptionMultiuserSettings]):
         managed_external (Union[Unset, bool]): flag indicating if subscription is managed externally
         items (Union[Unset, list['SubscriptionItem']]):
     """
@@ -205,11 +207,12 @@ class Subscription:
     open_deliveries: Union[Unset, int] = UNSET
     deliveries: Union[Unset, int] = UNSET
     chargeable_deliveries: Union[Unset, int] = UNSET
-    recurring_deliveries: Union[Unset, int] = UNSET
+    recurring_deliveries: Union[Unset, bool] = UNSET
     active_partners: Union[Unset, list[str]] = UNSET
     delivery_paused: Union[Unset, "SubscriptionPauseAt"] = UNSET
     paused: Union[Unset, "SubscriptionPauseAt"] = UNSET
     payment_paused: Union[Unset, "SubscriptionPauseAt"] = UNSET
+    multiuser_settings: Union[Unset, "SubscriptionMultiuserSettings"] = UNSET
     managed_external: Union[Unset, bool] = UNSET
     items: Union[Unset, list["SubscriptionItem"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -423,6 +426,10 @@ class Subscription:
         if not isinstance(self.payment_paused, Unset):
             payment_paused = self.payment_paused.to_dict()
 
+        multiuser_settings: Union[Unset, dict[str, Any]] = UNSET
+        if not isinstance(self.multiuser_settings, Unset):
+            multiuser_settings = self.multiuser_settings.to_dict()
+
         managed_external = self.managed_external
 
         items: Union[Unset, list[dict[str, Any]]] = UNSET
@@ -552,6 +559,8 @@ class Subscription:
             field_dict["paused"] = paused
         if payment_paused is not UNSET:
             field_dict["paymentPaused"] = payment_paused
+        if multiuser_settings is not UNSET:
+            field_dict["multiuserSettings"] = multiuser_settings
         if managed_external is not UNSET:
             field_dict["managedExternal"] = managed_external
         if items is not UNSET:
@@ -564,6 +573,7 @@ class Subscription:
         from ..models.payment_method_details import PaymentMethodDetails
         from ..models.subscription_connected_offer_info import SubscriptionConnectedOfferInfo
         from ..models.subscription_item import SubscriptionItem
+        from ..models.subscription_multiuser_settings import SubscriptionMultiuserSettings
         from ..models.subscription_pause_at import SubscriptionPauseAt
 
         d = src_dict.copy()
@@ -955,6 +965,13 @@ class Subscription:
         else:
             payment_paused = SubscriptionPauseAt.from_dict(_payment_paused)
 
+        _multiuser_settings = d.pop("multiuserSettings", UNSET)
+        multiuser_settings: Union[Unset, SubscriptionMultiuserSettings]
+        if isinstance(_multiuser_settings, Unset) or not _multiuser_settings:
+            multiuser_settings = UNSET
+        else:
+            multiuser_settings = SubscriptionMultiuserSettings.from_dict(_multiuser_settings)
+
         managed_external = d.pop("managedExternal", UNSET)
 
         items = []
@@ -1028,6 +1045,7 @@ class Subscription:
             delivery_paused=delivery_paused,
             paused=paused,
             payment_paused=payment_paused,
+            multiuser_settings=multiuser_settings,
             managed_external=managed_external,
             items=items,
         )
