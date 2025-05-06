@@ -1,0 +1,10 @@
+- patched ApiChannelBase -> status field to also contains the "CANCELLED" variant.
+- patched CreditUploadItemType -> Enum now contains "EXTERNAL_UPLOAD" variant.
+- patched SubscriptionItem required fields to contain the following: 
+    - subscriptionItemId
+    - accessRightUniqueId
+    - productId
+    - title
+    - quantity
+    - status
+    - taxType

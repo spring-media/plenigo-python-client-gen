@@ -14,6 +14,7 @@ from ..types import UNSET, Unset
 if TYPE_CHECKING:
     from ..models.archive_settings import ArchiveSettings
     from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
+    from ..models.offer_multiuser_settings import OfferMultiuserSettings
     from ..models.offer_partner_settings import OfferPartnerSettings
     from ..models.offer_product import OfferProduct
     from ..models.offer_product_group import OfferProductGroup
@@ -60,6 +61,7 @@ class Offer:
         managed_by (Union[Unset, OfferBaseManagedBy]): managed by of the given offer.
         translations (Union[Unset, list['OfferTranslation']]): translations associated with this product
         pdf_template_usage (Union[Unset, OfferBasePdfTemplateUsage]): contains the pdf template to use with this offer
+        multiuser_settings (Union[Unset, OfferMultiuserSettings]):
         partner_settings (Union[Unset, OfferPartnerSettings]):
         created_date (Union[None, Unset, datetime.datetime]): time the object was created with time notation as defined
             by <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>, for
@@ -101,6 +103,7 @@ class Offer:
     managed_by: Union[Unset, OfferBaseManagedBy] = UNSET
     translations: Union[Unset, list["OfferTranslation"]] = UNSET
     pdf_template_usage: Union[Unset, OfferBasePdfTemplateUsage] = UNSET
+    multiuser_settings: Union[Unset, "OfferMultiuserSettings"] = UNSET
     partner_settings: Union[Unset, "OfferPartnerSettings"] = UNSET
     created_date: Union[None, Unset, datetime.datetime] = UNSET
     changed_date: Union[None, Unset, datetime.datetime] = UNSET
@@ -186,6 +189,10 @@ class Offer:
         pdf_template_usage: Union[Unset, str] = UNSET
         if not isinstance(self.pdf_template_usage, Unset):
             pdf_template_usage = self.pdf_template_usage.value
+
+        multiuser_settings: Union[Unset, dict[str, Any]] = UNSET
+        if not isinstance(self.multiuser_settings, Unset):
+            multiuser_settings = self.multiuser_settings.to_dict()
 
         partner_settings: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.partner_settings, Unset):
@@ -294,6 +301,8 @@ class Offer:
             field_dict["translations"] = translations
         if pdf_template_usage is not UNSET:
             field_dict["pdfTemplateUsage"] = pdf_template_usage
+        if multiuser_settings is not UNSET:
+            field_dict["multiuserSettings"] = multiuser_settings
         if partner_settings is not UNSET:
             field_dict["partnerSettings"] = partner_settings
         if created_date is not UNSET:
@@ -323,6 +332,7 @@ class Offer:
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         from ..models.archive_settings import ArchiveSettings
         from ..models.offer_connected_company_settings import OfferConnectedCompanySettings
+        from ..models.offer_multiuser_settings import OfferMultiuserSettings
         from ..models.offer_partner_settings import OfferPartnerSettings
         from ..models.offer_product import OfferProduct
         from ..models.offer_product_group import OfferProductGroup
@@ -429,6 +439,13 @@ class Offer:
             pdf_template_usage = UNSET
         else:
             pdf_template_usage = OfferBasePdfTemplateUsage(_pdf_template_usage)
+
+        _multiuser_settings = d.pop("multiuserSettings", UNSET)
+        multiuser_settings: Union[Unset, OfferMultiuserSettings]
+        if isinstance(_multiuser_settings, Unset) or not _multiuser_settings:
+            multiuser_settings = UNSET
+        else:
+            multiuser_settings = OfferMultiuserSettings.from_dict(_multiuser_settings)
 
         _partner_settings = d.pop("partnerSettings", UNSET)
         partner_settings: Union[Unset, OfferPartnerSettings]
@@ -551,6 +568,7 @@ class Offer:
             managed_by=managed_by,
             translations=translations,
             pdf_template_usage=pdf_template_usage,
+            multiuser_settings=multiuser_settings,
             partner_settings=partner_settings,
             created_date=created_date,
             changed_date=changed_date,

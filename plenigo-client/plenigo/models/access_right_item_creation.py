@@ -5,20 +5,18 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.access_right_item_data_item_type import AccessRightItemDataItemType
 from ..models.user_type import UserType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.access_right_item_base_data import AccessRightItemBaseData
-    from ..models.access_right_item_data_access_right_data import AccessRightItemDataAccessRightData
 
 
-T = TypeVar("T", bound="AccessRightItemData")
+T = TypeVar("T", bound="AccessRightItemCreation")
 
 
 @_attrs_define
-class AccessRightItemData:
+class AccessRightItemCreation:
     """
     Attributes:
         access_right_unique_id (str): unique id of the access right this access right grants access to
@@ -56,18 +54,6 @@ class AccessRightItemData:
         data (Union[Unset, AccessRightItemBaseData]): Key must be a string with a maximum length of 20 characters.
         blocked (Union[Unset, bool]): flag indicating if access is blocked
         active_partners (Union[Unset, list[str]]):
-        product_id (Union[Unset, str]): id of the product bought
-        plenigo_offer_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo offer id is
-            provided here
-        plenigo_product_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo product id is
-            provided here - can be identically to the productId
-        plenigo_step_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo step id is provided
-            here
-        item_type (Union[Unset, AccessRightItemDataItemType]): type of this access right item
-        item_id (Union[Unset, str]): the id this access right belongs to
-        foreign_item (Union[Unset, bool]):
-        access_right_data (Union[Unset, AccessRightItemDataAccessRightData]): Key must be a string with a maximum length
-            of 30 characters.
     """
 
     access_right_unique_id: str
@@ -87,14 +73,6 @@ class AccessRightItemData:
     data: Union[Unset, "AccessRightItemBaseData"] = UNSET
     blocked: Union[Unset, bool] = UNSET
     active_partners: Union[Unset, list[str]] = UNSET
-    product_id: Union[Unset, str] = UNSET
-    plenigo_offer_id: Union[Unset, str] = UNSET
-    plenigo_product_id: Union[Unset, str] = UNSET
-    plenigo_step_id: Union[Unset, str] = UNSET
-    item_type: Union[Unset, AccessRightItemDataItemType] = UNSET
-    item_id: Union[Unset, str] = UNSET
-    foreign_item: Union[Unset, bool] = UNSET
-    access_right_data: Union[Unset, "AccessRightItemDataAccessRightData"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -194,26 +172,6 @@ class AccessRightItemData:
         if not isinstance(self.active_partners, Unset):
             active_partners = self.active_partners
 
-        product_id = self.product_id
-
-        plenigo_offer_id = self.plenigo_offer_id
-
-        plenigo_product_id = self.plenigo_product_id
-
-        plenigo_step_id = self.plenigo_step_id
-
-        item_type: Union[Unset, str] = UNSET
-        if not isinstance(self.item_type, Unset):
-            item_type = self.item_type.value
-
-        item_id = self.item_id
-
-        foreign_item = self.foreign_item
-
-        access_right_data: Union[Unset, dict[str, Any]] = UNSET
-        if not isinstance(self.access_right_data, Unset):
-            access_right_data = self.access_right_data.to_dict()
-
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -253,29 +211,12 @@ class AccessRightItemData:
             field_dict["blocked"] = blocked
         if active_partners is not UNSET:
             field_dict["activePartners"] = active_partners
-        if product_id is not UNSET:
-            field_dict["productId"] = product_id
-        if plenigo_offer_id is not UNSET:
-            field_dict["plenigoOfferId"] = plenigo_offer_id
-        if plenigo_product_id is not UNSET:
-            field_dict["plenigoProductId"] = plenigo_product_id
-        if plenigo_step_id is not UNSET:
-            field_dict["plenigoStepId"] = plenigo_step_id
-        if item_type is not UNSET:
-            field_dict["itemType"] = item_type
-        if item_id is not UNSET:
-            field_dict["itemId"] = item_id
-        if foreign_item is not UNSET:
-            field_dict["foreignItem"] = foreign_item
-        if access_right_data is not UNSET:
-            field_dict["accessRightData"] = access_right_data
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         from ..models.access_right_item_base_data import AccessRightItemBaseData
-        from ..models.access_right_item_data_access_right_data import AccessRightItemDataAccessRightData
 
         d = src_dict.copy()
         access_right_unique_id = d.pop("accessRightUniqueId")
@@ -525,33 +466,7 @@ class AccessRightItemData:
 
         active_partners = cast(list[str], d.pop("activePartners", UNSET))
 
-        product_id = d.pop("productId", UNSET)
-
-        plenigo_offer_id = d.pop("plenigoOfferId", UNSET)
-
-        plenigo_product_id = d.pop("plenigoProductId", UNSET)
-
-        plenigo_step_id = d.pop("plenigoStepId", UNSET)
-
-        _item_type = d.pop("itemType", UNSET)
-        item_type: Union[Unset, AccessRightItemDataItemType]
-        if isinstance(_item_type, Unset) or not _item_type:
-            item_type = UNSET
-        else:
-            item_type = AccessRightItemDataItemType(_item_type)
-
-        item_id = d.pop("itemId", UNSET)
-
-        foreign_item = d.pop("foreignItem", UNSET)
-
-        _access_right_data = d.pop("accessRightData", UNSET)
-        access_right_data: Union[Unset, AccessRightItemDataAccessRightData]
-        if isinstance(_access_right_data, Unset) or not _access_right_data:
-            access_right_data = UNSET
-        else:
-            access_right_data = AccessRightItemDataAccessRightData.from_dict(_access_right_data)
-
-        access_right_item_data = cls(
+        access_right_item_creation = cls(
             access_right_unique_id=access_right_unique_id,
             created_date=created_date,
             changed_date=changed_date,
@@ -569,18 +484,10 @@ class AccessRightItemData:
             data=data,
             blocked=blocked,
             active_partners=active_partners,
-            product_id=product_id,
-            plenigo_offer_id=plenigo_offer_id,
-            plenigo_product_id=plenigo_product_id,
-            plenigo_step_id=plenigo_step_id,
-            item_type=item_type,
-            item_id=item_id,
-            foreign_item=foreign_item,
-            access_right_data=access_right_data,
         )
 
-        access_right_item_data.additional_properties = d
-        return access_right_item_data
+        access_right_item_creation.additional_properties = d
+        return access_right_item_creation
 
     @property
     def additional_keys(self) -> List[str]:
