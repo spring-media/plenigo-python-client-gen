@@ -3746,7 +3746,7 @@
       },
       "subscriptionTypeQuery": {
         "name": "subscriptionType",
-        "in": "path",
+        "in": "query",
         "description": "type of the subscription",
         "required": false,
         "schema": {
@@ -9343,7 +9343,6 @@
                 "description": "type of this access right item",
                 "type": "string",
                 "enum": [
-                  "EXTERNAL",
                   "SINGLE_PRODUCT",
                   "SUBSCRIPTION_ITEM",
                   "EXTERNAL_UPLOAD"
