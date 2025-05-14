@@ -182,6 +182,7 @@ from .search_product_offers_sort import SearchProductOffersSort
 from .search_product_price_issues_sort import SearchProductPriceIssuesSort
 from .search_refunds_status import SearchRefundsStatus
 from .search_subscriptions_sort import SearchSubscriptionsSort
+from .search_subscriptions_subscription_type import SearchSubscriptionsSubscriptionType
 from .search_transactions_sort import SearchTransactionsSort
 from .search_vouchers_voucher_status import SearchVouchersVoucherStatus
 from .subscription import Subscription
@@ -403,6 +404,7 @@ __all__ = (
     "SearchProductPriceIssuesSort",
     "SearchRefundsStatus",
     "SearchSubscriptionsSort",
+    "SearchSubscriptionsSubscriptionType",
     "SearchTransactionsSort",
     "SearchVouchersVoucherStatus",
     "Subscription",
