@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "plenigo API v3",
-    "description": "This is the OpenAPI description for accessing the plenigo platform.\nAll API calls are by default synchronous. Asynchronous calls are marked.\nBe aware that default values may not be delivered - according to JSON standard empty values may be omitted from returned objects.\n",
-    "version": "API.250505-MINOR",
+    "description": "This is the OpenAPI description for accessing the plenigo platform.\n\nAll API calls are by default synchronous. Asynchronous calls are marked.\n\nBe aware that default values may not be delivered - according to JSON standard empty values may be omitted from returned objects.\n",
+    "version": "API.250513-MINOR",
     "contact": {
       "url": "https://github.com/plenigo/plenigo-doc"
     }
@@ -37292,6 +37292,9 @@
           },
           {
             "$ref": "#/components/parameters/externalSystemIdQuery"
+          },
+          {
+            "$ref": "#/components/parameters/subscriptionTypeQuery"
           }
         ],
         "responses": {
@@ -46047,6 +46050,31 @@
           "format": "int64"
         }
       },
+      "subscriptionTypeQuery": {
+        "name": "subscriptionType",
+        "in": "path",
+        "description": "type of the subscription",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "CREDIT_BASED",
+            "CREDIT_TIME_BASED",
+            "CREDIT_TRIGGER_BASED",
+            "CROSS_COMPANY_TIME_BASED",
+            "ISSUE_BASED",
+            "TIME_BASED",
+            "TIME_BASED_MULTIUSER",
+            "TIME_CREDIT_BASED",
+            "VOUCHER_CREDIT_BASED",
+            "VOUCHER_CREDIT_TIME_BASED",
+            "VOUCHER_CREDIT_TRIGGER_BASED",
+            "VOUCHER_ISSUE_BASED",
+            "VOUCHER_TIME_BASED",
+            "VOUCHER_TIME_CREDIT_BASED"
+          ]
+        }
+      },
       "subscriptionIdPath": {
         "name": "subscriptionId",
         "in": "path",
@@ -48994,6 +49022,11 @@
             "items": {
               "$ref": "#/components/schemas/ConnectedOfferRequest"
             }
+          },
+          "variantUniqueId": {
+            "description": "unique id of the checkout variant to use",
+            "type": "string",
+            "pattern": "^[0-9\\-a-zA-Z]{2,30}$"
           }
         },
         "required": [
@@ -51135,6 +51168,11 @@
                 "minLength": 20,
                 "maxLength": 20
               },
+              "chainItemId": {
+                "description": "all subscription items that are in one chain because of some rules or cross selling share a unique chain id in the context of a contract company that is identically with the first subscription item within the chain",
+                "type": "integer",
+                "format": "int64"
+              },
               "accessRightUniqueId": {
                 "description": "unique id of the access right this subscription item grants access to",
                 "type": "string",
@@ -51561,6 +51599,7 @@
                   "CROSS_COMPANY_TIME_BASED",
                   "ISSUE_BASED",
                   "TIME_BASED",
+                  "TIME_BASED_MULTIUSER",
                   "TIME_CREDIT_BASED",
                   "VOUCHER_CREDIT_BASED",
                   "VOUCHER_CREDIT_TIME_BASED",
@@ -60659,8 +60698,7 @@
                   "CREATING",
                   "INACTIVE",
                   "DELETED",
-                  "UPDATING",
-                  "CANCELLED"
+                  "UPDATING"
                 ]
               }
             }
@@ -60975,8 +61013,7 @@
                 "enum": [
                   "EXTERNAL",
                   "SINGLE_PRODUCT",
-                  "SUBSCRIPTION_ITEM",
-                  "EXTERNAL_UPLOAD"
+                  "SUBSCRIPTION_ITEM"
                 ]
               },
               "itemId": {
