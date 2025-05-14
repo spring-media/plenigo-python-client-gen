@@ -38,6 +38,9 @@ class SubscriptionItem:
             provided here - can be identically to the productId
         plenigo_step_id (Union[Unset, str]): if the product is based on a plenigo offer the plenigo step id is provided
             here
+        chain_item_id (Union[Unset, int]): all subscription items that are in one chain because of some rules or cross
+            selling share a unique chain id in the context of a contract company that is identically with the first
+            subscription item within the chain
         internal_title (Union[Unset, str]): if the product is based on a plenigo offer the product title for internal
             usage is provided here
         package_title (Union[Unset, str]): if subscription item is correlated to another subscription item in a way that
@@ -71,6 +74,7 @@ class SubscriptionItem:
     changed_by_type: Union[Unset, UserType] = UNSET
     plenigo_product_id: Union[Unset, str] = UNSET
     plenigo_step_id: Union[Unset, str] = UNSET
+    chain_item_id: Union[Unset, int] = UNSET
     internal_title: Union[Unset, str] = UNSET
     package_title: Union[Unset, str] = UNSET
     package_id: Union[Unset, str] = UNSET
@@ -131,6 +135,8 @@ class SubscriptionItem:
 
         plenigo_step_id = self.plenigo_step_id
 
+        chain_item_id = self.chain_item_id
+
         internal_title = self.internal_title
 
         package_title = self.package_title
@@ -182,6 +188,8 @@ class SubscriptionItem:
             field_dict["plenigoProductId"] = plenigo_product_id
         if plenigo_step_id is not UNSET:
             field_dict["plenigoStepId"] = plenigo_step_id
+        if chain_item_id is not UNSET:
+            field_dict["chainItemId"] = chain_item_id
         if internal_title is not UNSET:
             field_dict["internalTitle"] = internal_title
         if package_title is not UNSET:
@@ -294,6 +302,8 @@ class SubscriptionItem:
 
         plenigo_step_id = d.pop("plenigoStepId", UNSET)
 
+        chain_item_id = d.pop("chainItemId", UNSET)
+
         internal_title = d.pop("internalTitle", UNSET)
 
         package_title = d.pop("packageTitle", UNSET)
@@ -332,6 +342,7 @@ class SubscriptionItem:
             changed_by_type=changed_by_type,
             plenigo_product_id=plenigo_product_id,
             plenigo_step_id=plenigo_step_id,
+            chain_item_id=chain_item_id,
             internal_title=internal_title,
             package_title=package_title,
             package_id=package_id,

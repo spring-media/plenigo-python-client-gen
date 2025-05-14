@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class SubscriptionSubscriptionType(str, Enum):
+class SearchSubscriptionsSubscriptionType(str, Enum):
     CREDIT_BASED = "CREDIT_BASED"
     CREDIT_TIME_BASED = "CREDIT_TIME_BASED"
     CREDIT_TRIGGER_BASED = "CREDIT_TRIGGER_BASED"

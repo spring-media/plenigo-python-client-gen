@@ -11,6 +11,7 @@ from ...client import AuthenticatedClient, Client
 from ...models.error_result import ErrorResult
 from ...models.error_result_base import ErrorResultBase
 from ...models.search_subscriptions_sort import SearchSubscriptionsSort
+from ...models.search_subscriptions_subscription_type import SearchSubscriptionsSubscriptionType
 from ...models.subscriptions import Subscriptions
 from ...types import UNSET, Response, Unset
 
@@ -27,6 +28,7 @@ def _get_kwargs(
     sort: Union[Unset, SearchSubscriptionsSort] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     external_system_id: Union[Unset, str] = UNSET,
+    subscription_type: Union[Unset, SearchSubscriptionsSubscriptionType] = UNSET,
 ) -> Dict[str, Any]:
     params: dict[str, Any] = {}
 
@@ -55,6 +57,12 @@ def _get_kwargs(
     params["subscriptionItemId"] = subscription_item_id
 
     params["externalSystemId"] = external_system_id
+
+    json_subscription_type: Union[Unset, str] = UNSET
+    if not isinstance(subscription_type, Unset):
+        json_subscription_type = subscription_type.value
+
+    params["subscriptionType"] = json_subscription_type
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -132,6 +140,7 @@ def sync_all(
     sort: Union[Unset, SearchSubscriptionsSort] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     external_system_id: Union[Unset, str] = UNSET,
+    subscription_type: Union[Unset, SearchSubscriptionsSubscriptionType] = UNSET,
 ) -> Optional[Union[ErrorResult, ErrorResultBase, Subscriptions]]:
     all_results = Subscriptions(items=[])
     # type: ignore
@@ -148,6 +157,7 @@ def sync_all(
                 sort=sort,
                 subscription_item_id=subscription_item_id,
                 external_system_id=external_system_id,
+                subscription_type=subscription_type,
             ).parsed
 
             if results and not isinstance(results, ErrorResultBase) and not isinstance(results.items, Unset):
@@ -183,6 +193,7 @@ def sync_detailed(
     sort: Union[Unset, SearchSubscriptionsSort] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     external_system_id: Union[Unset, str] = UNSET,
+    subscription_type: Union[Unset, SearchSubscriptionsSubscriptionType] = UNSET,
 ) -> Response[Union[ErrorResult, ErrorResultBase, Subscriptions]]:
     """Search subscriptions
 
@@ -197,6 +208,7 @@ def sync_detailed(
         sort (Union[Unset, SearchSubscriptionsSort]):
         subscription_item_id (Union[Unset, int]):
         external_system_id (Union[Unset, str]):
+        subscription_type (Union[Unset, SearchSubscriptionsSubscriptionType]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -215,6 +227,7 @@ def sync_detailed(
         sort=sort,
         subscription_item_id=subscription_item_id,
         external_system_id=external_system_id,
+        subscription_type=subscription_type,
     )
 
     response = client.get_httpx_client().request(
@@ -235,6 +248,7 @@ def sync(
     sort: Union[Unset, SearchSubscriptionsSort] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     external_system_id: Union[Unset, str] = UNSET,
+    subscription_type: Union[Unset, SearchSubscriptionsSubscriptionType] = UNSET,
 ) -> Optional[Union[ErrorResult, ErrorResultBase, Subscriptions]]:
     """Search subscriptions
 
@@ -249,6 +263,7 @@ def sync(
         sort (Union[Unset, SearchSubscriptionsSort]):
         subscription_item_id (Union[Unset, int]):
         external_system_id (Union[Unset, str]):
+        subscription_type (Union[Unset, SearchSubscriptionsSubscriptionType]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -268,6 +283,7 @@ def sync(
         sort=sort,
         subscription_item_id=subscription_item_id,
         external_system_id=external_system_id,
+        subscription_type=subscription_type,
     ).parsed
 
 
@@ -287,6 +303,7 @@ async def asyncio_detailed(
     sort: Union[Unset, SearchSubscriptionsSort] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     external_system_id: Union[Unset, str] = UNSET,
+    subscription_type: Union[Unset, SearchSubscriptionsSubscriptionType] = UNSET,
 ) -> Response[Union[ErrorResult, ErrorResultBase, Subscriptions]]:
     """Search subscriptions
 
@@ -301,6 +318,7 @@ async def asyncio_detailed(
         sort (Union[Unset, SearchSubscriptionsSort]):
         subscription_item_id (Union[Unset, int]):
         external_system_id (Union[Unset, str]):
+        subscription_type (Union[Unset, SearchSubscriptionsSubscriptionType]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -319,6 +337,7 @@ async def asyncio_detailed(
         sort=sort,
         subscription_item_id=subscription_item_id,
         external_system_id=external_system_id,
+        subscription_type=subscription_type,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -337,6 +356,7 @@ async def asyncio_all(
     sort: Union[Unset, SearchSubscriptionsSort] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     external_system_id: Union[Unset, str] = UNSET,
+    subscription_type: Union[Unset, SearchSubscriptionsSubscriptionType] = UNSET,
 ) -> Response[Union[ErrorResult, ErrorResultBase, Subscriptions]]:
     all_results = Subscriptions(items=[])
     # type: ignore
@@ -354,6 +374,7 @@ async def asyncio_all(
                     sort=sort,
                     subscription_item_id=subscription_item_id,
                     external_system_id=external_system_id,
+                    subscription_type=subscription_type,
                 )
             ).parsed
 
@@ -385,6 +406,7 @@ async def asyncio(
     sort: Union[Unset, SearchSubscriptionsSort] = UNSET,
     subscription_item_id: Union[Unset, int] = UNSET,
     external_system_id: Union[Unset, str] = UNSET,
+    subscription_type: Union[Unset, SearchSubscriptionsSubscriptionType] = UNSET,
 ) -> Optional[Union[ErrorResult, ErrorResultBase, Subscriptions]]:
     """Search subscriptions
 
@@ -399,6 +421,7 @@ async def asyncio(
         sort (Union[Unset, SearchSubscriptionsSort]):
         subscription_item_id (Union[Unset, int]):
         external_system_id (Union[Unset, str]):
+        subscription_type (Union[Unset, SearchSubscriptionsSubscriptionType]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -419,5 +442,6 @@ async def asyncio(
             sort=sort,
             subscription_item_id=subscription_item_id,
             external_system_id=external_system_id,
+            subscription_type=subscription_type,
         )
     ).parsed

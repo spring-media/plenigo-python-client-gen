@@ -1,3 +1,6 @@
 project_name_override: plenigo-client
 package_name_override: plenigo
 package_version_override: 0.2.3
+post_hooks:
+   - "ruff check --ignore UP006,UP035,F841 . --fix"
+   - "ruff format ."
